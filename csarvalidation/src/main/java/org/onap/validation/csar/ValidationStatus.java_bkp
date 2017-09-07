@@ -1,0 +1,8 @@
+package org.onap.validation.csar
+
+public class ValidationStatus {
+
+	public static validationMap map <String, String> status;
+ 	
+	
+}
