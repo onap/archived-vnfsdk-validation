@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Enumeration;
 
 import java.util.zip.ZipEntry;
@@ -40,7 +41,7 @@ public class CsarUtil {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CsarUtil.class);
 	
-	public static ArrayList<String> csarFiles = null;
+	
 
 	public static String getUnzipDir(String dirName) {
 		File tmpDir = new File(File.separator + dirName);
@@ -54,13 +55,13 @@ public class CsarUtil {
 	 *            file name to zip
 	 * @param extPlace
 	 *            extPlace
-	 * @return unzip file name
+	 * @return unzip file names in zip
 	 * @throws IOException
 	 *             e1
 	 */
-	public static ArrayList<String> unzip(String zipFileName, String extPlace) throws IOException {
+	public static HashMap<String, String> unzip(String zipFileName, String extPlace) throws IOException {
 		ZipFile zipFile = null;
-		ArrayList<String> unzipFileNams = new ArrayList<String>();
+		HashMap<String, String> unzipFileNames = new HashMap<String, String>();
 
 		try {
 			zipFile = new ZipFile(zipFileName);
@@ -90,7 +91,7 @@ public class CsarUtil {
 						}
 						bos.write(buffer, 0, length);
 					}
-					unzipFileNams.add(file.getAbsolutePath());
+					unzipFileNames.put(file.getName(), file.getAbsolutePath());
 				} finally {
 					closeOutputStream(bos);
 					closeInputStream(input);
@@ -99,7 +100,7 @@ public class CsarUtil {
 		} finally {
 			FileUtil.closeZipFile(zipFile);
 		}
-		return unzipFileNams;
+		return unzipFileNames;
 	}
 
 	/**
