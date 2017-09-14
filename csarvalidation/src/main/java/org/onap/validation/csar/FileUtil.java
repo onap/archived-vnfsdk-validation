@@ -93,57 +93,6 @@ public final class FileUtil {
 
 
     /**
-     * unzip zip file.
-     * @param zipFileName file name to zip
-     * @param extPlace extPlace
-     * @return unzip file name
-     * @throws IOException e1
-     */
-    public static ArrayList<String> unzip(String zipFileName, String extPlace) throws IOException {
-        ZipFile zipFile = null;
-        ArrayList<String> unzipFileNams = new ArrayList<String>();
-
-        try {
-            zipFile = new ZipFile(zipFileName);
-            Enumeration<?> fileEn = zipFile.entries();
-            byte[] buffer = new byte[CommonConstants.BUFFER_SIZE];
-
-            while (fileEn.hasMoreElements()) {
-                InputStream input = null;
-                BufferedOutputStream bos = null;
-                try {
-                    ZipEntry entry = (ZipEntry) fileEn.nextElement();
-                    if (entry.isDirectory()) {
-                        continue;
-                    }
-
-                    input = zipFile.getInputStream(entry);
-                    File file = new File(extPlace, entry.getName());
-                    if (!file.getParentFile().exists()) {
-                        createDirectory(file.getParentFile().getAbsolutePath());
-                    }
-
-                    bos = new BufferedOutputStream(new FileOutputStream(file));
-                    while (true) {
-                        int length = input.read(buffer);
-                        if (length == -1) {
-                            break;
-                        }
-                        bos.write(buffer, 0, length);
-                    }
-                    unzipFileNams.add(file.getAbsolutePath());
-                } finally {
-                    closeOutputStream(bos);
-                    closeInputStream(input);
-                }
-            }
-        } finally {
-            closeZipFile(zipFile);
-        }
-        return unzipFileNams;
-    }
-
-    /**
      * close InputStream.
      * 
      * @param inputStream the inputstream to close
