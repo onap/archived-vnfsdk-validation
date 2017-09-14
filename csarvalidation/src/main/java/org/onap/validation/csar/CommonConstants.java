@@ -27,8 +27,6 @@ public class CommonConstants {
 
 	// host image progress
 
-	public static final String TOSCA_METADATA = "TOSCA-Metadata";
-
 	public static final String CSAR_VERSION_META = "version";
 
 	public static final String CSAR_TYPE_META = "type";
@@ -38,6 +36,10 @@ public class CommonConstants {
 	public static final String DEFINITIONS = "Definitions";
 
 	public static final String CSAR_META = "csar.meta";
+
+	public static final String TOSCA_METADATA = "TOSCA-Metadata";
+
+	public static final String TOSCA_META = "TOSCA.meta";
 
 	public static final String CSAR_SUFFIX = ".csar";
 

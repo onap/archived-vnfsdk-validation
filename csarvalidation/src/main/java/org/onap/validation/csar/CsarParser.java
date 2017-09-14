@@ -18,30 +18,65 @@ package org.onap.validation.csar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
+import java.io.*;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+
+import java.util.*;
+
+import static java.nio.charset.StandardCharsets.*;
+
 
 public class CsarParser {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CsarParser.class);
 
+	// Map of CSAR file and un-zipped file indices
+	private static HashMap<String, String> csarFiles;
 	
+	//  Map of packageId and CSAR files
+	private static HashMap<String, HashMap<String, String>> csar = new HashMap<String, HashMap<String, String>>(); 
 	
+	private static final CsarUtil cUtil = new CsarUtil();
+	/*
+	 * pubic static boolean validateCsar(String filePath) {
+	 * 
+	 * csarExtract(filePath);
+	 * 
+	 * validateCsarMeta();
+	 * 
+	 * 
+	 * }
+	 */
+
+	
+	public static boolean validateCsarIntegrity(String csarWithPath) {
+
+		try {
+			RandomAccessFile raf = new RandomAccessFile(csarWithPath, "r");
+			long n = raf.readInt();
+			raf.close();
+
+			// Check for the CSAR's integrity
+			if (n != 0x504B0304) {
+				LOG.error("CSAR %s is not a valid CSAR/ZIP file! ");
+				return false;
+			}
+			return true;
+		} catch (IOException e1) {
+			LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
+			return false;
+		}
+	}
+
 	public static boolean csarExtract(String filePath) {
 
 		try {
 			String tempfolder = CsarUtil.getUnzipDir(filePath);
-			CsarUtil.csarFiles = CsarUtil.unzip(filePath, tempfolder);
+			csarFiles = CsarUtil.unzip(filePath, tempfolder);
 		} catch (IOException e1) {
 			LOG.error("CSAR extraction error ! " + e1.getMessage());
 			return false;
@@ -49,11 +84,10 @@ public class CsarParser {
 		return true;
 	}
 
-	
 	public static boolean validateCsarMeta() {
 
-		for (String cfile : CsarUtil.csarFiles) {
-			if (cfile.endsWith(CommonConstants.CSAR_META)) {
+		String cfile = csarFiles.get(CommonConstants.CSAR_META);
+		if (!cfile.isEmpty()) {
 				File file = new File(cfile);
 				BufferedReader reader = null;
 
@@ -82,9 +116,10 @@ public class CsarParser {
 									return false;
 								}
 							}
-						}
+						
 					}
 					reader.close();
+				  }
 				} catch (IOException e2) {
 					e2.printStackTrace();
 					return false;
@@ -96,12 +131,46 @@ public class CsarParser {
 							LOG.error("close reader failed ! " + e1.getMessage());
 						}
 					}
+					return true;
 				}
-				return true;
-			}
-
 		}
 
 		return false;
 	}
+
+
+	public static boolean validateToscaMeta() {
+
+        String cfile = csarFiles.get(CommonConstants.TOSCA_META);
+        try {
+            if (!cfile.isEmpty() && cfile.contains("/" + CommonConstants.TOSCA_METADATA + "/" + CommonConstants.TOSCA_META)) {
+
+                String value = checkEntryFor("Entry-Definitions:", cfile);
+                if (value == null) {
+                    return false;
+                    //Check if Entry-Defintions pointed file exists in CSAR
+                } else if (csarFiles.get(value) != null) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            LOG.error("Could not read file %s ! " + e.getMessage(), cfile);
+        }
+
+        return false;
+    }
+
+
+	private static String checkEntryFor(String attribute, String fileWithPath) throws IOException {
+
+        List<String> lines = Files.readAllLines(Paths.get(fileWithPath), UTF_8);
+
+        for(String strLine : lines) {
+            if (!attribute.isEmpty() && strLine.contains(attribute)) {
+                return strLine.substring(attribute.length(), strLine.length());
+            }
+        }
+        return null;
+    }
 }
+
