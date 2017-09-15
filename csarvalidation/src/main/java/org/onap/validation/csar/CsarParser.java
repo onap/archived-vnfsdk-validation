@@ -48,7 +48,9 @@ public class CsarParser {
 	 * 
 	 * validateCsarMeta();
 	 * 
-	 * 
+	 * validateToscaMeta();
+	 *
+	 * validateManifest();
 	 * }
 	 */
 
@@ -167,7 +169,7 @@ public class CsarParser {
 
         for(String strLine : lines) {
             if (!attribute.isEmpty() && strLine.contains(attribute)) {
-                return strLine.substring(attribute.length(), strLine.length());
+                return strLine.substring(attribute.length(), strLine.length()).trim();
             }
         }
         return null;
