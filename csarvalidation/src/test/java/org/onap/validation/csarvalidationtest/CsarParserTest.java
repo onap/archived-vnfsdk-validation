@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class CsarParserTest {
-    CsarParser csarParser = new CsarParser();
+
     String regex = "^\\/[a-zA-Z]\\:\\/";
     ClassLoader classLoader = getClass().getClassLoader();
     Pattern pattern = Pattern.compile(regex);
@@ -33,10 +33,10 @@ public class CsarParserTest {
     Matcher matcher = pattern.matcher(configFile);
     String dir2 = "/"+configFile.substring(1);
 
+    CsarParser csarParser = new CsarParser(dir2);
+
     @Test
     public void testValidateCsarMeta() {
-        boolean result1 = csarParser.csarExtract(dir2);
-        // assertEquals(true, result = true);
         boolean result = CsarParser.validateCsarMeta();
         assertEquals(true, result == true);
         System.out.println("inside testValidateCsarMeta : " + result);
@@ -51,7 +51,6 @@ public class CsarParserTest {
 
     @Test
     public void testValidateToscaMeta() {
-        boolean result1 = csarParser.csarExtract(dir2);
         boolean result = csarParser.validateToscaMeta();
         assertEquals(true, result == true);
         System.out.println("inside testValidateToscaMeta : " + result);

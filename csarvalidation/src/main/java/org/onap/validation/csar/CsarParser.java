@@ -41,6 +41,23 @@ public class CsarParser {
 	private static HashMap<String, HashMap<String, String>> csar = new HashMap<String, HashMap<String, String>>(); 
 	
 	private static final CsarUtil cUtil = new CsarUtil();
+
+	public CsarParser(String csarWithPath) {
+
+		try {
+			FileInputStream is = new FileInputStream(csarWithPath);
+		} catch (FileNotFoundException e2) {
+			LOG.error("CSAR %s is not found! ", e2);
+		}
+		try {
+			boolean ret = csarExtract(csarWithPath);
+			if(ret == true) {
+				LOG.debug("CSAR extracted sucessfully.");
+			}
+		} catch (Exception e1) {
+			LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
+		}
+	}
 	/*
 	 * pubic static boolean validateCsar(String filePath) {
 	 * 
@@ -74,13 +91,15 @@ public class CsarParser {
 		}
 	}
 
-	public static boolean csarExtract(String filePath) {
+	private static boolean csarExtract(String filePath) {
 
 		try {
 			String tempfolder = CsarUtil.getUnzipDir(filePath);
 			csarFiles = CsarUtil.unzip(filePath, tempfolder);
+
 		} catch (IOException e1) {
 			LOG.error("CSAR extraction error ! " + e1.getMessage());
+
 			return false;
 		}
 		return true;
@@ -118,22 +137,24 @@ public class CsarParser {
 									return false;
 								}
 							}
-						
-					}
-					reader.close();
+						}
+				    reader.close();
+			    	return true;
 				  }
 				} catch (IOException e2) {
-					e2.printStackTrace();
-					return false;
+					LOG.error("Exception cought while validateCsarMeta ! " + e2.getMessage());
+					//e2.printStackTrace();
+
 				} finally {
 					if (reader != null) {
 						try {
 							reader.close();
+
 						} catch (IOException e1) {
 							LOG.error("close reader failed ! " + e1.getMessage());
 						}
 					}
-					return true;
+
 				}
 		}
 
@@ -145,7 +166,7 @@ public class CsarParser {
 
         String cfile = csarFiles.get(CommonConstants.TOSCA_META);
         try {
-            if (!cfile.isEmpty() && cfile.contains("/" + CommonConstants.TOSCA_METADATA + "/" + CommonConstants.TOSCA_META)) {
+            if (!cfile.isEmpty() && cfile.contains( System.getProperty("file.separator")+ CommonConstants.TOSCA_METADATA + System.getProperty("file.separator") + CommonConstants.TOSCA_META)) {
 
                 String value = checkEntryFor("Entry-Definitions:", cfile);
                 if (value == null) {
