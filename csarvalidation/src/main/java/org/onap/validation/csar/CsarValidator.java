@@ -20,29 +20,30 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-
-import java.util.*;
-
 import static java.nio.charset.StandardCharsets.*;
 
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class CsarParser {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CsarParser.class);
+import org.yaml.snakeyaml.Yaml;
+
+
+public class CsarValidator {
+
+	private static final Logger LOG = LoggerFactory.getLogger(CsarValidator.class);
 
 	// Map of CSAR file and un-zipped file indices
-	private static HashMap<String, String> csarFiles;
-	
-	//  Map of packageId and CSAR files
+	static HashMap<String, String> csarFiles;
+
+    //  Map of packageId and CSAR files
 	private static HashMap<String, HashMap<String, String>> csar = new HashMap<String, HashMap<String, String>>(); 
 	
 	private static final CsarUtil cUtil = new CsarUtil();
 
-	public CsarParser(String csarWithPath) {
+	public CsarValidator(String packageId, String csarWithPath) {
 
 		try {
 			FileInputStream is = new FileInputStream(csarWithPath);
@@ -50,27 +51,28 @@ public class CsarParser {
 			LOG.error("CSAR %s is not found! ", e2);
 		}
 		try {
-			boolean ret = csarExtract(csarWithPath);
-			if(ret == true) {
+			csarFiles = CsarUtil.csarExtract(csarWithPath);
+			if(!csarFiles.isEmpty()) {
+                csar.put(packageId, getCsarFiles());
 				LOG.debug("CSAR extracted sucessfully.");
 			}
 		} catch (Exception e1) {
 			LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
 		}
-	}
-	/*
-	 * pubic static boolean validateCsar(String filePath) {
-	 * 
-	 * csarExtract(filePath);
-	 * 
-	 * validateCsarMeta();
-	 * 
-	 * validateToscaMeta();
-	 *
-	 * validateManifest();
-	 * }
-	 */
 
+	}
+
+	 	public static boolean validateCsar() {
+
+	    validateCsarMeta();
+
+	    validateToscaMeta();
+
+	    validateMainService();
+
+	    //In future return the status handler object instead.
+	    return true;
+    }
 	
 	public static boolean validateCsarIntegrity(String csarWithPath) {
 
@@ -91,19 +93,7 @@ public class CsarParser {
 		}
 	}
 
-	private static boolean csarExtract(String filePath) {
 
-		try {
-			String tempfolder = CsarUtil.getUnzipDir(filePath);
-			csarFiles = CsarUtil.unzip(filePath, tempfolder);
-
-		} catch (IOException e1) {
-			LOG.error("CSAR extraction error ! " + e1.getMessage());
-
-			return false;
-		}
-		return true;
-	}
 
 	public static boolean validateCsarMeta() {
 
@@ -142,9 +132,7 @@ public class CsarParser {
 			    	return true;
 				  }
 				} catch (IOException e2) {
-					LOG.error("Exception cought while validateCsarMeta ! " + e2.getMessage());
-					//e2.printStackTrace();
-
+					LOG.error("Exception caught while validateCsarMeta ! " + e2.getMessage());
 				} finally {
 					if (reader != null) {
 						try {
@@ -168,7 +156,7 @@ public class CsarParser {
         try {
             if (!cfile.isEmpty() && cfile.contains( System.getProperty("file.separator")+ CommonConstants.TOSCA_METADATA + System.getProperty("file.separator") + CommonConstants.TOSCA_META)) {
 
-                String value = checkEntryFor("Entry-Definitions:", cfile);
+                String value = checkEntryFor(cfile, "Entry-Definitions:");
                 if (value == null) {
                     return false;
                     //Check if Entry-Defintions pointed file exists in CSAR
@@ -183,8 +171,28 @@ public class CsarParser {
         return false;
     }
 
+    private static boolean validateMainService() {
+        String key = "metadata";
 
-	private static String checkEntryFor(String attribute, String fileWithPath) throws IOException {
+        // Infuture load from the respective file template/schema
+        List<String> mListMetadata = Arrays.asList("vnf_product_name", "vnf_provider_id",
+                "vnf_package_version", "vnf_release_data_time");
+        boolean mfResult = checkEntryFor(CommonConstants.MAINSERV_MANIFEST, mListMetadata, key);
+
+        List<String> tListMetadata = Arrays.asList("vendor", "csarVersion",
+                "csarProvider","id", "version", "csarType", "name", "vnfdVersion",
+                "vnfmType");
+        boolean tResult = checkEntryFor(CommonConstants.MAINSERV_TEMPLATE, tListMetadata, key);
+
+        if (tResult && mfResult) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+	private static String checkEntryFor(String fileWithPath, String attribute) throws IOException {
 
         List<String> lines = Files.readAllLines(Paths.get(fileWithPath), UTF_8);
 
@@ -194,6 +202,58 @@ public class CsarParser {
             }
         }
         return null;
+    }
+
+    private static boolean checkEntryFor(String cFile, List<String> attributes, String key) {
+        String tFileWithPath = csarFiles.get(cFile);
+
+            Yaml yaml = new Yaml();
+            Map<String, ?> values = null;
+            try {
+                values = (Map<String, ?>) yaml.load(new FileInputStream(new File(tFileWithPath)));
+            } catch (FileNotFoundException e) {
+                return false;
+            }
+
+            Map<String, String> subValues = (Map<String, String>) values.get(key);
+
+            //1. Check for empty values in map and if number of mandatory attributes presence
+            Map<String, String> mResult = subValues.entrySet()
+                .stream()
+                .filter(e -> e.getValue() != null)
+                .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+            if (mResult.size() != attributes.size())
+            {
+                 return false;
+            }
+
+            //2. Validate the exact mandatory attributes with expected attributes list
+            List<String> lResult = subValues.values().stream()
+                    .filter(attributes::contains)
+                    .collect(Collectors.toList());
+
+           // System.out.println(result);
+            if (lResult.size() != attributes.size()) {
+                return false;
+            }
+            return true;
+
+    }
+
+    public static HashMap<String, HashMap<String, String>> getCsar() {
+        return csar;
+    }
+
+    public static void setCsar(HashMap<String, HashMap<String, String>> csar) {
+        CsarValidator.csar = csar;
+    }
+
+    public static HashMap<String, String> getCsarFiles() {
+        return csarFiles;
+    }
+
+    public static void setCsarFiles(HashMap<String, String> csarFiles) {
+        CsarValidator.csarFiles = csarFiles;
     }
 }
 

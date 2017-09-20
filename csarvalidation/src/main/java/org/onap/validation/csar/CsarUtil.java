@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Enumeration;
 
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -133,6 +134,18 @@ public class CsarUtil {
 		} catch (Exception e1) {
 			logger.info("close OutputStream error!");
 		}
+	}
+
+	public static HashMap<String, String> csarExtract(String filePath) {
+
+		try {
+			String tempfolder = CsarUtil.getUnzipDir(filePath);
+			return CsarUtil.unzip(filePath, tempfolder);
+
+		} catch (IOException e1) {
+			logger.error("CSAR extraction error ! " + e1.getMessage());
+		}
+		return null;
 	}
 
 }

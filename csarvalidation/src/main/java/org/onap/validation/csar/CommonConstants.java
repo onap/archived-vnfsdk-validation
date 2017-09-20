@@ -41,6 +41,10 @@ public class CommonConstants {
 
 	public static final String TOSCA_META = "TOSCA.meta";
 
+	public static final String MAINSERV_MANIFEST = "MainServiceTemplate.mf";
+
+	public static final String MAINSERV_TEMPLATE = "MainServiceTemplate.yaml";
+
 	public static final String CSAR_SUFFIX = ".csar";
 
 	public static final String HTTP_HEADER_CONTENT_RANGE = "Content-Range";
@@ -61,7 +65,7 @@ public class CommonConstants {
 
 	public static final int BUFFER_SIZE = 2 * 1024 * 1024;
 
-	private CommonConstants() {
+    private CommonConstants() {
 		// Cannot create instance of the class
 	}
 

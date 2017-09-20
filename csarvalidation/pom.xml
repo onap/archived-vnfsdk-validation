@@ -55,6 +55,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>1.18</version>
+		</dependency>
+		<dependency>
 			<groupId>com.eclipsesource.jaxrs</groupId>
 			<artifactId>consumer</artifactId>
 			<exclusions>

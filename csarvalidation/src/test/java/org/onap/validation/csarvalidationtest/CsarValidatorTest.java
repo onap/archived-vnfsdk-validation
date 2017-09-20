@@ -16,42 +16,44 @@
 package org.onap.validation.csarvalidationtest;
 
 import org.junit.Test;
-import org.onap.validation.csar.CsarParser;
+import org.onap.validation.csar.CsarValidator;
 
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class CsarParserTest {
+public class CsarValidatorTest {
 
     String regex = "^\\/[a-zA-Z]\\:\\/";
     ClassLoader classLoader = getClass().getClassLoader();
     Pattern pattern = Pattern.compile(regex);
-    private String configFile = classLoader.getResource("enterprise2DC.csar").getFile();
-    Matcher matcher = pattern.matcher(configFile);
-    String dir2 = "/"+configFile.substring(1);
+    private String csarFile = classLoader.getResource("enterprise2DC.csar").getFile();
+    Matcher matcher = pattern.matcher(csarFile);
+    String dir2 = System.getProperty("file.separator")+csarFile.substring(1);
+    String packageId = UUID.randomUUID().toString();
 
-    CsarParser csarParser = new CsarParser(dir2);
+    CsarValidator csarValidator = new CsarValidator(packageId, dir2);
 
     @Test
     public void testValidateCsarMeta() {
-        boolean result = CsarParser.validateCsarMeta();
+        boolean result = CsarValidator.validateCsarMeta();
         assertEquals(true, result == true);
         System.out.println("inside testValidateCsarMeta : " + result);
     }
 
     @Test
     public void testValidateCsarIntegrity() {
-        boolean result = csarParser.validateCsarIntegrity(dir2);
+        boolean result = csarValidator.validateCsarIntegrity(dir2);
         assertEquals(true, result == true);
         System.out.println("inside testValidateCsarIntegrity : " + result);
     }
 
     @Test
     public void testValidateToscaMeta() {
-        boolean result = csarParser.validateToscaMeta();
+        boolean result = csarValidator.validateToscaMeta();
         assertEquals(true, result == true);
         System.out.println("inside testValidateToscaMeta : " + result);
     }
