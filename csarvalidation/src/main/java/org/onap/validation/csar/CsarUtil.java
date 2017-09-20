@@ -41,8 +41,6 @@ import java.util.zip.ZipFile;
 public class CsarUtil {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CsarUtil.class);
-	
-	
 
 	public static String getUnzipDir(String dirName) {
 		File tmpDir = new File(File.separator + dirName);
@@ -61,11 +59,10 @@ public class CsarUtil {
 	 *             e1
 	 */
 	public static HashMap<String, String> unzip(String zipFileName, String extPlace) throws IOException {
-		ZipFile zipFile = null;
-		HashMap<String, String> unzipFileNames = new HashMap<String, String>();
+		HashMap<String, String> unzipFileNames = new HashMap<>();
 
-		try {
-			zipFile = new ZipFile(zipFileName);
+		try(ZipFile zipFile = new ZipFile(zipFileName)) {
+
 			Enumeration<?> fileEn = zipFile.entries();
 			byte[] buffer = new byte[CommonConstants.BUFFER_SIZE];
 
@@ -98,8 +95,6 @@ public class CsarUtil {
 					closeInputStream(input);
 				}
 			}
-		} finally {
-			FileUtil.closeZipFile(zipFile);
 		}
 		return unzipFileNames;
 	}
