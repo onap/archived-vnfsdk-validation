@@ -100,10 +100,8 @@ public class CsarValidator {
 		String cfile = csarFiles.get(CommonConstants.CSAR_META);
 		if (!cfile.isEmpty()) {
 				File file = new File(cfile);
-				BufferedReader reader = null;
 
-				try {
-					reader = new BufferedReader(new FileReader(file));
+				try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
 					String tempString = null;
 					while ((tempString = reader.readLine()) != null) {
 						if (!tempString.equals("")) {
@@ -133,17 +131,7 @@ public class CsarValidator {
 				  }
 				} catch (IOException e2) {
 					LOG.error("Exception caught while validateCsarMeta ! " + e2.getMessage());
-				} finally {
-					if (reader != null) {
-						try {
-							reader.close();
-
-						} catch (IOException e1) {
-							LOG.error("close reader failed ! " + e1.getMessage());
-						}
-					}
-
-				}
+				} 
 		}
 
 		return false;
