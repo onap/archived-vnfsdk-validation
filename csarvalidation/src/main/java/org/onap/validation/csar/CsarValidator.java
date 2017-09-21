@@ -15,21 +15,17 @@
  */
 package org.onap.validation.csar;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.*;
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import static java.nio.charset.StandardCharsets.*;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
-
+import org.apache.commons.lang3.StringUtils;
 import org.yaml.snakeyaml.Yaml;
-
 
 public class CsarValidator {
 
@@ -62,19 +58,23 @@ public class CsarValidator {
 
 	}
 
-	 	public static boolean validateCsar() {
+    public static boolean validateCsar() {
 
-	    validateCsarMeta();
+        boolean vsm = validateCsarMeta();
 
-	    validateToscaMeta();
+        boolean vtm = validateToscaMeta();
 
-	    validateMainService();
+        boolean vms = validateMainService();
 
-	    //In future return the status handler object instead.
-	    return true;
+        if ((vsm || vms ) && vtm) {
+            return true;
+        }
+
+        //In future return the status handler object instead.
+        return false;
     }
-	
-	public static boolean validateCsarIntegrity(String csarWithPath) {
+
+    public static boolean validateCsarIntegrity(String csarWithPath) {
 
 		try {
 			RandomAccessFile raf = new RandomAccessFile(csarWithPath, "r");
@@ -98,6 +98,9 @@ public class CsarValidator {
 	public static boolean validateCsarMeta() {
 
 		String cfile = csarFiles.get(CommonConstants.CSAR_META);
+        if (StringUtils.isEmpty(cfile)) {
+            return false;
+        }
 		if (!cfile.isEmpty()) {
 				File file = new File(cfile);
 
@@ -134,32 +137,42 @@ public class CsarValidator {
 				} 
 		}
 
-		return false;
-	}
+
+        return false;
+    }
 
 
-	public static boolean validateToscaMeta() {
+    public static boolean validateToscaMeta() {
 
         String cfile = csarFiles.get(CommonConstants.TOSCA_META);
+        if(StringUtils.isEmpty(cfile)) {
+            return false;
+        }
         try {
-            if (!cfile.isEmpty() && cfile.contains( System.getProperty("file.separator")+ CommonConstants.TOSCA_METADATA + System.getProperty("file.separator") + CommonConstants.TOSCA_META)) {
-
+            if (!cfile.isEmpty() && cfile.contains(System.getProperty("file.separator") +
+                    CommonConstants.TOSCA_METADATA + System.getProperty("file.separator") +
+                    CommonConstants.TOSCA_META)) {
                 String value = checkEntryFor(cfile, "Entry-Definitions:");
-                if (value == null) {
+                String[] splitPath = value.split("/"); 
+                String subValue = splitPath[splitPath.length - 1];
+
+                if (value.isEmpty() || subValue.isEmpty()) {
                     return false;
                     //Check if Entry-Defintions pointed file exists in CSAR
-                } else if (csarFiles.get(value) != null) {
+
+                } else if (!(null == csarFiles.get(value)) || 
+				           !(null == csarFiles.get(subValue))) {
                     return true;
                 }
             }
         } catch (IOException e) {
             LOG.error("Could not read file %s ! " + e.getMessage(), cfile);
         }
-
         return false;
     }
 
-    private static boolean validateMainService() {
+    public static boolean validateMainService() {
+
         String key = "metadata";
 
         // Infuture load from the respective file template/schema
@@ -168,23 +181,22 @@ public class CsarValidator {
         boolean mfResult = checkEntryFor(CommonConstants.MAINSERV_MANIFEST, mListMetadata, key);
 
         List<String> tListMetadata = Arrays.asList("vendor", "csarVersion",
-                "csarProvider","id", "version", "csarType", "name", "vnfdVersion",
+                "csarProvider", "id", "version", "csarType", "name", "vnfdVersion",
                 "vnfmType");
         boolean tResult = checkEntryFor(CommonConstants.MAINSERV_TEMPLATE, tListMetadata, key);
 
         if (tResult && mfResult) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-	private static String checkEntryFor(String fileWithPath, String attribute) throws IOException {
+    private static String checkEntryFor(String fileWithPath, String attribute) throws IOException {
 
         List<String> lines = Files.readAllLines(Paths.get(fileWithPath), UTF_8);
 
-        for(String strLine : lines) {
+        for (String strLine : lines) {
             if (!attribute.isEmpty() && strLine.contains(attribute)) {
                 return strLine.substring(attribute.length(), strLine.length()).trim();
             }
@@ -195,37 +207,39 @@ public class CsarValidator {
     private static boolean checkEntryFor(String cFile, List<String> attributes, String key) {
         String tFileWithPath = csarFiles.get(cFile);
 
-            Yaml yaml = new Yaml();
-            Map<String, ?> values = null;
-            try {
-                values = (Map<String, ?>) yaml.load(new FileInputStream(new File(tFileWithPath)));
-            } catch (FileNotFoundException e) {
-                return false;
-            }
+        if(StringUtils.isEmpty(tFileWithPath)) {
+            return false;
+        }
 
-            Map<String, String> subValues = (Map<String, String>) values.get(key);
+        Yaml yaml = new Yaml();
+        Map<String, ?> values = null;
+        try {
+            values = (Map<String, ?>) yaml.load(new FileInputStream(new File(tFileWithPath)));
+        } catch (FileNotFoundException e) {
+            return false;
+        }
 
-            //1. Check for empty values in map and if number of mandatory attributes presence
-            Map<String, String> mResult = subValues.entrySet()
-                .stream()
-                .filter(e -> e.getValue() != null)
-                .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
-            if (mResult.size() != attributes.size())
-            {
-                 return false;
-            }
+        Map<String,String> subValues = (Map<String,String>) values.get(key);
 
-            //2. Validate the exact mandatory attributes with expected attributes list
-            List<String> lResult = subValues.values().stream()
-                    .filter(attributes::contains)
-                    .collect(Collectors.toList());
+        //1. Check for empty values in map and if number of mandatory attributes presence
+        List<String> lResultNonNull = subValues.values().stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        if (subValues.size() != attributes.size() && 
+		    lResultNonNull.size() != attributes.size()) {
+            return false;
+        }
 
-           // System.out.println(result);
-            if (lResult.size() != attributes.size()) {
-                return false;
-            }
-            return true;
+        //2. Validate the exact mandatory attributes with expected attributes list
+        List<? super String> lResult = subValues.keySet().stream()
+                .filter(attributes::contains)
+                .collect(Collectors.toList());
 
+        // System.out.println(result);
+        if (lResult.size() != attributes.size()) {
+            return false;
+        }
+        return true;
     }
 
     public static HashMap<String, HashMap<String, String>> getCsar() {

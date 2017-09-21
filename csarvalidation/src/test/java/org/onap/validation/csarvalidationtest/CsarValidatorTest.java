@@ -32,33 +32,67 @@ public class CsarValidatorTest {
     Pattern pattern = Pattern.compile(regex);
     private String csarFile = classLoader.getResource("enterprise2DC.csar").getFile();
     Matcher matcher = pattern.matcher(csarFile);
-    String dir2 = System.getProperty("file.separator")+csarFile.substring(1);
+    String dir2 = System.getProperty("file.separator") + csarFile.substring(1);
     String packageId = UUID.randomUUID().toString();
 
-    CsarValidator csarValidator = new CsarValidator(packageId, dir2);
+    private String csarFile2 = classLoader.getResource("sample.csar").getFile();
+    String sample2 = System.getProperty("file.separator") + csarFile2.substring(1);
+    String packageId2 = UUID.randomUUID().toString();
+
+
+
 
     @Test
-    public void testValidateCsarMeta() {
-        boolean result = CsarValidator.validateCsarMeta();
-        assertEquals(true, result == true);
-        System.out.println("inside testValidateCsarMeta : " + result);
+    public void testAll() {
+        CsarValidator csarValidator = new CsarValidator(packageId, dir2);
+        testValidateCsar(csarValidator);
+
+        CsarValidator csarValidator2 = new CsarValidator(packageId2, sample2);
+        testValidateCsar(csarValidator2);
+
     }
 
     @Test
-    public void testValidateCsarIntegrity() {
-        boolean result = csarValidator.validateCsarIntegrity(dir2);
-        assertEquals(true, result == true);
-        System.out.println("inside testValidateCsarIntegrity : " + result);
+    public void testIndividual() {
+        CsarValidator csarValidator = new CsarValidator(packageId, dir2);
+        testValidateCsarMeta(csarValidator);
+        testValidateCsarIntegrity(csarValidator);
+        testValidateToscaMeta(csarValidator);
+
+        CsarValidator csarValidator2 = new CsarValidator(packageId2, sample2);
+        testValidateCsarIntegrity(csarValidator2);
+        testValidateToscaMeta(csarValidator2);
+        testValidateMainService(csarValidator2);  //Rel1 specific test case
     }
 
-    @Test
-    public void testValidateToscaMeta() {
-        boolean result = csarValidator.validateToscaMeta();
+
+
+    private void testValidateCsarMeta(CsarValidator cv) {
+        boolean result = cv.validateCsarMeta();
         assertEquals(true, result == true);
-        System.out.println("inside testValidateToscaMeta : " + result);
     }
 
+
+    private void testValidateCsarIntegrity(CsarValidator cv) {
+        boolean result = cv.validateCsarIntegrity(dir2);
+        assertEquals(true, result == true);
+        }
+
+
+    private void testValidateToscaMeta(CsarValidator cv) {
+        boolean result = cv.validateToscaMeta();
+        assertEquals(true, result == true);
+    }
+
+    private void testValidateMainService(CsarValidator cv) {
+
+        boolean result = cv.validateMainService();
+        assertEquals(true, result == true);
+    }
+
+    private void testValidateCsar(CsarValidator cv) {
+
+        boolean result = cv.validateCsar();
+        assertEquals(true, result == true);
+    }
 }
-
-
-
