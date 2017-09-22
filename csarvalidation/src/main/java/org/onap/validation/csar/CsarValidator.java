@@ -53,6 +53,8 @@ public class CsarValidator {
 				LOG.debug("CSAR extracted sucessfully.");
 			}
 		} catch (Exception e1) {
+
+		    //deleteDirectory();
 			LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
 		}
 
@@ -165,7 +167,7 @@ public class CsarValidator {
                     return true;
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             LOG.error("Could not read file %s ! " + e.getMessage(), cfile);
         }
         return false;
@@ -185,10 +187,10 @@ public class CsarValidator {
                 "vnfmType");
         boolean tResult = checkEntryFor(CommonConstants.MAINSERV_TEMPLATE, tListMetadata, key);
 
-        if (tResult && mfResult) {
-            return true;
-        } else {
+        if (!tResult || !mfResult) {
             return false;
+        } else {
+            return true;
         }
     }
 
@@ -212,20 +214,23 @@ public class CsarValidator {
         }
 
         Yaml yaml = new Yaml();
-        Map<String, ?> values = null;
+        Map<String, ?> values;
         try {
             values = (Map<String, ?>) yaml.load(new FileInputStream(new File(tFileWithPath)));
         } catch (FileNotFoundException e) {
             return false;
         }
 
-        Map<String,String> subValues = (Map<String,String>) values.get(key);
+        Map<? super String,? super String> subValues = (Map<? super String, ? super String>) values.get(key);
 
         //1. Check for empty values in map and if number of mandatory attributes presence
-        List<String> lResultNonNull = subValues.values().stream()
+        List<? super String> lResultNonNull = subValues.values().stream()
                 .filter(Objects::nonNull)
+                .map(Object::toString)
                 .collect(Collectors.toList());
-        if (subValues.size() != attributes.size() && 
+
+
+        if (subValues.size() != attributes.size() &&
 		    lResultNonNull.size() != attributes.size()) {
             return false;
         }

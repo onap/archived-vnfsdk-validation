@@ -35,11 +35,9 @@ public class CsarValidatorTest {
     String dir2 = System.getProperty("file.separator") + csarFile.substring(1);
     String packageId = UUID.randomUUID().toString();
 
-    private String csarFile2 = classLoader.getResource("sample.csar").getFile();
+    private String csarFile2 = classLoader.getResource("sample2.csar").getFile();
     String sample2 = System.getProperty("file.separator") + csarFile2.substring(1);
     String packageId2 = UUID.randomUUID().toString();
-
-
 
 
     @Test
@@ -49,7 +47,6 @@ public class CsarValidatorTest {
 
         CsarValidator csarValidator2 = new CsarValidator(packageId2, sample2);
         testValidateCsar(csarValidator2);
-
     }
 
     @Test
