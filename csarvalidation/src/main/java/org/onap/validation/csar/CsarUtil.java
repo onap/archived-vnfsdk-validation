@@ -111,7 +111,7 @@ public class CsarUtil {
 				inputStream.close();
 			}
 		} catch (Exception e1) {
-			logger.info("close InputStream error!");
+			logger.error("FILE_IO" + ":" + "close InputStream error! " + e1.getMessage(), e1);
 		}
 	}
 
@@ -127,7 +127,7 @@ public class CsarUtil {
 				outputStream.close();
 			}
 		} catch (Exception e1) {
-			logger.info("close OutputStream error!");
+			logger.error("FILE_IO" + ":" + "close OutputStream error! " + e1.getMessage(), e1);
 		}
 	}
 
@@ -138,7 +138,7 @@ public class CsarUtil {
 			return CsarUtil.unzip(filePath, tempfolder);
 
 		} catch (IOException e1) {
-			logger.error("CSAR extraction error ! " + e1.getMessage());
+			logger.error("CSAR_EXTRACTION" + ":" + "CSAR extraction error ! " + e1.getMessage(), e1);
 		}
 		return null;
 	}

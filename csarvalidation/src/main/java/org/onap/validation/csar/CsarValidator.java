@@ -135,7 +135,7 @@ public class CsarValidator {
 			    	return true;
 				  }
 				} catch (IOException e2) {
-					LOG.error("Exception caught while validateCsarMeta ! " + e2.getMessage());
+					LOG.error("CSAR_META_VALIDATION" + ":" + "Exception caught while validateCsarMeta ! " + e2.getMessage(), e2);
 				} 
 		}
 
@@ -168,7 +168,7 @@ public class CsarValidator {
                 }
             }
         } catch (IOException | NullPointerException e) {
-            LOG.error("Could not read file %s ! " + e.getMessage(), cfile);
+            LOG.error("CSAR_TOSCA_VALIDATION" + ":" + "Could not read file %s ! " + e.getMessage(), e, cfile);
         }
         return false;
     }
@@ -218,6 +218,7 @@ public class CsarValidator {
         try {
             values = (Map<String, ?>) yaml.load(new FileInputStream(new File(tFileWithPath)));
         } catch (FileNotFoundException e) {
+        	LOG.error("FILE_NOT_FOUND" + ":" + "Exception caught while trying to find the file ! " + e.getMessage(), e);
             return false;
         }
 

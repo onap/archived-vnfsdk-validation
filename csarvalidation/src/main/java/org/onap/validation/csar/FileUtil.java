@@ -103,7 +103,7 @@ public final class FileUtil {
                 inputStream.close();
             }
         } catch (Exception e1) {
-            logger.info("close InputStream error!");
+            logger.error("FILE_IO" + ":" + "close InputStream error! " + e1.getMessage(), e1);
         }
     }
 
@@ -118,7 +118,7 @@ public final class FileUtil {
                 outputStream.close();
             }
         } catch (Exception e1) {
-            logger.info("close OutputStream error!");
+        	logger.error("FILE_IO" + ":" + "close OutputStream error! " + e1.getMessage(), e1);
         }
     }
     
@@ -128,7 +128,7 @@ public final class FileUtil {
                 ifs.close();
             }
         } catch (Exception e1) {
-            logger.info("close OutputStream error!");
+        	logger.error("FILE_IO" + ":" + "close OutputStream error! " + e1.getMessage(), e1);
         }
     }
 
@@ -143,7 +143,7 @@ public final class FileUtil {
                 zipFile.close();
                 }
         } catch (IOException e1) {
-            logger.info("close ZipFile error!");
+            logger.error("CLOSE_ZIPFILE" + ":" + "close ZipFile error! " + e1.getMessage(), e1);
         }
     }
 
@@ -177,15 +177,16 @@ public final class FileUtil {
         } 
         catch (JsonGenerationException e) 
         {
-            logger.info("JsonGenerationException Exception: writeJsonDatatoFile-->"+fileAbsPath);
+            logger.error("JSON_GENERATION" + ":" + "JsonGenerationException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e.getMessage(), e);
+
         } 
         catch (JsonMappingException e) 
         {
-            logger.info("JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath);
+            logger.error("JSON_MAPPING" + ":" + "JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e.getMessage(), e);
         } 
         catch (IOException e) 
         {
-            logger.info("IOException Exception: writeJsonDatatoFile-->"+fileAbsPath);
+            logger.error("FILE_IO" + ":" + "IOException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e.getMessage(), e);
         } 
         return bResult;
     }
@@ -209,15 +210,15 @@ public final class FileUtil {
         } 
         catch (JsonParseException e1) 
         {
-            logger.info("JsonParseException Exception: writeJsonDatatoFile-->"+fileAbsPath);
+            logger.error("JSON_PARSING" + ":" + "JsonParseException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e1.getMessage(), e1);
         } 
         catch (JsonMappingException e1) 
         {
-            logger.info("JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath);
+        	logger.error("JSON_MAPPING" + ":" + "JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e1.getMessage(), e1);
         } 
         catch (IOException e1) 
         {
-            logger.info("IOException Exception: writeJsonDatatoFile-->"+fileAbsPath);
+        	logger.error("FILE_IO" + ":" + "IOException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e1.getMessage(), e1);
         }
         return obj;
     }
