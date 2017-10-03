@@ -87,6 +87,7 @@ public final class FileUtil {
             }
         } else {
             logger.info("fail to delete " + hintInfo + file.getAbsolutePath());
+
         }
         return isFileDeleted;
     }
@@ -96,6 +97,7 @@ public final class FileUtil {
      * close InputStream.
      * 
      * @param inputStream the inputstream to close
+     * @throws ValidationException 
      */
     public static void closeInputStream(InputStream inputStream) {
         try {
@@ -103,7 +105,8 @@ public final class FileUtil {
                 inputStream.close();
             }
         } catch (Exception e1) {
-            logger.error("FILE_IO" + ":" + "close InputStream error! " + e1.getMessage(), e1);
+            logger.error("FILE_IO" + ":" + "close InputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            throw new ValidationException(ErrorCodes.FILE_IO);
         }
     }
 
@@ -111,6 +114,7 @@ public final class FileUtil {
      * close OutputStream.
      * 
      * @param outputStream the output stream to close
+     * @throws ValidationException 
      */
     public static void closeOutputStream(OutputStream outputStream) {
         try {
@@ -118,7 +122,8 @@ public final class FileUtil {
                 outputStream.close();
             }
         } catch (Exception e1) {
-        	logger.error("FILE_IO" + ":" + "close OutputStream error! " + e1.getMessage(), e1);
+        	logger.error("FILE_IO" + ":" + "close OutputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            throw new ValidationException(ErrorCodes.FILE_IO);
         }
     }
     
@@ -128,7 +133,8 @@ public final class FileUtil {
                 ifs.close();
             }
         } catch (Exception e1) {
-        	logger.error("FILE_IO" + ":" + "close OutputStream error! " + e1.getMessage(), e1);
+        	logger.error("FILE_IO" + ":" + "close OutputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            throw new ValidationException(ErrorCodes.FILE_IO);
         }
     }
 
@@ -136,6 +142,7 @@ public final class FileUtil {
      * close zipFile.
      * 
      * @param zipFile the zipFile to close
+     * @throws ValidationException 
      */
     public static void closeZipFile(ZipFile zipFile) {
         try {
@@ -143,7 +150,8 @@ public final class FileUtil {
                 zipFile.close();
                 }
         } catch (IOException e1) {
-            logger.error("CLOSE_ZIPFILE" + ":" + "close ZipFile error! " + e1.getMessage(), e1);
+		    logger.error("CLOSE_ZIPFILE" + ":" + "close ZipFile error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+			throw new ValidationException(ErrorCodes.FILE_IO); 
         }
     }
 
@@ -177,16 +185,18 @@ public final class FileUtil {
         } 
         catch (JsonGenerationException e) 
         {
-            logger.error("JSON_GENERATION" + ":" + "JsonGenerationException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e.getMessage(), e);
-
+            logger.error("JSON_GENERATION" + ":" + "JsonGenerationException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : " +ErrorCodes.JSON_GENERATION_ERROR+" " + e.getMessage(), e);
+            throw new ValidationException(ErrorCodes.JSON_GENERATION_ERROR);
         } 
         catch (JsonMappingException e) 
         {
-            logger.error("JSON_MAPPING" + ":" + "JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e.getMessage(), e);
+            logger.error("JSON_MAPPING" + ":" + "JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : " +ErrorCodes.JSON_MAPPING_FAILED+" " + e.getMessage(), e);
+            throw new ValidationException(ErrorCodes.JSON_MAPPING_FAILED);
         } 
         catch (IOException e) 
         {
-            logger.error("FILE_IO" + ":" + "IOException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e.getMessage(), e);
+            logger.error("FILE_IO" + ":" + "IOException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : " +ErrorCodes.FILE_IO+" " + e.getMessage(), e);
+            throw new ValidationException(ErrorCodes.FILE_IO);
         } 
         return bResult;
     }
@@ -211,14 +221,20 @@ public final class FileUtil {
         catch (JsonParseException e1) 
         {
             logger.error("JSON_PARSING" + ":" + "JsonParseException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e1.getMessage(), e1);
+            logger.error("CSAR extraction error ! " +ErrorCodes.PARSE_ERROR);
+            throw new ValidationException(ErrorCodes.PARSE_ERROR);
         } 
         catch (JsonMappingException e1) 
         {
         	logger.error("JSON_MAPPING" + ":" + "JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e1.getMessage(), e1);
+            logger.error("CSAR extraction error ! " +ErrorCodes.JSON_MAPPING_FAILED);
+            throw new ValidationException(ErrorCodes.JSON_MAPPING_FAILED);
         } 
         catch (IOException e1) 
         {
         	logger.error("FILE_IO" + ":" + "IOException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e1.getMessage(), e1);
+            logger.error("CSAR extraction error ! " +ErrorCodes.FILE_IO);
+            throw new ValidationException(ErrorCodes.FILE_IO);
         }
         return obj;
     }

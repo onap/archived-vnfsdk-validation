@@ -14,32 +14,89 @@
  * limitations under the License.
  */
 package org.onap.validation.csar;
-class ValidationException extends Exception{
 
-    private String errCode = "Validation_Exception";
-    private String errorMessage = "Error Message";
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class ValidationException extends RuntimeException {
+	public static final Logger logger = LoggerFactory.getLogger(ValidationException.class);
+	private String errorMessage;
     public  ValidationException(){
         super();
     }
 
-    public  ValidationException(String message){
+    
+    public ValidationException(ErrorCodes errCode, String message) {
         super(message);
     }
-
-    public ValidationException(String message, Throwable cause){
-        super(message,cause);
-    }
-
-    public ValidationException(String errCode, String message, Throwable cause){
-        super(message,cause);
-        this.errCode = errCode;  
-    }
-
-    public String getErrCode() {
-        return this.errCode;
-    }
+    
     public String toString(){
         return ("Exception Number =  "+errorMessage) ;
     }
+    private static final long serialVersionUID = 1L;
 
+    public static ValidationException wrappedInfo(Throwable exception, ErrorCodes errorCode) {
+        if (exception instanceof ValidationException) {
+            ValidationException se = (ValidationException)exception;
+        	if (errorCode != null) {
+                return new ValidationException(exception.getMessage(), exception, errorCode);
+			}
+			return se;
+        } else {
+            return new ValidationException(exception.getMessage(), exception, errorCode);
+        }
+    }
+    
+    public static ValidationException wrappedInfo(Throwable exception) {
+    	return wrappedInfo(exception, null);
+    }
+    
+    private ErrorCodes errorCode;
+    private final Map<String,Object> properties = new TreeMap<String,Object>();
+    
+    public ValidationException(ErrorCodes fileIo) {
+		this.errorCode = fileIo;
+	}
+
+	public ValidationException(String message, ErrorCodes errorCode) {
+		super(message);
+		this.errorCode = errorCode;
+	}
+
+	public ValidationException(Throwable cause, ErrorCodes errorCode) {
+		super(cause);
+		this.errorCode = errorCode;
+	}
+
+	public ValidationException(String message, Throwable cause, ErrorCodes errorCode) {
+		super(message, cause);
+		this.errorCode = errorCode;
+	}
+	
+	public ErrorCodes getErrorCode() {
+        return errorCode;
+    }
+	
+	public ValidationException setErrorCode(ErrorCodes errorCode) {
+        this.errorCode = errorCode;
+        return this;
+    }
+	
+	public Map<String, Object> getProperties() {
+		return properties;
+	}
+	
+    @SuppressWarnings("unchecked")
+	public <T> T get(String name) {
+        return (T)properties.get(name);
+    }
+	
+    public ValidationException set(String name, Object value) {
+        properties.put(name, value);
+        return this;
+    }
 }

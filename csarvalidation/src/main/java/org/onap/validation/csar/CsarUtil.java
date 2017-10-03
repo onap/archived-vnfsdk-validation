@@ -57,6 +57,7 @@ public class CsarUtil {
 	 * @return unzip file names in zip
 	 * @throws IOException
 	 *             e1
+	 * @throws ValidationException 
 	 */
 	public static HashMap<String, String> unzip(String zipFileName, String extPlace) throws IOException {
 		HashMap<String, String> unzipFileNames = new HashMap<>();
@@ -104,6 +105,7 @@ public class CsarUtil {
 	 * 
 	 * @param inputStream
 	 *            the inputstream to close
+	 * @throws ValidationException 
 	 */
 	public static void closeInputStream(InputStream inputStream) {
 		try {
@@ -111,7 +113,8 @@ public class CsarUtil {
 				inputStream.close();
 			}
 		} catch (Exception e1) {
-			logger.error("FILE_IO" + ":" + "close InputStream error! " + e1.getMessage(), e1);
+			logger.error("FILE_IO" + ":" + "close InputStream error! " +ErrorCodes.FILE_IO+" "+ e1.getMessage(), e1);
+			throw new ValidationException(ErrorCodes.FILE_IO);
 		}
 	}
 
@@ -120,6 +123,7 @@ public class CsarUtil {
 	 * 
 	 * @param outputStream
 	 *            the output stream to close
+	 * @throws ValidationException 
 	 */
 	public static void closeOutputStream(OutputStream outputStream) {
 		try {
@@ -127,7 +131,9 @@ public class CsarUtil {
 				outputStream.close();
 			}
 		} catch (Exception e1) {
-			logger.error("FILE_IO" + ":" + "close OutputStream error! " + e1.getMessage(), e1);
+			logger.error("FILE_IO" + ":" + "close OutputStream error! " +ErrorCodes.FILE_IO);
+	        throw new ValidationException(ErrorCodes.FILE_IO);
+            
 		}
 	}
 
@@ -138,9 +144,9 @@ public class CsarUtil {
 			return CsarUtil.unzip(filePath, tempfolder);
 
 		} catch (IOException e1) {
-			logger.error("CSAR_EXTRACTION" + ":" + "CSAR extraction error ! " + e1.getMessage(), e1);
+			logger.error("CSAR_EXTRACTION" + ":" + "CSAR extraction error ! " +ErrorCodes.FILE_IO+" "+ e1.getMessage(), e1);
+            throw new ValidationException(ErrorCodes.FILE_IO);
 		}
-		return null;
 	}
 
 }

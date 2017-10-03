@@ -35,16 +35,15 @@ public class CsarValidator {
 	static HashMap<String, String> csarFiles;
 
     //  Map of packageId and CSAR files
-	private static HashMap<String, HashMap<String, String>> csar = new HashMap<String, HashMap<String, String>>(); 
-	
-	private static final CsarUtil cUtil = new CsarUtil();
+	private static HashMap<String, HashMap<String, String>> csar = new HashMap<String, HashMap<String, String>>();
 
 	public CsarValidator(String packageId, String csarWithPath) {
 
 		try {
 			FileInputStream is = new FileInputStream(csarWithPath);
 		} catch (FileNotFoundException e2) {
-			LOG.error("CSAR %s is not found! ", e2);
+			LOG.error("CSAR %s is not found! " +ErrorCodes.RESOURCE_MISSING);
+            throw new ValidationException(ErrorCodes.RESOURCE_MISSING);
 		}
 		try {
 			csarFiles = CsarUtil.csarExtract(csarWithPath);
@@ -135,7 +134,8 @@ public class CsarValidator {
 			    	return true;
 				  }
 				} catch (IOException e2) {
-					LOG.error("CSAR_META_VALIDATION" + ":" + "Exception caught while validateCsarMeta ! " + e2.getMessage(), e2);
+                    LOG.error("CSAR_META_VALIDATION" + ":" + "Exception caught while validateCsarMeta ! " +ErrorCodes.FILE_IO);
+		            throw new ValidationException(ErrorCodes.FILE_IO);
 				} 
 		}
 
@@ -168,7 +168,8 @@ public class CsarValidator {
                 }
             }
         } catch (IOException | NullPointerException e) {
-            LOG.error("CSAR_TOSCA_VALIDATION" + ":" + "Could not read file %s ! " + e.getMessage(), e, cfile);
+            LOG.error("CSAR_TOSCA_VALIDATION" + ":" + "Could not read file %s ! " +ErrorCodes.FILE_IO+ " " +ErrorCodes.RESOURCE_MISSING);
+            throw new ValidationException(ErrorCodes.RESOURCE_MISSING);
         }
         return false;
     }
