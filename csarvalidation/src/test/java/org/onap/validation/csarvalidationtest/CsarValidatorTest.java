@@ -17,10 +17,19 @@ package org.onap.validation.csarvalidationtest;
 
 import org.junit.Test;
 import org.onap.validation.csar.CsarValidator;
+import org.onap.validation.csar.FileUtil;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -32,26 +41,33 @@ public class CsarValidatorTest {
     Pattern pattern = Pattern.compile(regex);
     private String csarFile = classLoader.getResource("enterprise2DC.csar").getFile();
     Matcher matcher = pattern.matcher(csarFile);
-    String dir2 = System.getProperty("file.separator") + csarFile.substring(1);
+    String sample1 = System.getProperty("file.separator") + csarFile.substring(1);
     String packageId = UUID.randomUUID().toString();
 
-    private String csarFile2 = classLoader.getResource("sample2.csar").getFile();
+    private String csarFile2 = classLoader.getResource("vEPC_NS.csar").getFile();
     String sample2 = System.getProperty("file.separator") + csarFile2.substring(1);
     String packageId2 = UUID.randomUUID().toString();
 
 
     @Test
     public void testAll() {
-        CsarValidator csarValidator = new CsarValidator(packageId, dir2);
+        CsarValidator csarValidator = new CsarValidator(packageId, sample1);
         testValidateCsar(csarValidator);
 
         CsarValidator csarValidator2 = new CsarValidator(packageId2, sample2);
         testValidateCsar(csarValidator2);
+        String sample1Dir = sample1.replace(".csar", "");
+		String sample2Dir = sample2.replace(".csar", "");
+
+		boolean result = FileUtil.deleteDirectory(sample1Dir);
+		boolean result1 = FileUtil.deleteDirectory(sample2Dir);
+
+		assertEquals(true, result == true && result1 ==true);
     }
 
     @Test
     public void testIndividual() {
-        CsarValidator csarValidator = new CsarValidator(packageId, dir2);
+        CsarValidator csarValidator = new CsarValidator(packageId, sample1);
         testValidateCsarMeta(csarValidator);
         testValidateCsarIntegrity(csarValidator);
         testValidateToscaMeta(csarValidator);
@@ -59,9 +75,49 @@ public class CsarValidatorTest {
         CsarValidator csarValidator2 = new CsarValidator(packageId2, sample2);
         testValidateCsarIntegrity(csarValidator2);
         testValidateToscaMeta(csarValidator2);
-        testValidateMainService(csarValidator2);  //Rel1 specific test case
+        testValidateMainService(csarValidator2);
+        //Rel1 specific test case
+        String dir3 = sample1.replace(".csar", "");
+		String dir4 = sample2.replace(".csar", "");
+		boolean result = FileUtil.deleteDirectory(dir3);
+		boolean result1 = FileUtil.deleteDirectory(dir4);
+		assertEquals(true, result == true && result1 ==true);
     }
+    @Test
+	public void testCloseInputStream() {
+		InputStream dir = null;
+		 FileUtil.closeInputStream(dir);
+		 assertTrue(true);
+	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testReadJsonDatafFromFile() {
+		FileUtil.readJsonDatafFromFile(sample1, null);
+	}
+
+	@Test
+	public void testCloseZipFile() throws ZipException, IOException {
+		File file = new File(sample1);
+		ZipFile dir1 = new ZipFile(file);
+		FileUtil.closeZipFile(dir1);
+		assertTrue(true);
+	}
+	@Test
+	public void testCloseFileStream() throws FileNotFoundException {
+		FileInputStream dir3 = new FileInputStream(sample1);
+		FileUtil.closeFileStream(dir3 );
+	}
+	@Test
+	public void testCloseOutptutStream() {
+		OutputStream dir4 = new OutputStream() {
+
+			@Override
+			public void write(int b) throws IOException {
+
+			}
+		};
+		FileUtil.closeOutputStream(dir4);
+	}
 
 
     private void testValidateCsarMeta(CsarValidator cv) {
@@ -71,7 +127,7 @@ public class CsarValidatorTest {
 
 
     private void testValidateCsarIntegrity(CsarValidator cv) {
-        boolean result = cv.validateCsarIntegrity(dir2);
+        boolean result = cv.validateCsarIntegrity(sample1);
         assertEquals(true, result == true);
         }
 

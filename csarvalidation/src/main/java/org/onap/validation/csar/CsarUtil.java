@@ -78,6 +78,13 @@ public class CsarUtil {
 
 					input = zipFile.getInputStream(entry);
 					File file = new File(extPlace, entry.getName());
+
+					//Currently it does not support xml based VNF descriptors.
+					//So skip and proceed to YAML defined files validation only.
+					if (file.getAbsolutePath().contains("xml"+System.getProperty("file.separator"))) {
+						continue;
+					}
+
 					if (!file.getParentFile().exists()) {
 						FileUtil.createDirectory(file.getParentFile().getAbsolutePath());
 					}
@@ -90,7 +97,9 @@ public class CsarUtil {
 						}
 						bos.write(buffer, 0, length);
 					}
+
 					unzipFileNames.put(file.getName(), file.getAbsolutePath());
+
 				} finally {
 					closeOutputStream(bos);
 					closeInputStream(input);
