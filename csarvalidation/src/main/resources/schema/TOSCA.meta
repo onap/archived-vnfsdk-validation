@@ -1,0 +1,4 @@
+TOSCA-Meta-File-Version: Double
+CSAR-Version: Double
+Created-By: String
+Entry-Definitions: { get_input: myinput }
