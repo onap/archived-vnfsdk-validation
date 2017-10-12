@@ -16,10 +16,12 @@
 package org.onap.validation.csar;
 
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import static java.nio.charset.StandardCharsets.*;
 import java.util.*;
@@ -31,13 +33,17 @@ public class CsarValidator {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CsarValidator.class);
 
+	//Schema files
+   // static private ValidatorSchemaLoader vsl;
+
 	// Map of CSAR file and un-zipped file indices
-	static HashMap<String, String> csarFiles;
+	static private HashMap<String, String> csarFiles;
 
     //  Map of packageId and CSAR files
 	private static HashMap<String, HashMap<String, String>> csar = new HashMap<String, HashMap<String, String>>();
+    private static String MAINSERV_TEMPLATE;
 
-	public CsarValidator(String packageId, String csarWithPath) {
+    public CsarValidator(String packageId, String csarWithPath) {
 
 		try {
 			FileInputStream is = new FileInputStream(csarWithPath);
@@ -45,6 +51,7 @@ public class CsarValidator {
 			LOG.error("CSAR %s is not found! " +ErrorCodes.RESOURCE_MISSING);
             throw new ValidationException(ErrorCodes.RESOURCE_MISSING);
 		}
+
 		try {
 			csarFiles = CsarUtil.csarExtract(csarWithPath);
 			if(!csarFiles.isEmpty()) {
@@ -57,7 +64,13 @@ public class CsarValidator {
 			LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
 		}
 
-	}
+
+        try {
+              // vsl = new ValidatorSchemaLoader();
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
+    }
 
     public static boolean validateCsar() {
 
@@ -93,8 +106,6 @@ public class CsarValidator {
 			return false;
 		}
 	}
-
-
 
 	public static boolean validateCsarMeta() {
 
@@ -139,7 +150,6 @@ public class CsarValidator {
 				} 
 		}
 
-
         return false;
     }
 
@@ -151,20 +161,29 @@ public class CsarValidator {
             return false;
         }
         try {
-            if (!cfile.isEmpty() && cfile.contains(System.getProperty("file.separator") +
+            if (cfile.contains(System.getProperty("file.separator") +
                     CommonConstants.TOSCA_METADATA + System.getProperty("file.separator") +
                     CommonConstants.TOSCA_META)) {
-                String value = checkEntryFor(cfile, "Entry-Definitions:");
+                String value = CheckEntryFor(cfile, "Entry-Definitions:");
                 String[] splitPath = value.split("/"); 
                 String subValue = splitPath[splitPath.length - 1];
 
                 if (value.isEmpty() || subValue.isEmpty()) {
                     return false;
-                    //Check if Entry-Defintions pointed file exists in CSAR
 
-                } else if (!(null == csarFiles.get(value)) || 
-				           !(null == csarFiles.get(subValue))) {
-                    return true;
+                    //Check if Entry-Defintions pointed file exists in CSAR
+                } else {
+                    if (!(null == csarFiles.get(value))) {
+                        MAINSERV_TEMPLATE = csarFiles.get(value);
+                        return true;
+                    }
+                    else if (!(null == csarFiles.get(subValue))) {
+                        MAINSERV_TEMPLATE = csarFiles.get(subValue);
+                        return true;
+                    }
+                    else {
+                        MAINSERV_TEMPLATE = CommonConstants.MAINSERV_TEMPLATE;
+                    }
                 }
             }
         } catch (IOException | NullPointerException e) {
@@ -181,21 +200,19 @@ public class CsarValidator {
         // Infuture load from the respective file template/schema
         List<String> mListMetadata = Arrays.asList("vnf_product_name", "vnf_provider_id",
                 "vnf_package_version", "vnf_release_data_time");
-        boolean mfResult = checkEntryFor(CommonConstants.MAINSERV_MANIFEST, mListMetadata, key);
 
-        List<String> tListMetadata = Arrays.asList("vendor", "csarVersion",
-                "csarProvider", "id", "version", "csarType", "name", "vnfdVersion",
-                "vnfmType");
-        boolean tResult = checkEntryFor(CommonConstants.MAINSERV_TEMPLATE, tListMetadata, key);
-
-        if (!tResult || !mfResult) {
-            return false;
-        } else {
-            return true;
+        boolean mfResult = CheckEntryFor(CommonConstants.MAINSERV_MANIFEST, mListMetadata, key);
+        String mrfFile = MAINSERV_TEMPLATE;
+        if(!Paths.get(mrfFile).isAbsolute()){
+        	mrfFile = csarFiles.get(FilenameUtils.getName(mrfFile));
         }
+        if(StringUtils.isEmpty(mrfFile)){
+        	return false;
+        }
+        return true;
     }
 
-    private static String checkEntryFor(String fileWithPath, String attribute) throws IOException {
+    private static String CheckEntryFor(String fileWithPath, String attribute) throws IOException {
 
         List<String> lines = Files.readAllLines(Paths.get(fileWithPath), UTF_8);
 
@@ -207,17 +224,21 @@ public class CsarValidator {
         return null;
     }
 
-    private static boolean checkEntryFor(String cFile, List<String> attributes, String key) {
-        String tFileWithPath = csarFiles.get(cFile);
+    private static boolean CheckEntryFor(String cFile, List<String> attributes, String key) {
+        String tFileWithPath;
 
-        if(StringUtils.isEmpty(tFileWithPath)) {
+        if (! Paths.get(cFile).isAbsolute()) {
+            cFile = csarFiles.get(FilenameUtils.getName(cFile));
+        }
+
+        if(StringUtils.isEmpty(cFile)) {
             return false;
         }
 
         Yaml yaml = new Yaml();
         Map<String, ?> values;
         try {
-            values = (Map<String, ?>) yaml.load(new FileInputStream(new File(tFileWithPath)));
+            values = (Map<String, ?>) yaml.load(new FileInputStream(new File(cFile)));
         } catch (FileNotFoundException e) {
         	LOG.error("FILE_NOT_FOUND" + ":" + "Exception caught while trying to find the file ! " + e.getMessage(), e);
             return false;
@@ -231,19 +252,26 @@ public class CsarValidator {
                 .map(Object::toString)
                 .collect(Collectors.toList());
 
+        // If no attributes provided, take it easy
+        // there are no mandatory fields to be
+        // validated.
+        if (attributes == null) {
+            return true;
+        }
 
         if (subValues.size() != attributes.size() &&
 		    lResultNonNull.size() != attributes.size()) {
             return false;
         }
 
-        //2. Validate the exact mandatory attributes with expected attributes list
+        //Validate the exact mandatory(not defined in SOL004 yet)
+        // attributes with expected attributes list
         List<? super String> lResult = subValues.keySet().stream()
                 .filter(attributes::contains)
                 .collect(Collectors.toList());
 
         // System.out.println(result);
-        if (lResult.size() != attributes.size()) {
+        if (lResult.size() == 0) {
             return false;
         }
         return true;

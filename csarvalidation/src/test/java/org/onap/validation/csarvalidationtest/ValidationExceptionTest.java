@@ -27,22 +27,25 @@ import static org.junit.Assert.assertTrue;
 
 public class ValidationExceptionTest {
 	ValidationException validationException = new ValidationException();
+
 	@Test
 	public void testWrappedInfoThrowableErrorCodes() {
 		Throwable ex = new IOException();
-		ValidationException result = validationException.wrappedInfo(ex , ErrorCodes.FILE_IO);
+		ValidationException result = validationException.wrappedInfo(ex, ErrorCodes.FILE_IO);
 		assertTrue(true);
 	}
+
 	@Test
 	public void testWrappedInfoThrowableErrorCodes1() {
 		Throwable ex = new ValidationException();
-		ValidationException result = validationException.wrappedInfo(ex , ErrorCodes.FILE_IO);
+		ValidationException result = validationException.wrappedInfo(ex, ErrorCodes.FILE_IO);
 		assertTrue(true);
 	}
+
 	@Test
 	public void testWrappedInfoThrowableErrorCodes2() {
 		Throwable ex = new ValidationException();
-		ValidationException result = validationException.wrappedInfo(ex , null);
+		ValidationException result = validationException.wrappedInfo(ex, null);
 		assertTrue(true);
 	}
 }
