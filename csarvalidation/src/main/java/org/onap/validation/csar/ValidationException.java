@@ -15,8 +15,6 @@
  */
 package org.onap.validation.csar;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
 

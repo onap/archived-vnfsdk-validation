@@ -23,17 +23,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Enumeration;
 
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -145,7 +140,11 @@ public class CsarUtil {
             
 		}
 	}
-
+	/**
+	 * 
+	 * @param filePath
+	 * @return HashMap<String, String>
+	 */
 	public static HashMap<String, String> csarExtract(String filePath) {
 
 		try {

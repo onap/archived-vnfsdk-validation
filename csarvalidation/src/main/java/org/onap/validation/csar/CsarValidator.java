@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import static java.nio.charset.StandardCharsets.*;
 import java.util.*;
@@ -42,11 +41,16 @@ public class CsarValidator {
     //  Map of packageId and CSAR files
 	private static HashMap<String, HashMap<String, String>> csar = new HashMap<String, HashMap<String, String>>();
     private static String MAINSERV_TEMPLATE;
+    /**
+     * 
+     * @param packageId
+     * @param csarWithPath
+     * @throws IOException 
+     */
+    public CsarValidator(String packageId, String csarWithPath) throws IOException {
 
-    public CsarValidator(String packageId, String csarWithPath) {
-
-		try {
-			FileInputStream is = new FileInputStream(csarWithPath);
+		try(FileInputStream is = new FileInputStream(csarWithPath)) {
+			
 		} catch (FileNotFoundException e2) {
 			LOG.error("CSAR %s is not found! " +ErrorCodes.RESOURCE_MISSING);
             throw new ValidationException(ErrorCodes.RESOURCE_MISSING);
@@ -63,15 +67,11 @@ public class CsarValidator {
 		    //deleteDirectory();
 			LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
 		}
-
-
-        try {
-              // vsl = new ValidatorSchemaLoader();
-        } catch (Exception e) {
-                e.printStackTrace();
-        }
     }
-
+    /**
+     * 
+     * @return true if all validations are successful
+     */
     public static boolean validateCsar() {
 
         boolean vsm = validateCsarMeta();
@@ -87,7 +87,12 @@ public class CsarValidator {
         //In future return the status handler object instead.
         return false;
     }
-
+    
+    /**
+     * 
+     * @param csarWithPath
+     * @return true if csar integrity validation is successful
+     */
     public static boolean validateCsarIntegrity(String csarWithPath) {
 
 		try {
@@ -106,7 +111,10 @@ public class CsarValidator {
 			return false;
 		}
 	}
-
+    /**
+     * 
+     * @return true if csar meta data validation is successful
+     */
 	public static boolean validateCsarMeta() {
 
 		String cfile = csarFiles.get(CommonConstants.CSAR_META);
@@ -153,7 +161,10 @@ public class CsarValidator {
         return false;
     }
 
-
+	/**
+	 * 
+	 * @return true csar tosca meta validation is successful
+	 */
     public static boolean validateToscaMeta() {
 
         String cfile = csarFiles.get(CommonConstants.TOSCA_META);
@@ -192,7 +203,10 @@ public class CsarValidator {
         }
         return false;
     }
-
+    /**
+     * 
+     * @return true csar validation is successful
+     */
     public static boolean validateMainService() {
 
         String key = "metadata";
@@ -201,7 +215,8 @@ public class CsarValidator {
         List<String> mListMetadata = Arrays.asList("vnf_product_name", "vnf_provider_id",
                 "vnf_package_version", "vnf_release_data_time");
 
-        boolean mfResult = CheckEntryFor(CommonConstants.MAINSERV_MANIFEST, mListMetadata, key);
+        @SuppressWarnings("unused")
+		boolean mfResult = CheckEntryFor(CommonConstants.MAINSERV_MANIFEST, mListMetadata, key);
         String mrfFile = MAINSERV_TEMPLATE;
         if(!Paths.get(mrfFile).isAbsolute()){
         	mrfFile = csarFiles.get(FilenameUtils.getName(mrfFile));
@@ -224,8 +239,10 @@ public class CsarValidator {
         return null;
     }
 
-    private static boolean CheckEntryFor(String cFile, List<String> attributes, String key) {
-        String tFileWithPath;
+    @SuppressWarnings("unchecked")
+	private static boolean CheckEntryFor(String cFile, List<String> attributes, String key) {
+        @SuppressWarnings("unused")
+		String tFileWithPath;
 
         if (! Paths.get(cFile).isAbsolute()) {
             cFile = csarFiles.get(FilenameUtils.getName(cFile));
@@ -270,7 +287,6 @@ public class CsarValidator {
                 .filter(attributes::contains)
                 .collect(Collectors.toList());
 
-        // System.out.println(result);
         if (lResult.size() == 0) {
             return false;
         }
