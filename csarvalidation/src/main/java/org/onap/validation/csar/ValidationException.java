@@ -54,7 +54,7 @@ public class ValidationException extends RuntimeException {
     }
     
     private ErrorCodes errorCode;
-    private final Map<String,Object> properties = new TreeMap<String,Object>();
+    private final transient Map<String,Object> properties = new TreeMap<String,Object>();
     
     public ValidationException(ErrorCodes fileIo) {
 		this.errorCode = fileIo;

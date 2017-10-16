@@ -52,7 +52,7 @@ public class CsarValidator {
 		try(FileInputStream is = new FileInputStream(csarWithPath)) {
 			
 		} catch (FileNotFoundException e2) {
-			LOG.error("CSAR %s is not found! " +ErrorCodes.RESOURCE_MISSING);
+			LOG.error("CSAR %s is not found! " +ErrorCodes.RESOURCE_MISSING, e2);
             throw new ValidationException(ErrorCodes.RESOURCE_MISSING);
 		}
 
@@ -153,7 +153,7 @@ public class CsarValidator {
 			    	return true;
 				  }
 				} catch (IOException e2) {
-                    LOG.error("CSAR_META_VALIDATION" + ":" + "Exception caught while validateCsarMeta ! " +ErrorCodes.FILE_IO);
+                    LOG.error("CSAR_META_VALIDATION" + ":" + "Exception caught while validateCsarMeta ! " +ErrorCodes.FILE_IO, e2);
 		            throw new ValidationException(ErrorCodes.FILE_IO);
 				} 
 		}
@@ -198,7 +198,7 @@ public class CsarValidator {
                 }
             }
         } catch (IOException | NullPointerException e) {
-            LOG.error("CSAR_TOSCA_VALIDATION" + ":" + "Could not read file %s ! " +ErrorCodes.FILE_IO+ " " +ErrorCodes.RESOURCE_MISSING);
+            LOG.error("CSAR_TOSCA_VALIDATION" + ":" + "Could not read file %s ! " +ErrorCodes.FILE_IO+ " " +ErrorCodes.RESOURCE_MISSING, e);
             throw new ValidationException(ErrorCodes.RESOURCE_MISSING);
         }
         return false;

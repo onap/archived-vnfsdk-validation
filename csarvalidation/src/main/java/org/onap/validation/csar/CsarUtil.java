@@ -135,7 +135,7 @@ public class CsarUtil {
 				outputStream.close();
 			}
 		} catch (Exception e1) {
-			logger.error("FILE_IO" + ":" + "close OutputStream error! " +ErrorCodes.FILE_IO);
+			logger.error("FILE_IO" + ":" + "close OutputStream error! " +ErrorCodes.FILE_IO, e1);
 	        throw new ValidationException(ErrorCodes.FILE_IO);
             
 		}
