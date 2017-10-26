@@ -40,7 +40,7 @@ public class CsarValidator {
 
     //  Map of packageId and CSAR files
 	private static HashMap<String, HashMap<String, String>> csar = new HashMap<String, HashMap<String, String>>();
-    private static String MAINSERV_TEMPLATE;
+    private static String MAINSERV_TEMPLATE = CommonConstants.MAINSERV_TEMPLATE;
     private static String MAINSERV_MANIFEST;
 
     /**
