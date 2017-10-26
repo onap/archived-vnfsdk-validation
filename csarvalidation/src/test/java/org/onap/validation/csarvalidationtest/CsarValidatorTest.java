@@ -176,7 +176,7 @@ public class CsarValidatorTest {
 
 
     private void testValidateToscaMeta(CsarValidator cv) {
-        boolean result = CsarValidator.validateToscaMeta();
+        boolean result = CsarValidator.validateAndScanToscaMeta();
         assertEquals(true, result == true);
     }
 

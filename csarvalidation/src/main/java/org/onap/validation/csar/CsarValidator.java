@@ -33,7 +33,7 @@ public class CsarValidator {
 	private static final Logger LOG = LoggerFactory.getLogger(CsarValidator.class);
 
 	//Schema files
-   // static private ValidatorSchemaLoader vsl;
+    static private ValidatorSchemaLoader vsl;
 
 	// Map of CSAR file and un-zipped file indices
 	static private HashMap<String, String> csarFiles;
@@ -41,6 +41,8 @@ public class CsarValidator {
     //  Map of packageId and CSAR files
 	private static HashMap<String, HashMap<String, String>> csar = new HashMap<String, HashMap<String, String>>();
     private static String MAINSERV_TEMPLATE;
+    private static String MAINSERV_MANIFEST;
+
     /**
      * 
      * @param packageId
@@ -67,6 +69,13 @@ public class CsarValidator {
 		    //deleteDirectory();
 			LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
 		}
+
+
+        try {
+               vsl = new ValidatorSchemaLoader();
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
     }
     /**
      * 
@@ -76,7 +85,8 @@ public class CsarValidator {
 
         boolean vsm = validateCsarMeta();
 
-        boolean vtm = validateToscaMeta();
+       // boolean vtm = validateToscaMeta__();
+        boolean vtm = validateAndScanToscaMeta();
 
         boolean vms = validateMainService();
 
@@ -84,7 +94,7 @@ public class CsarValidator {
             return true;
         }
 
-        //In future return the status handler object instead.
+
         return false;
     }
     
@@ -111,6 +121,7 @@ public class CsarValidator {
 			return false;
 		}
 	}
+
     /**
      * 
      * @return true if csar meta data validation is successful
@@ -165,44 +176,67 @@ public class CsarValidator {
 	 * 
 	 * @return true csar tosca meta validation is successful
 	 */
-    public static boolean validateToscaMeta() {
+    public static boolean validateAndScanToscaMeta() {
 
         String cfile = csarFiles.get(CommonConstants.TOSCA_META);
-        if(StringUtils.isEmpty(cfile)) {
+
+        if (!validateToscaMeta(cfile)) {
             return false;
         }
+
         try {
             if (cfile.contains(System.getProperty("file.separator") +
                     CommonConstants.TOSCA_METADATA + System.getProperty("file.separator") +
                     CommonConstants.TOSCA_META)) {
-                String value = CheckEntryFor(cfile, "Entry-Definitions:");
-                String[] splitPath = value.split("/"); 
-                String subValue = splitPath[splitPath.length - 1];
-
-                if (value.isEmpty() || subValue.isEmpty()) {
-                    return false;
-
-                    //Check if Entry-Defintions pointed file exists in CSAR
-                } else {
-                    if (!(null == csarFiles.get(value))) {
-                        MAINSERV_TEMPLATE = csarFiles.get(value);
-                        return true;
-                    }
-                    else if (!(null == csarFiles.get(subValue))) {
-                        MAINSERV_TEMPLATE = csarFiles.get(subValue);
-                        return true;
-                    }
-                    else {
-                        MAINSERV_TEMPLATE = CommonConstants.MAINSERV_TEMPLATE;
-                    }
+                MAINSERV_MANIFEST = checkAndGetMRF(cfile,"Entry-Manifest");
+                if (MAINSERV_MANIFEST == null) {
+                    MAINSERV_MANIFEST = CommonConstants.MAINSERV_MANIFEST;
                 }
+
+                MAINSERV_TEMPLATE = checkAndGetMRF(cfile,"Entry-Definitions");
+                if (MAINSERV_TEMPLATE == null) {
+                    MAINSERV_TEMPLATE = CommonConstants.MAINSERV_TEMPLATE;
+                }
+
+                return true;
             }
-        } catch (IOException | NullPointerException e) {
-            LOG.error("CSAR_TOSCA_VALIDATION" + ":" + "Could not read file %s ! " +ErrorCodes.FILE_IO+ " " +ErrorCodes.RESOURCE_MISSING, e);
-            throw new ValidationException(ErrorCodes.RESOURCE_MISSING);
+        } catch (Exception e) {
+            LOG.error("Parsing error");
         }
+
         return false;
     }
+
+    private static String checkAndGetMRF(String mrfFile, String attribute) {
+        try {
+        String value = CheckEntryFor(mrfFile, attribute);
+        String mrfCsarEntry = null;
+
+        //Rel-1 & SOL004 Entry-Definitions is optional
+        if (! StringUtils.isEmpty(value)) {
+
+            if(value.contains("Definitions/"))
+            {
+                String[] splitPath = value.split("/");
+                mrfCsarEntry = csarFiles.get(splitPath[splitPath.length - 1]);
+                // csarEntry = csarFiles.get(subValue);
+            }
+            else {  //Hack to support non-compliant "Entry-Definitions:" format
+                mrfCsarEntry = csarFiles.get(value);
+            }
+
+            if (null != mrfCsarEntry) {
+                return mrfCsarEntry;
+            }
+        }
+    } catch (IOException | NullPointerException e) {
+        LOG.error("CSAR_TOSCA_VALIDATION" + ":" + "Could not read file %s ! " +ErrorCodes.FILE_IO+ " " +ErrorCodes.RESOURCE_MISSING);
+        throw new ValidationException(ErrorCodes.RESOURCE_MISSING);
+        }
+
+        return null;
+    }
+
     /**
      * 
      * @return true csar validation is successful
@@ -217,11 +251,22 @@ public class CsarValidator {
 
         @SuppressWarnings("unused")
 		boolean mfResult = CheckEntryFor(CommonConstants.MAINSERV_MANIFEST, mListMetadata, key);
-        String mrfFile = MAINSERV_TEMPLATE;
-        if(!Paths.get(mrfFile).isAbsolute()){
-        	mrfFile = csarFiles.get(FilenameUtils.getName(mrfFile));
+
+        String mainServManifest = MAINSERV_MANIFEST;
+        if(!Paths.get(mainServManifest).isAbsolute()){
+            mainServManifest = csarFiles.get(FilenameUtils.getName(mainServManifest));
         }
-        if(StringUtils.isEmpty(mrfFile)){
+        // Rel-2 SOL004 requirement
+        if(StringUtils.isEmpty(mainServManifest)){
+            //Do nothing for Rel-1
+            //return false;
+        }
+
+        String mainservTemplate = MAINSERV_TEMPLATE;
+        if(!Paths.get(MAINSERV_TEMPLATE).isAbsolute()){
+        	mainservTemplate = csarFiles.get(FilenameUtils.getName(mainservTemplate));
+        }
+        if(StringUtils.isEmpty(mainservTemplate)){
         	return false;
         }
         return true;
@@ -233,7 +278,8 @@ public class CsarValidator {
 
         for (String strLine : lines) {
             if (!attribute.isEmpty() && strLine.contains(attribute)) {
-                return strLine.substring(attribute.length(), strLine.length()).trim();
+                String entry = strLine.substring(attribute.length(), strLine.length()).trim();
+                return entry.replaceFirst(":","").trim();
             }
         }
         return null;
@@ -291,6 +337,31 @@ public class CsarValidator {
             return false;
         }
         return true;
+    }
+
+    /**
+     *
+     * @return true if csar meta data validation is successful
+     */
+    private static boolean validateToscaMeta(String cfile) {
+
+        if (StringUtils.isEmpty(cfile)) {
+            return false;
+        }
+        else {
+            File file = new File(cfile);
+
+            Yaml yaml = new Yaml();
+
+
+            Map<String, ?> toscaMeta = null;
+            try {
+                toscaMeta = (Map<String, ?>) yaml.load(new FileInputStream(file));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            return toscaMeta.keySet().containsAll((vsl.getToscaMeta().keySet()));
+        }
     }
 
     public static HashMap<String, HashMap<String, String>> getCsar() {
