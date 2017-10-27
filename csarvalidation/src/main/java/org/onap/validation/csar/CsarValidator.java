@@ -65,16 +65,16 @@ public class CsarValidator {
 				LOG.debug("CSAR extracted sucessfully.");
 			}
 		} catch (Exception e1) {
-
-		    //deleteDirectory();
-			LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
+			LOG.error("INVALID_CSAR_CONTENT" + ":" + "CSAR %s is not a valid CSAR/ZIP file! " +ErrorCodes.INVALID_CSAR_CONTENT, e1);
+            throw new ValidationException(ErrorCodes.INVALID_CSAR_CONTENT);
 		}
 
 
         try {
                vsl = new ValidatorSchemaLoader();
         } catch (Exception e) {
-                e.printStackTrace();
+          	 LOG.error("SCHEMA_LOAD_ERROR" + ":" + "CSAR schema is not loaded correctly! " +ErrorCodes.SCHEMA_LOAD_ERROR, e);
+             throw new ValidationException(ErrorCodes.SCHEMA_LOAD_ERROR);
         }
     }
     /**
@@ -85,7 +85,6 @@ public class CsarValidator {
 
         boolean vsm = validateCsarMeta();
 
-       // boolean vtm = validateToscaMeta__();
         boolean vtm = validateAndScanToscaMeta();
 
         boolean vms = validateMainService();
@@ -201,7 +200,7 @@ public class CsarValidator {
                 return true;
             }
         } catch (Exception e) {
-            LOG.error("Parsing error");
+       	 LOG.error("PARSE_ERROR" + ":" + "TOSCA metadata not parsed properly! " +ErrorCodes.PARSE_ERROR, e);
         }
 
         return false;
@@ -219,7 +218,6 @@ public class CsarValidator {
             {
                 String[] splitPath = value.split("/");
                 mrfCsarEntry = csarFiles.get(splitPath[splitPath.length - 1]);
-                // csarEntry = csarFiles.get(subValue);
             }
             else {  //Hack to support non-compliant "Entry-Definitions:" format
                 mrfCsarEntry = csarFiles.get(value);
@@ -245,7 +243,7 @@ public class CsarValidator {
 
         String key = "metadata";
 
-        // Infuture load from the respective file template/schema
+        // In future load from the respective file template/schema
         List<String> mListMetadata = Arrays.asList("vnf_product_name", "vnf_provider_id",
                 "vnf_package_version", "vnf_release_data_time");
 
@@ -343,7 +341,8 @@ public class CsarValidator {
      *
      * @return true if csar meta data validation is successful
      */
-    private static boolean validateToscaMeta(String cfile) {
+    @SuppressWarnings({ "unchecked", "static-access" })
+	private static boolean validateToscaMeta(String cfile) {
 
         if (StringUtils.isEmpty(cfile)) {
             return false;
@@ -358,7 +357,7 @@ public class CsarValidator {
             try {
                 toscaMeta = (Map<String, ?>) yaml.load(new FileInputStream(file));
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            	 LOG.error("CSAR_TOSCA_LOAD" + ":" + "TOSCA metadata is not loaded by Yaml! " +ErrorCodes.FILE_IO, e);
             }
             return toscaMeta.keySet().containsAll((vsl.getToscaMeta().keySet()));
         }

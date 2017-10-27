@@ -20,15 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Stream;
-
 import org.apache.commons.io.FilenameUtils;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.scanner.ScannerException;
@@ -62,7 +55,8 @@ public class ValidatorSchemaLoader {
     }
 
 
-    private boolean loadResources() throws FileNotFoundException {
+    @SuppressWarnings("unchecked")
+	private boolean loadResources() throws FileNotFoundException {
 
         ClassLoader classLoader = getClass().getClassLoader();
 

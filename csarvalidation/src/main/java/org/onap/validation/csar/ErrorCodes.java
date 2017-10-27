@@ -32,7 +32,8 @@ public enum ErrorCodes {
 		RESOURCE_MISSING(213), 
 		PARSE_ERROR(214),
 		JSON_MAPPING_FAILED(215), 
-		JSON_GENERATION_ERROR(216);
+		JSON_GENERATION_ERROR(216),
+	    SCHEMA_LOAD_ERROR(217);
 
 		private final int number;
 
