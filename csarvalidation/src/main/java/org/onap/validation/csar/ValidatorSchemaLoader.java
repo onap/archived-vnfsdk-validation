@@ -23,6 +23,8 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Stream;
+
 import org.apache.commons.io.FilenameUtils;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.scanner.ScannerException;
@@ -36,10 +38,10 @@ public class ValidatorSchemaLoader {
     private static final Logger LOG = LoggerFactory.getLogger(ValidatorSchemaLoader.class);
 
     // Map of Schema files
-    private static Map<String, ?> toscaMeta;
-    private static Map<String, ?> csarentryd;
-    private static Map<String, ?> mrfYaml;
-    private static Map<String, ?> mrfManifest;
+    private Map<String, ?> toscaMeta;
+    private Map<String, ?> csarentryd;
+    private Map<String, ?> mrfYaml;
+    private Map<String, ?> mrfManifest;
 
     // List of configured schemas
     static List<String> schemaFileList =  new ArrayList<String>();
@@ -49,13 +51,13 @@ public class ValidatorSchemaLoader {
     static HashMap<String, String> optionTwoSchema;
 
 	private String schema_folder;
-    public ValidatorSchemaLoader() throws Exception {
+    public ValidatorSchemaLoader() throws NullPointerException, FileNotFoundException, ScannerException, IOException {
 
 
                     try {
                             loadResources();
                     } catch ( FileNotFoundException e1) {
-                        LOG.error("Schema file not found or schema repository corrupted");
+                        LOG.error("Schema file not found or schema repository corrupted", e1);
 
                     }
     }
@@ -63,12 +65,11 @@ public class ValidatorSchemaLoader {
 
     @SuppressWarnings("unchecked")
 	private boolean loadResources() throws FileNotFoundException {
-    	
-        try {
-            String schema_folder = getClass().getResource("../../../../schema").getPath();
+    	String schema_folder = getClass().getResource("../../../../schema").getPath();
+        try (Stream<Path> paths = Files.walk(Paths.get(schema_folder))){
+            
 
-            Files.walk(Paths.get(schema_folder))
-                 .filter(Files::isRegularFile)
+            paths.filter(Files::isRegularFile)
                  .forEach((Path e) -> {
 
                         File file = e.toFile();
@@ -85,28 +86,28 @@ public class ValidatorSchemaLoader {
                                     try {
                                         toscaMeta = (Map<String, ?>) yaml.load(new FileInputStream(file));
                                     } catch (ScannerException | FileNotFoundException e1) {
-                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName());
+                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e1);
                                     }
                                     break;
                                 case "CSAR.meta":
                                     try {
                                         csarentryd = (Map<String, ?>) yaml.load(new FileInputStream(file));
                                     } catch (ScannerException | FileNotFoundException e2) {
-                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName());
+                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e2);
                                     }
                                     break;
                                 case "MRF.yaml":
                                     try {
                                         mrfYaml = (Map<String, ?>) yaml.load(new FileInputStream(file));
                                     } catch (ScannerException | FileNotFoundException e2) {
-                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName());
+                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e2);
                                     }
                                     break;
                                 case "MRF.mf":
                                     try {
                                         mrfManifest = (Map<String, ?>) yaml.load(new FileInputStream(file));
                                     } catch (ScannerException | FileNotFoundException e2) {
-                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName());
+                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e2);
                                     }
                                     break;
                             }
@@ -121,23 +122,23 @@ public class ValidatorSchemaLoader {
         return true;
     }
 
-    public static Map<String, ?> getToscaMeta() {
+    public Map<String, ?> getToscaMeta() {
         return toscaMeta;
     }
 
-    public static Map<String, ?> getCsarentryd() {
+    public Map<String, ?> getCsarentryd() {
         return csarentryd;
     }
 
-    public static Map<String, ?> getMrfYaml() {
+    public Map<String, ?> getMrfYaml() {
         return mrfYaml;
     }
 
-    public static Map<String, ?> getMrfManifest() {
+    public Map<String, ?> getMrfManifest() {
         return mrfManifest;
     }
 
-    public static List<String> getSchemaFileList() {
+    public List<String> getSchemaFileList() {
         return schemaFileList;
     }
 }

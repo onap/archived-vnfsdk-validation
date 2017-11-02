@@ -228,7 +228,7 @@ public class CsarValidator {
             }
         }
     } catch (IOException | NullPointerException e) {
-        LOG.error("CSAR_TOSCA_VALIDATION" + ":" + "Could not read file %s ! " +ErrorCodes.FILE_IO+ " " +ErrorCodes.RESOURCE_MISSING);
+        LOG.error("CSAR_TOSCA_VALIDATION" + ":" + "Could not read file %s ! " +ErrorCodes.FILE_IO+ " " +ErrorCodes.RESOURCE_MISSING,e);
         throw new ValidationException(ErrorCodes.RESOURCE_MISSING);
         }
 
@@ -359,7 +359,10 @@ public class CsarValidator {
             } catch (FileNotFoundException e) {
             	 LOG.error("CSAR_TOSCA_LOAD" + ":" + "TOSCA metadata is not loaded by Yaml! " +ErrorCodes.FILE_IO, e);
             }
+            if(toscaMeta != null){
             return toscaMeta.keySet().containsAll((vsl.getToscaMeta().keySet()));
+            }
+            return false;
         }
     }
 
