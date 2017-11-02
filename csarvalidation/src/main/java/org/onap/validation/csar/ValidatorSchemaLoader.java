@@ -26,6 +26,9 @@ import java.util.*;
 import org.apache.commons.io.FilenameUtils;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.scanner.ScannerException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 
 public class ValidatorSchemaLoader {
@@ -62,22 +65,14 @@ public class ValidatorSchemaLoader {
 	private boolean loadResources() throws FileNotFoundException {
     	
         try {
-			if(System.getProperty("os.name").contains("win")) {
-				schema_folder = "schema\\";
-	           }
-			else {
-				schema_folder = "schema/";
-			}
-        	
-            ClassLoader classLoader = getClass().getClassLoader();
-            final InputStream is = classLoader.getResourceAsStream(schema_folder);
-            final InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
-            final BufferedReader br = new BufferedReader(isr);
-            
-            br.lines().filter(Objects::nonNull)
-                    .forEach((String e) -> {
-                    	
-                        File file = new File(getClass().getClassLoader().getResource(schema_folder+ e.toString()).getFile());
+            String schema_folder = getClass().getResource("../../../../schema").getPath();
+
+            Files.walk(Paths.get(schema_folder))
+                 .filter(Files::isRegularFile)
+                 .forEach((Path e) -> {
+
+                        File file = e.toFile();
+
                         if (!file.isDirectory() && (
                                 FilenameUtils.isExtension(file.getName(), "yaml") ||
                                         FilenameUtils.isExtension(file.getName(), "mf") ||
@@ -116,10 +111,11 @@ public class ValidatorSchemaLoader {
                                     break;
                             }
                         }
-                        schemaFileList.add(e);
+                        schemaFileList.add(e.toAbsolutePath().toString());
                     });
-        } catch (NullPointerException e) {
-            LOG.error("Schema files/folder access error"+e);
+            
+        } catch (NullPointerException | IOException err) {
+            LOG.error("Schema files/folder access error"+err);
         }
 
         return true;
