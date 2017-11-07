@@ -28,6 +28,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.zip.ZipFile;
 
 
@@ -252,5 +255,25 @@ public final class FileUtil {
             }
         }
         return file.delete();
+    }
+
+    public static String getResourceFilePath(String resource, ClassLoader classLoader){
+        return toFilePath(classLoader.getResource(resource));
+    }
+
+    public static String getResourceFilePath(String resource, Class<?> clazz){
+        return toFilePath(clazz.getResource(resource));
+    }
+
+    private static String toFilePath(URL resourceURL) {
+        try {
+            if (resourceURL == null) {
+                return null;
+            }
+            File resourceFile = new File(resourceURL.toURI());
+            return resourceFile.getPath();
+        } catch (URISyntaxException e) {
+            return null;
+        }
     }
 }

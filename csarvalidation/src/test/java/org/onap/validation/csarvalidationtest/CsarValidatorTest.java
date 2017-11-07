@@ -16,49 +16,38 @@
 
 package org.onap.validation.csarvalidationtest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 import org.junit.Test;
 import org.onap.validation.csar.CsarValidator;
 import org.onap.validation.csar.FileUtil;
 
+import java.io.*;
+import java.util.UUID;
+import java.util.regex.Pattern;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class CsarValidatorTest {
 
     String regex = "^\\/[a-zA-Z]\\:\\/";
-    ClassLoader classLoader = getClass().getClassLoader();
     Pattern pattern = Pattern.compile(regex);
-    private String csarFile = classLoader.getResource("enterprise2DC.csar").getFile();
-    Matcher matcher = pattern.matcher(csarFile);
-    String sample1 = System.getProperty("file.separator") + csarFile.substring(1);
+    ClassLoader classLoader = getClass().getClassLoader();
+    private String sample1 = FileUtil.getResourceFilePath("enterprise2DC.csar", classLoader);
     String packageId = UUID.randomUUID().toString();
 
-    private String csarFile2 = classLoader.getResource("vEPC_NS.csar").getFile();
-    String sample2 = System.getProperty("file.separator") + csarFile2.substring(1);
+    private String sample2 = FileUtil.getResourceFilePath("vEPC_NS.csar", classLoader);
     String packageId2 = UUID.randomUUID().toString();
 
-    private String csarFile3 = classLoader.getResource("vIMS_NS.csar").getFile();
-    String sample3 = System.getProperty("file.separator") + csarFile3.substring(1);
-    String packageId3 = UUID.randomUUID().toString(); 
+    private String sample3 = FileUtil.getResourceFilePath("vIMS_NS.csar", classLoader);
+    String packageId3 = UUID.randomUUID().toString();
     
-    private String csarFile4 = classLoader.getResource("VoLTE.csar").getFile();
-    String sample4 = System.getProperty("file.separator") + csarFile4.substring(1);
-    String packageId4 = UUID.randomUUID().toString(); 
+    private String sample4 = FileUtil.getResourceFilePath("VoLTE.csar", classLoader);
+    String packageId4 = UUID.randomUUID().toString();
     
-    private String csarFile5 = classLoader.getResource("sample2.csar").getFile();
-    String sample5 = System.getProperty("file.separator") + csarFile5.substring(1);
-    String packageId5 = UUID.randomUUID().toString(); 
+    private String sample5 = FileUtil.getResourceFilePath("sample2.csar", classLoader);
+    String packageId5 = UUID.randomUUID().toString();
     
     @Test
     public void testAll() throws IOException, InterruptedException {
@@ -89,26 +78,26 @@ public class CsarValidatorTest {
     public void testIndividual() throws IOException, InterruptedException {
         CsarValidator csarValidator = new CsarValidator(packageId, sample1);
         testValidateCsarMeta(csarValidator);
-        testValidateCsarIntegrity(csarValidator);
+        testValidateCsarIntegrity(sample1);
         testValidateToscaMeta(csarValidator);
 
         CsarValidator csarValidator2 = new CsarValidator(packageId2, sample2);
-        testValidateCsarIntegrity(csarValidator2);
+        testValidateCsarIntegrity(sample2);
         testValidateToscaMeta(csarValidator2);
         testValidateMainService(csarValidator2);
         
         CsarValidator csarValidator3 = new CsarValidator(packageId3, sample3);
-        testValidateCsarIntegrity(csarValidator3);
+        testValidateCsarIntegrity(sample3);
         testValidateToscaMeta(csarValidator3);
         testValidateMainService(csarValidator3);
         
         CsarValidator csarValidator4 = new CsarValidator(packageId4, sample4);
-        testValidateCsarIntegrity(csarValidator4);
+        testValidateCsarIntegrity(sample4);
         testValidateToscaMeta(csarValidator4);
         testValidateMainService(csarValidator4);
         
         CsarValidator csarValidator5 = new CsarValidator(packageId5, sample5);
-        testValidateCsarIntegrity(csarValidator5);
+        testValidateCsarIntegrity(sample5);
         testValidateToscaMeta(csarValidator5);
         testValidateMainService(csarValidator5);
         //Rel1 specific test case
@@ -169,8 +158,8 @@ public class CsarValidatorTest {
     }
 
 
-    private void testValidateCsarIntegrity(CsarValidator cv) {
-        boolean result = CsarValidator.validateCsarIntegrity(sample1);
+    private void testValidateCsarIntegrity(String path) {
+        boolean result = CsarValidator.validateCsarIntegrity(path);
         assertEquals(true, result == true);
     }
 

@@ -50,13 +50,15 @@ public class CsarValidator {
      * @throws IOException 
      */
     public CsarValidator(String packageId, String csarWithPath) throws IOException {
-
-		try(FileInputStream is = new FileInputStream(csarWithPath)) {
-			
+        FileInputStream inputStream = null;
+        try{
+            inputStream = new FileInputStream(csarWithPath);
 		} catch (FileNotFoundException e2) {
 			LOG.error("CSAR %s is not found! " +ErrorCodes.RESOURCE_MISSING, e2);
             throw new ValidationException(ErrorCodes.RESOURCE_MISSING);
-		}
+		}finally {
+            FileUtil.closeFileStream(inputStream);
+        }
 
 		try {
 			csarFiles = CsarUtil.csarExtract(csarWithPath);
@@ -298,11 +300,17 @@ public class CsarValidator {
 
         Yaml yaml = new Yaml();
         Map<String, ?> values;
+        FileInputStream inputStream = null;
         try {
-            values = (Map<String, ?>) yaml.load(new FileInputStream(new File(cFile)));
+            inputStream = new FileInputStream(new File(cFile));
+            values = (Map<String, ?>) yaml.load(inputStream);
         } catch (FileNotFoundException e) {
         	LOG.error("FILE_NOT_FOUND" + ":" + "Exception caught while trying to find the file ! " + e.getMessage(), e);
             return false;
+        }finally {
+            if(inputStream != null){
+                FileUtil.closeFileStream(inputStream);
+            }
         }
 
         Map<? super String,? super String> subValues = (Map<? super String, ? super String>) values.get(key);
@@ -341,26 +349,32 @@ public class CsarValidator {
      *
      * @return true if csar meta data validation is successful
      */
-    @SuppressWarnings({ "unchecked", "static-access" })
-	private static boolean validateToscaMeta(String cfile) {
+    @SuppressWarnings({"unchecked", "static-access"})
+    private static boolean validateToscaMeta(String cfile) {
 
         if (StringUtils.isEmpty(cfile)) {
             return false;
-        }
-        else {
+        } else {
             File file = new File(cfile);
-
             Yaml yaml = new Yaml();
-
-
             Map<String, ?> toscaMeta = null;
+            FileInputStream fileInputStream = null;
             try {
-                toscaMeta = (Map<String, ?>) yaml.load(new FileInputStream(file));
+                fileInputStream = new FileInputStream(file);
+                toscaMeta = (Map<String, ?>) yaml.load(fileInputStream);
             } catch (FileNotFoundException e) {
-            	 LOG.error("CSAR_TOSCA_LOAD" + ":" + "TOSCA metadata is not loaded by Yaml! " +ErrorCodes.FILE_IO, e);
+                LOG.error("CSAR_TOSCA_LOAD" + ":" + "TOSCA metadata is not loaded by Yaml! " + ErrorCodes.FILE_IO, e);
+            } finally {
+                if(fileInputStream != null){
+                    try {
+                        fileInputStream.close();
+                    } catch (IOException e) {
+                        LOG.error("Failed to close inputstream", e);
+                    }
+                }
             }
-            if(toscaMeta != null){
-            return toscaMeta.keySet().containsAll((vsl.getToscaMeta().keySet()));
+            if (toscaMeta != null) {
+                return toscaMeta.keySet().containsAll((vsl.getToscaMeta().keySet()));
             }
             return false;
         }
@@ -382,4 +396,3 @@ public class CsarValidator {
         CsarValidator.csarFiles = csarFiles;
     }
 }
-

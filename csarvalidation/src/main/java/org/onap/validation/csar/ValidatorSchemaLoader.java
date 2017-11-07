@@ -16,12 +16,12 @@
 package org.onap.validation.csar;
 
 
-import org.apache.commons.io.FileSystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -50,66 +50,50 @@ public class ValidatorSchemaLoader {
     static HashMap<String, String> optionOneSchema;
     static HashMap<String, String> optionTwoSchema;
 
-	private String schema_folder;
+    private String schema_folder;
+
     public ValidatorSchemaLoader() throws NullPointerException, FileNotFoundException, ScannerException, IOException {
-
-
-                    try {
-                            loadResources();
-                    } catch ( FileNotFoundException e1) {
-                        LOG.error("Schema file not found or schema repository corrupted", e1);
-
-                    }
+        try {
+            loadResources();
+        } catch (Exception e1) {
+            LOG.error("Schema file not found or schema repository corrupted", e1);
+        }
     }
 
-
     @SuppressWarnings("unchecked")
-	private boolean loadResources() throws FileNotFoundException {
-    	String schema_folder = getClass().getResource("../../../../schema").getPath();
-        try (Stream<Path> paths = Files.walk(Paths.get(schema_folder))){
-            
-
+	private boolean loadResources() throws FileNotFoundException, URISyntaxException {
+        String path = FileUtil.getResourceFilePath("../../../../schema", getClass());
+        try (Stream<Path> paths = Files.walk(Paths.get(path))){
             paths.filter(Files::isRegularFile)
                  .forEach((Path e) -> {
-
                         File file = e.toFile();
-
                         if (!file.isDirectory() && (
                                 FilenameUtils.isExtension(file.getName(), "yaml") ||
                                         FilenameUtils.isExtension(file.getName(), "mf") ||
                                         FilenameUtils.isExtension(file.getName(), "meta"))) {
 
                             Yaml yaml = new Yaml();
-
-                            switch (file.getName()) {
-                                case "TOSCA.meta":
-                                    try {
-                                        toscaMeta = (Map<String, ?>) yaml.load(new FileInputStream(file));
-                                    } catch (ScannerException | FileNotFoundException e1) {
-                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e1);
-                                    }
-                                    break;
-                                case "CSAR.meta":
-                                    try {
-                                        csarentryd = (Map<String, ?>) yaml.load(new FileInputStream(file));
-                                    } catch (ScannerException | FileNotFoundException e2) {
-                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e2);
-                                    }
-                                    break;
-                                case "MRF.yaml":
-                                    try {
-                                        mrfYaml = (Map<String, ?>) yaml.load(new FileInputStream(file));
-                                    } catch (ScannerException | FileNotFoundException e2) {
-                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e2);
-                                    }
-                                    break;
-                                case "MRF.mf":
-                                    try {
-                                        mrfManifest = (Map<String, ?>) yaml.load(new FileInputStream(file));
-                                    } catch (ScannerException | FileNotFoundException e2) {
-                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e2);
-                                    }
-                                    break;
+                            FileInputStream inputStream = null;
+                            try {
+                                inputStream = new FileInputStream(file);
+                                switch (file.getName()) {
+                                    case "TOSCA.meta":
+                                        toscaMeta = (Map<String, ?>) yaml.load(inputStream);
+                                        break;
+                                    case "CSAR.meta":
+                                        csarentryd = (Map<String, ?>) yaml.load(inputStream);
+                                        break;
+                                    case "MRF.yaml":
+                                        mrfYaml = (Map<String, ?>) yaml.load(inputStream);
+                                        break;
+                                    case "MRF.mf":
+                                        mrfManifest = (Map<String, ?>) yaml.load(inputStream);
+                                        break;
+                                }
+                            }catch (ScannerException | FileNotFoundException e2){
+                                LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e2);
+                            }finally {
+                                FileUtil.closeFileStream(inputStream);
                             }
                         }
                         schemaFileList.add(e.toAbsolutePath().toString());

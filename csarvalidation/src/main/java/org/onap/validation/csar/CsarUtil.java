@@ -56,9 +56,9 @@ public class CsarUtil {
 	 */
 	public static HashMap<String, String> unzip(String zipFileName, String extPlace) throws IOException {
 		HashMap<String, String> unzipFileNames = new HashMap<>();
-
-		try(ZipFile zipFile = new ZipFile(zipFileName)) {
-
+		ZipFile zipFile = null;
+		try{
+			zipFile = new ZipFile(zipFileName);
 			Enumeration<?> fileEn = zipFile.entries();
 			byte[] buffer = new byte[CommonConstants.BUFFER_SIZE];
 
@@ -99,6 +99,10 @@ public class CsarUtil {
 					closeOutputStream(bos);
 					closeInputStream(input);
 				}
+			}
+		}finally {
+			if(zipFile != null){
+				zipFile.close();
 			}
 		}
 		return unzipFileNames;
