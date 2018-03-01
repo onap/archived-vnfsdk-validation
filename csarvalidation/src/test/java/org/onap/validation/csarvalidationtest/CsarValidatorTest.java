@@ -132,11 +132,6 @@ public class CsarValidatorTest {
         assertTrue(true);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testReadJsonDatafFromFile() {
-        FileUtil.readJsonDatafFromFile(sample1, null);
-    }
-
     @Test
     public void testCloseZipFile() throws ZipException, IOException {
         File file = new File(sample1);

@@ -20,9 +20,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -159,79 +156,6 @@ public final class FileUtil {
         File file = new File(filePath);
         return deleteFile(file);
     }
-
-    public static boolean writeJsonDatatoFile(String fileAbsPath, Object obj) 
-    {   
-        logger.info("Write JsonData to file :"+fileAbsPath);
-        
-        boolean bResult = false;
-        if(checkFileExists(fileAbsPath))
-        {
-            deleteFile(fileAbsPath);
-        }
-        
-        ObjectMapper mapper = new ObjectMapper();       
-        try 
-        {
-            mapper.writeValue(new File(fileAbsPath), obj);
-            bResult = true;
-        } 
-        catch (JsonGenerationException e) 
-        {
-            logger.error("JSON_GENERATION" + ":" + "JsonGenerationException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : " +ErrorCodes.JSON_GENERATION_ERROR+" " + e.getMessage(), e);
-            throw new ValidationException(ErrorCodes.JSON_GENERATION_ERROR);
-        } 
-        catch (JsonMappingException e) 
-        {
-            logger.error("JSON_MAPPING" + ":" + "JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : " +ErrorCodes.JSON_MAPPING_FAILED+" " + e.getMessage(), e);
-            throw new ValidationException(ErrorCodes.JSON_MAPPING_FAILED);
-        } 
-        catch (IOException e) 
-        {
-            logger.error("FILE_IO" + ":" + "IOException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : " +ErrorCodes.FILE_IO+" " + e.getMessage(), e);
-            throw new ValidationException(ErrorCodes.FILE_IO);
-        } 
-        return bResult;
-    }
-
-    public static <T> Object readJsonDatafFromFile(String fileAbsPath, Class<T> clazz)
-    {
-        if(!checkFileExists(fileAbsPath))
-        {
-            logger.info("read JsonData from file , file not found :"+fileAbsPath);
-            return null;
-        }
-        
-        logger.info("read JsonData from file :"+fileAbsPath);
-        
-        T obj = null;        
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        try 
-        {
-            obj = mapper.readValue(new File(fileAbsPath), clazz);
-        } 
-        catch (JsonParseException e1) 
-        {
-            logger.error("JSON_PARSING" + ":" + "JsonParseException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e1.getMessage(), e1);
-            logger.error("CSAR extraction error ! " +ErrorCodes.PARSE_ERROR);
-            throw new ValidationException(ErrorCodes.PARSE_ERROR);
-        } 
-        catch (JsonMappingException e1) 
-        {
-        	logger.error("JSON_MAPPING" + ":" + "JsonMappingException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e1.getMessage(), e1);
-            logger.error("CSAR extraction error ! " +ErrorCodes.JSON_MAPPING_FAILED);
-            throw new ValidationException(ErrorCodes.JSON_MAPPING_FAILED);
-        } 
-        catch (IOException e1) 
-        {
-        	logger.error("FILE_IO" + ":" + "IOException Exception: writeJsonDatatoFile-->"+fileAbsPath+" : "  + e1.getMessage(), e1);
-            logger.error("CSAR extraction error ! " +ErrorCodes.FILE_IO);
-            throw new ValidationException(ErrorCodes.FILE_IO);
-        }
-        return obj;
-    }
-    
     public static boolean  deleteDirectory(String path) 
     {
         File file = new File(path);
