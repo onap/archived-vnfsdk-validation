@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Mickael JEZEQUEL <mickael.jezequel@orange.com>
+Code-Review+2: Chris Donley <christopher.donley@huawei.com>
+Submitted-by: Chris Donley <christopher.donley@huawei.com>
+Submitted-at: Thu, 01 Mar 2018 13:56:35 +0000
+Reviewed-on: https://gerrit.onap.org/r/33607
+Project: vnfsdk/validation
+Branch: refs/heads/master
