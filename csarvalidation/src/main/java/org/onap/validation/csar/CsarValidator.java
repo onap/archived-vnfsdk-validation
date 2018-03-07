@@ -30,16 +30,16 @@ import org.yaml.snakeyaml.Yaml;
 
 public class CsarValidator {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CsarValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CsarValidator.class);
 
 	//Schema files
     static private ValidatorSchemaLoader vsl;
 
 	// Map of CSAR file and un-zipped file indices
-	static private HashMap<String, String> csarFiles;
+    static private HashMap<String, String> csarFiles;
 
     //  Map of packageId and CSAR files
-	private static HashMap<String, HashMap<String, String>> csar = new HashMap<String, HashMap<String, String>>();
+    private static HashMap<String, HashMap<String, String>> csar = new HashMap<String, HashMap<String, String>>();
     private static String MAINSERV_TEMPLATE = CommonConstants.MAINSERV_TEMPLATE;
     private static String MAINSERV_MANIFEST;
 
@@ -104,22 +104,31 @@ public class CsarValidator {
      */
     public static boolean validateCsarIntegrity(String csarWithPath) {
 
-		try {
-			RandomAccessFile raf = new RandomAccessFile(csarWithPath, "r");
-			long n = raf.readInt();
-			raf.close();
+	    try {
+		    RandomAccessFile raf = new RandomAccessFile(csarWithPath, "r");
+		    try {
+			    long n = raf.readInt();
 
-			// Check for the CSAR's integrity
-			if (n != 0x504B0304) {
-				LOG.error("CSAR %s is not a valid CSAR/ZIP file! ");
-				return false;
-			}
-			return true;
-		} catch (IOException e1) {
-			LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
-			return false;
-		}
-	}
+			    // Check for the CSAR's integrity
+			    if (n != 0x504B0304) {
+				    LOG.error("CSAR %s contents are not a valid! ");
+				    return false;
+			    }
+			    return true;
+		    } catch (FileNotFoundException e1) {
+			    LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
+			    return false;
+		    }
+		    finally {
+			    raf.close();
+                            return true;
+		    }
+	    }
+	    catch (IOException e1) {
+		    LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
+		    return false; 
+	    }
+    }
 
     /**
      * 
