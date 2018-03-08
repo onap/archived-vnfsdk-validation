@@ -114,20 +114,19 @@ public class CsarValidator {
 				    LOG.error("CSAR %s contents are not a valid! ");
 				    return false;
 			    }
-			    return true;
 		    } catch (FileNotFoundException e1) {
 			    LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
 			    return false;
 		    }
 		    finally {
 			    raf.close();
-                            return true;
 		    }
 	    }
 	    catch (IOException e1) {
 		    LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
 		    return false; 
 	    }
+            return true;
     }
 
     /**
