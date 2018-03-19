@@ -69,25 +69,6 @@ public class CommonConstants {
 		// Cannot create instance of the class
 	}
 
-	public static class functionTest {
-		public static final String FUNCTEST_URL = "/openoapi/vnfsdk/v1/functest/";
-		public static final String FUNCTEST_RESULT_URL = "/openoapi/vnfsdk/v1/functest/download/";
-		public static final String FUNCTEST_OPERTYPE_ID = "functiontest";
-		public static final String FUNCTEST_PACKAGE_EXISTS = "packageExists";
-		public static final String FUNCTEST_EXEC = "functestexec";
-
-		private functionTest() {
-		}
-	}
-
-	public static class LifeCycleTest {
-		public static final String LIFECYCLE_TEST_URL = "/openoapi/nslcm/v1/vnfpackage";
-		public static final String LIFECYCLE_TEST_OPERTYPE_ID = "lifecycletest";
-		public static final String LIFECYCLE_TEST_EXEC = "lifecycleTestexec";
-
-		private LifeCycleTest() {
-		}
-	}
 
 	public static class HttpContext {
 
