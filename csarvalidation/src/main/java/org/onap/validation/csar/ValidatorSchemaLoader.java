@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.onap.validation.csar;
 
+package org.onap.validation.csar;
 
 import org.apache.commons.io.FileSystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Stream;
@@ -32,91 +35,97 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 
-
 public class ValidatorSchemaLoader {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValidatorSchemaLoader.class);
 
     // Map of Schema files
     private Map<String, ?> toscaMeta;
+
     private Map<String, ?> csarentryd;
+
     private Map<String, ?> mrfYaml;
+
     private Map<String, ?> mrfManifest;
 
     // List of configured schemas
-    static List<String> schemaFileList =  new ArrayList<String>();
+    static List<String> schemaFileList = new ArrayList<String>();
 
     // SOL004 rule files
     static HashMap<String, String> optionOneSchema;
+
     static HashMap<String, String> optionTwoSchema;
 
-	private String schema_folder;
+    private String schema_folder;
+
     public ValidatorSchemaLoader() throws NullPointerException, FileNotFoundException, ScannerException, IOException {
 
+        try {
+            loadResources();
+        } catch(FileNotFoundException e1) {
+            LOG.error("Schema file not found or schema repository corrupted", e1);
 
-                    try {
-                            loadResources();
-                    } catch ( FileNotFoundException e1) {
-                        LOG.error("Schema file not found or schema repository corrupted", e1);
-
-                    }
+        } catch(URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
-
     @SuppressWarnings("unchecked")
-	private boolean loadResources() throws FileNotFoundException {
-    	String schema_folder = getClass().getResource("../../../../schema").getPath();
-        try (Stream<Path> paths = Files.walk(Paths.get(schema_folder))){
-            
+    private boolean loadResources() throws FileNotFoundException, URISyntaxException {
+        URL schemafolder = this.getClass().getClassLoader().getResource("schema");
+        try (Stream<Path> paths = Files.walk(Paths.get(schemafolder.toURI()))) {
 
-            paths.filter(Files::isRegularFile)
-                 .forEach((Path e) -> {
+            paths.filter(Files::isRegularFile).forEach((Path e) -> {
 
-                        File file = e.toFile();
+                File file = e.toFile();
 
-                        if (!file.isDirectory() && (
-                                FilenameUtils.isExtension(file.getName(), "yaml") ||
-                                        FilenameUtils.isExtension(file.getName(), "mf") ||
-                                        FilenameUtils.isExtension(file.getName(), "meta"))) {
+                if(!file.isDirectory() && (FilenameUtils.isExtension(file.getName(), "yaml")
+                        || FilenameUtils.isExtension(file.getName(), "mf")
+                        || FilenameUtils.isExtension(file.getName(), "meta"))) {
 
-                            Yaml yaml = new Yaml();
+                    Yaml yaml = new Yaml();
 
-                            switch (file.getName()) {
-                                case "TOSCA.meta":
-                                    try {
-                                        toscaMeta = (Map<String, ?>) yaml.load(new FileInputStream(file));
-                                    } catch (ScannerException | FileNotFoundException e1) {
-                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e1);
-                                    }
-                                    break;
-                                case "CSAR.meta":
-                                    try {
-                                        csarentryd = (Map<String, ?>) yaml.load(new FileInputStream(file));
-                                    } catch (ScannerException | FileNotFoundException e2) {
-                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e2);
-                                    }
-                                    break;
-                                case "MRF.yaml":
-                                    try {
-                                        mrfYaml = (Map<String, ?>) yaml.load(new FileInputStream(file));
-                                    } catch (ScannerException | FileNotFoundException e2) {
-                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e2);
-                                    }
-                                    break;
-                                case "MRF.mf":
-                                    try {
-                                        mrfManifest = (Map<String, ?>) yaml.load(new FileInputStream(file));
-                                    } catch (ScannerException | FileNotFoundException e2) {
-                                        LOG.error("Schema files %s format is not as per standard prescribed", file.getName(), e2);
-                                    }
-                                    break;
+                    switch(file.getName()) {
+                        case "TOSCA.meta":
+                            try {
+                                toscaMeta = (Map<String, ?>)yaml.load(new FileInputStream(file));
+                            } catch(ScannerException | FileNotFoundException e1) {
+                                LOG.error("Schema files %s format is not as per standard prescribed", file.getName(),
+                                        e1);
                             }
-                        }
-                        schemaFileList.add(e.toAbsolutePath().toString());
-                    });
-            
-        } catch (NullPointerException | IOException err) {
-            LOG.error("Schema files/folder access error"+err);
+                            break;
+                        case "CSAR.meta":
+                            try {
+                                csarentryd = (Map<String, ?>)yaml.load(new FileInputStream(file));
+                            } catch(ScannerException | FileNotFoundException e2) {
+                                LOG.error("Schema files %s format is not as per standard prescribed", file.getName(),
+                                        e2);
+                            }
+                            break;
+                        case "MRF.yaml":
+                            try {
+                                mrfYaml = (Map<String, ?>)yaml.load(new FileInputStream(file));
+                            } catch(ScannerException | FileNotFoundException e2) {
+                                LOG.error("Schema files %s format is not as per standard prescribed", file.getName(),
+                                        e2);
+                            }
+                            break;
+                        case "MRF.mf":
+                            try {
+                                mrfManifest = (Map<String, ?>)yaml.load(new FileInputStream(file));
+                            } catch(ScannerException | FileNotFoundException e2) {
+                                LOG.error("Schema files %s format is not as per standard prescribed", file.getName(),
+                                        e2);
+                            }
+                            break;
+                    }
+                }
+                schemaFileList.add(e.toAbsolutePath().toString());
+            });
+
+        } catch(NullPointerException | IOException err) {
+            LOG.error("Schema files/folder access error" + err);
         }
 
         return true;
