@@ -1,0 +1,7 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Alexander Vul <alex.vul@intel.com>
+Submitted-by: Alexander Vul <alex.vul@intel.com>
+Submitted-at: Tue, 10 Apr 2018 20:02:47 +0000
+Reviewed-on: https://gerrit.onap.org/r/41991
+Project: vnfsdk/validation
+Branch: refs/heads/master
