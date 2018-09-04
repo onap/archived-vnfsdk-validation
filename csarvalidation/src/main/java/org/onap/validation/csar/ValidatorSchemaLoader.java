@@ -71,63 +71,29 @@ public class ValidatorSchemaLoader {
         }
     }
 
+    private Map<String, ?> readYaml(String fileName) {
+        Yaml yaml = new Yaml();
+           return (Map<String, ?>)yaml.load(this.getClass().getResourceAsStream(fileName));
+    }
+
     @SuppressWarnings("unchecked")
     private boolean loadResources() throws FileNotFoundException, URISyntaxException {
-        URL schemafolder = this.getClass().getClassLoader().getResource("schema");
-        try (Stream<Path> paths = Files.walk(Paths.get(schemafolder.toURI()))) {
-
-            paths.filter(Files::isRegularFile).forEach((Path e) -> {
-
-                File file = e.toFile();
-
-                if(!file.isDirectory() && (FilenameUtils.isExtension(file.getName(), "yaml")
-                        || FilenameUtils.isExtension(file.getName(), "mf")
-                        || FilenameUtils.isExtension(file.getName(), "meta"))) {
-
-                    Yaml yaml = new Yaml();
-
-                    switch(file.getName()) {
-                        case "TOSCA.meta":
-                            try {
-                                toscaMeta = (Map<String, ?>)yaml.load(new FileInputStream(file));
-                            } catch(ScannerException | FileNotFoundException e1) {
-                                LOG.error("Schema files %s format is not as per standard prescribed", file.getName(),
-                                        e1);
-                            }
-                            break;
-                        case "CSAR.meta":
-                            try {
-                                csarentryd = (Map<String, ?>)yaml.load(new FileInputStream(file));
-                            } catch(ScannerException | FileNotFoundException e2) {
-                                LOG.error("Schema files %s format is not as per standard prescribed", file.getName(),
-                                        e2);
-                            }
-                            break;
-                        case "MRF.yaml":
-                            try {
-                                mrfYaml = (Map<String, ?>)yaml.load(new FileInputStream(file));
-                            } catch(ScannerException | FileNotFoundException e2) {
-                                LOG.error("Schema files %s format is not as per standard prescribed", file.getName(),
-                                        e2);
-                            }
-                            break;
-                        case "MRF.mf":
-                            try {
-                                mrfManifest = (Map<String, ?>)yaml.load(new FileInputStream(file));
-                            } catch(ScannerException | FileNotFoundException e2) {
-                                LOG.error("Schema files %s format is not as per standard prescribed", file.getName(),
-                                        e2);
-                            }
-                            break;
-                    }
-                }
-                schemaFileList.add(e.toAbsolutePath().toString());
-            });
-
-        } catch(NullPointerException | IOException err) {
-            LOG.error("Schema files/folder access error" + err);
+        for (String metaFile: new String []{"TOSCA.meta", "CSAR.meta", "MRF.mf" }) {
+            switch(metaFile) {
+                case "TOSCA.meta":
+                     toscaMeta = this.readYaml("/schema/" + metaFile);
+                    break;
+                case "CSAR.meta":
+                    csarentryd = this.readYaml("/schema/" + metaFile);
+                    break;
+                case "MRF.yaml":
+                    mrfYaml = this.readYaml("/schema/" + metaFile);
+                    break;
+                case "MRF.mf":
+                    mrfManifest = this.readYaml("/schema/" + metaFile);
+                    break;
+            }
         }
-
         return true;
     }
 
@@ -145,9 +111,5 @@ public class ValidatorSchemaLoader {
 
     public Map<String, ?> getMrfManifest() {
         return mrfManifest;
-    }
-
-    public List<String> getSchemaFileList() {
-        return schemaFileList;
     }
 }
