@@ -11,16 +11,14 @@
 	<!-- <parent> <groupId>org.onap.csarvalidation</groupId> <artifactId>csarvalidation</artifactId> 
 		<version>1.0.0-SNAPSHOT</version> </parent> -->
 
-	<parent>
-		<groupId>org.onap.oparent</groupId>
-		<artifactId>oparent</artifactId>
-		<version>1.2.0</version>
-		<relativePath>oparent</relativePath>
-	</parent>
+    <parent>
+        <groupId>org.onap.vnfsdk.validation</groupId>
+        <artifactId>validation</artifactId>
+        <version>1.1.3</version>
+    </parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.onap.vnfsdk.validation</groupId>
 	<artifactId>validation-csar</artifactId>
-	<version>1.1.2</version>
 	<packaging>jar</packaging>
 	<name>csarvalidation/validation</name>
 
