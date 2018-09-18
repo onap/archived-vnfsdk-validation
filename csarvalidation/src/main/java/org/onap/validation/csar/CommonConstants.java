@@ -45,6 +45,10 @@ public class CommonConstants {
 
 	public static final String MAINSERV_TEMPLATE = "MainServiceTemplate.yaml";
 
+	public static final String TOSCA_SWIMAGE = "tosca.artifacts.nfv.SwImage";
+
+	public static final String TOSCA_IMAGE = "tosca.artifacts.Deployment.Image";
+
 	public static final String CSAR_SUFFIX = ".csar";
 
 	public static final String HTTP_HEADER_CONTENT_RANGE = "Content-Range";
