@@ -108,6 +108,8 @@ public class CsarValidator {
 
         String vms = validateMainService();
 
+        //String r02454 = r02454();
+
         if((CommonConstants.SUCCESS_STR != vsm) && (CommonConstants.SUCCESS_STR != vms)) {
 
             return vsm + " OR " + vms;
@@ -116,7 +118,11 @@ public class CsarValidator {
         if(CommonConstants.SUCCESS_STR != vtm) {
             return vtm;
         }
-
+/*
+        if (CommonConstants.SUCCESS_STR != r02454) {
+            return r02454;
+        }
+*/
         return CommonConstants.SUCCESS_STR;
     }
 
@@ -291,10 +297,43 @@ public class CsarValidator {
         if(!Paths.get(MAINSERV_TEMPLATE).isAbsolute()) {
             mainservTemplate = csarFiles.get(FilenameUtils.getName(mainservTemplate));
         }
+
         if(StringUtils.isEmpty(mainservTemplate)) {
             return "MainServiceTemplate does not exist in the package";
         }
         return CommonConstants.SUCCESS_STR;
+    }
+
+    /*
+     * @Author: Victor Gao
+     * @Description:
+     * @Date: 2018/9/18
+     * @Param: [filePath]
+     * @return: boolean
+     **/
+    public static String r02454() {
+        String mainservTemplate = MAINSERV_TEMPLATE;
+        mainservTemplate = csarFiles.get(FilenameUtils.getName(mainservTemplate));
+
+        //TODO: Fixme R3 only check the existence of swImage filed inside VNFD.
+        File file = new File(mainservTemplate);
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String tempString = null;
+            while ((tempString = reader.readLine()) != null) {
+                if (tempString.contains((CommonConstants.TOSCA_SWIMAGE))) {
+                    return CommonConstants.SUCCESS_STR;
+                }
+            }
+        } catch(IOException e2) {
+            return ("CSAR_META_VALIDATION" + ":" + "Exception caught while validateCsarMeta ! " + ErrorCodes.FILE_IO
+                    + e2);
+        }
+
+        if(StringUtils.isEmpty(mainservTemplate)) {
+            return "Can not find the swImage inside Mainservicetemplate";
+        }
+
+        return "Can not find the swImage inside Mainservicetemplate";
     }
 
     private static String checkEntryFor(String fileWithPath, String attribute) throws IOException {

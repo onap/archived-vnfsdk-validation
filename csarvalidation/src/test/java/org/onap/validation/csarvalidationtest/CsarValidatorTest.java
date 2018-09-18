@@ -58,6 +58,12 @@ public class CsarValidatorTest {
 
     String packageId2 = UUID.randomUUID().toString();
 
+    private String cf = classLoader.getResource("testR02454.csar").getFile();
+
+    String sample = System.getProperty("file.separator") + cf.substring(1);
+
+    String pkgid = UUID.randomUUID().toString();
+
     private String csarFile3 = classLoader.getResource("vIMS_NS.csar").getFile();
 
     String sample3 = System.getProperty("file.separator") + csarFile3.substring(1);
@@ -127,17 +133,25 @@ public class CsarValidatorTest {
         testValidateCsarIntegrity(csarValidator5);
         testValidateToscaMeta(csarValidator5);
         testValidateMainService(csarValidator5);
+
+        CsarValidator csarValidator6 = new CsarValidator(pkgid, sample);
+        testValidateCsarIntegrity(csarValidator6);
+        testValidateToscaMeta(csarValidator6);
+        testValidateMainService(csarValidator6);
+        testR02454(csarValidator6);
         // Rel1 specific test case
         String sample1Dir = sample1.replace(".csar", "");
         String sample2Dir = sample2.replace(".csar", "");
         String sample3Dir = sample3.replace(".csar", "");
         String sample4Dir = sample4.replace(".csar", "");
         String sample5Dir = sample5.replace(".csar", "");
+        String sampleDir = sample.replace(".csar", "");
         boolean result = FileUtil.deleteDirectory(sample1Dir);
         boolean result1 = FileUtil.deleteDirectory(sample2Dir);
         boolean result2 = FileUtil.deleteDirectory(sample3Dir);
         boolean result3 = FileUtil.deleteDirectory(sample4Dir);
         boolean result4 = FileUtil.deleteDirectory(sample5Dir);
+        boolean result5 = FileUtil.deleteDirectory(sampleDir);
         assertEquals(true, result == true && result1 == true && result2 == true && result3 == true && result4 == true);
     }
 
@@ -198,6 +212,11 @@ public class CsarValidatorTest {
     private void testValidateCsar(CsarValidator cv) {
 
         String result = CsarValidator.validateCsar();
+        assertEquals(true, result == CommonConstants.SUCCESS_STR);
+    }
+
+    private void testR02454(CsarValidator cv) {
+        String result = CsarValidator.r02454();
         assertEquals(true, result == CommonConstants.SUCCESS_STR);
     }
 }
