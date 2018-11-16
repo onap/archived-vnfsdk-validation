@@ -214,25 +214,20 @@ public class CsarValidator {
         }
 
         try {
-            if(cfile.contains(System.getProperty("file.separator") + CommonConstants.TOSCA_METADATA
-                    + System.getProperty("file.separator") + CommonConstants.TOSCA_META)) {
-                MAINSERV_MANIFEST = checkAndGetMRF(cfile, "Entry-Manifest");
-                if(MAINSERV_MANIFEST == null) {
-                    MAINSERV_MANIFEST = CommonConstants.MAINSERV_MANIFEST;
-                }
-
-                MAINSERV_TEMPLATE = checkAndGetMRF(cfile, "Entry-Definitions");
-                if(MAINSERV_TEMPLATE == null) {
-                    MAINSERV_TEMPLATE = CommonConstants.MAINSERV_TEMPLATE;
-                }
-
-                return CommonConstants.SUCCESS_STR;
+            MAINSERV_MANIFEST = checkAndGetMRF(cfile, "Entry-Manifest");
+            if(MAINSERV_MANIFEST == null) {
+                MAINSERV_MANIFEST = CommonConstants.MAINSERV_MANIFEST;
             }
+
+            MAINSERV_TEMPLATE = checkAndGetMRF(cfile, "Entry-Definitions");
+            if(MAINSERV_TEMPLATE == null) {
+                MAINSERV_TEMPLATE = CommonConstants.MAINSERV_TEMPLATE;
+            }
+
+            return CommonConstants.SUCCESS_STR;
         } catch(Exception e) {
             return ("PARSE_ERROR" + ":" + "TOSCA metadata not parsed properly! " + ErrorCodes.PARSE_ERROR + e);
         }
-
-        return "Tosca.meta file does not exist";
     }
 
     private static String checkAndGetMRF(String mrfFile, String attribute) {
