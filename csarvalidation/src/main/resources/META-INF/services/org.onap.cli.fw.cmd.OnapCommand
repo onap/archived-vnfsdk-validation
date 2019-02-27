@@ -12,4 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-org.onap.validation.csar.VTPValidateCSAR
+org.onap.cvc.csar.VTPValidateCSAR
+org.onap.cvc.csar.cc.VTPValidateCSARR02454
+org.onap.cvc.csar.cc.VTPValidateCSARR04298
+org.onap.cvc.csar.cc.VTPValidateCSARR07879
+org.onap.cvc.csar.cc.VTPValidateCSARR09467
+org.onap.cvc.csar.cc.VTPValidateCSARR13390
+org.onap.cvc.csar.cc.VTPValidateCSARR23823
+org.onap.cvc.csar.cc.VTPValidateCSARR26881
+org.onap.cvc.csar.cc.VTPValidateCSARR27310
+org.onap.cvc.csar.cc.VTPValidateCSARR35851
+org.onap.cvc.csar.cc.VTPValidateCSARR40293
+org.onap.cvc.csar.cc.VTPValidateCSARR43958
+org.onap.cvc.csar.cc.VTPValidateCSARR66070
+org.onap.cvc.csar.cc.VTPValidateCSARR77707
+org.onap.cvc.csar.cc.VTPValidateCSARR77786
