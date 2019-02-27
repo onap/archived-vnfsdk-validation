@@ -17,12 +17,10 @@
 package org.onap.validation.csar;
 
 import java.io.IOException;
-import java.util.Map;
 
 import org.onap.cli.fw.cmd.OnapCommand;
 import org.onap.cli.fw.error.OnapCommandException;
 import org.onap.cli.fw.error.OnapCommandExecutionFailed;
-import org.onap.cli.fw.input.OnapCommandParameter;
 import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +28,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Validates CSAR
  */
-@OnapCommandSchema(schema = "vtp-validate-csar.yaml")
+@OnapCommandSchema(schema = "vtp-validate-csar-casablanca.yaml")
 public class VTPValidateCSAR extends OnapCommand {
     private static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSAR.class);
 
@@ -43,7 +41,7 @@ public class VTPValidateCSAR extends OnapCommand {
         String error = this.test(csar);
 
         //set the result
-           this.getResult().getRecordsMap().get("error").getValues().add(error);
+        this.getResult().getRecordsMap().get("errors").getValues().add(error);
    }
 
    public String test(String csar) throws OnapCommandException {

@@ -1,0 +1,12 @@
+bin/
+target/
+tmp/
+coverage-report/
+.project
+.settings
+.classpath
+.class
+.checkstyle
+*.iml
+*.log
+.idea
