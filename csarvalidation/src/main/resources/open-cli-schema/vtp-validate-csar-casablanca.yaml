@@ -14,9 +14,9 @@
 
 open_cli_schema_version: 1.0
 
-name: csar-validate
+name: csar-validate-casablanca
 
-description: Validate CSAR package formats compliants to ETSI SOL004 and VNFREQS
+description: Validate CSAR package formats
 
 info:
   product: onap-vtp
@@ -33,31 +33,9 @@ parameters:
       is_optional: false
 
 results:
-    direction: portrait
+    direction: landscape
     attributes:
-     - name: vnf
-       description: VNF details such as vendor, type, model, name
-       scope: short
-       type: json
-     - name: date
-       description: Validation date
+     - name: error
+       description: Validation error details
        scope: short
        type: string
-     - name: platform
-       description: Platform used to test the reqs
-       scope: short
-       type: string
-       default_value: VNF Test Platform (VTP) 1.0
-     - name: contact
-       description: Owner for this test case
-       scope: short
-       type: string
-       default_value: ONAP VTP Team onap-discuss@lists.onap.org
-     - name: criteria
-       description: Overall test reqs passed? PASS or FAILED
-       scope: short
-       type: string
-     - name: results
-       description: All test cases results
-       scope: short
-       type: json

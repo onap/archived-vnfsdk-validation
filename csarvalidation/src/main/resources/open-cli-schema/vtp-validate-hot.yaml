@@ -1,0 +1,79 @@
+# Copyright 2019 Huawei Technologies Co., Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+open_cli_schema_version: 1.0
+name: hot-validate
+description: |
+   Validates the OpenStack heat templates using ONAP VNFREQS with help of VVP scripts
+   Before using this command, please install the VVP by following guidelines from
+   https://github.com/onap/vvp-validation-scripts#installation
+
+info:
+  product: onap-vtp
+  version: 1.0
+  service: validation
+  author: ONAP VTP Team onap-discuss@lists.onap.org
+  type: cmd
+
+parameters:
+  - name: hot-folder
+    description: HOT folder path where VNF package files are kept
+    long_option: hot-folder
+    short_option: b
+    type: string
+    is_optional: false
+  - name: script-folder
+    description: Pytest script folder path
+    long_option: script-folder
+    default_value: $s{env:ONAP_VVP_HOME}
+    short_option: n
+    type: string
+    is_optional: false
+
+results:
+  direction: landscape
+  attributes:
+     - name: vnfrqts
+       description: vnfrqts identifiers
+       scope: short
+       type: string
+     - name: test
+       description: test case
+       scope: short
+       type: string
+     - name: template
+       description: template file
+       scope: short
+       type: string
+     - name: message
+       description: error message
+       scope: short
+       type: string
+cmd:
+  command:
+    - pytest ${script-folder} --template-directory=${hot-folder}
+  success_codes:
+    - 0
+    - 1
+    - 5
+  pass_codes:
+    - 0
+    - 5
+  working_directory: .
+  output: $s{file:${script-folder}/output/failures}
+  result_map:
+    vnfrqts: $o{$.*.vnfrqts}
+    test: $o{$.*.test}
+    template: $o{$.*.file}
+    message: $o{$.*.message}

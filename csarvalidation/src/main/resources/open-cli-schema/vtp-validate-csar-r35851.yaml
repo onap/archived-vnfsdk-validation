@@ -14,9 +14,12 @@
 
 open_cli_schema_version: 1.0
 
-name: csar-validate
+name: csar-validate-r35851
 
-description: Validate CSAR package formats compliants to ETSI SOL004 and VNFREQS
+description: |
+  The VNF Package MUST include VNF topology that describes basic network and application
+   connectivity internal and external to the VNF including Link type, KPIs, Bandwidth,
+   latency, jitter, QoS (if applicable) for each interface.
 
 info:
   product: onap-vtp
@@ -33,31 +36,21 @@ parameters:
       is_optional: false
 
 results:
-    direction: portrait
+    direction: landscape
     attributes:
-     - name: vnf
-       description: VNF details such as vendor, type, model, name
-       scope: short
-       type: json
-     - name: date
-       description: Validation date
+     - name: code
+       description: Error code
        scope: short
        type: string
-     - name: platform
-       description: Platform used to test the reqs
+     - name: message
+       description: Error message
        scope: short
        type: string
-       default_value: VNF Test Platform (VTP) 1.0
-     - name: contact
-       description: Owner for this test case
+     - name: file
+       description: File in which error occured
        scope: short
        type: string
-       default_value: ONAP VTP Team onap-discuss@lists.onap.org
-     - name: criteria
-       description: Overall test reqs passed? PASS or FAILED
+     - name: line-no
+       description: Line no at which error occured
        scope: short
        type: string
-     - name: results
-       description: All test cases results
-       scope: short
-       type: json
