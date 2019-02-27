@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Validates CSAR
  */
-@OnapCommandSchema(schema = "vtp-validate-csar.yaml")
+@OnapCommandSchema(schema = "vtp-validate-csar-casablanca.yaml")
 public class VTPValidateCSAR extends OnapCommand {
     private static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSAR.class);
 
@@ -42,8 +42,11 @@ public class VTPValidateCSAR extends OnapCommand {
         //run the test cases
         String error = this.test(csar);
 
+        if (!error.equals("SUCCESS")) {
+//            this.getResult().setPassed(false);
+        }
         //set the result
-           this.getResult().getRecordsMap().get("error").getValues().add(error);
+        this.getResult().getRecordsMap().get("errors").getValues().add(error);
    }
 
    public String test(String csar) throws OnapCommandException {
