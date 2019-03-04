@@ -121,7 +121,7 @@ public class VTPValidateCSAR extends OnapCommand {
 
         private String contact = "ONAP VTP Team onap-discuss@lists.onap.org";
 
-        private String platform = "VNF Test Platform (VTP) 1.0";
+        private String platform = "VNFSDK - VNF Test Platform (VTP) 1.0";
 
         public VNF getVnf() {
             return vnf;
