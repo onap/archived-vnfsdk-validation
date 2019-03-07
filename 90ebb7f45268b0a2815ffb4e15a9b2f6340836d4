@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6f804d89_779dd476",
+        "filename": "csarvalidation/src/test/java/org/onap/cvc/csar/PnfCSARArchiveTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 39
+      },
+      "writtenOn": "2019-03-07T13:01:57Z",
+      "side": 1,
+      "message": "we should declare the license on top of a file",
+      "revId": "90ebb7f45268b0a2815ffb4e15a9b2f6340836d4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
