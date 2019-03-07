@@ -24,11 +24,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -783,7 +779,7 @@ public class CSARArchive {
 
         private Manifest.Metadata metadata = new Metadata();
 
-        private Map<String, Map<String, String>> nonMano = new HashMap<>();
+        private Map<String, Map<String, List<String>>> nonMano = new HashMap<>();
 
         public Manifest.Metadata getMetadata() {
             return metadata;
@@ -793,11 +789,11 @@ public class CSARArchive {
             this.metadata = metadata;
         }
 
-        public Map<String, Map<String, String>> getNonMano() {
+        public Map<String, Map<String, List<String>>> getNonMano() {
             return nonMano;
         }
 
-        public void setNonMano(Map<String, Map<String, String>> nonMano) {
+        public void setNonMano(Map<String, Map<String, List<String>>> nonMano) {
             this.nonMano = nonMano;
         }
     }
@@ -865,9 +861,12 @@ public class CSARArchive {
     }
 
     public List<CSARError> getErrors() {
-        return errors;
+        return Collections.unmodifiableList(errors);
     }
 
+    public void addErrors(List<CSARError>errors){
+        this.errors.addAll(errors);
+    }
     private void unzip(String csarPath) throws IOException {
         File csarFile = new File(csarPath);
 
@@ -923,7 +922,7 @@ public class CSARArchive {
         }
     }
 
-    private void parseManifest() throws IOException {
+    void parseManifest() throws IOException {
         //manifest is optional, so check for it
         if (this.manifestMfFile == null) {
             return;
