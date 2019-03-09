@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3c220d62_0a5349e0",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/PnfManifestParser.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2019-03-09T10:50:46Z",
+      "side": 1,
+      "message": "this logic would break for any line with this entry. to avoid this, can you refer the existing metadata handling in mf file. same could be enabled in another conditions below\n\nalso, pls add corresponding CSARErrors for each specific error condition, this would help to report the errors to user.",
+      "range": {
+        "startLine": 56,
+        "startChar": 20,
+        "endLine": 56,
+        "endChar": 54
+      },
+      "revId": "27615c06802419ae4aee659e8b4385b9a2b9b56f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
