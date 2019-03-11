@@ -16,20 +16,30 @@
 
 package org.onap.cvc.csar;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.junit.Test;
-import org.onap.cli.main.OnapCli;
 
-public class CsarValidatorTest {
+public class CSARArchiveTest {
 
     @Test
     public void testAll() throws IOException, InterruptedException {
-        OnapCli cli = new OnapCli(new String [] {"--product", "onap-vtp", "csar-validate", "--format", "json", "--csar", "./src/test/resources/VoLTE.csar"});
-        cli.handle();
-        assertEquals(0, cli.getExitCode());
+        System.out.println(CSARArchive.SOL0004_2_4_1);
+
+        for (String csarFileName: Arrays.asList(new String[] {"enterprise2DC", "VoLTE", "vEPC_NS", "vIMS_NS", "sample2"})) {
+            try {
+                CSARArchive csar = new CSARArchive();
+                System.out.println(csarFileName);
+                csar.init("./src/test/resources/" + csarFileName + ".csar");
+                csar.parse();
+                csar.cleanup();
+                System.out.println(csar.getErrors());
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 
 }

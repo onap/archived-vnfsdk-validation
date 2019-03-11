@@ -1309,22 +1309,4 @@ public class CSARArchive {
     public File getFileFromCsar(String path) {
         return new File(this.tempDir.toFile().getAbsolutePath() + File.separator + path);
     }
-
-    public static void main(String[] args) {
-        System.out.println(CSARArchive.SOL0004_2_4_1);
-
-        for (String csarFileName: Arrays.asList(new String[] {"enterprise2DC", "VoLTE", "vEPC_NS", "vIMS_NS", "sample2"})) {
-            try {
-                CSARArchive csar = new CSARArchive();
-                System.out.println(csarFileName);
-                csar.init("D:\\workspace\\onap\\1.1\\vnfsdk\\validation\\csarvalidation\\src\\test\\resources\\" + csarFileName + ".csar");
-                csar.parse();
-                csar.cleanup();
-                System.out.println(csar.getErrors());
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
 }
