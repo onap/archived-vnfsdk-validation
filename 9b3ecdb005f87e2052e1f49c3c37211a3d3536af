@@ -22,6 +22,30 @@
       "revId": "9b3ecdb005f87e2052e1f49c3c37211a3d3536af",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "541a9ce6_5c0db438",
+        "filename": "csarvalidation/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2019-03-11T07:25:18Z",
+      "side": 0,
+      "message": "ok",
+      "parentUuid": "12aaaf4e_7eb86cd8",
+      "range": {
+        "startLine": 116,
+        "startChar": 1,
+        "endLine": 121,
+        "endChar": 31
+      },
+      "revId": "9b3ecdb005f87e2052e1f49c3c37211a3d3536af",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
