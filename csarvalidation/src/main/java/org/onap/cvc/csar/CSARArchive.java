@@ -55,7 +55,7 @@ public class CSARArchive {
         return SOL0004_2_4_1;
     }
 
-    public Path tempDir;
+    protected Path tempDir;
 
     public static final String TEMP_DIR = ".";
 
@@ -98,7 +98,7 @@ public class CSARArchive {
     public static final String Entry_Definition__tosca_definitions_version__simple_1_0 = "tosca_simple_yaml_1_0";
     public static final String Entry_Definition__tosca_definitions_version__simple_1_1 = "tosca_simple_yaml_1_1";
 
-    public static final String[] Entry_Definition__tosca_definitions_versions = new String[] {
+    protected static final String[] Entry_Definition__tosca_definitions_versions = new String[] {
             Entry_Definition__tosca_definitions_version__simple_1_0,
             Entry_Definition__tosca_definitions_version__simple_1_1
     };
@@ -875,25 +875,25 @@ public class CSARArchive {
             throw new RuntimeException(csarPath + " does not exist");
         }
 
-        ZipInputStream csar = new ZipInputStream(new BufferedInputStream(new FileInputStream(csarFile)));
+        try (ZipInputStream csar = new ZipInputStream(new BufferedInputStream(new FileInputStream(csarFile)))){
+            ZipEntry entry;
+            byte[] buffer = new byte[2048];
+            while ((entry = csar.getNextEntry()) != null) {
 
-        ZipEntry entry;
-        byte[] buffer = new byte[2048];
-        while ((entry = csar.getNextEntry()) != null) {
+                File filePath = new File(this.tempDir + File.separator + entry.getName());
 
-            File filePath = new File(this.tempDir + File.separator + entry.getName());
+                if (!filePath.getParentFile().isDirectory()) {
+                    filePath.getParentFile().delete();
+                }
+                filePath.getParentFile().mkdirs();
 
-            if (!filePath.getParentFile().isDirectory()) {
-                filePath.getParentFile().delete();
-            }
-            filePath.getParentFile().mkdirs();
+                try (FileOutputStream fos = new FileOutputStream(filePath);
+                        BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length)) {
 
-            try (FileOutputStream fos = new FileOutputStream(filePath);
-                    BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length)) {
-
-                int len;
-                while ((len = csar.read(buffer)) > 0) {
-                    bos.write(buffer, 0, len);
+                    int len;
+                    while ((len = csar.read(buffer)) > 0) {
+                        bos.write(buffer, 0, len);
+                    }
                 }
             }
         }
