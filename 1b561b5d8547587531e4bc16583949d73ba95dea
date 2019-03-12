@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "51eeda52_f82c5ba9",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/CSARArchive.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 869,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2019-03-12T01:36:52Z",
+      "side": 1,
+      "message": "could you please use getErrors().addAll() directly instead of this new function. usually collection variables are updated in jave in this manner.",
+      "range": {
+        "startLine": 867,
+        "startChar": 4,
+        "endLine": 869,
+        "endChar": 5
+      },
+      "revId": "1b561b5d8547587531e4bc16583949d73ba95dea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "121b2b90_4bbf3795",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/PnfManifestParser.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2019-03-12T01:36:52Z",
+      "side": 1,
+      "message": "pls add this as new Error class with unique error code. Every error in the CSAR is captured with an unique error code, which would help to report and handle the error.",
+      "range": {
+        "startLine": 73,
+        "startChar": 40,
+        "endLine": 73,
+        "endChar": 67
+      },
+      "revId": "1b561b5d8547587531e4bc16583949d73ba95dea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
