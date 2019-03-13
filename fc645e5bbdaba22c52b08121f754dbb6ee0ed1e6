@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da68c8bf_d900e82b",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/PnfManifestParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2019-03-13T02:54:32Z",
+      "side": 1,
+      "message": "thanks for adding these errors. Now it can be further improved by alinging with existing CSARError in CSARArchive for EntryMissing, Conflict, Invalid, etc error cases",
+      "range": {
+        "startLine": 202,
+        "startChar": 4,
+        "endLine": 206,
+        "endChar": 5
+      },
+      "revId": "fc645e5bbdaba22c52b08121f754dbb6ee0ed1e6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
