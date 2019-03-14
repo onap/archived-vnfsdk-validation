@@ -66,9 +66,11 @@ cmd:
   success_codes:
     - 0
     - 1
+    - 2
     - 5
   pass_codes:
     - 0
+    - 2
     - 5
   working_directory: .
   output: $s{file:${script-folder}/output/failures}
