@@ -1,0 +1,14 @@
+metadata:
+    pnf_product_name: RadioNode
+    pnf_provider_id: Ericsson
+    pnf_package_version: 1.0
+    pnf_release_date_time: 2019-01-14T11:25:00+00:00
+
+non_mano_artifact_sets:
+    prv.onap.ves_event:  # if private else onap_ves_event if public
+        Source: Artifacts/Deployment/Events/RadioNode_Pnf_v1.yml
+    prv.onap.pm_dictionary:    # if private else onap_pm_dictionary if public
+        Source: Artifacts/Deployment/Measurements/PM_Dictionary.yml
+    prv.onap.yang_modules:     # if private else onap_yang_modules if public
+        Source: Artifacts/Deployment/Yang_module/yang-module1.yang
+        Source: Artifacts/Deployment/Yang_module/yang-module2.yang
