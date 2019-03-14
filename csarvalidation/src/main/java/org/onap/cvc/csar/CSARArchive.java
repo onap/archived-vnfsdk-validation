@@ -57,7 +57,7 @@ public class CSARArchive {
 
     protected Path tempDir;
 
-    public static final String TEMP_DIR = ".";
+    public static final String TEMP_DIR = "/tmp";
 
     public static final String TOSCA_Metadata = "TOSCA-Metadata";
 

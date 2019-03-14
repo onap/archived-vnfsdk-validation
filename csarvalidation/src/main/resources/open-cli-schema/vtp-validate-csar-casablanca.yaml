@@ -19,10 +19,11 @@ name: csar-validate-casablanca
 description: Validate CSAR package formats
 
 info:
-  product: onap-vtp
+  product: onap-csablanca
   version: 1.0
   service: validation
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  ignore: true
 
 parameters:
     - name: csar
