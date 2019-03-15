@@ -28,11 +28,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PnfManifestParser {
+class PnfManifestParser {
 
 
-    public static final String METADATA_SECTION = "metadata";
-    public static final String NON_MANO_ARTIFACT_SETS_SECTION = "non_mano_artifact_sets";
+    private static final String METADATA_SECTION = "metadata";
+    private static final String NON_MANO_ARTIFACT_SETS_SECTION = "non_mano_artifact_sets";
+    private static final String PRODUCT_NAME = "pnfd_name";
+    private static final String PROVIDER_ID = "pnfd_provider";
+    private static final String VERSION = "pnfd_archive_version";
+    private static final String RELEASE_DATE_TIME = "pnfd_release_date_time";
 
     private final List<String> lines;
     private final String fileName;
@@ -42,7 +46,7 @@ public class PnfManifestParser {
         this.fileName = fileName;
     }
 
-    public static PnfManifestParser getInstance(String fileName) throws IOException {
+    static PnfManifestParser getInstance(String fileName) throws IOException {
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
             List<String> lines = stream
                     .map(String::trim)
@@ -52,7 +56,7 @@ public class PnfManifestParser {
         }
     }
 
-    public Pair<CSARArchive.Manifest.Metadata, List<CSARArchive.CSARError>> fetchMetadata() {
+    Pair<CSARArchive.Manifest.Metadata, List<CSARArchive.CSARError>> fetchMetadata() {
         CSARArchive.Manifest.Metadata metadata = new CSARArchive.Manifest.Metadata();
         List<CSARArchive.CSARError> errors = new ArrayList<>();
 
@@ -60,11 +64,10 @@ public class PnfManifestParser {
         int lineNumber = 0;
         for (String line : lines) {
             lineNumber++;
-            if (line.trim().isEmpty()){
+            if (line.trim().isEmpty() || line.trim().startsWith("#")){
                 continue;
             } else if (line.startsWith(METADATA_SECTION)) {
                 isMetadataSectionAvailable = true;
-                continue;
             }else if (isMetadataSectionAvailable) {
                 Pair<String, String> data = parseLine(line);
 
@@ -87,7 +90,7 @@ public class PnfManifestParser {
 
     }
 
-    public Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>> fetchNonManoArtifacts() {
+    Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>> fetchNonManoArtifacts() {
         Map<String, Map<String, List<String>>> nonManoArtifacts = new HashMap<>();
         List<CSARArchive.CSARError> errors = new ArrayList<>();
 
@@ -96,11 +99,10 @@ public class PnfManifestParser {
 
         for (String line : lines) {
 
-            if (line.trim().isEmpty()) {
+            if (line.trim().isEmpty() || line.trim().startsWith("#")) {
                 continue;
             } else if (line.startsWith(NON_MANO_ARTIFACT_SETS_SECTION)) {
                 isNonManoArtifactsSectionAvailable = true;
-                continue;
             } else if (isNonManoArtifactsSectionAvailable) {
                 Pair<String, String> data = parseLine(line);
 
@@ -130,16 +132,16 @@ public class PnfManifestParser {
         String value = data.getValue();
 
         switch (paramName) {
-            case "pnf_product_name":
+            case PRODUCT_NAME:
                 metadata.setProductName(value);
                 break;
-            case "pnf_provider_id":
+            case PROVIDER_ID:
                 metadata.setProviderId(value);
                 break;
-            case "pnf_package_version":
+            case VERSION:
                 metadata.setPackageVersion(value);
                 break;
-            case "pnf_release_date_time":
+            case RELEASE_DATE_TIME:
                 metadata.setReleaseDateTime(value);
                 break;
             default:
@@ -172,8 +174,9 @@ public class PnfManifestParser {
 
 
     private boolean isNewSection(Pair<String, String> data) {
+        String key = data.getKey().trim();
         String value = data.getValue().trim();
-        return value.isEmpty() || value.startsWith("#");
+        return key.matches("[a-zA-z_0-9]+") && (value.isEmpty() || value.startsWith("#"));
     }
 
 
@@ -191,7 +194,7 @@ public class PnfManifestParser {
     }
 
     private static class PnfCSARError extends CSARArchive.CSARError {
-        public PnfCSARError(String errorCode, String message,  int lineNumber, String file) {
+        PnfCSARError(String errorCode, String message,  int lineNumber, String file) {
             super(errorCode);
             this.message = message;
             this.file = file;
@@ -199,20 +202,20 @@ public class PnfManifestParser {
         }
     }
 
-    public static class PnfCSARErrorInvalidEntry extends PnfCSARError {
-        public PnfCSARErrorInvalidEntry(String entry, String file, int lineNumber) {
+    private static class PnfCSARErrorInvalidEntry extends PnfCSARError {
+        PnfCSARErrorInvalidEntry(String entry, String file, int lineNumber) {
             super("0x2000", "Invalid. Entry [" + entry + "]", lineNumber, file);
         }
     }
 
     private static class PnfCSARErrorWarning extends PnfCSARError {
-        public PnfCSARErrorWarning(String entry, String file, int lineNumber) {
+        PnfCSARErrorWarning(String entry, String file, int lineNumber) {
             super("0x2001", "Warning. Entry [" + entry + "]", lineNumber, file);
         }
     }
 
     private static class PnfCSARErrorEntryMissing extends PnfCSARError {
-        public PnfCSARErrorEntryMissing(String entry, String file, int lineNumber) {
+        PnfCSARErrorEntryMissing(String entry, String file, int lineNumber) {
             super("0x2002", "Missing. Entry [" + entry + "]", lineNumber, file);
         }
     }
