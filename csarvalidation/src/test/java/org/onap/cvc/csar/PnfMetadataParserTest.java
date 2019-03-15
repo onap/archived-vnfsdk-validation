@@ -55,10 +55,10 @@ public class PnfMetadataParserTest {
         // given
         List<String> lines = Lists.newArrayList(
                 "metadata:",
-                "pnf_product_name: RadioNode",
-                "pnf_provider_id: Ericsson",
-                "pnf_package_version: 1.0",
-                "pnf_release_date_time: 2019-01-14T11:25:00+00:00",
+                "pnfd_name: RadioNode",
+                "pnfd_provider: Ericsson",
+                "pnfd_archive_version: 1.0",
+                "pnfd_release_date_time: 2019-01-14T11:25:00+00:00",
                 "extra_param_1: some value",
                 "extra_param_2: some value"
         );
@@ -83,10 +83,11 @@ public class PnfMetadataParserTest {
         // given
         List<String> lines = Lists.newArrayList(
                 "metadata:",
-                "pnf_product_name: RadioNode",
-                "pnf_provider_id: Ericsson",
-                "pnf_package_version: 1.0",
-                "pnf_release_date_time: 2019-01-14T11:25:00+00:00",
+                "pnfd_name: RadioNode",
+                "pnfd_provider: Ericsson",
+                "pnfd_archive_version: 1.0",
+                "# Ignore this comment",
+                "pnfd_release_date_time: 2019-01-14T11:25:00+00:00",
                 "non_mano_artifact_sets:",
                 "param_name: some value"
         );
@@ -108,10 +109,10 @@ public class PnfMetadataParserTest {
         // given
         List<String> lines = Lists.newArrayList(
                 "metadata:",
-                "pnf_product_name: RadioNode",
-                "pnf_provider_id: Ericsson",
-                "pnf_package_version: 1.0",
-                "pnf_release_date_time: 2019-01-14T11:25:00+00:00",
+                "pnfd_name: RadioNode",
+                "pnfd_provider: Ericsson",
+                "pnfd_archive_version: 1.0",
+                "pnfd_release_date_time: 2019-01-14T11:25:00+00:00",
                 "unknown_section:",
                 "param_name: some value"
         );
@@ -130,14 +131,14 @@ public class PnfMetadataParserTest {
 
 
     @Test
-    public void shouldReportAWarningWhenTokenWithOutColonWasFoundDuringMetadataProcessing() {
+    public void shouldReportAInvalidWhenTokenWithOutColonWasFoundDuringMetadataProcessing() {
         // given
         List<String> lines = Lists.newArrayList(
                 "metadata:",
-                "pnf_product_name RadioNode",
-                "pnf_provider_id: Ericsson",
-                "pnf_package_version: 1.0",
-                "pnf_release_date_time: 2019-01-14T11:25:00+00:00"
+                "pnfd_name RadioNode",
+                "pnfd_provider: Ericsson",
+                "pnfd_archive_version: 1.0",
+                "pnfd_release_date_time: 2019-01-14T11:25:00+00:00"
         );
 
         // when
@@ -148,7 +149,7 @@ public class PnfMetadataParserTest {
         List<CSARArchive.CSARError> errors = data.getRight();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(errors.stream().map(CSARArchive.CSARError::getMessage).collect(Collectors.toList())).contains(
-                "Warning. Entry [pnf_product_name RadioNode]"
+                "Invalid. Entry [pnfd_name RadioNode]"
         );
     }
 

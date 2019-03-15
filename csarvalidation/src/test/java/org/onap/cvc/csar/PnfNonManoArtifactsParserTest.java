@@ -56,12 +56,13 @@ public class PnfNonManoArtifactsParserTest {
         // given
         List<String> lines = Lists.newArrayList(
                 "non_mano_artifact_sets:",
-                                "prv.onap.ves_event:  # if private else onap_ves_event if public",
-                                    "Source: Artifacts/Deployment/Events/RadioNode_Pnf_v1.yml",
+                                "# Ignore this comment",
+                                "onap_ves_events:  # if private else onap_ves_event if public",
+                                    "source: Artifacts/Events/VES_registration.yml",
                                     "extra_param_1: some value",
                                     "extra_param_2: some value",
-                                "prv.onap.pm_dictionary:    # if private else onap_pm_dictionary if public",
-                                    "Source: Artifacts/Deployment/Measurements/PM_Dictionary.yml",
+                                "onap_pm_dictionary:    # if private else onap_pm_dictionary if public",
+                                    "source: Artifacts/Measurements/PM_Dictionary.yaml",
                                 "param name:     # if private else onap_yang_modules if public",
                                     "key: value"
         );

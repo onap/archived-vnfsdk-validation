@@ -57,16 +57,21 @@ public class PnfManifestParserTest {
         Map<String, Map<String, List<String>>> nonManoArtifacts = mapListPair.getKey();
         List<CSARArchive.CSARError> errors= mapListPair.getValue();
 
-        assertThat(nonManoArtifacts.get("prv.onap.ves_event").get("Source"))
-                .isEqualTo(Lists.newArrayList("Artifacts/Deployment/Events/RadioNode_Pnf_v1.yml")
+        assertThat(nonManoArtifacts.get("onap_ves_events").get("source"))
+                .isEqualTo(Lists.newArrayList("Artifacts/Events/VES_registration.yml")
                 );
-        assertThat(nonManoArtifacts.get("prv.onap.pm_dictionary").get("Source"))
-                .isEqualTo(Lists.newArrayList("Artifacts/Deployment/Measurements/PM_Dictionary.yml")
+        assertThat(nonManoArtifacts.get("onap_pm_dictionary").get("source"))
+                .isEqualTo(Lists.newArrayList("Artifacts/Measurements/PM_Dictionary.yaml")
                 );
-        assertThat(nonManoArtifacts.get("prv.onap.yang_modules").get("Source"))
+        assertThat(nonManoArtifacts.get("onap_yang_module").get("source"))
+                .isEqualTo(Lists.newArrayList("Artifacts/Yang_module/Yang_module.yaml")
+                );
+        assertThat(nonManoArtifacts.get("onap_others").get("source"))
                 .isEqualTo(Lists.newArrayList(
-                        "Artifacts/Deployment/Yang_module/yang-module1.yang",
-                        "Artifacts/Deployment/Yang_module/yang-module2.yang"
+                        "Artifacts/scripts/install.sh",
+                        "Artifacts/Informational/user_guide.txt",
+                        "Artifacts/Other/installation_guide.txt",
+                        "Artifacts/Other/review_log.txt"
                         )
                 );
         assertThat(errors.size()).isEqualTo(0);
