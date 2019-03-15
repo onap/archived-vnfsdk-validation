@@ -14,9 +14,13 @@
 
 open_cli_schema_version: 1.0
 
-name: csar-validate
+name: csar-validate-r10087
 
-description: Validate CSAR package formats compliants to ETSI SOL004, SOL001 and VNFREQS
+description: |
+  The VNF provider MUST provide the binaries and images needed to instantiate the VNF (VNF and VNFC images) either as:
+  Local artifact in CSAR: ROOT\Artifacts\ VNF_Image.bin
+  externally referred (by URI) artifact in Manifest file (also may be referred by VNF Descriptor)
+  Note: Currently, ONAP doesn’t have the capability of Image management, we upload the image into VIM/VNFM manually.
 
 info:
   product: onap-vtp
@@ -33,31 +37,21 @@ parameters:
       is_optional: false
 
 results:
-    direction: portrait
+    direction: landscape
     attributes:
-     - name: vnf
-       description: VNF details such as vendor, type, model, name
-       scope: short
-       type: json
-     - name: date
-       description: Validation date
+     - name: code
+       description: Error code
        scope: short
        type: string
-     - name: platform
-       description: Platform used to test the reqs
+     - name: message
+       description: Error message
        scope: short
        type: string
-       default_value: VNF Test Platform (VTP) 1.0
-     - name: contact
-       description: Owner for this test case
+     - name: file
+       description: File in which error occured
        scope: short
        type: string
-       default_value: ONAP VTP Team onap-discuss@lists.onap.org
-     - name: criteria
-       description: Overall test reqs passed? PASS or FAILED
+     - name: line-no
+       description: Line no at which error occured
        scope: short
        type: string
-     - name: results
-       description: All test cases results
-       scope: short
-       type: json

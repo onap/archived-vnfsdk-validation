@@ -135,9 +135,9 @@ public class CSARArchive {
             this.code = code;
         }
 
-        private String code;
+        private String vnfreqNo;
 
-        private String subCode;
+        private String code;
 
         protected String message = "";
 
@@ -177,6 +177,14 @@ public class CSARArchive {
             this.lineNumber = lineNumber;
         }
 
+        public String getVnfreqNo() {
+            return this.vnfreqNo;
+        }
+
+        public void setVnfreqNo(String no) {
+            this.vnfreqNo = no;
+        }
+
         public String toString() {
             try {
                 return new ObjectMapper().writeValueAsString(this);
@@ -184,22 +192,6 @@ public class CSARArchive {
                 //never occurs
                 return "{}";
             }
-        }
-
-        public String getSubCode() {
-            return subCode;
-        }
-
-        public void setSubCode(String subCode) {
-            this.subCode = subCode;
-        }
-
-        public String getErrorCode() {
-            if (this.getSubCode() != null) {
-                return this.getSubCode();
-            }
-
-            return this.getCode();
         }
     }
 
@@ -217,6 +209,11 @@ public class CSARArchive {
 
     public static class CSARErrorInvalidEntryValue extends CSARError {
         public CSARErrorInvalidEntryValue(String entry, String file, int lineNo, String message, String validValues) {
+            this(entry, file, message, validValues);
+            this.lineNumber = lineNo;
+        }
+
+        public CSARErrorInvalidEntryValue(String entry, String file, String message, String validValues) {
             super("0x1001");
             this.message = "Invalid value. Entry [" + entry + "]";
             if (validValues != null) {
@@ -228,7 +225,6 @@ public class CSARArchive {
             }
 
             this.file = file;
-            this.lineNumber = lineNo;
         }
     }
 
@@ -241,6 +237,12 @@ public class CSARArchive {
             }
             this.file = file;
             this.lineNumber = lineNo;
+        }
+
+        public CSARErrorEntryMissing(String entry, String file) {
+            super("0x1002");
+            this.message = "Missing. Entry [" + entry + "]";
+            this.file = file;
         }
     }
 
@@ -317,7 +319,7 @@ public class CSARArchive {
                     definitionYaml,
                     -1,
                     null);
-            this.setSubCode("0x001");
+            this.setCode("0x001");
         }
     }
 
@@ -329,7 +331,7 @@ public class CSARArchive {
                     null,
                     Entry_Definition__tosca_definitions_version__simple_1_1);
 
-            this.setSubCode("0x0002");
+            this.setCode("0x0002");
         }
     }
 
@@ -341,7 +343,7 @@ public class CSARArchive {
                     -1,
                     null);
 
-            this.setSubCode("0x0003");
+            this.setCode("0x0003");
         }
     }
 
@@ -353,7 +355,7 @@ public class CSARArchive {
                     -1,
                     null);
 
-            this.setSubCode("0x0004");
+            this.setCode("0x0004");
         }
     }
 
@@ -365,7 +367,7 @@ public class CSARArchive {
                     -1,
                     null);
 
-            this.setSubCode("0x0005");
+            this.setCode("0x0005");
         }
     }
 
@@ -377,7 +379,7 @@ public class CSARArchive {
                     definitionYaml + " does not exist",
                     null);
 
-            this.setSubCode("0x0006");
+            this.setCode("0x0006");
         }
     }
 
@@ -389,7 +391,7 @@ public class CSARArchive {
                     manifest + " does not exist",
                     null);
 
-            this.setSubCode("0x0007");
+            this.setCode("0x0007");
         }
     }
 
@@ -401,7 +403,7 @@ public class CSARArchive {
                     logs + " does not exist",
                     null);
 
-            this.setSubCode("0x0008");
+            this.setCode("0x0008");
         }
     }
 
@@ -413,7 +415,7 @@ public class CSARArchive {
                     tests + " folder does not exist",
                     null);
 
-            this.setSubCode("0x0009");
+            this.setCode("0x0009");
         }
     }
 
@@ -425,7 +427,7 @@ public class CSARArchive {
                     license + " does not exist",
                     null);
 
-            this.setSubCode("0x000a");
+            this.setCode("0x000a");
         }
     }
 
@@ -437,7 +439,7 @@ public class CSARArchive {
                     certificate + " does not exist",
                     null);
 
-            this.setSubCode("0x000b");
+            this.setCode("0x000b");
         }
     }
 
@@ -448,7 +450,7 @@ public class CSARArchive {
                     -1,
                     null);
 
-            this.setSubCode("0x000c");
+            this.setCode("0x000c");
         }
     }
 
@@ -459,7 +461,7 @@ public class CSARArchive {
                     -1,
                     null);
 
-            this.setSubCode("0x000d");
+            this.setCode("0x000d");
         }
     }
 
@@ -470,7 +472,7 @@ public class CSARArchive {
                     -1,
                     null);
 
-            this.setSubCode("0x000e");
+            this.setCode("0x000e");
         }
     }
 
@@ -481,7 +483,7 @@ public class CSARArchive {
                     -1,
                     null);
 
-            this.setSubCode("0x000f");
+            this.setCode("0x000f");
         }
     }
 
@@ -492,7 +494,7 @@ public class CSARArchive {
                     -1,
                     null);
 
-            this.setSubCode("0x0010");
+            this.setCode("0x0010");
         }
     }
 
@@ -504,7 +506,7 @@ public class CSARArchive {
                     "Only one definition YAML should be provided at the root of the archive",
                     fileNames);
 
-            this.setSubCode("0x0011");
+            this.setCode("0x0011");
         }
     }
 
@@ -517,7 +519,7 @@ public class CSARArchive {
                     "Only one manifest MF file should be provided at the root of the archive",
                     fileNames);
 
-            this.setSubCode("0x0012");
+            this.setCode("0x0012");
         }
     }
 
@@ -530,7 +532,7 @@ public class CSARArchive {
                     definitionYaml + ".mf", //fix the name part
                     manifest);
 
-            this.setSubCode("0x0013");
+            this.setCode("0x0013");
         }
     }
 
@@ -542,7 +544,7 @@ public class CSARArchive {
                     "Only one certificates file should be provided at the root of the archive",
                     fileNames);
 
-            this.setSubCode("0x0014");
+            this.setCode("0x0014");
         }
     }
 
@@ -555,7 +557,7 @@ public class CSARArchive {
                     definitionYaml + ".cert", //fix the name part
                     certificate);
 
-            this.setSubCode("0x0015");
+            this.setCode("0x0015");
         }
     }
 
