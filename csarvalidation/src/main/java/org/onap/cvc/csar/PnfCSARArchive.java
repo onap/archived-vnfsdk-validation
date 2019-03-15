@@ -45,4 +45,13 @@ public class PnfCSARArchive extends CSARArchive {
         this.getErrors().addAll(nonManoArtifactsData.getValue());
     }
 
+    @Override
+    String getEntryManifestParamName(){
+        return "ETSI-Entry-Manifest";
+    }
+
+    @Override
+    String getEntryChangeLogParamName(){
+        return "ETSI-Entry-Change-Log";
+    }
 }

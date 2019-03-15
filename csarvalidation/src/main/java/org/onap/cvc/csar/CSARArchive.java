@@ -382,8 +382,8 @@ public class CSARArchive {
     }
 
     public static class CSARErrorInvalidEntryValueManifestNotFound extends CSARErrorInvalidEntryValue {
-        public CSARErrorInvalidEntryValueManifestNotFound(String manifest, int lineNo) {
-            super(TOSCA_Metadata__TOSCA_Meta__Entry_Manifest,
+        public CSARErrorInvalidEntryValueManifestNotFound(String manifest, int lineNo, String entryManifestArgumentName) {
+            super(entryManifestArgumentName,
                     TOSCA_Metadata__TOSCA_Meta,
                     lineNo,
                     manifest + " does not exist",
@@ -394,8 +394,8 @@ public class CSARArchive {
     }
 
     public static class CSARErrorInvalidEntryValueLogsNotFound extends CSARErrorInvalidEntryValue {
-        public CSARErrorInvalidEntryValueLogsNotFound(String logs, int lineNo) {
-            super(TOSCA_Metadata__TOSCA_Meta__Entry_Change_Log,
+        public CSARErrorInvalidEntryValueLogsNotFound(String logs, int lineNo, String entryChangeLogArgumentName) {
+            super(entryChangeLogArgumentName,
                     TOSCA_Metadata__TOSCA_Meta,
                     lineNo,
                     logs + " does not exist",
@@ -1095,21 +1095,21 @@ public class CSARArchive {
                                             this.toscaMeta.getEntryDefinitionYaml(),
                                             lineNo));
                         }
-                } else if(key.equalsIgnoreCase(TOSCA_Metadata__TOSCA_Meta__Entry_Manifest)) {
+                } else if(key.equalsIgnoreCase(getEntryManifestParamName())) {
                         this.toscaMeta.setEntryManifestMf(value);
                         this.manifestMfFile = this.tempDir.resolve(this.toscaMeta.getEntryManifestMf()).toFile();
                         if (!this.manifestMfFile.exists()) {
                             errors.add(new CSARErrorInvalidEntryValueManifestNotFound(
                                     this.toscaMeta.getEntryManifestMf(),
-                                    lineNo));
+                                    lineNo, getEntryManifestParamName()));
                         }
-                } else if(key.equalsIgnoreCase(TOSCA_Metadata__TOSCA_Meta__Entry_Change_Log)) {
+                } else if(key.equalsIgnoreCase(getEntryChangeLogParamName())) {
                         this.toscaMeta.setEntryChangeLog(value);
                         this.changeLogTxtFile = this.tempDir.resolve(this.toscaMeta.getEntryChangeLog()).toFile();
                         if (!this.changeLogTxtFile.exists()) {
                             errors.add(new CSARErrorInvalidEntryValueLogsNotFound(
                                     this.toscaMeta.getEntryChangeLog(),
-                                    lineNo));
+                                    lineNo, getEntryChangeLogParamName()));
                         }
                 } else if(key.equalsIgnoreCase(TOSCA_Metadata__TOSCA_Meta__Entry_Tests)) {
                         this.toscaMeta.setEntryTest(value);
@@ -1279,6 +1279,14 @@ public class CSARArchive {
                 }
             }
         }
+    }
+
+    String getEntryManifestParamName(){
+        return TOSCA_Metadata__TOSCA_Meta__Entry_Manifest;
+    }
+
+    String getEntryChangeLogParamName(){
+        return TOSCA_Metadata__TOSCA_Meta__Entry_Change_Log;
     }
 
     public void init(String csarPath) throws IOException {
