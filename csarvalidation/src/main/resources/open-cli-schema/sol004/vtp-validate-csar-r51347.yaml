@@ -14,15 +14,19 @@
 
 open_cli_schema_version: 1.0
 
-name: csar-validate
+name: csar-validate-r51347
 
-description: Validate CSAR package formats compliants to ETSI SOL004, SOL001 and VNFREQS
+description: |
+  The VNF package MUST be arranged as a CSAR archive as specified in TOSCA Simple Profile in YAML 1.2.
 
 info:
   product: onap-vtp
   version: 1.0
   service: validation
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  metadata:
+    keyword: MUST
+    introduced: casablanca
 
 parameters:
     - name: csar
@@ -33,31 +37,21 @@ parameters:
       is_optional: false
 
 results:
-    direction: portrait
+    direction: landscape
     attributes:
-     - name: vnf
-       description: VNF details such as vendor, type, model, name
-       scope: short
-       type: json
-     - name: date
-       description: Validation date
+     - name: code
+       description: Error code
        scope: short
        type: string
-     - name: platform
-       description: Platform used to test the reqs
+     - name: message
+       description: Error message
        scope: short
        type: string
-       default_value: VNF Test Platform (VTP) 1.0
-     - name: contact
-       description: Owner for this test case
+     - name: file
+       description: File in which error occured
        scope: short
        type: string
-       default_value: ONAP VTP Team onap-discuss@lists.onap.org
-     - name: criteria
-       description: Overall test reqs passed? PASS or FAILED
+     - name: line-no
+       description: Line no at which error occured
        scope: short
        type: string
-     - name: results
-       description: All test cases results
-       scope: short
-       type: json

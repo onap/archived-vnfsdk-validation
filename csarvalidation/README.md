@@ -1,7 +1,7 @@
 CSAR Validation
 ===============
 Validates CSAR based on
-* ETSI SOL004 specification
+* ETSI SOL004 & SOL001 specification
 * ONAP VNFREQS & PNFREQS
 
 Every validation aspect is modeled as one test cases using Open Command Specification (OCS) 1.o
@@ -31,7 +31,7 @@ NOTE:
 Add @OnapCommandSchema(schema = "vtp-validate-csar-r02454.yaml") annotation to the class, where the schema will
 have OCS YAML file name
 
-3. Add required CSARError inside this class and set unique error code using CSARError::setSubCode() method
+3. Add required CSARError inside this class and set unique error code using CSARError::setCode() method
 
 4. Implement the run() method in this class by using the below code snippet
 

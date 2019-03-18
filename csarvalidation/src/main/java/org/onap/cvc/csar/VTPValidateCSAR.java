@@ -210,7 +210,7 @@ public class VTPValidateCSAR extends OnapCommand {
             resultSOL004.setPassed(true);
 
             for (CSARError error: resultSOL004.getErrors()) {
-                if (!ignoreCodes.contains(error.getErrorCode())) {
+                if (!ignoreCodes.contains(error.getCode())) {
                     resultSOL004.setPassed(false);
                     overallPass = false;
                     break;
@@ -236,7 +236,7 @@ public class VTPValidateCSAR extends OnapCommand {
                     result.setPassed(true);
 
                     for (CSARError error: result.getErrors()) {
-                        if (!ignoreCodes.contains(error.getErrorCode())) {
+                        if (!ignoreCodes.contains(error.getCode())) {
                             result.setPassed(false);
                             overallPass = false;
                             break;

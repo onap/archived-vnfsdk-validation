@@ -14,9 +14,16 @@
 
 open_cli_schema_version: 1.0
 
-name: csar-validate
+name: csar-validate-r01123
 
-description: Validate CSAR package formats compliants to ETSI SOL004, SOL001 and VNFREQS
+description: |
+  The VNF package Manifest file MUST contain: VNF package meta-data, a list of all artifacts
+  (both internal and external) entry’s including their respected URI’s, an algorithm to calculate
+  a digest and a digest result calculated on the content of each artifacts, as specified in
+  ETSI GS NFV-SOL004. The VNF Package MUST include VNF Identification Data to uniquely
+  identify the resource for a given VNF provider. The identification data must include:
+  an identifier for the VNF, the name of the VNF as was given by the VNF provider, VNF
+  description, VNF provider, and version.
 
 info:
   product: onap-vtp
@@ -33,31 +40,21 @@ parameters:
       is_optional: false
 
 results:
-    direction: portrait
+    direction: landscape
     attributes:
-     - name: vnf
-       description: VNF details such as vendor, type, model, name
-       scope: short
-       type: json
-     - name: date
-       description: Validation date
+     - name: code
+       description: Error code
        scope: short
        type: string
-     - name: platform
-       description: Platform used to test the reqs
+     - name: message
+       description: Error message
        scope: short
        type: string
-       default_value: VNF Test Platform (VTP) 1.0
-     - name: contact
-       description: Owner for this test case
+     - name: file
+       description: File in which error occured
        scope: short
        type: string
-       default_value: ONAP VTP Team onap-discuss@lists.onap.org
-     - name: criteria
-       description: Overall test reqs passed? PASS or FAILED
+     - name: line-no
+       description: Line no at which error occured
        scope: short
        type: string
-     - name: results
-       description: All test cases results
-       scope: short
-       type: json

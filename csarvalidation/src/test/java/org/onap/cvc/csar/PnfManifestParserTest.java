@@ -34,9 +34,7 @@ public class PnfManifestParserTest {
 
     @Before
     public void setUp() throws URISyntaxException, IOException {
-        String fileName = PnfManifestParserTest.class.getClassLoader().getResource("pnf/MainServiceTemplate.mf")
-                .toURI().getPath();
-        pnfManifestParser = PnfManifestParser.getInstance(fileName);
+        pnfManifestParser = PnfManifestParser.getInstance("./src/test/resources/pnf/MainServiceTemplate.mf");
     }
 
     @Test
