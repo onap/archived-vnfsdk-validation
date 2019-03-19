@@ -29,12 +29,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -46,8 +45,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Kanagaraj Manickam kanagaraj.manickam@huawei.com
  *
  */
-public class CSARArchive {
-    private static final Logger LOG = LoggerFactory.getLogger(CSARArchive.class);
+public class CSARArchive implements AutoCloseable {
 
     public static final String SOL0004_2_4_1 = "V2.4.1 (2018-02)";
 
@@ -870,33 +868,37 @@ public class CSARArchive {
         return errors;
     }
 
-    private void unzip(String csarPath) throws IOException {
+    private void unzip(String csarPath, Path destination) throws IOException {
         File csarFile = new File(csarPath);
 
         if (!csarFile.exists()) {
             throw new RuntimeException(csarPath + " does not exist");
         }
 
-        try (ZipInputStream csar = new ZipInputStream(new BufferedInputStream(new FileInputStream(csarFile)))){
+        try (ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(new FileInputStream(csarFile)))){
+
             ZipEntry entry;
-            byte[] buffer = new byte[2048];
-            while ((entry = csar.getNextEntry()) != null) {
+            while ((entry = zipInputStream.getNextEntry()) != null) {
 
-                File filePath = new File(this.tempDir + File.separator + entry.getName());
+                File filePath = new File(destination + File.separator + entry.getName());
 
-                if (!filePath.getParentFile().isDirectory()) {
-                    filePath.getParentFile().delete();
+                if(entry.isDirectory()){
+                    filePath.mkdirs();
+                } else {
+                    extract(zipInputStream, filePath);
                 }
-                filePath.getParentFile().mkdirs();
+            }
+        }
+    }
 
-                try (FileOutputStream fos = new FileOutputStream(filePath);
-                        BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length)) {
+    private void extract(ZipInputStream csar, File filePath) throws IOException {
+        byte[] buffer = new byte[2048];
+        try (FileOutputStream fos = new FileOutputStream(filePath);
+             BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length)) {
 
-                    int len;
-                    while ((len = csar.read(buffer)) > 0) {
-                        bos.write(buffer, 0, len);
-                    }
-                }
+            int len;
+            while ((len = csar.read(buffer)) > 0) {
+                bos.write(buffer, 0, len);
             }
         }
     }
@@ -984,6 +986,10 @@ public class CSARArchive {
     }
 
     private void parseDefinitionMetadata() throws IOException {
+        if(Objects.isNull(this.definitionYamlFile)){
+            return;
+        }
+
         try(FileInputStream ipStream = new FileInputStream(this.definitionYamlFile)) {
             Map<String, ?> yaml = (Map<String, ?>) new Yaml().load(ipStream);
 
@@ -1295,7 +1301,7 @@ public class CSARArchive {
         this.tempDir  = Paths.get(TEMP_DIR + File.separator + System.currentTimeMillis());
         this.tempDir.toFile().mkdirs();
 
-        this.unzip(csarPath);
+        this.unzip(csarPath, this.tempDir);
     }
     public void parse() throws IOException {
         //Find out the mode of CSAR
@@ -1318,5 +1324,12 @@ public class CSARArchive {
 
     public File getFileFromCsar(String path) {
         return new File(this.tempDir.toFile().getAbsolutePath() + File.separator + path);
+    }
+
+    @Override
+    public void close() throws Exception {
+        if(this.tempDir != null){
+            cleanup();
+        }
     }
 }
