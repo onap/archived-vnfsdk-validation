@@ -42,14 +42,14 @@ public abstract class VTPValidateCSARBase extends OnapCommand {
         String path = (String) getParametersMap().get("csar").getValue();
 
         //execute
-        try {
-            CSARArchive csar = new CSARArchive();
+        try (CSARArchive csar = this.createArchiveInstance()){
             csar.init(path);
             csar.parse();
 
+            errors.addAll(csar.getErrors());
+
             this.validateCSAR(csar);
 
-            csar.cleanup();
         } catch (Exception e) {
             LOG.error(this.getVnfReqsNo() + ": Failed to validate CSAR" , e);
             throw new OnapCommandExecutionFailed(e.getMessage());
@@ -64,5 +64,9 @@ public abstract class VTPValidateCSARBase extends OnapCommand {
         }
 
         this.getResult().setOutput(this.errors);
+   }
+
+   protected CSARArchive createArchiveInstance(){
+        return new CSARArchive();
    }
 }
