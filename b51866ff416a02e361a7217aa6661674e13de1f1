@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba2cd080_97cafa82",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/CSARArchive.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1331,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2019-03-20T07:06:43Z",
+      "side": 1,
+      "message": "is it not nul?",
+      "range": {
+        "startLine": 1331,
+        "startChar": 10,
+        "endLine": 1331,
+        "endChar": 11
+      },
+      "revId": "b51866ff416a02e361a7217aa6661674e13de1f1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
