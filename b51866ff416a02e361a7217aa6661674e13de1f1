@@ -22,6 +22,30 @@
       "revId": "b51866ff416a02e361a7217aa6661674e13de1f1",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6d6e5a27_f6d46a08",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/CSARArchive.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1331,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2019-03-20T07:09:09Z",
+      "side": 1,
+      "message": "yyy, my mistake. It should be isNotNull",
+      "parentUuid": "ba2cd080_97cafa82",
+      "range": {
+        "startLine": 1331,
+        "startChar": 10,
+        "endLine": 1331,
+        "endChar": 11
+      },
+      "revId": "b51866ff416a02e361a7217aa6661674e13de1f1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
