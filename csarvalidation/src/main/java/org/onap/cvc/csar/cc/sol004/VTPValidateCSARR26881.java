@@ -33,7 +33,7 @@ public class VTPValidateCSARR26881 extends VTPValidateCSARBase {
 
     @Override
     protected void validateCSAR(CSARArchive csar) throws Exception {
-        if (!csar.getFileFromCsar("artifacts").exists()) {
+        if (!csar.getFileFromCsar("Artifacts").exists()) {
             errors.add(new CSARErrorEntryMissingArtifactsNotFound());
         }
     }

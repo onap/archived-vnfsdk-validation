@@ -22,6 +22,7 @@ import org.onap.cvc.csar.CSARArchive.CSARError;
 import org.onap.cvc.csar.CSARArchive.CSARErrorEntryMissingToscaDefinitionMetadataTemplateName;
 import org.onap.cvc.csar.CSARArchive.CSARErrorEntryMissingToscaDefinitionNotFound;
 import org.onap.cvc.csar.CSARArchive.CSARErrorEntryMissingToscaMetaDefinition;
+import org.onap.cvc.csar.CSARArchive.CSARErrorInvalidEntryValueManifestNotFound;
 import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 
 @OnapCommandSchema(schema = "vtp-validate-csar-r10087.yaml")
@@ -33,7 +34,8 @@ public class VTPValidateCSARR10087 extends VTPValidateCSARBase {
         for (CSARError e : csar.getErrors()) {
             if (e instanceof CSARErrorEntryMissingToscaMetaDefinition ||
                     e instanceof CSARErrorEntryMissingToscaDefinitionNotFound ||
-                    e instanceof CSARErrorEntryMissingToscaDefinitionMetadataTemplateName) {
+                    e instanceof CSARErrorEntryMissingToscaDefinitionMetadataTemplateName ||
+                    e instanceof CSARErrorInvalidEntryValueManifestNotFound) {
                 this.errors.add(e);
             }
         }

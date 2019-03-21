@@ -19,8 +19,6 @@ name: csar-validate-r35854
 description: |
   The VNF Descriptor (VNFD) provided by VNF vendor MUST comply with TOSCA/YAML based Service template
   for VNF descriptor specified in ETSI NFV-SOL001.
-  Note: As the ETSI NFV-SOL001 is work in progress the below tables summarizes the TOSCA definitions
-  agreed to be part of current version of NFV profile and that VNFD MUST comply with in ONAP Release 2+ Requirements.
 
 info:
   product: onap-vtp

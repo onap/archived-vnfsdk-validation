@@ -97,10 +97,12 @@ public class CSARArchive {
 
     public static final String Entry_Definition__tosca_definitions_version__simple_1_0 = "tosca_simple_yaml_1_0";
     public static final String Entry_Definition__tosca_definitions_version__simple_1_1 = "tosca_simple_yaml_1_1";
+    public static final String Entry_Definition__tosca_definitions_version__simple_1_2 = "tosca_simple_yaml_1_2";
 
     protected static final String[] Entry_Definition__tosca_definitions_versions = new String[] {
             Entry_Definition__tosca_definitions_version__simple_1_0,
-            Entry_Definition__tosca_definitions_version__simple_1_1
+            Entry_Definition__tosca_definitions_version__simple_1_1,
+            Entry_Definition__tosca_definitions_version__simple_1_2
     };
     public static final String Entry_Definition__metadata = "metadata";
 

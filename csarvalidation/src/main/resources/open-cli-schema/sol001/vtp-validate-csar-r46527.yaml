@@ -29,10 +29,6 @@ description: |
   parameters, instantiation levels, placement constraints (affinity / antiaffinity), minimum and maximum
   VDU instance numbers. Horizontal scaling is modeled with scaling aspects and the respective scaling levels
   in the deployment flavours;
-  Note: The deployment aspects (deployment flavour etc.) are postponed for future ONAP releases.
-  VNF lifecycle management (LCM) operations: describes the LCM operations supported per deployment flavour,
-  and their input parameters; Note, thatthe actual LCM implementation resides in a different layer, namely
-  referring to additional template artifacts.
 
 info:
   product: onap-vtp

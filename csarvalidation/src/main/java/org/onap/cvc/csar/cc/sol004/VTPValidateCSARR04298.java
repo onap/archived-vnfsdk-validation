@@ -34,7 +34,7 @@ public class VTPValidateCSARR04298 extends VTPValidateCSARBase {
     @Override
     protected void validateCSAR(CSARArchive csar) throws Exception {
 
-        if (csar.getTestsFolder() == null) {
+        if (csar.getTestsFolder() == null || csar.getTestsFolder().listFiles().length == 0) {
             this.errors.add(new CSARErrorEntryMissingTestFolderNotFound());
         }
     }
