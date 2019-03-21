@@ -18,14 +18,21 @@ package org.onap.cvc.csar.cc.sol001;
 
 import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.onap.cvc.csar.CSARArchive;
+import org.onap.cvc.csar.CSARArchive.CSARError;
+import org.onap.cvc.csar.CSARArchive.CSARErrorEntryMissingToscaDefinitionVersion;
+import org.onap.cvc.csar.CSARArchive.CSARErrorInvalidEntryValueToscaDefinitionVersion;
 import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 
 @OnapCommandSchema(schema = "vtp-validate-csar-r35854.yaml")
 public class VTPValidateCSARR35854 extends VTPValidateCSARBase {
-
     @Override
     protected void validateCSAR(CSARArchive csar) throws Exception {
-
+    	 for (CSARError e : csar.getErrors()) {
+             if (e instanceof CSARErrorEntryMissingToscaDefinitionVersion || 
+            		 e instanceof CSARErrorInvalidEntryValueToscaDefinitionVersion) {
+                 this.errors.add(e);
+             }
+         }
     }
 
     @Override
