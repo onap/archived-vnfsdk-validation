@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f0c24512_f89145d1",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/VTPValidateCSARBase.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2019-03-22T06:22:45Z",
+      "side": 1,
+      "message": "why visibility changed?",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 10
+      },
+      "revId": "e06e46fb456cb05bd930fec4323a20c0830c9f52",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
