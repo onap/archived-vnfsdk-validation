@@ -17,6 +17,9 @@ package org.onap.cvc.csar;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.tuple.Pair;
+import org.onap.cvc.csar.PnfCSARError.PnfCSARErrorEntryMissing;
+import org.onap.cvc.csar.PnfCSARError.PnfCSARErrorInvalidEntry;
+import org.onap.cvc.csar.PnfCSARError.PnfCSARErrorWarning;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -192,32 +195,4 @@ class PnfManifestParser {
 
 
     }
-
-    private static class PnfCSARError extends CSARArchive.CSARError {
-        PnfCSARError(String errorCode, String message,  int lineNumber, String file) {
-            super(errorCode);
-            this.message = message;
-            this.file = file;
-            this.lineNumber = lineNumber;
-        }
-    }
-
-    private static class PnfCSARErrorInvalidEntry extends PnfCSARError {
-        PnfCSARErrorInvalidEntry(String entry, String file, int lineNumber) {
-            super("0x2000", "Invalid. Entry [" + entry + "]", lineNumber, file);
-        }
-    }
-
-    private static class PnfCSARErrorWarning extends PnfCSARError {
-        PnfCSARErrorWarning(String entry, String file, int lineNumber) {
-            super("0x2001", "Warning. Entry [" + entry + "]", lineNumber, file);
-        }
-    }
-
-    private static class PnfCSARErrorEntryMissing extends PnfCSARError {
-        PnfCSARErrorEntryMissing(String entry, String file, int lineNumber) {
-            super("0x2002", "Missing. Entry [" + entry + "]", lineNumber, file);
-        }
-    }
-
 }

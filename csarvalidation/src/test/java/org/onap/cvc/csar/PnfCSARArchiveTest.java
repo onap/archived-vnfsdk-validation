@@ -29,23 +29,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PnfCSARArchiveTest {
 
     @Test
-    public void shouldUseDataStoredInManifestMfFileToConfigurePnfCSARArchive() throws IOException, URISyntaxException {
+    public void shouldUseDataStoredInManifestMfFileToConfigurePnfCSARArchive() throws Exception {
         // given
         String fileName = PnfCSARArchiveTest.class.getClassLoader().getResource("pnf/dummyPnfv2.csar")
                 .toURI().getPath();
-        PnfCSARArchive pnfCSARArchive = new PnfCSARArchive();
-        pnfCSARArchive.init(fileName);
 
         // when
-        try {
+        try( PnfCSARArchive pnfCSARArchive = new PnfCSARArchive()) {
+            pnfCSARArchive.init(fileName);
             pnfCSARArchive.parse();
-        }finally {
-            pnfCSARArchive.cleanup();
+            // then
+            verifyThatMetadataWasSet(pnfCSARArchive);
+            verifyThatNonManoArtifactsWereSet(pnfCSARArchive);
         }
 
-        // then
-        verifyThatMetadataWasSet(pnfCSARArchive);
-        verifyThatNonManoArtifactsWereSet(pnfCSARArchive);
     }
 
     private void verifyThatNonManoArtifactsWereSet(PnfCSARArchive pnfCSARArchive) {
