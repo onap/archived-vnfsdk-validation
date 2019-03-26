@@ -28,42 +28,44 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.configureTestCase
 import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessagesList;
 
 
-public class VTPValidateCSARR293901IntegrationTest {
+public class VTPValidateCSARR57019IntegrationTest {
 
-    private VTPValidateCSARR293901 testCase;
+    private VTPValidateCSARR57019 testCase;
 
     @Before
     public void setUp() {
-        testCase = new VTPValidateCSARR293901();
+        testCase = new VTPValidateCSARR57019();
     }
 
     @Test
     public void shouldReturnProperRequestNumber() {
-        assertThat(testCase.getVnfReqsNo()).isEqualTo("R293901");
+        assertThat(testCase.getVnfReqsNo()).isEqualTo("R57019");
     }
 
     @Test
-    public void shouldReportThatMandatoryEntriesAreNotAvailable() throws Exception {
+    public void shouldReportThatMandatoryEntriesInMetadataAreNotAvailable() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r293901/noMandatoryEntriesInTOSCAMeta.csar");
+        configureTestCase(testCase, "pnf/r57019/noMandatoryEntriesInMetadataManifest.csar");
 
         // when
         testCase.execute();
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(3);
+        assertThat(errors.size()).isEqualTo(5);
         assertThat(convertToMessagesList(errors)).contains(
-                "Missing. Entry [Entry-Definitions]",
-                "Missing. Entry [ETSI-Entry-Manifest]",
-                "Missing. Entry [ETSI-Entry-Change-Log]"
+                "Missing. Entry [pnfd_provider]",
+                "Missing. Entry [pnfd_name]",
+                "Missing. Entry [pnfd_release_date_time]",
+                "Missing. Entry [pnfd_archive_version]",
+                "Invalid. Entry [pnfd_archivee_version]"
         );
     }
 
     @Test
-    public void shouldDoNotReportAnyErrorWhenAllMandatoryEntriesWereDefined() throws Exception {
+    public void shouldDoNotReportAnyErrorWhenAllMandatoryEntriesInMetadataWereDefined() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r293901/allMandatoryEntriesDefinedInTOSCAMeta.csar");
+        configureTestCase(testCase, "pnf/r57019/allMandatoryEntriesDefinedInMetadataManifest.csar");
 
         // when
         testCase.execute();
@@ -73,22 +75,4 @@ public class VTPValidateCSARR293901IntegrationTest {
         assertThat(errors.size()).isEqualTo(0);
     }
 
-    @Test
-    public void shouldReportAnyErrorWhneThereIsNoTOSCAMetaFileInTOSCADirectory() throws Exception {
-        // given
-        configureTestCase(testCase, "pnf/r293901/noTOSCAMetaInTOSCADirectory.csar");
-
-        // when
-        testCase.execute();
-
-        // then
-        List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(4);
-        assertThat(convertToMessagesList(testCase.getErrors())).contains(
-                "Missing. Entry [Definition YAML]",
-                "Ignored. Entry [TOSCA-Metadata]",
-                "Missing. Entry [ETSI-Entry-Manifest]",
-                "Missing. Entry [ETSI-Entry-Change-Log]"
-        );
-    }
 }

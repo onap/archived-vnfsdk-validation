@@ -25,25 +25,28 @@ import org.onap.cvc.csar.cc.VTPValidatePnfCSARBase;
 
 import java.util.Objects;
 
-@OnapCommandSchema(schema = "vtp-validate-csar-r293901.yaml")
-public class VTPValidateCSARR293901 extends VTPValidatePnfCSARBase {
+@OnapCommandSchema(schema = "vtp-validate-csar-r57019.yaml")
+public class VTPValidateCSARR57019 extends VTPValidatePnfCSARBase {
 
     private static final int UNKNOWN_LINE_NUMBER = -1;
 
     @Override
     protected void validateCSAR(CSARArchive csar) {
-        final CSARArchive.TOSCAMeta toscaMeta = csar.getToscaMeta();
-        String entryManifestMf = toscaMeta.getEntryManifestMf();
+        final CSARArchive.Manifest.Metadata metadata = csar.getManifest().getMetadata();
+        final String fileName = csar.getManifestMfFile().getName();
 
-        validateToscaMetaValue(entryManifestMf, "ETSI-Entry-Manifest");
-        validateToscaMetaValue(toscaMeta.getEntryChangeLog(), "ETSI-Entry-Change-Log");
+        validateMetadataValue(fileName, metadata.getProviderId(), "pnfd_provider");
+        validateMetadataValue(fileName, metadata.getProductName(), "pnfd_name");
+        validateMetadataValue(fileName, metadata.getReleaseDateTime(), "pnfd_release_date_time");
+        validateMetadataValue(fileName, metadata.getPackageVersion(), "pnfd_archive_version");
+
     }
 
-    private void validateToscaMetaValue(String entryManifestMf, String toscaMetaAttributeName) {
-        if (Objects.isNull(entryManifestMf)) {
+    private void validateMetadataValue(String fileName, String providerId, String metadataArgumentName) {
+        if (Objects.isNull(providerId)) {
             this.errors.add(new PnfCSARErrorEntryMissing(
-                    toscaMetaAttributeName,
-                    CSARArchive.TOSCA_Metadata__TOSCA_Meta,
+                    metadataArgumentName,
+                    fileName,
                     UNKNOWN_LINE_NUMBER)
             );
         }
@@ -51,7 +54,7 @@ public class VTPValidateCSARR293901 extends VTPValidatePnfCSARBase {
 
     @Override
     protected String getVnfReqsNo() {
-        return "R293901";
+        return "R57019";
     }
 
 
