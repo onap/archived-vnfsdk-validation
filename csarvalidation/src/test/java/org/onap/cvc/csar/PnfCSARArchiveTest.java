@@ -1,12 +1,12 @@
 /**
  * Copyright 2019 Nokia
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,8 +19,6 @@ package org.onap.cvc.csar;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -35,18 +33,34 @@ public class PnfCSARArchiveTest {
                 .toURI().getPath();
 
         // when
-        try( PnfCSARArchive pnfCSARArchive = new PnfCSARArchive()) {
+        try (PnfCSARArchive pnfCSARArchive = new PnfCSARArchive()) {
             pnfCSARArchive.init(fileName);
             pnfCSARArchive.parse();
             // then
-            verifyThatMetadataWasSet(pnfCSARArchive);
-            verifyThatNonManoArtifactsWereSet(pnfCSARArchive);
+            PnfCSARArchive.PnfManifest manifest = (PnfCSARArchive.PnfManifest) pnfCSARArchive.getManifest();
+            verifyThatMetadataWasSet(manifest);
+            verifyThatSourcesSectionWasSet(manifest);
+            verifyThatNonManoArtifactsWereSet(manifest);
         }
 
     }
 
-    private void verifyThatNonManoArtifactsWereSet(PnfCSARArchive pnfCSARArchive) {
-        Map<String, Map<String, List<String>>> nonManoArtifacts = pnfCSARArchive.getManifest().getNonMano();
+    private void verifyThatMetadataWasSet(PnfCSARArchive.PnfManifest manifest) {
+        CSARArchive.Manifest.Metadata metadata = manifest.getMetadata();
+        assertThat(metadata.getProductName()).isEqualTo("RadioNode");
+        assertThat(metadata.getProviderId()).isEqualTo("Ericsson");
+        assertThat(metadata.getPackageVersion()).isEqualTo("1.0");
+        assertThat(metadata.getReleaseDateTime()).isEqualTo("2019-01-14T11:25:00+00:00");
+    }
+
+    private void verifyThatSourcesSectionWasSet(PnfCSARArchive.PnfManifest manifest) {
+
+        List<String> sources = manifest.getSources();
+        assertThat(sources).contains("Definitions/MainServiceTemplate.yaml", "Definitions/etsi_nfv_sol001_vnfd_2_5_1_types.yaml");
+    }
+
+    private void verifyThatNonManoArtifactsWereSet(PnfCSARArchive.PnfManifest manifest) {
+        Map<String, Map<String, List<String>>> nonManoArtifacts = manifest.getNonMano();
         assertThat(nonManoArtifacts.get("onap_ves_events").get("source"))
                 .isEqualTo(Lists.newArrayList("Artifacts/Events/VES_registration.yml")
                 );
@@ -64,14 +78,6 @@ public class PnfCSARArchiveTest {
                         "Artifacts/Other/review_log.txt"
                         )
                 );
-    }
-
-    private void verifyThatMetadataWasSet(PnfCSARArchive pnfCSARArchive) {
-        CSARArchive.Manifest.Metadata metadata = pnfCSARArchive.getManifest().getMetadata();
-        assertThat(metadata.getProductName()).isEqualTo("RadioNode");
-        assertThat(metadata.getProviderId()).isEqualTo("Ericsson");
-        assertThat(metadata.getPackageVersion()).isEqualTo("1.0");
-        assertThat(metadata.getReleaseDateTime()).isEqualTo("2019-01-14T11:25:00+00:00");
     }
 
 }

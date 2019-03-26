@@ -808,7 +808,7 @@ public class CSARArchive implements AutoCloseable {
 
     private Definition definition = new Definition();
 
-    private Manifest manifest = new Manifest();
+    private Manifest manifest;
 
     private File toscaMetaFile;
 
@@ -868,6 +868,14 @@ public class CSARArchive implements AutoCloseable {
 
     public List<CSARError> getErrors() {
         return errors;
+    }
+
+    public CSARArchive(){
+        this(new Manifest());
+    }
+
+    public CSARArchive(Manifest manifest) {
+        this.manifest = manifest;
     }
 
     private void unzip(String csarPath, Path destination) throws IOException {
