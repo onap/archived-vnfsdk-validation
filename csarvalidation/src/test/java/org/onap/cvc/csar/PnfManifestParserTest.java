@@ -20,6 +20,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -34,7 +35,7 @@ public class PnfManifestParserTest {
 
     @Before
     public void setUp() throws URISyntaxException, IOException {
-        pnfManifestParser = PnfManifestParser.getInstance("./src/test/resources/pnf/MainServiceTemplate.mf");
+        pnfManifestParser = PnfManifestParser.getInstance(new File("./src/test/resources/pnf/MainServiceTemplate.mf"));
     }
 
     @Test

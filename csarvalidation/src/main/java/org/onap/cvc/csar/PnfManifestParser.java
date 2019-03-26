@@ -21,6 +21,7 @@ import org.onap.cvc.csar.PnfCSARError.PnfCSARErrorEntryMissing;
 import org.onap.cvc.csar.PnfCSARError.PnfCSARErrorInvalidEntry;
 import org.onap.cvc.csar.PnfCSARError.PnfCSARErrorWarning;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -49,13 +50,14 @@ class PnfManifestParser {
         this.fileName = fileName;
     }
 
-    static PnfManifestParser getInstance(String fileName) throws IOException {
+    static PnfManifestParser getInstance(File pnfManifestFile) throws IOException {
+        String fileName = pnfManifestFile.getAbsolutePath();
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
             List<String> lines = stream
                     .map(String::trim)
                     .collect(Collectors.toList());
 
-            return new PnfManifestParser(lines, fileName);
+            return new PnfManifestParser(lines, pnfManifestFile.getName());
         }
     }
 
@@ -111,6 +113,7 @@ class PnfManifestParser {
 
                 if (isNewSection(data)) {
                     attributeName = data.getKey();
+                    nonManoArtifacts.put(attributeName, new HashMap<>());
                     continue;
                 }
 

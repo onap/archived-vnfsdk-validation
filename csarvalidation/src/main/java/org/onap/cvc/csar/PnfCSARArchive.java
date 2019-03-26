@@ -32,7 +32,7 @@ public class PnfCSARArchive extends CSARArchive {
         }
 
         PnfManifestParser pnfManifestParser = PnfManifestParser.getInstance(
-                this.getManifestMfFile().getAbsolutePath()
+                this.getManifestMfFile()
         );
 
         Pair<Manifest.Metadata, List<CSARError>> metadataData = pnfManifestParser.fetchMetadata();
