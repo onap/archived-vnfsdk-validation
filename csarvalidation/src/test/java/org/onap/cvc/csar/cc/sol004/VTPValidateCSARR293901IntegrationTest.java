@@ -17,22 +17,15 @@
 
 package org.onap.cvc.csar.cc.sol004;
 
-import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
-import org.onap.cli.fw.error.OnapCommandException;
-import org.onap.cli.fw.error.OnapCommandInvalidParameterValue;
-import org.onap.cli.fw.input.OnapCommandParameter;
-import org.onap.cli.fw.output.OnapCommandResult;
-import org.onap.cli.fw.output.OnapCommandResultAttribute;
 import org.onap.cvc.csar.CSARArchive;
 
-import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.configureTestCase;
+import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessagesList;
 
 
 public class VTPValidateCSARR293901IntegrationTest {
@@ -40,7 +33,7 @@ public class VTPValidateCSARR293901IntegrationTest {
     private VTPValidateCSARR293901 testCase;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         testCase = new VTPValidateCSARR293901();
     }
 
@@ -52,7 +45,7 @@ public class VTPValidateCSARR293901IntegrationTest {
     @Test
     public void shouldReportThatMandatoryEntriesAreNotAvailable() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/noMandatoryEntriesInTOSCAMeta.csar");
+        configureTestCase(testCase, "pnf/r293901/noMandatoryEntriesInTOSCAMeta.csar");
 
         // when
         testCase.execute();
@@ -70,7 +63,7 @@ public class VTPValidateCSARR293901IntegrationTest {
     @Test
     public void shouldDoNotReportAnyErrorWhenAllMandatoryEntriesWereDefined() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/allMandatoryEntriesDefinedInTOSCAMeta.csar");
+        configureTestCase(testCase, "pnf/r293901/allMandatoryEntriesDefinedInTOSCAMeta.csar");
 
         // when
         testCase.execute();
@@ -83,7 +76,7 @@ public class VTPValidateCSARR293901IntegrationTest {
     @Test
     public void shouldReportAnyErrorWhneThereIsNoTOSCAMetaFileInTOSCADirectory() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/noTOSCAMetaInTOSCADirectory.csar");
+        configureTestCase(testCase, "pnf/r293901/noTOSCAMetaInTOSCADirectory.csar");
 
         // when
         testCase.execute();
@@ -98,45 +91,4 @@ public class VTPValidateCSARR293901IntegrationTest {
                 "Missing. Entry [ETSI-Entry-Change-Log]"
         );
     }
-
-    private String resolvePathToFile(String s) throws URISyntaxException {
-        return VTPValidateCSARR293901IntegrationTest.class.getClassLoader().getResource(s)
-                .toURI().getPath();
-    }
-
-    private void configureTestCase(VTPValidateCSARR293901 testCase, String fileName) throws OnapCommandException, URISyntaxException {
-        configureCommandAttributes(testCase);
-
-        testCase.initializeSchema("vtp-validate-csar-r293901.yaml");
-
-        configurePathToCsar(testCase, fileName);
-    }
-
-    private void configureCommandAttributes(VTPValidateCSARR293901 testCase) {
-        OnapCommandResult onapCommandResult = new OnapCommandResult();
-        OnapCommandResultAttribute onapCommandResultAttributeCode = new OnapCommandResultAttribute();
-        onapCommandResultAttributeCode.setName("code");
-        OnapCommandResultAttribute onapCommandResultAttributeMessage = new OnapCommandResultAttribute();
-        onapCommandResultAttributeMessage.setName("message");
-        OnapCommandResultAttribute onapCommandResultAttributeFile = new OnapCommandResultAttribute();
-        onapCommandResultAttributeFile.setName("file");
-        OnapCommandResultAttribute onapCommandResultAttributeLineNo = new OnapCommandResultAttribute();
-        onapCommandResultAttributeLineNo.setName("line-no");
-        List<OnapCommandResultAttribute> records = Lists.newArrayList(onapCommandResultAttributeCode, onapCommandResultAttributeMessage, onapCommandResultAttributeFile, onapCommandResultAttributeLineNo);
-        onapCommandResult.setRecords(records);
-        testCase.setResult(onapCommandResult);
-    }
-
-    private void configurePathToCsar(VTPValidateCSARR293901 testCase, String fileName) throws URISyntaxException, OnapCommandInvalidParameterValue {
-        String pathToFile = resolvePathToFile(fileName);
-        Set<OnapCommandParameter> parameters = testCase.getParameters();
-        OnapCommandParameter csar = parameters.stream().filter(op -> op.getName().equals("csar")).findFirst().get();
-        csar.setValue(pathToFile);
-    }
-
-    private List<String> convertToMessagesList(List<CSARArchive.CSARError> errors) {
-        return errors.stream().map(CSARArchive.CSARError::getMessage).collect(Collectors.toList());
-    }
-
-
 }
