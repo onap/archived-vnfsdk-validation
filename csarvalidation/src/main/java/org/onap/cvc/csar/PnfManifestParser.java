@@ -21,6 +21,7 @@ import org.onap.cvc.csar.PnfCSARError.PnfCSARErrorEntryMissing;
 import org.onap.cvc.csar.PnfCSARError.PnfCSARErrorInvalidEntry;
 import org.onap.cvc.csar.PnfCSARError.PnfCSARErrorWarning;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -34,8 +35,9 @@ import java.util.stream.Stream;
 class PnfManifestParser {
 
 
-    private static final String METADATA_SECTION = "metadata";
-    private static final String NON_MANO_ARTIFACT_SETS_SECTION = "non_mano_artifact_sets";
+    private static final String METADATA_SECTION_TAG_SECTION = "metadata";
+    private static final String SOURCE_TAG_SECTION = "source";
+    private static final String NON_MANO_ARTIFACT_SETS_TAG_SECTION = "non_mano_artifact_sets";
     private static final String PRODUCT_NAME = "pnfd_name";
     private static final String PROVIDER_ID = "pnfd_provider";
     private static final String VERSION = "pnfd_archive_version";
@@ -49,13 +51,14 @@ class PnfManifestParser {
         this.fileName = fileName;
     }
 
-    static PnfManifestParser getInstance(String fileName) throws IOException {
+    static PnfManifestParser getInstance(File pnfManifestFile) throws IOException {
+        String fileName = pnfManifestFile.getAbsolutePath();
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
             List<String> lines = stream
                     .map(String::trim)
                     .collect(Collectors.toList());
 
-            return new PnfManifestParser(lines, fileName);
+            return new PnfManifestParser(lines, pnfManifestFile.getName());
         }
     }
 
@@ -64,20 +67,16 @@ class PnfManifestParser {
         List<CSARArchive.CSARError> errors = new ArrayList<>();
 
         boolean isMetadataSectionAvailable = false;
-        int lineNumber = 0;
-        for (String line : lines) {
-            lineNumber++;
-            if (line.trim().isEmpty() || line.trim().startsWith("#")){
-                continue;
-            } else if (line.startsWith(METADATA_SECTION)) {
-                isMetadataSectionAvailable = true;
-            }else if (isMetadataSectionAvailable) {
-                Pair<String, String> data = parseLine(line);
 
-                if (isNewSection(data)) {
-                    if(!isSectionSupported(data.getKey())) {
-                        errors.add(new PnfCSARErrorWarning(data.getKey(), this.fileName, lineNumber));
-                    }
+        for (int lineNumber = 0; lineNumber < lines.size(); lineNumber++) {
+            String line = lines.get(lineNumber);
+            Pair<String, String> data = parseLine(line);
+
+            if(data.getKey().toLowerCase().equals(METADATA_SECTION_TAG_SECTION)) {
+                isMetadataSectionAvailable = true;
+            }else if (isMetadataSectionAvailable && !isLineExcluded(line)) {
+
+                if (shouldStopProcessing(data, errors, lineNumber)) {
                     break;
                 }
 
@@ -86,11 +85,37 @@ class PnfManifestParser {
         }
 
         if (!isMetadataSectionAvailable) {
-            errors.add(new PnfCSARErrorEntryMissing(METADATA_SECTION, this.fileName, -1));
+            errors.add(new PnfCSARErrorEntryMissing(METADATA_SECTION_TAG_SECTION, this.fileName, -1));
         }
 
         return Pair.of(metadata, errors);
 
+    }
+
+    Pair<List<String>, List<CSARArchive.CSARError>> fetchSourcesSection() {
+        List<String> sources = new ArrayList<>();
+        List<CSARArchive.CSARError> errors = new ArrayList<>();
+        boolean isSpecialTagReached = false;
+        boolean sourceSectionParsing = false;
+        for (int lineNumber = 0; lineNumber < lines.size(); lineNumber++) {
+            String line = lines.get(lineNumber);
+            if (sourceSectionParsing && (startsWith(line, METADATA_SECTION_TAG_SECTION) || startsWith(line, NON_MANO_ARTIFACT_SETS_TAG_SECTION))) {
+                isSpecialTagReached = true;
+            }else if (!isSpecialTagReached && startsWith(line, SOURCE_TAG_SECTION)) {
+                sourceSectionParsing = true;
+                Pair<String, String> data = parseLine(line);
+
+                String value = data.getValue();
+                if (value.isEmpty()) {
+                    errors.add(new PnfCSARErrorWarning(data.getKey(), this.fileName, lineNumber));
+                    break;
+                } else {
+                    sources.add(value);
+                }
+            }
+        }
+
+        return Pair.of(sources, errors);
     }
 
     Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>> fetchNonManoArtifacts() {
@@ -102,15 +127,14 @@ class PnfManifestParser {
 
         for (String line : lines) {
 
-            if (line.trim().isEmpty() || line.trim().startsWith("#")) {
-                continue;
-            } else if (line.startsWith(NON_MANO_ARTIFACT_SETS_SECTION)) {
+            if (startsWith(line, NON_MANO_ARTIFACT_SETS_TAG_SECTION)) {
                 isNonManoArtifactsSectionAvailable = true;
             } else if (isNonManoArtifactsSectionAvailable) {
                 Pair<String, String> data = parseLine(line);
 
                 if (isNewSection(data)) {
                     attributeName = data.getKey();
+                    nonManoArtifacts.put(attributeName, new HashMap<>());
                     continue;
                 }
 
@@ -119,10 +143,30 @@ class PnfManifestParser {
         }
 
         if (!isNonManoArtifactsSectionAvailable) {
-            errors.add(new PnfCSARErrorEntryMissing(NON_MANO_ARTIFACT_SETS_SECTION, this.fileName, -1));
+            errors.add(new PnfCSARErrorEntryMissing(NON_MANO_ARTIFACT_SETS_TAG_SECTION, this.fileName, -1));
         }
 
         return Pair.of(nonManoArtifacts, errors);
+    }
+
+    private boolean isLineExcluded(String line) {
+        return line.trim().isEmpty()
+                || startsWith(line, "#")
+                || startsWith(line,SOURCE_TAG_SECTION);
+    }
+
+    private boolean shouldStopProcessing(Pair<String, String> data, List<CSARArchive.CSARError> errors, int lineNumber) {
+        if (isNewSection(data) || data.getKey().toLowerCase().equals(SOURCE_TAG_SECTION)) {
+            if(!isSectionSupported(data.getKey())) {
+                errors.add(new PnfCSARErrorWarning(data.getKey(), this.fileName, lineNumber));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean startsWith(String line, String word){
+        return line.trim().toLowerCase().startsWith(word);
     }
 
     private void handleMetadataLine(
@@ -172,14 +216,17 @@ class PnfManifestParser {
     }
 
     private boolean isSectionSupported(String key) {
-        return Lists.newArrayList(METADATA_SECTION, NON_MANO_ARTIFACT_SETS_SECTION).contains(key);
+        return Lists.newArrayList(
+                METADATA_SECTION_TAG_SECTION,
+                SOURCE_TAG_SECTION,
+                NON_MANO_ARTIFACT_SETS_TAG_SECTION).contains(key.toLowerCase());
     }
 
 
     private boolean isNewSection(Pair<String, String> data) {
         String key = data.getKey().trim();
         String value = data.getValue().trim();
-        return key.matches("[a-zA-z_0-9]+") && (value.isEmpty() || value.startsWith("#"));
+        return key.matches("[a-zA-z_0-9]+") && (value.isEmpty() || startsWith(value,"#"));
     }
 
 

@@ -5,8 +5,8 @@ metadata:
     pnfd_release_date_time: 2019-01-14T11:25:00+00:00
 
 #The manifest file shall include a list of all files contained in or referenced from the VNF package with their location
-#source: Definitions/MainServiceTemplate.yaml
-#source: Definitions/etsi_nfv_sol001_vnfd_2_5_1_types.yaml
+source: Definitions/MainServiceTemplate.yaml
+source: Definitions/etsi_nfv_sol001_vnfd_2_5_1_types.yaml
 
 non_mano_artifact_sets:
 

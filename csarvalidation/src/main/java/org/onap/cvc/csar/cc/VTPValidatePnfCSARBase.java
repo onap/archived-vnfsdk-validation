@@ -23,6 +23,7 @@ import org.onap.cvc.csar.PnfCSARArchive;
 import java.util.List;
 
 public abstract class VTPValidatePnfCSARBase extends VTPValidateCSARBase {
+    @Override
     protected CSARArchive createArchiveInstance(){
         return new PnfCSARArchive();
     }
