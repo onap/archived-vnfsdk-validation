@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f12242fb_f376f5b1",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR146092.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2019-03-27T11:27:02Z",
+      "side": 1,
+      "message": "can you make the validateAttribute to take the attribute lists as input and validate CSAR once for all? which would reduced the iterations",
+      "range": {
+        "startLine": 59,
+        "startChar": 7,
+        "endLine": 62,
+        "endChar": 46
+      },
+      "revId": "eafb9a25c1194bb260f2baaf48d1bd5615201959",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
