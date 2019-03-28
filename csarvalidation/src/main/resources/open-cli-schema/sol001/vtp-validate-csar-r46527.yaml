@@ -14,21 +14,12 @@
 
 open_cli_schema_version: 1.0
 
-name: csar-validate-r17852
+name: csar-validate-r46527
 
 description: |
   A VNFD is a deployment template which describes a VNF in terms of deployment and operational
   behavior requirements. It contains virtualized resources (nodes) requirements as well as connectivity
   and interfaces requirements and MUST comply with info elements specified in ETSI GS NFV-IFA 011.
-  The main parts of the VNFD are the following:
-  VNF topology: it is modeled in a cloud agnostic way using virtualized containers and their connectivity.
-  Virtual Deployment Units (VDU) describe the capabilities of the virtualized containers, such as virtual
-  CPU, RAM, disks; their connectivity is modeled with VDU Connection Point Descriptors (VduCpd),
-  Virtual Link Descriptors (VnfVld) and VNF External Connection Point Descriptors (VnfExternalCpd);
-  VNF deployment aspects: they are described in one or more deployment flavours, including configurable
-  parameters, instantiation levels, placement constraints (affinity / antiaffinity), minimum and maximum
-  VDU instance numbers. Horizontal scaling is modeled with scaling aspects and the respective scaling levels
-  in the deployment flavours;
 
 info:
   product: onap-vtp

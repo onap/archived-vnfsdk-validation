@@ -195,6 +195,7 @@ public class VTPValidateCSAR extends OnapCommand {
 
             //Fill up the basic details
             CSARValidation validation = new CSARValidation();
+            validation.getVnf().setName(csar.getProductName());
             validation.getVnf().setVendor(csar.getVendorName());
             validation.getVnf().setVersion(csar.getVersion());
             validation.getVnf().setType("TOSCA");
@@ -206,16 +207,14 @@ public class VTPValidateCSAR extends OnapCommand {
             CSARValidation.Result resultSOL004 = new CSARValidation.Result();
             resultSOL004.setVnfreqName("SOL004");
             resultSOL004.setDescription(csar.getSOL004Version());
-            resultSOL004.setErrors(csar.getErrors());
-            resultSOL004.setPassed(true);
 
-            for (CSARError error: resultSOL004.getErrors()) {
+            for (CSARError error: csar.getErrors()) {
                 if (!ignoreCodes.contains(error.getCode())) {
-                    resultSOL004.setPassed(false);
+                    resultSOL004.getErrors().add(error);
                     overallPass = false;
-                    break;
                 }
             }
+            resultSOL004.setPassed(resultSOL004.getErrors().size() == 0);
 
             validation.getResults().add(resultSOL004);
 
@@ -232,22 +231,19 @@ public class VTPValidateCSAR extends OnapCommand {
                     result.setDescription(cmd.getDescription());
                     cmd.execute();
 
-                    result.setErrors( (List<CSARError>)cmd.getResult().getOutput());
-                    result.setPassed(true);
-
-                    for (CSARError error: result.getErrors()) {
-                        if (!ignoreCodes.contains(error.getCode())) {
-                            result.setPassed(false);
-                            overallPass = false;
-                            break;
+                    for (CSARError error: (List<CSARError>) cmd.getResult().getOutput()) {
+                        if (!ignoreCodes.contains(error.getCode()) && !ignoreCodes.contains(vnfreq + "-"+ error.getCode())) {
+                            result.getErrors().add(error);
                         }
                     }
 
+                    result.setPassed(result.getErrors().size() == 0);
                     validation.getResults().add(result);
                 } catch (Exception e) {
                     result.setPassed(false);
                     overallPass = false;
                     result.getErrors().add(new CSARArchive.CSARErrorUnknown(e.getMessage()));
+                    validation.getResults().add(result);
                 }
             }
 

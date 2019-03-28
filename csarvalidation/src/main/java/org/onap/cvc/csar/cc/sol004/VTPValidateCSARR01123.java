@@ -21,7 +21,7 @@ import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.CSARArchive.CSARErrorEntryMissing;
 import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 
-@OnapCommandSchema(schema = "vtp-validate-csar-01123.yaml")
+@OnapCommandSchema(schema = "vtp-validate-csar-r01123.yaml")
 public class VTPValidateCSARR01123 extends VTPValidateCSARBase {
 
     public static class CSARErrorEntryVNFProviderDetailsNotFound extends CSARErrorEntryMissing {
