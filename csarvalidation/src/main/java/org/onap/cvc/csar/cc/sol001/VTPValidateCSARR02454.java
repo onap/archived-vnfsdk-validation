@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.onap.cvc.csar.cc.sol004;
+package org.onap.cvc.csar.cc.sol001;
 
 import java.io.FileInputStream;
 import java.util.Map;

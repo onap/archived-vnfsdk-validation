@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Huawei Technologies Co., Ltd.
+x * Copyright 2017 Huawei Technologies Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +28,17 @@ import org.yaml.snakeyaml.Yaml;
 @OnapCommandSchema(schema = "vtp-validate-csar-r09467.yaml")
 public class VTPValidateCSARR09467 extends VTPValidateCSARBase {
 
-    public static class CSARErrorEntryMissingFlavor extends CSARErrorEntryMissing {
-        public CSARErrorEntryMissingFlavor(String defYaml, String entry) {
+    public static class CSARErrorEntryMissingVDUCompute extends CSARErrorEntryMissing {
+        public CSARErrorEntryMissingVDUCompute(String defYaml, String entry) {
             super(entry, defYaml);
             this.setCode("0x1000");
+        }
+    }
+
+    public static class CSARErrorEntryMissingVDUVirtualStorage extends CSARErrorEntryMissing {
+        public CSARErrorEntryMissingVDUVirtualStorage(String defYaml, String entry) {
+            super(entry, defYaml);
+            this.setCode("0x1001");
         }
     }
 
@@ -42,23 +49,34 @@ public class VTPValidateCSARR09467 extends VTPValidateCSARBase {
             yaml = (Map<String, ?>) yaml.get("topology_template");
             Map<String, ?> nodeTmpls = (Map<String,?>) yaml.get("node_templates");
 
-            boolean vlExist = false;
+            boolean computeExist = false;
+            boolean storageExist = false;
 
             for (Object nodeO: nodeTmpls.values()) {
                 Map<String, ?> node = (Map<String, ?>) nodeO;
                 if (node.containsKey("type")) {
                     String type = (String)node.get("type");
                     if (type.equalsIgnoreCase("tosca.nodes.nfv.VDU.Compute")) {
-                        vlExist = true;
-                        break;
+                        computeExist = true;
+
+                    }
+
+                    if (type.equalsIgnoreCase("tosca.nodes.nfv.VDU.VirtualStorage")) {
+                        storageExist = true;
+
                     }
                 }
             }
 
-            if (!vlExist)
-                this.errors.add(new CSARErrorEntryMissingFlavor(
+            if (!computeExist)
+                this.errors.add(new CSARErrorEntryMissingVDUCompute(
                     csar.getDefinitionYamlFile().getName(),
-                    "Flavor"));
+                    "VDU Compute"));
+
+            if (!storageExist)
+                this.errors.add(new CSARErrorEntryMissingVDUVirtualStorage(
+                        csar.getDefinitionYamlFile().getName(),
+                        "VirtualStorage"));
         }
     }
 

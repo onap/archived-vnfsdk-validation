@@ -28,8 +28,23 @@ import org.yaml.snakeyaml.Yaml;
 @OnapCommandSchema(schema = "vtp-validate-csar-r35851.yaml")
 public class VTPValidateCSARR35851 extends VTPValidateCSARBase {
 
-    public static class CSARErrorEntryMissingDefinitionYamlTopology extends CSARErrorEntryMissing {
-        public CSARErrorEntryMissingDefinitionYamlTopology(String defYaml, String entry) {
+    public static class CSARErrorEntryMissingDefinitionYamlVnfVirtualLink extends CSARErrorEntryMissing {
+        public CSARErrorEntryMissingDefinitionYamlVnfVirtualLink(String defYaml, String entry) {
+            super(entry, defYaml);
+            this.setCode("0x1000");
+        }
+    }
+
+
+    public static class CSARErrorEntryMissingDefinitionYamlVduCp extends CSARErrorEntryMissing {
+        public CSARErrorEntryMissingDefinitionYamlVduCp(String defYaml, String entry) {
+            super(entry, defYaml);
+            this.setCode("0x1000");
+        }
+    }
+
+    public static class CSARErrorEntryMissingDefinitionYamlVnfExtCp extends CSARErrorEntryMissing {
+        public CSARErrorEntryMissingDefinitionYamlVnfExtCp(String defYaml, String entry) {
             super(entry, defYaml);
             this.setCode("0x1000");
         }
@@ -42,23 +57,44 @@ public class VTPValidateCSARR35851 extends VTPValidateCSARBase {
             yaml = (Map<String, ?>) yaml.get("topology_template");
             Map<String, ?> nodeTmpls = (Map<String,?>) yaml.get("node_templates");
 
-            boolean vlExist = false;
+            boolean vlExist[] = new boolean[3];
 
             for (Object nodeO: nodeTmpls.values()) {
                 Map<String, ?> node = (Map<String, ?>) nodeO;
                 if (node.containsKey("type")) {
                     String type = (String)node.get("type");
                     if (type.equalsIgnoreCase("tosca.nodes.nfv.VnfVirtualLink")) {
-                        vlExist = true;
-                        break;
+                        vlExist[0] = true;
+
+                    }
+
+                    if (type.equalsIgnoreCase("tosca.nodes.nfv.VduCp")) {
+                        vlExist[1] = true;
+
+                    }
+
+                    if (type.equalsIgnoreCase("tosca.nodes.nfv.VnfExtCp")) {
+                        vlExist[2] = true;
+
                     }
                 }
             }
 
-            if (!vlExist)
-                this.errors.add(new CSARErrorEntryMissingDefinitionYamlTopology(
+            if (!vlExist[0])
+                this.errors.add(new CSARErrorEntryMissingDefinitionYamlVnfVirtualLink(
                     csar.getDefinitionYamlFile().getName(),
-                    "Topology VL"));
+                    "nodes VnfVirtualLink"));
+
+
+            if (!vlExist[1])
+                this.errors.add(new CSARErrorEntryMissingDefinitionYamlVduCp(
+                        csar.getDefinitionYamlFile().getName(),
+                        "nodes VduCp"));
+
+            if (!vlExist[2])
+                this.errors.add(new CSARErrorEntryMissingDefinitionYamlVnfExtCp(
+                        csar.getDefinitionYamlFile().getName(),
+                        "nodes VnfExtCp"));
         }
 
     }

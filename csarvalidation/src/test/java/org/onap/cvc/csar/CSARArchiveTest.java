@@ -27,7 +27,7 @@ public class CSARArchiveTest {
     public void testAll() throws IOException, InterruptedException {
         System.out.println(CSARArchive.SOL0004_2_4_1);
 
-        for (String csarFileName: Arrays.asList(new String[] {"enterprise2DC", "VoLTE", "vEPC_NS", "vIMS_NS", "sample2"})) {
+        for (String csarFileName: Arrays.asList(new String[] {"enterprise2DC", "VoLTE", "vEPC_NS", "vIMS_NS", "sample2"/*, "vUSN"*/})) {
             try {
                 CSARArchive csar = new CSARArchive();
                 System.out.println(csarFileName);

@@ -903,6 +903,15 @@ public class CSARArchive {
         }
     }
 
+
+    public String getProductName() {
+        if (this.toscaMeta.getMode().equals(Mode.WITH_TOSCA_META_DIR)) {
+            return this.manifest.getMetadata().getProductName();
+        } else {
+            return this.definition.getMetadata().getTemplateAuthor();
+        }
+    }
+
     public String getVendorName() {
         if (this.toscaMeta.getMode().equals(Mode.WITH_TOSCA_META_DIR)) {
             return this.toscaMeta.getCompanyName();
@@ -913,7 +922,7 @@ public class CSARArchive {
 
     public String getVersion() {
         if (this.toscaMeta.getMode().equals(Mode.WITH_TOSCA_META_DIR)) {
-            return this.toscaMeta.getCsarVersion();
+            return this.manifest.getMetadata().getPackageVersion();
         } else {
             return this.definition.getMetadata().getTemplateVersion();
         }
@@ -935,7 +944,7 @@ public class CSARArchive {
 
         int lineNo =0;
         List<String>lines = FileUtils.readLines(this.manifestMfFile);
-        //first hit the metadata section
+        //first hit the metadata: section
         for (String line: lines) {
             lineNo ++;
             line = line.trim();
@@ -953,13 +962,13 @@ public class CSARArchive {
         if (lineNo < lines.size()) {
             for (int i = lineNo; i< lines.size(); i++) {
                 String line = lines.get(i).trim();
-                i ++;
 
-                if (line.startsWith("#")) {
+                if (line.startsWith("#") || line.isEmpty()) {
                     continue;
                 }
 
                 String[] tokens = line.split(":");
+                if (tokens.length < 2) continue;
                 String key = tokens[0];
                 String value = tokens[1];
 
