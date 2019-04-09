@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6e25966_0be594b2",
+        "filename": "csarvalidation/src/main/resources/open-cli-schema/vtp-validate-csar.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2019-04-09T11:07:13Z",
+      "side": 1,
+      "message": "Add \ndefault_value: false",
+      "revId": "fcbb90deecd689e860c5503a96b34c579e1dda39",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
