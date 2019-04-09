@@ -1,12 +1,12 @@
 /**
  * Copyright 2019 Nokia
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,10 +18,16 @@ package org.onap.cvc.csar;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class PnfCSARArchive extends CSARArchive {
+
+    public PnfCSARArchive(){
+        super(new PnfManifest());
+    }
 
     @Override
     void parseManifest() throws IOException {
@@ -32,26 +38,41 @@ public class PnfCSARArchive extends CSARArchive {
         }
 
         PnfManifestParser pnfManifestParser = PnfManifestParser.getInstance(
-                this.getManifestMfFile().getAbsolutePath()
+                this.getManifestMfFile()
         );
 
         Pair<Manifest.Metadata, List<CSARError>> metadataData = pnfManifestParser.fetchMetadata();
+        Pair<List<String>, List<CSARError>> sourcesSectionData = pnfManifestParser.fetchSourcesSection();
         Pair<Map<String, Map<String, List<String>>>, List<CSARError>> nonManoArtifactsData = pnfManifestParser.fetchNonManoArtifacts();
 
-        Manifest manifest = this.getManifest();
+        PnfManifest manifest = (PnfManifest) this.getManifest();
         manifest.setMetadata(metadataData.getKey());
+        manifest.setSources(sourcesSectionData.getKey());
         manifest.setNonMano(nonManoArtifactsData.getKey());
         this.getErrors().addAll(metadataData.getValue());
         this.getErrors().addAll(nonManoArtifactsData.getValue());
+        this.getErrors().addAll(sourcesSectionData.getValue());
     }
 
     @Override
-    String getEntryManifestParamName(){
+    String getEntryManifestParamName() {
         return "ETSI-Entry-Manifest";
     }
 
     @Override
-    String getEntryChangeLogParamName(){
+    String getEntryChangeLogParamName() {
         return "ETSI-Entry-Change-Log";
+    }
+
+    public static class PnfManifest extends Manifest {
+        private List<String> sources = new ArrayList<>();
+
+        public List<String> getSources() {
+            return Collections.unmodifiableList(sources);
+        }
+
+        public void setSources(List<String> sources) {
+            this.sources.addAll(sources);
+        }
     }
 }

@@ -20,6 +20,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -34,7 +35,7 @@ public class PnfManifestParserTest {
 
     @Before
     public void setUp() throws URISyntaxException, IOException {
-        pnfManifestParser = PnfManifestParser.getInstance("./src/test/resources/pnf/MainServiceTemplate.mf");
+        pnfManifestParser = PnfManifestParser.getInstance(new File("./src/test/resources/pnf/MainServiceTemplate.mf"));
     }
 
     @Test
@@ -49,6 +50,19 @@ public class PnfManifestParserTest {
         assertThat(metadata.getReleaseDateTime()).isEqualTo("2019-01-14T11:25:00+00:00");
         assertThat(errors.size()).isEqualTo(0);
     }
+
+
+    @Test
+    public void shouldFetchSourcesSectionFromFile() {
+
+        Pair<List<String>, List<CSARArchive.CSARError>> sourcesPair = pnfManifestParser.fetchSourcesSection();
+        List<String> sources = sourcesPair.getKey();
+        List<CSARArchive.CSARError> errors = sourcesPair.getValue();
+
+        assertThat(sources).contains("Definitions/MainServiceTemplate.yaml", "Definitions/etsi_nfv_sol001_vnfd_2_5_1_types.yaml");
+        assertThat(errors.size()).isEqualTo(0);
+    }
+
 
 
     @Test
