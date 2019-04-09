@@ -16,18 +16,38 @@
 
 package org.onap.cvc.csar;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-
 import org.junit.Test;
 import org.onap.cli.main.OnapCli;
 
+import java.net.URISyntaxException;
+
+import static org.junit.Assert.assertEquals;
+import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.absoluteFilePath;
+
+
 public class CsarValidatorTest {
 
+
     @Test
-    public void testAll() throws IOException, InterruptedException {
-        OnapCli cli = new OnapCli(new String [] {"--product", "onap-vtp", "csar-validate", "--format", "json", "--csar", "./src/test/resources/VoLTE.csar"});
+    public void testAllTestCasesForVNF() throws URISyntaxException {
+        OnapCli cli = new OnapCli(new String [] {
+                "--product", "onap-vtp",
+                "csar-validate",
+                "--format", "json",
+                "--csar", absoluteFilePath("VoLTE.csar")});
+        cli.handle();
+        assertEquals(0, cli.getExitCode());
+    }
+
+
+    @Test
+    public void testAllTestCasesForPNF() throws URISyntaxException {
+        OnapCli cli = new OnapCli(new String [] {
+                "--product", "onap-vtp",
+                "csar-validate",
+                "--format", "json",
+                "--pnf",
+                "--csar", absoluteFilePath("pnf/r57019/allMandatoryEntriesDefinedInMetadataManifest.csar")});
         cli.handle();
         assertEquals(0, cli.getExitCode());
     }
