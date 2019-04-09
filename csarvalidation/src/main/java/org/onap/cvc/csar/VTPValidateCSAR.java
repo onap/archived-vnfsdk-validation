@@ -16,7 +16,6 @@
 
 package org.onap.cvc.csar;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -185,13 +184,13 @@ public class VTPValidateCSAR extends OnapCommand {
     protected void run() throws OnapCommandException {
         //Read the input arguments
         String path = (String) getParametersMap().get("csar").getValue();
+        boolean isPnf = (boolean) getParametersMap().get("pnf").getValue();
 
         boolean overallPass = true;
-        try {
-            CSARArchive csar = new CSARArchive();
+        try(CSARArchive csar = isPnf ? new PnfCSARArchive(): new CSARArchive()){
             csar.init(path);
             csar.parse();
-            csar.cleanup();
+
 
             //Fill up the basic details
             CSARValidation validation = new CSARValidation();
@@ -201,7 +200,8 @@ public class VTPValidateCSAR extends OnapCommand {
             validation.getVnf().setType("TOSCA");
             validation.getVnf().setMode(csar.getToscaMeta().getMode().name());
 
-            List <String> ignoreCodes = this.getIgnoreErrorCodes();
+            String keyErrors = isPnf ? "pnferrors.ignored" : "vnferrors.ignored";
+            List <String> ignoreCodes = this.getPropertiesList(keyErrors);
 
             //Add SOL004 error codes
             CSARValidation.Result resultSOL004 = new CSARValidation.Result();
@@ -214,12 +214,13 @@ public class VTPValidateCSAR extends OnapCommand {
                     overallPass = false;
                 }
             }
-            resultSOL004.setPassed(resultSOL004.getErrors().size() == 0);
+            resultSOL004.setPassed(resultSOL004.getErrors().isEmpty());
 
             validation.getResults().add(resultSOL004);
 
             //Run thru the vnfreqs requirement checks
-            for (String vnfreq: this.getEnabledReqs()) {
+            String keyReqs = isPnf ? "pnfreqs.enabled" : "vnfreqs.enabled";
+            for (String vnfreq: this.getPropertiesList(keyReqs)) {
                 CSARValidation.Result result = new CSARValidation.Result();
                 result.setVnfreqName(vnfreq);
 
@@ -237,7 +238,7 @@ public class VTPValidateCSAR extends OnapCommand {
                         }
                     }
 
-                    result.setPassed(result.getErrors().size() == 0);
+                    result.setPassed(result.getErrors().isEmpty());
                     validation.getResults().add(result);
                 } catch (Exception e) {
                     result.setPassed(false);
@@ -265,19 +266,10 @@ public class VTPValidateCSAR extends OnapCommand {
         }
     }
 
-    private List<String> getEnabledReqs() throws IOException {
-        String[] enabledReqs = prp.getProperty("vnfreqs.enabled", "").split(",");
+    private List<String> getPropertiesList(String key) {
+        String[] enabledReqs = prp.getProperty(key, "").split(",");
         List<String> list = new ArrayList<>();
         for(String req: enabledReqs) {
-            if (!req.isEmpty()) list.add(req);
-        }
-        return list;
-    }
-
-    private List<String> getIgnoreErrorCodes() throws IOException {
-        String[] errorsToIgnore = prp.getProperty("errors.ignored", "").split(",");
-        List<String> list = new ArrayList<>();
-        for(String req: errorsToIgnore) {
             if (!req.isEmpty()) list.add(req);
         }
         return list;

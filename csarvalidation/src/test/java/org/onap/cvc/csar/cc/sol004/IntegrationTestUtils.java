@@ -31,13 +31,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class IntegrationTestUtils {
+public class IntegrationTestUtils {
 
     private IntegrationTestUtils() {
 
     }
 
-    private static String absoluteFilePath(String relativeFilePath) throws URISyntaxException {
+    public static String absoluteFilePath(String relativeFilePath) throws URISyntaxException {
         return VTPValidatePnfCSARBase.class.getClassLoader().getResource(relativeFilePath)
                 .toURI().getPath();
     }
