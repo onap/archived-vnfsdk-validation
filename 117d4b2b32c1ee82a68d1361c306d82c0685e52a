@@ -22,6 +22,30 @@
       "revId": "117d4b2b32c1ee82a68d1361c306d82c0685e52a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b2f1a58b_a576e77d",
+        "filename": "csarvalidation/src/main/resources/open-cli-schema/vtp-validate-csar.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2019-04-10T05:23:49Z",
+      "side": 1,
+      "message": "but it is optional ... should I remove is_optional flag?",
+      "parentUuid": "d21e4ccb_53eeb900",
+      "range": {
+        "startLine": 39,
+        "startChar": 21,
+        "endLine": 39,
+        "endChar": 25
+      },
+      "revId": "117d4b2b32c1ee82a68d1361c306d82c0685e52a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
