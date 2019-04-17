@@ -16,19 +16,23 @@
 
 package org.onap.cvc.csar.cc;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.onap.cli.fw.cmd.OnapCommand;
 import org.onap.cli.fw.error.OnapCommandException;
 import org.onap.cli.fw.error.OnapCommandExecutionFailed;
 import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.CSARArchive.CSARError;
+import org.onap.cvc.csar.FileArchive;
+import org.onap.cvc.csar.ZipFileContentValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class VTPValidateCSARBase extends OnapCommand {
     protected static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSARBase.class);
+
+    private final ZipFileContentValidator zipFileContentValidator = new ZipFileContentValidator();
 
     protected abstract void validateCSAR(CSARArchive csar) throws Exception;
 
@@ -43,7 +47,14 @@ public abstract class VTPValidateCSARBase extends OnapCommand {
 
         //execute
         try (CSARArchive csar = this.createArchiveInstance()){
+
             csar.init(path);
+
+            FileArchive.Workspace workspace = csar.getWorkspace();
+            if(workspace.isZip()) {
+                errors.addAll(zipFileContentValidator.validate(workspace));
+            }
+
             csar.parse();
 
             errors.addAll(csar.getErrors());

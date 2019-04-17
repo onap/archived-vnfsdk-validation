@@ -1,4 +1,4 @@
-# Copyright 2018 Huawei Technologies Co., Ltd.
+# Copyright 2019 Nokia
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,10 @@
 
 open_cli_schema_version: 1.0
 
-name: csar-validate
+name: csar-validate-r787965
 
-description: Validate CSAR package formats compliants to ETSI SOL004, SOL001 and VNFREQS
+description: |
+  If the VNF or PNF CSAR Package utilizes Option 2 for package security, then the complete CSAR file MUST be digitally signed with the VNF or PNF provider private key. The VNF or PNF provider delivers one zip file consisting of the CSAR file, a signature file and a certificate file that includes the VNF or PNF provider public key. The certificate may also be included in the signature container, if the signature format allows that. The VNF or PNF provider creates a zip file consisting of the CSAR file with .csar extension, signature and certificate files. The signature and certificate files must be siblings of the CSAR file with extensions .cms and .cert respectively.
 
 info:
   product: onap-vtp
@@ -31,40 +32,23 @@ parameters:
       short_option: b
       type: binary
       is_optional: false
-    - name: pnf
-      description: CSAR file contains PNF
-      long_option: pnf
-      short_option: p
-      type: bool
-      is_optional: true
-      default_value: false
 
 results:
-    direction: portrait
+    direction: landscape
     attributes:
-     - name: vnf
-       description: VNF details such as vendor, type, model, name
-       scope: short
-       type: json
-     - name: date
-       description: Validation date
+     - name: code
+       description: Error code
        scope: short
        type: string
-     - name: platform
-       description: Platform used to test the reqs
+     - name: message
+       description: Error message
        scope: short
        type: string
-       default_value: VNF Test Platform (VTP) 1.0
-     - name: contact
-       description: Owner for this test case
+     - name: file
+       description: File in which error occured
        scope: short
        type: string
-       default_value: ONAP VTP Team onap-discuss@lists.onap.org
-     - name: criteria
-       description: Overall test reqs passed? PASS or FAILED
+     - name: line-no
+       description: Line no at which error occured
        scope: short
        type: string
-     - name: results
-       description: All test cases results
-       scope: short
-       type: json

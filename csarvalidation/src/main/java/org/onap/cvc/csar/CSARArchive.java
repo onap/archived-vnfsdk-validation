@@ -15,23 +15,18 @@
  */
 package org.onap.cvc.csar;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.Optional;
 
 import org.apache.commons.io.FileUtils;
 import org.yaml.snakeyaml.Yaml;
@@ -48,11 +43,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CSARArchive implements AutoCloseable {
 
     public static final String SOL0004_2_4_1 = "V2.4.1 (2018-02)";
-
     public String getSOL004Version() {
         return SOL0004_2_4_1;
     }
 
+    private FileArchive.Workspace workspace;
     protected Path tempDir;
 
     public static final String TEMP_DIR = "/tmp";
@@ -123,6 +118,10 @@ public class CSARArchive implements AutoCloseable {
     public static final String Entry_Manifest__non_mano_artifact_sets = "non_mano_artifact_sets";
 
     public static final String CSAR_Archive = "CSAR Archive";
+
+    public FileArchive.Workspace getWorkspace() {
+        return this.workspace;
+    }
 
     public enum Mode {
         WITH_TOSCA_META_DIR,
@@ -260,7 +259,6 @@ public class CSARArchive implements AutoCloseable {
 
             this.lineNumber = lineNo;
             this.file = file;
-            //this.message = "More than one file exists in the archive root for " + fileName + ", It should be only one. Files: " + files;
         }
     }
 
@@ -298,7 +296,6 @@ public class CSARArchive implements AutoCloseable {
                 this.message += ". " + message;
             }
 
-            this.file = file;
             this.lineNumber = lineNo;
         }
     }
@@ -878,41 +875,6 @@ public class CSARArchive implements AutoCloseable {
         this.manifest = manifest;
     }
 
-    private void unzip(String csarPath, Path destination) throws IOException {
-        File csarFile = new File(csarPath);
-
-        if (!csarFile.exists()) {
-            throw new RuntimeException(csarPath + " does not exist");
-        }
-
-        try (ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(new FileInputStream(csarFile)))){
-
-            ZipEntry entry;
-            while ((entry = zipInputStream.getNextEntry()) != null) {
-
-                File filePath = new File(destination + File.separator + entry.getName());
-
-                if(entry.isDirectory()){
-                    filePath.mkdirs();
-                } else {
-                    extract(zipInputStream, filePath);
-                }
-            }
-        }
-    }
-
-    private void extract(ZipInputStream csar, File filePath) throws IOException {
-        byte[] buffer = new byte[2048];
-        try (FileOutputStream fos = new FileOutputStream(filePath);
-             BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length)) {
-
-            int len;
-            while ((len = csar.read(buffer)) > 0) {
-                bos.write(buffer, 0, len);
-            }
-        }
-    }
-
 
     public String getProductName() {
         if (this.toscaMeta.getMode().equals(Mode.WITH_TOSCA_META_DIR)) {
@@ -1317,11 +1279,14 @@ public class CSARArchive implements AutoCloseable {
     }
 
     public void init(String csarPath) throws IOException {
-        this.tempDir  = Paths.get(TEMP_DIR + File.separator + System.currentTimeMillis());
-        this.tempDir.toFile().mkdirs();
+        this.workspace = new FileArchive(TEMP_DIR).unpack(csarPath);
 
-        this.unzip(csarPath, this.tempDir);
+        final Optional<Path> pathToCsarFolder = workspace.getPathToCsarFolder();
+        if (pathToCsarFolder.isPresent()) {
+            this.tempDir = pathToCsarFolder.get();
+        }
     }
+
     public void parse() throws IOException {
         //Find out the mode of CSAR
         this.setMode();
@@ -1338,7 +1303,10 @@ public class CSARArchive implements AutoCloseable {
 
     public void cleanup() throws IOException {
         //remove temp dir
-        FileUtils.deleteDirectory(this.tempDir.toFile());
+        final Optional<Path> rootFolder = workspace.getRootFolder();
+        if(rootFolder.isPresent()) {
+            FileUtils.deleteDirectory(rootFolder.get().toFile());
+        }
     }
 
     public File getFileFromCsar(String path) {
@@ -1347,8 +1315,6 @@ public class CSARArchive implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        if(this.tempDir != null){
-            cleanup();
-        }
+        cleanup();
     }
 }
