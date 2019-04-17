@@ -41,13 +41,26 @@ public class CsarValidatorTest {
 
 
     @Test
-    public void testAllTestCasesForPNF() throws URISyntaxException {
+    public void testAllTestCasesForPNF_CsarCase() throws URISyntaxException {
         OnapCli cli = new OnapCli(new String [] {
                 "--product", "onap-vtp",
                 "csar-validate",
                 "--format", "json",
                 "--pnf",
                 "--csar", absoluteFilePath("pnf/r57019/allMandatoryEntriesDefinedInMetadataManifest.csar")});
+        cli.handle();
+        assertEquals(0, cli.getExitCode());
+    }
+
+
+    @Test
+    public void testAllTestCasesForPNF_ZipCase() throws URISyntaxException {
+        OnapCli cli = new OnapCli(new String [] {
+                "--product", "onap-vtp",
+                "csar-validate",
+                "--format", "json",
+                "--pnf",
+                "--csar", absoluteFilePath("pnf/signed-package.zip")});
         cli.handle();
         assertEquals(0, cli.getExitCode());
     }
