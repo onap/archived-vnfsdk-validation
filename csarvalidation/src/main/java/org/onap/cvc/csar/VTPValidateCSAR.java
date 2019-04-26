@@ -24,6 +24,8 @@ import java.util.Properties;
 import org.onap.cli.fw.cmd.OnapCommand;
 import org.onap.cli.fw.error.OnapCommandException;
 import org.onap.cli.fw.error.OnapCommandExecutionFailed;
+import org.onap.cli.fw.error.OnapCommandInvalidParameterValue;
+import org.onap.cli.fw.input.OnapCommandParameter;
 import org.onap.cli.fw.output.OnapCommandResultType;
 import org.onap.cli.fw.registrar.OnapCommandRegistrar;
 import org.onap.cli.fw.schema.OnapCommandSchema;
@@ -39,6 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @OnapCommandSchema(schema = "vtp-validate-csar.yaml")
 public class VTPValidateCSAR extends OnapCommand {
     private static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSAR.class);
+    public static final String PNF_ATTRIBUTE_NAME = "pnf";
 
     public static class CSARValidation {
         public static class VNF {
@@ -184,7 +187,7 @@ public class VTPValidateCSAR extends OnapCommand {
     protected void run() throws OnapCommandException {
         //Read the input arguments
         String path = (String) getParametersMap().get("csar").getValue();
-        boolean isPnf = (boolean) getParametersMap().get("pnf").getValue();
+        boolean isPnf = (boolean) getParametersMap().get(PNF_ATTRIBUTE_NAME).getValue();
 
         boolean overallPass = true;
         try(CSARArchive csar = isPnf ? new PnfCSARArchive(): new CSARArchive()){
@@ -228,6 +231,7 @@ public class VTPValidateCSAR extends OnapCommand {
                     String command = "csar-validate-" + vnfreq;
                     OnapCommand cmd = OnapCommandRegistrar.getRegistrar().get(command, this.getInfo().getProduct());
                     cmd.getParametersMap().get("csar").setValue(path);
+                    setPnfValueIfAvailable(isPnf, cmd);
 
                     result.setDescription(cmd.getDescription());
                     cmd.execute();
@@ -263,6 +267,13 @@ public class VTPValidateCSAR extends OnapCommand {
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             throw new OnapCommandExecutionFailed(e.getMessage());
+        }
+    }
+
+    private void setPnfValueIfAvailable(boolean isPnf, OnapCommand cmd) throws OnapCommandInvalidParameterValue {
+        final OnapCommandParameter pnf = cmd.getParametersMap().get(PNF_ATTRIBUTE_NAME);
+        if(pnf!=null) {
+            pnf.setValue(isPnf);
         }
     }
 

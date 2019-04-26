@@ -21,12 +21,12 @@ package org.onap.cvc.csar.cc.sol004;
 import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.PnfCSARError.PnfCSARErrorEntryMissing;
-import org.onap.cvc.csar.cc.VTPValidatePnfCSARBase;
+import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 
 import java.util.Objects;
 
 @OnapCommandSchema(schema = "vtp-validate-csar-r57019.yaml")
-public class VTPValidateCSARR57019 extends VTPValidatePnfCSARBase {
+public class VTPValidateCSARR57019 extends VTPValidateCSARBase {
 
     private static final int UNKNOWN_LINE_NUMBER = -1;
 

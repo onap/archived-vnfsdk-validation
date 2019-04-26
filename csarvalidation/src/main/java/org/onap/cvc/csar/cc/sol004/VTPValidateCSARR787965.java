@@ -22,7 +22,7 @@ import org.onap.cli.fw.error.OnapCommandException;
 import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.FileArchive;
-import org.onap.cvc.csar.cc.VTPValidatePnfCSARBase;
+import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 import org.onap.cvc.csar.rsa.RSACertificateValidator;
 import org.onap.cvc.csar.rsa.X509RsaCertification;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ import java.util.Base64;
 import java.util.Optional;
 
 @OnapCommandSchema(schema = "vtp-validate-csar-r787965.yaml")
-public class VTPValidateCSARR787965 extends VTPValidatePnfCSARBase {
+public class VTPValidateCSARR787965 extends VTPValidateCSARBase {
 
     private static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSARR787965.class);
 

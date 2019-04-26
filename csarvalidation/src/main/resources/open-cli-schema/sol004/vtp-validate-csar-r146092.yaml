@@ -36,6 +36,13 @@ parameters:
       short_option: b
       type: binary
       is_optional: false
+    - name: pnf
+      description: CSAR file contains PNF
+      long_option: pnf
+      short_option: p
+      type: bool
+      is_optional: true
+      default_value: true
 
 results:
     direction: landscape

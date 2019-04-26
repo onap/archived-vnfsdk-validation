@@ -24,7 +24,7 @@ import org.onap.cli.fw.input.OnapCommandParameter;
 import org.onap.cli.fw.output.OnapCommandResult;
 import org.onap.cli.fw.output.OnapCommandResultAttribute;
 import org.onap.cvc.csar.CSARArchive;
-import org.onap.cvc.csar.cc.VTPValidatePnfCSARBase;
+import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 
 import java.net.URISyntaxException;
 import java.util.List;
@@ -38,11 +38,11 @@ public class IntegrationTestUtils {
     }
 
     public static String absoluteFilePath(String relativeFilePath) throws URISyntaxException {
-        return VTPValidatePnfCSARBase.class.getClassLoader().getResource(relativeFilePath)
+        return VTPValidateCSARBase.class.getClassLoader().getResource(relativeFilePath)
                 .toURI().getPath();
     }
 
-    static void configureTestCase(VTPValidatePnfCSARBase testCase, String fileName) throws OnapCommandException, URISyntaxException {
+    static void configureTestCase(VTPValidateCSARBase testCase, String fileName) throws OnapCommandException, URISyntaxException {
         configureCommandAttributes(testCase);
 
         testCase.initializeSchema("vtp-validate-csar-r146092.yaml");
@@ -50,7 +50,7 @@ public class IntegrationTestUtils {
         configurePathToCsar(testCase, fileName);
     }
 
-    private static void configureCommandAttributes(VTPValidatePnfCSARBase testCase) {
+    private static void configureCommandAttributes(VTPValidateCSARBase testCase) {
         OnapCommandResult onapCommandResult = new OnapCommandResult();
         OnapCommandResultAttribute onapCommandResultAttributeCode = new OnapCommandResultAttribute();
         onapCommandResultAttributeCode.setName("code");
@@ -65,7 +65,7 @@ public class IntegrationTestUtils {
         testCase.setResult(onapCommandResult);
     }
 
-    private static void configurePathToCsar(VTPValidatePnfCSARBase testCase, String fileName) throws URISyntaxException, OnapCommandInvalidParameterValue {
+    private static void configurePathToCsar(VTPValidateCSARBase testCase, String fileName) throws URISyntaxException, OnapCommandInvalidParameterValue {
         String pathToFile = absoluteFilePath(fileName);
         Set<OnapCommandParameter> parameters = testCase.getParameters();
         OnapCommandParameter csar = parameters.stream().filter(op -> op.getName().equals("csar")).findFirst().get();

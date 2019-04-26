@@ -17,8 +17,8 @@ open_cli_schema_version: 1.0
 name: csar-validate-r35854
 
 description: |
-  The VNF Descriptor (VNFD) provided by VNF vendor MUST comply with TOSCA/YAML based Service template
-  for VNF descriptor specified in ETSI NFV-SOL001.
+  The VNF/PNF Descriptor (VNFD/PNFD) provided by VNF/PNF vendor MUST comply with TOSCA/YAML based Service template
+  for VNF/PNF descriptor specified in ETSI NFV-SOL001.
 
 info:
   product: onap-vtp
@@ -33,7 +33,13 @@ parameters:
       short_option: b
       type: binary
       is_optional: false
-
+    - name: pnf
+      description: CSAR file contains PNF
+      long_option: pnf
+      short_option: p
+      type: bool
+      is_optional: true
+      default_value: false
 results:
     direction: landscape
     attributes:

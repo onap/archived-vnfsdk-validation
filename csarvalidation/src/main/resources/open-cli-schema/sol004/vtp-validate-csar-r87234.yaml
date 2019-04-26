@@ -17,7 +17,7 @@ open_cli_schema_version: 1.0
 name: csar-validate-r87234
 
 description: |
-  The VNF package provided by a VNF vendor MAY be either with TOSCA-Metadata directory (CSAR Option 1)
+  The VNF/PNF package provided by a VNF/PNF vendor MAY be either with TOSCA-Metadata directory (CSAR Option 1)
   or without TOSCA-Metadata directory (CSAR Option 2) as specified in ETSI GS NFV-SOL004. On-boarding entity
   (ONAP SDC) must support both options.
 
@@ -34,6 +34,13 @@ parameters:
       short_option: b
       type: binary
       is_optional: false
+    - name: pnf
+      description: CSAR file contains PNF
+      long_option: pnf
+      short_option: p
+      type: bool
+      is_optional: true
+      default_value: false
 
 results:
     direction: landscape

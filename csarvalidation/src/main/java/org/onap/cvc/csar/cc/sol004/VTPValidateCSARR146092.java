@@ -22,7 +22,7 @@ import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.PnfCSARError;
 import org.onap.cvc.csar.PnfCSARError.PnfCSARErrorEntryMissing;
-import org.onap.cvc.csar.cc.VTPValidatePnfCSARBase;
+import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @OnapCommandSchema(schema = "vtp-validate-csar-r146092.yaml")
-public class VTPValidateCSARR146092 extends VTPValidatePnfCSARBase {
+public class VTPValidateCSARR146092 extends VTPValidateCSARBase {
 
     private static final int UNKNOWN_LINE_NUMBER = -1;
     private static final String SOURCE_ELEMENT_TAG = "source";
