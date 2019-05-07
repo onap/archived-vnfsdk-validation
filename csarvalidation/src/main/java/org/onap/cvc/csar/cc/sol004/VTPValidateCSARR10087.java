@@ -18,11 +18,6 @@ package org.onap.cvc.csar.cc.sol004;
 
 import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.onap.cvc.csar.CSARArchive;
-import org.onap.cvc.csar.CSARArchive.CSARError;
-import org.onap.cvc.csar.CSARArchive.CSARErrorEntryMissingToscaDefinitionMetadataTemplateName;
-import org.onap.cvc.csar.CSARArchive.CSARErrorEntryMissingToscaDefinitionNotFound;
-import org.onap.cvc.csar.CSARArchive.CSARErrorEntryMissingToscaMetaDefinition;
-import org.onap.cvc.csar.CSARArchive.CSARErrorInvalidEntryValueManifestNotFound;
 import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 
 @OnapCommandSchema(schema = "vtp-validate-csar-r10087.yaml")
@@ -30,15 +25,7 @@ public class VTPValidateCSARR10087 extends VTPValidateCSARBase {
 
     @Override
     protected void validateCSAR(CSARArchive csar) throws Exception {
-
-        for (CSARError e : csar.getErrors()) {
-            if (e instanceof CSARErrorEntryMissingToscaMetaDefinition ||
-                    e instanceof CSARErrorEntryMissingToscaDefinitionNotFound ||
-                    e instanceof CSARErrorEntryMissingToscaDefinitionMetadataTemplateName ||
-                    e instanceof CSARErrorInvalidEntryValueManifestNotFound) {
-                this.errors.add(e);
-            }
-        }
+        // During CSAR parsing file structure was checked and errors were generated if needed.
     }
 
     @Override

@@ -901,18 +901,19 @@ public class CSARArchive implements AutoCloseable {
     }
 
     private void setMode() {
-        if (new File(this.tempDir.toFile().getAbsolutePath() + File.separator + TOSCA_Metadata + File.separator + TOSCA_Metadata__TOSCA_Meta).exists()){
+        if (isToscaMetaFileExist()){
             this.toscaMeta.setMode(Mode.WITH_TOSCA_META_DIR);
         } else {
             this.toscaMeta.setMode(Mode.WITHOUT_TOSCA_META_DIR);
         }
     }
 
+    private boolean isToscaMetaFileExist() {
+        return new File(this.tempDir.toFile().getAbsolutePath() + File.separator +
+                TOSCA_Metadata + File.separator + TOSCA_Metadata__TOSCA_Meta).exists();
+    }
+
     void parseManifest() throws IOException {
-        //manifest is optional, so check for it
-        if (this.manifestMfFile == null) {
-            return;
-        }
 
         int lineNo =0;
         List<String>lines = FileUtils.readLines(this.manifestMfFile);
@@ -967,10 +968,6 @@ public class CSARArchive implements AutoCloseable {
     }
 
     private void parseDefinitionMetadata() throws IOException {
-        if(Objects.isNull(this.definitionYamlFile)){
-            return;
-        }
-
         try(FileInputStream ipStream = new FileInputStream(this.definitionYamlFile)) {
             Map<String, ?> yaml = (Map<String, ?>) new Yaml().load(ipStream);
 
@@ -1295,10 +1292,18 @@ public class CSARArchive implements AutoCloseable {
         this.parseMeta();
 
         //process manifest
-        this.parseManifest();
+        if(isFileExists(this.manifestMfFile)) {
+            this.parseManifest();
+        }
 
         //process definition
-        this.parseDefinitionMetadata();
+        if(isFileExists(this.definitionYamlFile)){
+            this.parseDefinitionMetadata();
+        }
+    }
+
+    private boolean isFileExists(File file) {
+        return !Objects.isNull(file) && file.exists();
     }
 
     public void cleanup() throws IOException {

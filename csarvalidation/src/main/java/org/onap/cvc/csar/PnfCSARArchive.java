@@ -31,12 +31,6 @@ public class PnfCSARArchive extends CSARArchive {
 
     @Override
     void parseManifest() throws IOException {
-
-        //manifest is optional, so check for it
-        if (this.getManifestMfFile() == null) {
-            return;
-        }
-
         PnfManifestParser pnfManifestParser = PnfManifestParser.getInstance(
                 this.getManifestMfFile()
         );
