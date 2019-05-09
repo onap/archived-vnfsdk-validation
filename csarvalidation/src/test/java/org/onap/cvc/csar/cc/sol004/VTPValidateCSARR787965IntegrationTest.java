@@ -48,7 +48,7 @@ public class VTPValidateCSARR787965IntegrationTest {
         // stop working in the future.
 
         // given
-        configureTestCase(testCase, "pnf/signed-package.zip");
+        configureTestCase(testCase, "pnf/r787965/signed-package.zip");
 
         // when
         testCase.execute();
@@ -61,5 +61,40 @@ public class VTPValidateCSARR787965IntegrationTest {
         );
     }
 
+    @Test
+    public void shouldReportThatZipContainsSignatureWithCertificationFileAndPackageIsProbableValid() throws Exception {
+
+        // given
+        configureTestCase(testCase, "pnf/r787965/signature-and-certificate.zip");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors)).contains(
+                "Warning. Zip package probably is valid. " +
+                        "It contains only signature with certification cms and csar package. " +
+                        "Unable to verify csar signature."
+        );
+    }
+
+    @Test
+    public void shouldReportThatZipPackageIsBroken() throws Exception {
+
+        // given
+        configureTestCase(testCase, "pnf/r787965/broken.zip");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors)).contains(
+                "Missing. Unable to find certification files."
+        );
+    }
 
 }

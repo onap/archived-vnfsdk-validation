@@ -56,7 +56,7 @@ public class FileArchiveTest {
         String absolutePath = folder.getRoot().getAbsolutePath();
 
         // when
-        FileArchive.Workspace workspace = new FileArchive(absolutePath).unpack(absoluteFilePath("pnf/signed-package.zip"));
+        FileArchive.Workspace workspace = new FileArchive(absolutePath).unpack(absoluteFilePath("pnf/r787965/signed-package.zip"));
 
         // then
         assertTrue(workspace.isZip());

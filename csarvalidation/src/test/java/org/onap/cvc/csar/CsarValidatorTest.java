@@ -60,7 +60,7 @@ public class CsarValidatorTest {
                 "csar-validate",
                 "--format", "json",
                 "--pnf",
-                "--csar", absoluteFilePath("pnf/signed-package.zip")});
+                "--csar", absoluteFilePath("pnf/r787965/signed-package.zip")});
         cli.handle();
         assertEquals(0, cli.getExitCode());
     }
