@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.onap.cvc.csar;
+package org.onap.cvc.vspcc;
 
 import org.junit.Test;
 import org.onap.cli.main.OnapCli;
@@ -25,42 +25,38 @@ import static org.junit.Assert.assertEquals;
 import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.absoluteFilePath;
 
 
-public class CsarValidatorTest {
+public class VSPComplianceCheckTest {
 
 
     @Test
-    public void testAllTestCasesForVNF() throws URISyntaxException {
+    public void testComputeFlavorCheck() throws URISyntaxException {
         OnapCli cli = new OnapCli(new String [] {
                 "--product", "onap-vtp",
-                "csar-validate",
+                "vsp-compliance-check-compute-flavor",
                 "--format", "json",
-                "--csar", absoluteFilePath("vUSN.csar")});
+                "--csar", absoluteFilePath("vSRIOV_flavor_sample.csar")});
         cli.handle();
         assertEquals(0, cli.getExitCode());
     }
 
-
     @Test
-    public void testAllTestCasesForPNF_CsarCase() throws URISyntaxException {
+    public void testSRIOVFlavorCheckShouldNotExist() throws URISyntaxException {
         OnapCli cli = new OnapCli(new String [] {
                 "--product", "onap-vtp",
-                "csar-validate",
+                "vsp-compliance-check-sriov-flavor",
                 "--format", "json",
-                "--pnf",
-                "--csar", absoluteFilePath("pnf/r57019/allMandatoryEntriesDefinedInMetadataManifest.csar")});
+                "--csar", absoluteFilePath("vSRIOV_flavor_sample.csar")});
         cli.handle();
         assertEquals(0, cli.getExitCode());
     }
 
-
     @Test
-    public void testAllTestCasesForPNF_ZipCase() throws URISyntaxException {
+    public void testComputeFlavorReportCheck() throws URISyntaxException {
         OnapCli cli = new OnapCli(new String [] {
                 "--product", "onap-vtp",
-                "csar-validate",
+                "vsp-compliance-check-compute-flavor-report",
                 "--format", "json",
-                "--pnf",
-                "--csar", absoluteFilePath("pnf/signed-package-valid-signature.zip")});
+                "--csar", absoluteFilePath("vSRIOV_flavor_sample.csar")});
         cli.handle();
         assertEquals(0, cli.getExitCode());
     }
