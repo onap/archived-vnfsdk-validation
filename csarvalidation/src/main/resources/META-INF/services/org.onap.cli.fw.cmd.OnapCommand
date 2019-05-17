@@ -47,5 +47,6 @@ org.onap.cvc.csar.cc.sol004.VTPValidateCSARR293901
 org.onap.cvc.csar.cc.sol004.VTPValidateCSARR146092
 org.onap.cvc.csar.cc.sol004.VTPValidateCSARR57019
 org.onap.cvc.csar.cc.sol004.VTPValidateCSARR787965
-org.onap.cvc.csar.cc.sol004.VTPValidateCSARR787966
-
+org.onap.cvc.csar.vspcc.VSPComplianceCheckComputeFlavor
+org.onap.cvc.csar.vspcc.VSPComplianceCheckSRIOVFlavor
+org.onap.cvc.csar.vspcc.VSPComplianceCheckComputeFlavorReport
