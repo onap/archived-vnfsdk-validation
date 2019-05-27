@@ -67,7 +67,7 @@ public class PnfManifestParserTest {
 
     @Test
     public void shouldFetchNonManoArtifactsFromFile() {
-        Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>> mapListPair = pnfManifestParser.fetchNonManoArtifacts();
+        Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>> mapListPair = pnfManifestParser.fetchNonManoArtifacts().get();
         Map<String, Map<String, List<String>>> nonManoArtifacts = mapListPair.getKey();
         List<CSARArchive.CSARError> errors= mapListPair.getValue();
 
