@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class PnfCSARArchive extends CSARArchive {
 
@@ -37,15 +38,20 @@ public class PnfCSARArchive extends CSARArchive {
 
         Pair<Manifest.Metadata, List<CSARError>> metadataData = pnfManifestParser.fetchMetadata();
         Pair<List<String>, List<CSARError>> sourcesSectionData = pnfManifestParser.fetchSourcesSection();
-        Pair<Map<String, Map<String, List<String>>>, List<CSARError>> nonManoArtifactsData = pnfManifestParser.fetchNonManoArtifacts();
+        Optional<Pair<Map<String, Map<String, List<String>>>, List<CSARError>>> nonManoArtifactsData = pnfManifestParser.fetchNonManoArtifacts();
 
         PnfManifest manifest = (PnfManifest) this.getManifest();
         manifest.setMetadata(metadataData.getKey());
-        manifest.setSources(sourcesSectionData.getKey());
-        manifest.setNonMano(nonManoArtifactsData.getKey());
         this.getErrors().addAll(metadataData.getValue());
-        this.getErrors().addAll(nonManoArtifactsData.getValue());
+
+        manifest.setSources(sourcesSectionData.getKey());
         this.getErrors().addAll(sourcesSectionData.getValue());
+
+        if(nonManoArtifactsData.isPresent()){
+            manifest.setNonMano(nonManoArtifactsData.get().getKey());
+            this.getErrors().addAll(nonManoArtifactsData.get().getValue());
+        }
+
     }
 
     @Override
