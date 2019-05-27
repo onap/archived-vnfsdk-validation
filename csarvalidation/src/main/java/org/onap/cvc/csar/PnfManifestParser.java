@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -118,7 +119,7 @@ class PnfManifestParser {
         return Pair.of(sources, errors);
     }
 
-    Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>> fetchNonManoArtifacts() {
+    Optional<Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>>> fetchNonManoArtifacts() {
         Map<String, Map<String, List<String>>> nonManoArtifacts = new HashMap<>();
         List<CSARArchive.CSARError> errors = new ArrayList<>();
 
@@ -143,10 +144,10 @@ class PnfManifestParser {
         }
 
         if (!isNonManoArtifactsSectionAvailable) {
-            errors.add(new PnfCSARErrorEntryMissing(NON_MANO_ARTIFACT_SETS_TAG_SECTION, this.fileName, -1));
+            return Optional.empty();
         }
 
-        return Pair.of(nonManoArtifacts, errors);
+        return Optional.of(Pair.of(nonManoArtifacts, errors));
     }
 
     private boolean isLineExcluded(String line) {

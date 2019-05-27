@@ -59,10 +59,12 @@ public class VTPValidateCSARR146092 extends VTPValidateCSARBase {
 
     @Override
     protected void validateCSAR(CSARArchive csar) {
-        Optional<ValidateNonManoSection> validateNonManoSection = ValidateNonManoSection.getInstance(csar);
-        if(validateNonManoSection.isPresent()) {
-            List<CSARArchive.CSARError> csarErrors = validateNonManoSection.get().validate();
-            this.errors.addAll(csarErrors);
+        if(csar.getManifest().isNonManoAvailable()) {
+            Optional<ValidateNonManoSection> validateNonManoSection = ValidateNonManoSection.getInstance(csar);
+            if(validateNonManoSection.isPresent()) {
+                List<CSARArchive.CSARError> csarErrors = validateNonManoSection.get().validate();
+                this.errors.addAll(csarErrors);
+            }
         }
     }
 

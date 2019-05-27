@@ -21,14 +21,14 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PnfNonManoArtifactsParserTest {
 
     @Test
-    public void shouldReportAnErrorWhenNonManoArtifactSectionIsNotAvailable() {
+    public void shouldDoNotReportAnErrorWhenNonManoArtifactSectionIsNotAvailable() {
         // given
         List<String> lines = Lists.newArrayList(
                 "someSection:",
@@ -40,14 +40,11 @@ public class PnfNonManoArtifactsParserTest {
 
         // when
         PnfManifestParser pnfManifestParser = new PnfManifestParser(lines, "fileName");
-        Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>>  data = pnfManifestParser.fetchNonManoArtifacts();
+        Optional<Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>>> nonManoArtifacts =
+                pnfManifestParser.fetchNonManoArtifacts();
 
         //then
-        List<CSARArchive.CSARError> errors = data.getRight();
-        assertThat(errors.size()).isEqualTo(1);
-        assertThat(errors.stream().map(CSARArchive.CSARError::getMessage).collect(Collectors.toList())).contains(
-                "Missing. Entry [non_mano_artifact_sets]"
-        );
+        assertThat(nonManoArtifacts.isPresent()).isFalse();
     }
 
     @Test
@@ -69,7 +66,7 @@ public class PnfNonManoArtifactsParserTest {
 
         // when
         PnfManifestParser pnfManifestParser = new PnfManifestParser(lines, "fileName");
-        Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>>  data = pnfManifestParser.fetchNonManoArtifacts();
+        Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>>  data = pnfManifestParser.fetchNonManoArtifacts().get();
 
         //then
         List<CSARArchive.CSARError> errors = data.getRight();
