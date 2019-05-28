@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "30f9eb98_080db966",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/CSARArchive.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2019-05-28T04:48:37Z",
+      "side": 1,
+      "message": "can you correct the spell mistake",
+      "range": {
+        "startLine": 741,
+        "startChar": 30,
+        "endLine": 741,
+        "endChar": 33
+      },
+      "revId": "e6ded12d2bce5696975af4283751c4e89222c308",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
