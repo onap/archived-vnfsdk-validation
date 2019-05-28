@@ -239,6 +239,7 @@ public class VTPValidateCSAR extends OnapCommand {
                     for (CSARError error: (List<CSARError>) cmd.getResult().getOutput()) {
                         if (!ignoreCodes.contains(error.getCode()) && !ignoreCodes.contains(vnfreq + "-"+ error.getCode())) {
                             result.getErrors().add(error);
+                            overallPass = false;
                         }
                     }
 
