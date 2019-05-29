@@ -115,4 +115,20 @@ public class VTPValidateCSARR146092IntegrationTest {
         );
     }
 
+    @Test
+    public void shouldReportThatDefinitionYAMLIsNotAvailableWhenToscaMetaFileIsNotPresent() throws Exception {
+        // given
+        configureTestCase(testCase, "pnf/noToscaMetaFile.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(4);
+        assertThat(convertToMessagesList(errors)).contains(
+                "Missing. Entry [Definition YAML]"
+        );
+    }
+
 }

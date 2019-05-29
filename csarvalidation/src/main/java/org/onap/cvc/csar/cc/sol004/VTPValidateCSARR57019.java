@@ -23,6 +23,7 @@ import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.PnfCSARError.PnfCSARErrorEntryMissing;
 import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 
+import java.io.File;
 import java.util.Objects;
 
 @OnapCommandSchema(schema = "vtp-validate-csar-r57019.yaml")
@@ -30,15 +31,28 @@ public class VTPValidateCSARR57019 extends VTPValidateCSARBase {
 
     private static final int UNKNOWN_LINE_NUMBER = -1;
 
+    public static class ToscaMetaNotAvailableError extends CSARArchive.CSARErrorInvalidEntryValue {
+        public ToscaMetaNotAvailableError() {
+            super("",
+                    "CSAR Archive",
+                    "Unable to find TOSCA.meta file in TOSCA-metadata directory.","");
+            this.setCode("0x1000");
+        }
+    }
+
     @Override
     protected void validateCSAR(CSARArchive csar) {
-        final CSARArchive.Manifest.Metadata metadata = csar.getManifest().getMetadata();
-        final String fileName = csar.getManifestMfFile().getName();
+        final CSARArchive.Manifest manifest = csar.getManifest();
+        final CSARArchive.Manifest.Metadata metadata = manifest.getMetadata();
+        final File manifestMfFile = csar.getManifestMfFile();
+        if(manifestMfFile!=null) {
+            final String fileName = manifestMfFile.getName();
 
-        validateMetadataValue(fileName, metadata.getProviderId(), "pnfd_provider");
-        validateMetadataValue(fileName, metadata.getProductName(), "pnfd_name");
-        validateMetadataValue(fileName, metadata.getReleaseDateTime(), "pnfd_release_date_time");
-        validateMetadataValue(fileName, metadata.getPackageVersion(), "pnfd_archive_version");
+            validateMetadataValue(fileName, metadata.getProviderId(), "pnfd_provider");
+            validateMetadataValue(fileName, metadata.getProductName(), "pnfd_name");
+            validateMetadataValue(fileName, metadata.getReleaseDateTime(), "pnfd_release_date_time");
+            validateMetadataValue(fileName, metadata.getPackageVersion(), "pnfd_archive_version");
+        }
 
     }
 

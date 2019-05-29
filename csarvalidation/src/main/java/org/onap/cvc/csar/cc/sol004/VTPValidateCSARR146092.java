@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,10 +59,11 @@ public class VTPValidateCSARR146092 extends VTPValidateCSARBase {
 
     @Override
     protected void validateCSAR(CSARArchive csar) {
-        ValidateNonManoSection validateNonManoSection = ValidateNonManoSection.getInstance(csar);
-        List<CSARArchive.CSARError> csarErrors = validateNonManoSection.validate();
-
-        this.errors.addAll(csarErrors);
+        Optional<ValidateNonManoSection> validateNonManoSection = ValidateNonManoSection.getInstance(csar);
+        if(validateNonManoSection.isPresent()) {
+            List<CSARArchive.CSARError> csarErrors = validateNonManoSection.get().validate();
+            this.errors.addAll(csarErrors);
+        }
     }
 
 
@@ -71,10 +73,14 @@ public class VTPValidateCSARR146092 extends VTPValidateCSARBase {
         private final Map<String, Map<String, List<String>>> nonMano;
         private final List<CSARArchive.CSARError> errors = new ArrayList<>();
 
-        static ValidateNonManoSection getInstance(CSARArchive csar) {
-            final String fileName = csar.getManifestMfFile().getName();
+        static Optional<ValidateNonManoSection> getInstance(CSARArchive csar) {
+            final File manifestMfFile = csar.getManifestMfFile();
+            if(manifestMfFile == null){
+                return Optional.empty();
+            }
+            final String fileName = manifestMfFile.getName();
             final Map<String, Map<String, List<String>>> nonMano = csar.getManifest().getNonMano();
-            return new ValidateNonManoSection(csar, fileName,nonMano);
+            return Optional.of(new ValidateNonManoSection(csar, fileName,nonMano));
         }
 
         private ValidateNonManoSection(CSARArchive csar, String fileName, Map<String, Map<String, List<String>>> nonMano) {

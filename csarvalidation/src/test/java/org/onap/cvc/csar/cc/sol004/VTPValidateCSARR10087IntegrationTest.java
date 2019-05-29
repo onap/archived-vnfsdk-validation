@@ -19,7 +19,6 @@ package org.onap.cvc.csar.cc.sol004;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.onap.cli.fw.output.OnapCommandResult;
 import org.onap.cvc.csar.CSARArchive;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class VTPValidateCSARR10087IntegrationTest {
     @Test
     public void shouldReportThatDefinitionYAMLIsNotAvailable() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r10087/noToscaMetaFile.csar");
+        configureTestCase(testCase, "pnf/noToscaMetaFile.csar");
 
         // when
         testCase.execute();

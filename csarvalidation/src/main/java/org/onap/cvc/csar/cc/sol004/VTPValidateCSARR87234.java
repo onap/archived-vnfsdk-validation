@@ -24,10 +24,11 @@ import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 @OnapCommandSchema(schema = "vtp-validate-csar-r87234.yaml")
 public class VTPValidateCSARR87234 extends VTPValidateCSARBase {
 
-    public static class CSARErrorInvalidEntryValueNonToscaMetaNotSupported extends CSARErrorInvalidEntryValue {
-        public CSARErrorInvalidEntryValueNonToscaMetaNotSupported() {
-            super("CSAR Mode", "CSAR Archive",
-                    "Only " + CSARArchive.Mode.WITH_TOSCA_META_DIR.name() + " mode is supported",
+    static class CSARErrorInvalidEntryValueNonToscaMetaNotSupported extends CSARErrorInvalidEntryValue {
+        CSARErrorInvalidEntryValueNonToscaMetaNotSupported() {
+            super("CSAR Mode",
+                    "CSAR Archive",
+                    "Only csar package with TOSCA-Metadata directory is supported. Unable to find TOSCA.meta file in TOSCA-metadata directory.",
                     CSARArchive.Mode.WITH_TOSCA_META_DIR.name());
             this.setCode("0x1000");
         }
