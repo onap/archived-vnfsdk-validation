@@ -43,12 +43,10 @@ public class VTPValidateCSARR787965IntegrationTest {
     }
 
     @Test
-    public void shouldReportCsarHasInvalidSignature() throws Exception {
-        // We will not prepare positive test case, because X509 certification has expiration date and such test will
-        // stop working in the future.
+    public void shouldReportThatCsarHasInvalidSignature() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/signed-package.zip");
+        configureTestCase(testCase, "pnf/signed-package-invalid-signature.zip");
 
         // when
         testCase.execute();
@@ -59,6 +57,20 @@ public class VTPValidateCSARR787965IntegrationTest {
         assertThat(convertToMessagesList(errors)).contains(
                 "Invalid CSAR signature!"
         );
+    }
+
+    @Test
+    public void shouldDoNotReportAnyErrorWhenPackageHasValidSignature() throws Exception {
+
+        // given
+        configureTestCase(testCase, "pnf/signed-package-valid-signature.zip");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(0);
     }
 
 

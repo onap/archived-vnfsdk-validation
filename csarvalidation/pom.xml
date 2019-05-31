@@ -113,7 +113,11 @@
             <artifactId>commons-io</artifactId>
             <version>2.5</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk15on</artifactId>
+            <version>1.61</version>
+        </dependency>
         <dependency>
             <groupId>org.onap.cli</groupId>
             <artifactId>cli-framework</artifactId>

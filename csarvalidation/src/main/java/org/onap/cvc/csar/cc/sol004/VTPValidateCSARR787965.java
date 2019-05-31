@@ -23,14 +23,12 @@ import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.FileArchive;
 import org.onap.cvc.csar.cc.VTPValidateCSARBase;
-import org.onap.cvc.csar.rsa.RSACertificateValidator;
-import org.onap.cvc.csar.rsa.X509RsaCertification;
+import org.onap.cvc.csar.security.CmsSignatureValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Base64;
 import java.util.Optional;
 
 @OnapCommandSchema(schema = "vtp-validate-csar-r787965.yaml")
@@ -49,7 +47,7 @@ public class VTPValidateCSARR787965 extends VTPValidateCSARBase {
     protected void validateCSAR(CSARArchive csar) throws OnapCommandException {
 
         try {
-            final RSACertificateValidator rsaCertificateValidator = new RSACertificateValidator(new X509RsaCertification());
+            final CmsSignatureValidator securityManager = new CmsSignatureValidator();
 
             FileArchive.Workspace workspace = csar.getWorkspace();
             final Optional<Path> pathToCsarFile = workspace.getPathToCsarFile();
@@ -58,10 +56,10 @@ public class VTPValidateCSARR787965 extends VTPValidateCSARBase {
 
             if (workspace.isZip() && pathToCsarFile.isPresent() && pathToCertFile.isPresent() && pathToCmsFile.isPresent()) {
                     byte[] csarContent = Files.readAllBytes(pathToCsarFile.get());
-                    String signature = Base64.getEncoder().encodeToString(Files.readAllBytes(pathToCmsFile.get()));
-                    String publicCertification = Base64.getEncoder().encodeToString(Files.readAllBytes(pathToCertFile.get()));
+                    byte[] signature = Files.readAllBytes(pathToCmsFile.get());
+                    byte[] publicCertification = Files.readAllBytes(pathToCertFile.get());
 
-                    if (!rsaCertificateValidator.isValid(csarContent, signature, publicCertification)) {
+                    if (!securityManager.verifySignedData(signature, publicCertification,csarContent)) {
                         this.errors.add(new CSARErrorInvalidSignature());
                     }
                 }
