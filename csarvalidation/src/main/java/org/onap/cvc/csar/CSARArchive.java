@@ -738,6 +738,8 @@ public class CSARArchive implements AutoCloseable {
     }
 
     public static class Manifest{
+        private boolean isNonManoAvailable;
+
         public static class Metadata {
             private String providerId;
 
@@ -792,12 +794,17 @@ public class CSARArchive implements AutoCloseable {
             this.metadata = metadata;
         }
 
+        public boolean isNonManoAvailable(){
+            return isNonManoAvailable;
+        }
+
         public Map<String, Map<String, List<String>>> getNonMano() {
             return nonMano;
         }
 
         public void setNonMano(Map<String, Map<String, List<String>>> nonMano) {
             this.nonMano = nonMano;
+            this.isNonManoAvailable = true;
         }
     }
 

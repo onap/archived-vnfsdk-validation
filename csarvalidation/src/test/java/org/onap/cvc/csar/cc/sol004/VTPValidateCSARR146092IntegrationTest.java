@@ -43,7 +43,7 @@ public class VTPValidateCSARR146092IntegrationTest {
     }
 
     @Test
-    public void shouldReportThatMandatoryNonManoArtifactsAreNotAvailable() throws Exception {
+    public void shouldDoNotReportErrorWhenNonManoArtifactIsNotAvailable() throws Exception {
         // given
         configureTestCase(testCase, "pnf/r146092/missingNonManoArtifactInManifest.csar");
 
@@ -52,14 +52,7 @@ public class VTPValidateCSARR146092IntegrationTest {
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(5);
-        assertThat(convertToMessagesList(errors)).contains(
-                "Missing. Entry [non_mano_artifact_sets]",
-                "Missing. Entry [onap_ves_events]",
-                "Missing. Entry [onap_pm_dictionary]",
-                "Missing. Entry [onap_yang_module]",
-                "Missing. Entry [onap_others]"
-        );
+        assertThat(errors.size()).isEqualTo(0);
     }
 
     @Test
