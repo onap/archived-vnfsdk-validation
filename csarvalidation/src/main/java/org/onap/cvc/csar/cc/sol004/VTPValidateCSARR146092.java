@@ -31,13 +31,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @OnapCommandSchema(schema = "vtp-validate-csar-r146092.yaml")
 public class VTPValidateCSARR146092 extends VTPValidateCSARBase {
 
     private static final int UNKNOWN_LINE_NUMBER = -1;
-    private static final String SOURCE_ELEMENT_TAG = "source";
+    private static final String SOURCE_ELEMENT_TAG = "Source";
 
     private static class MissingSourceElementUnderAttributeError extends PnfCSARError {
         private MissingSourceElementUnderAttributeError(String attributeName, String fileName) {
@@ -96,7 +95,7 @@ public class VTPValidateCSARR146092 extends VTPValidateCSARBase {
             List<String> attributeNames = Arrays.asList(
                     "onap_ves_events",
                     "onap_pm_dictionary",
-                    "onap_yang_module",
+                    "onap_yang_modules",
                     "onap_others"
             );
 
@@ -123,21 +122,23 @@ public class VTPValidateCSARR146092 extends VTPValidateCSARBase {
         private void validateSourceElementsUnderAttribute(String attributeName) {
 
             Map<String, List<String>> attributeElements = this.nonMano.get(attributeName);
-            List<String> attributeElementNames = attributeElements.keySet().stream()
-                    .map(String::toLowerCase)
-                    .collect(Collectors.toList());
+            Set<String> attributeElementNames = attributeElements.keySet();
 
             if (!attributeElementNames.contains(SOURCE_ELEMENT_TAG)) {
                 this.errors.add(new MissingSourceElementUnderAttributeError(attributeName, this.fileName));
             } else {
-                for (String pathToFile : attributeElements.get(SOURCE_ELEMENT_TAG)) {
-                    File fileFromCsar = this.csar.getFileFromCsar(pathToFile);
-                    if (!fileFromCsar.exists()) {
-                        this.errors.add(
-                                new InvalidPathToFileError(attributeName,
-                                        pathToFile, this.fileName)
-                        );
-                    }
+                validateThatSourceFileExists(attributeName, attributeElements);
+            }
+        }
+
+        private void validateThatSourceFileExists(String attributeName, Map<String, List<String>> attributeElements) {
+            for (String pathToFile : attributeElements.get(SOURCE_ELEMENT_TAG)) {
+                File fileFromCsar = this.csar.getFileFromCsar(pathToFile);
+                if (!fileFromCsar.exists()) {
+                    this.errors.add(
+                            new InvalidPathToFileError(attributeName,
+                                    pathToFile, this.fileName)
+                    );
                 }
             }
         }

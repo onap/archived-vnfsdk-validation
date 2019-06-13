@@ -69,7 +69,7 @@ public class VTPValidateCSARR146092IntegrationTest {
         assertThat(convertToMessagesList(errors)).contains(
                 "Missing. Entry [onap_ves_events]",
                 "Missing. Entry [onap_pm_dictionary]",
-                "Missing. Entry [onap_yang_module]",
+                "Missing. Entry [onap_yang_modules]",
                 "Missing. Entry [onap_others]"
         );
     }
@@ -87,7 +87,7 @@ public class VTPValidateCSARR146092IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).contains(
-                "Missing. Entry [source under onap_ves_events]"
+                "Missing. Entry [Source under onap_ves_events]"
         );
     }
 
@@ -104,7 +104,7 @@ public class VTPValidateCSARR146092IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).contains(
-                "Invalid. Entry [source under onap_ves_events has invalid 'Artifacts/Deployment/Events/RadioNode.yml' path]"
+                "Invalid. Entry [Source under onap_ves_events has invalid 'Artifacts/Deployment/Events/RadioNode.yml' path]"
         );
     }
 
