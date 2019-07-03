@@ -18,6 +18,10 @@ package org.onap.cvc.csar;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
+import org.onap.cvc.csar.parser.CmsParser;
+import org.onap.cvc.csar.parser.MetadataParser;
+import org.onap.cvc.csar.parser.NonManoArtifactsParser;
+import org.onap.cvc.csar.parser.SourcesParser;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +29,8 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PnfMetadataParserTest {
+
+    private static final String FILE_NAME = "fileName";
 
     @Test
     public void shouldReportAnErrorWhenMetadataSectionIsNotAvailable() {
@@ -38,7 +44,13 @@ public class PnfMetadataParserTest {
 
 
         // when
-        PnfManifestParser pnfManifestParser = new PnfManifestParser(lines, "fileName");
+        PnfManifestParser pnfManifestParser = new PnfManifestParser(
+                lines,
+                new MetadataParser(FILE_NAME),
+                new SourcesParser(FILE_NAME),
+                new NonManoArtifactsParser(),
+                new CmsParser(FILE_NAME)
+        );
         Pair<CSARArchive.Manifest.Metadata, List<CSARArchive.CSARError>> data = pnfManifestParser.fetchMetadata();
 
         //then
@@ -64,7 +76,13 @@ public class PnfMetadataParserTest {
         );
 
         // when
-        PnfManifestParser pnfManifestParser = new PnfManifestParser(lines, "fileName");
+        PnfManifestParser pnfManifestParser = new PnfManifestParser(
+                lines,
+                new MetadataParser(FILE_NAME),
+                new SourcesParser(FILE_NAME),
+                new NonManoArtifactsParser(),
+                new CmsParser(FILE_NAME)
+        );
         Pair<CSARArchive.Manifest.Metadata, List<CSARArchive.CSARError>> data = pnfManifestParser.fetchMetadata();
 
         //then
@@ -93,7 +111,13 @@ public class PnfMetadataParserTest {
         );
 
         // when
-        PnfManifestParser pnfManifestParser = new PnfManifestParser(lines, "fileName");
+        PnfManifestParser pnfManifestParser = new PnfManifestParser(
+                lines,
+                new MetadataParser(FILE_NAME),
+                new SourcesParser(FILE_NAME),
+                new NonManoArtifactsParser(),
+                new CmsParser(FILE_NAME)
+        );
         Pair<CSARArchive.Manifest.Metadata, List<CSARArchive.CSARError>> data = pnfManifestParser.fetchMetadata();
 
         //then
@@ -118,7 +142,13 @@ public class PnfMetadataParserTest {
         );
 
         // when
-        PnfManifestParser pnfManifestParser = new PnfManifestParser(lines, "fileName");
+        PnfManifestParser pnfManifestParser = new PnfManifestParser(
+                lines,
+                new MetadataParser(FILE_NAME),
+                new SourcesParser(FILE_NAME),
+                new NonManoArtifactsParser(),
+                new CmsParser(FILE_NAME)
+        );
         Pair<CSARArchive.Manifest.Metadata, List<CSARArchive.CSARError>> data = pnfManifestParser.fetchMetadata();
 
         //then
@@ -142,7 +172,13 @@ public class PnfMetadataParserTest {
         );
 
         // when
-        PnfManifestParser pnfManifestParser = new PnfManifestParser(lines, "fileName");
+        PnfManifestParser pnfManifestParser = new PnfManifestParser(
+                lines,
+                new MetadataParser(FILE_NAME),
+                new SourcesParser(FILE_NAME),
+                new NonManoArtifactsParser(),
+                new CmsParser(FILE_NAME)
+        );
         Pair<CSARArchive.Manifest.Metadata, List<CSARArchive.CSARError>> data = pnfManifestParser.fetchMetadata();
 
         //then
