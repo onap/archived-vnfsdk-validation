@@ -36,39 +36,80 @@ public class VTPValidateCSARR787965 extends VTPValidateCSARBase {
 
     private static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSARR787965.class);
 
-    public static class CSARErrorInvalidSignature extends CSARArchive.CSARError {
+    static class CSARErrorInvalidSignature extends CSARArchive.CSARError {
         CSARErrorInvalidSignature() {
             super("0x3001");
             this.message = "Invalid CSAR signature!";
         }
     }
 
+    static class CsarFileNotAvailableError extends CSARArchive.CSARError {
+        CsarFileNotAvailableError() {
+            super("0x3002");
+            this.message = "Missing. Csar file is not available!";
+        }
+    }
+
+    static class SignatureWithCertificationOnlyWarning extends CSARArchive.CSARError {
+        SignatureWithCertificationOnlyWarning() {
+            super("0x3003");
+            this.message = "Warning. Zip package probably is valid. " +
+                    "It contains only signature with certification cms and csar package. " +
+                    "Unable to verify csar signature.";
+        }
+    }
+
+
+    static class BrokenZipPackageError extends CSARArchive.CSARError {
+        BrokenZipPackageError() {
+            super("0x3004");
+            this.message = "Missing. Unable to find certification files.";
+        }
+    }
+
+
     @Override
     protected void validateCSAR(CSARArchive csar) throws OnapCommandException {
 
         try {
-            final CmsSignatureValidator securityManager = new CmsSignatureValidator();
-
             FileArchive.Workspace workspace = csar.getWorkspace();
-            final Optional<Path> pathToCsarFile = workspace.getPathToCsarFile();
-            final Optional<Path> pathToCertFile = workspace.getPathToCertFile();
-            final Optional<Path> pathToCmsFile = workspace.getPathToCmsFile();
-
-            if (workspace.isZip() && pathToCsarFile.isPresent() && pathToCertFile.isPresent() && pathToCmsFile.isPresent()) {
-                    byte[] csarContent = Files.readAllBytes(pathToCsarFile.get());
-                    byte[] signature = Files.readAllBytes(pathToCmsFile.get());
-                    byte[] publicCertification = Files.readAllBytes(pathToCertFile.get());
-
-                    if (!securityManager.verifySignedData(signature, publicCertification,csarContent)) {
-                        this.errors.add(new CSARErrorInvalidSignature());
-                    }
-                }
-
+            if (workspace.isZip()) {
+                verifyZipStructure(workspace);
+            }
         } catch (Exception e) {
             LOG.error("Internal VTPValidateCSARR787965 command error", e);
             throw new OnapCommandException("0x3000", "Internal VTPValidateCSARR787965 command error. See logs.");
         }
 
+    }
+
+    private void verifyZipStructure(FileArchive.Workspace workspace) throws Exception {
+        final Optional<Path> pathToCsarFile = workspace.getPathToCsarFile();
+        final Optional<Path> pathToCertFile = workspace.getPathToCertFile();
+        final Optional<Path> pathToCmsFile = workspace.getPathToCmsFile();
+        if(!pathToCsarFile.isPresent()) {
+            this.errors.add(new CsarFileNotAvailableError());
+        } else {
+            if (pathToCertFile.isPresent() && pathToCmsFile.isPresent()) {
+                verifyTwoFileCertification(pathToCsarFile.get(), pathToCertFile.get(), pathToCmsFile.get());
+            } else if (pathToCmsFile.isPresent()) {
+                this.errors.add(new SignatureWithCertificationOnlyWarning());
+            } else {
+                this.errors.add(new BrokenZipPackageError());
+            }
+        }
+    }
+
+    private void verifyTwoFileCertification(Path pathToCsarFile, Path pathToCertFile, Path pathToCmsFile) throws Exception {
+        final CmsSignatureValidator securityManager = new CmsSignatureValidator();
+
+        byte[] csarContent = Files.readAllBytes(pathToCsarFile);
+        byte[] signature = Files.readAllBytes(pathToCmsFile);
+        byte[] publicCertification = Files.readAllBytes(pathToCertFile);
+
+        if (!securityManager.verifySignedData(signature, publicCertification,csarContent)) {
+            this.errors.add(new CSARErrorInvalidSignature());
+        }
     }
 
     @Override
