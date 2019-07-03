@@ -17,6 +17,12 @@ Source: https://www.vendor_org.com/MRF/v4.1/scripts/scale/scale.sh
 Algorithm: SHA-256
 Hash: 36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165
 
+-----BEGIN CMS-----
+MIGDBgsqhkiG9w0BCRABCaB0MHICAQAwDQYLKoZIhvcNAQkQAwgwXgYJKoZIhvcN
+AQcBoFEET3icc87PK0nNK9ENqSxItVIoSa0o0S/ISczMs1ZIzkgsKk4tsQ0N1nUM
+dvb05OXi5XLPLEtViMwvLVLwSE0sKlFIVHAqSk3MBkkBAJv0Fx0=
+-----END CMS-----
+
 non_mano_artifact_sets:
 
     onap_ves_events:
@@ -33,9 +39,3 @@ non_mano_artifact_sets:
             source: Artifacts/Informational/user_guide.txt
             source: Artifacts/Other/installation_guide.txt
             source: Artifacts/Other/review_log.txt
-
------BEGIN CMS-----
-MIGDBgsqhkiG9w0BCRABCaB0MHICAQAwDQYLKoZIhvcNAQkQAwgwXgYJKoZIhvcN
-AQcBoFEET3icc87PK0nNK9ENqSxItVIoSa0o0S/ISczMs1ZIzkgsKk4tsQ0N1nUM
-dvb05OXi5XLPLEtViMwvLVLwSE0sKlFIVHAqSk3MBkkBAJv0Fx0=
------END CMS-----
