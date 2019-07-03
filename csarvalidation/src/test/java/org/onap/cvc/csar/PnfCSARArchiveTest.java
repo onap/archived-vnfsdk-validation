@@ -26,6 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PnfCSARArchiveTest {
 
+    public static final String SOURCE_TAG = "Source";
+
     @Test
     public void shouldUseDataStoredInManifestMfFileToConfigurePnfCSARArchive() throws Exception {
         // given
@@ -61,16 +63,16 @@ public class PnfCSARArchiveTest {
 
     private void verifyThatNonManoArtifactsWereSet(PnfCSARArchive.PnfManifest manifest) {
         Map<String, Map<String, List<String>>> nonManoArtifacts = manifest.getNonMano();
-        assertThat(nonManoArtifacts.get("onap_ves_events").get("source"))
+        assertThat(nonManoArtifacts.get("onap_ves_events").get(SOURCE_TAG))
                 .isEqualTo(Lists.newArrayList("Artifacts/Events/VES_registration.yml")
                 );
-        assertThat(nonManoArtifacts.get("onap_pm_dictionary").get("source"))
+        assertThat(nonManoArtifacts.get("onap_pm_dictionary").get(SOURCE_TAG))
                 .isEqualTo(Lists.newArrayList("Artifacts/Measurements/PM_Dictionary.yaml")
                 );
-        assertThat(nonManoArtifacts.get("onap_yang_module").get("source"))
+        assertThat(nonManoArtifacts.get("onap_yang_modules").get(SOURCE_TAG))
                 .isEqualTo(Lists.newArrayList("Artifacts/Yang_module/Yang_module.yaml")
                 );
-        assertThat(nonManoArtifacts.get("onap_others").get("source"))
+        assertThat(nonManoArtifacts.get("onap_others").get(SOURCE_TAG))
                 .isEqualTo(Lists.newArrayList(
                         "Artifacts/scripts/install.sh",
                         "Artifacts/Informational/user_guide.txt",
