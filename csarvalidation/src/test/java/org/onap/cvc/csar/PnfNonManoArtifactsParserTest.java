@@ -18,6 +18,10 @@ package org.onap.cvc.csar;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
+import org.onap.cvc.csar.parser.CmsParser;
+import org.onap.cvc.csar.parser.MetadataParser;
+import org.onap.cvc.csar.parser.NonManoArtifactsParser;
+import org.onap.cvc.csar.parser.SourcesParser;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +30,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PnfNonManoArtifactsParserTest {
+
+    private static final String FILE_NAME = "fileName";
 
     @Test
     public void shouldDoNotReportAnErrorWhenNonManoArtifactSectionIsNotAvailable() {
@@ -39,7 +45,13 @@ public class PnfNonManoArtifactsParserTest {
 
 
         // when
-        PnfManifestParser pnfManifestParser = new PnfManifestParser(lines, "fileName");
+        PnfManifestParser pnfManifestParser = new PnfManifestParser(
+                lines,
+                new MetadataParser(FILE_NAME),
+                new SourcesParser(FILE_NAME),
+                new NonManoArtifactsParser(),
+                new CmsParser(FILE_NAME)
+        );
         Optional<Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>>> nonManoArtifacts =
                 pnfManifestParser.fetchNonManoArtifacts();
 
@@ -65,7 +77,13 @@ public class PnfNonManoArtifactsParserTest {
         );
 
         // when
-        PnfManifestParser pnfManifestParser = new PnfManifestParser(lines, "fileName");
+        PnfManifestParser pnfManifestParser = new PnfManifestParser(
+                lines,
+                new MetadataParser(FILE_NAME),
+                new SourcesParser(FILE_NAME),
+                new NonManoArtifactsParser(),
+                new CmsParser(FILE_NAME)
+        );
         Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>>  data = pnfManifestParser.fetchNonManoArtifacts().get();
 
         //then

@@ -16,6 +16,7 @@
 package org.onap.cvc.csar;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.onap.cvc.csar.parser.SourcesParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +38,8 @@ public class PnfCSARArchive extends CSARArchive {
         );
 
         Pair<Manifest.Metadata, List<CSARError>> metadataData = pnfManifestParser.fetchMetadata();
-        Pair<List<String>, List<CSARError>> sourcesSectionData = pnfManifestParser.fetchSourcesSection();
+        Pair<List<SourcesParser.Source>, List<CSARError>> sourcesSectionData = pnfManifestParser.fetchSourcesSection();
+        Pair<String, List<CSARError>> cmsSectionData = pnfManifestParser.fetchCMS();
         Optional<Pair<Map<String, Map<String, List<String>>>, List<CSARError>>> nonManoArtifactsData = pnfManifestParser.fetchNonManoArtifacts();
 
         PnfManifest manifest = (PnfManifest) this.getManifest();
@@ -46,6 +48,9 @@ public class PnfCSARArchive extends CSARArchive {
 
         manifest.setSources(sourcesSectionData.getKey());
         this.getErrors().addAll(sourcesSectionData.getValue());
+
+        manifest.setCms(cmsSectionData.getKey());
+        this.getErrors().addAll(cmsSectionData.getValue());
 
         if(nonManoArtifactsData.isPresent()){
             manifest.setNonMano(nonManoArtifactsData.get().getKey());
@@ -65,14 +70,23 @@ public class PnfCSARArchive extends CSARArchive {
     }
 
     public static class PnfManifest extends Manifest {
-        private List<String> sources = new ArrayList<>();
+        private List<SourcesParser.Source> sources = new ArrayList<>();
+        private String cms;
 
-        public List<String> getSources() {
+        public List<SourcesParser.Source> getSources() {
             return Collections.unmodifiableList(sources);
         }
 
-        public void setSources(List<String> sources) {
+        void setSources(List<SourcesParser.Source> sources) {
             this.sources.addAll(sources);
+        }
+
+        public String getCms() {
+            return this.cms;
+        }
+
+        public void setCms(String cms) {
+            this.cms = cms;
         }
     }
 }
