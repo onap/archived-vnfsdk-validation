@@ -19,10 +19,10 @@ import com.google.common.collect.Lists;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
+import org.onap.cvc.csar.parser.SourcesParser;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class PnfManifestParserTest {
     private PnfManifestParser pnfManifestParser;
 
     @Before
-    public void setUp() throws URISyntaxException, IOException {
+    public void setUp() throws IOException {
         pnfManifestParser = PnfManifestParser.getInstance(new File("./src/test/resources/pnf/MainServiceTemplate.mf"));
     }
 
@@ -42,7 +42,7 @@ public class PnfManifestParserTest {
     public void shouldFetchMetadataFromFile() {
         Pair<CSARArchive.Manifest.Metadata, List<CSARArchive.CSARError>> metadataListPair = pnfManifestParser.fetchMetadata();
         CSARArchive.Manifest.Metadata metadata = metadataListPair.getKey();
-        List<CSARArchive.CSARError> errors= metadataListPair.getValue();
+        List<CSARArchive.CSARError> errors = metadataListPair.getValue();
 
         assertThat(metadata.getProductName()).isEqualTo("RadioNode");
         assertThat(metadata.getProviderId()).isEqualTo("Ericsson");
@@ -55,21 +55,41 @@ public class PnfManifestParserTest {
     @Test
     public void shouldFetchSourcesSectionFromFile() {
 
-        Pair<List<String>, List<CSARArchive.CSARError>> sourcesPair = pnfManifestParser.fetchSourcesSection();
-        List<String> sources = sourcesPair.getKey();
+        Pair<List<SourcesParser.Source>, List<CSARArchive.CSARError>> sourcesPair = pnfManifestParser.fetchSourcesSection();
+        List<SourcesParser.Source> sources = sourcesPair.getKey();
         List<CSARArchive.CSARError> errors = sourcesPair.getValue();
 
-        assertThat(sources).contains("Definitions/MainServiceTemplate.yaml", "Definitions/etsi_nfv_sol001_vnfd_2_5_1_types.yaml");
+        assertThat(sources).contains(
+                new SourcesParser.Source("MRF.yaml", "SHA-256", "09e5a788acb180162c51679ae4c998039fa6644505db2415e35107d1ee213943"),
+                new SourcesParser.Source("scripts/install.sh", "SHA-256", "d0e7828293355a07c2dccaaa765c80b507e60e6167067c950dc2e6b0da0dbd8b"),
+                new SourcesParser.Source("https://www.vendor_org.com/MRF/v4.1/scripts/scale/scale.sh", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165")
+        );
         assertThat(errors.size()).isEqualTo(0);
     }
 
+
+    @Test
+    public void shouldFetchSourcesFromBrokenFile() throws IOException {
+
+        pnfManifestParser = PnfManifestParser.getInstance(new File("./src/test/resources/pnf/MainServiceTemplateWithBrokenSourcesSection.mf"));
+        Pair<List<SourcesParser.Source>, List<CSARArchive.CSARError>> sourcesPair = pnfManifestParser.fetchSourcesSection();
+        List<SourcesParser.Source> sources = sourcesPair.getKey();
+        List<CSARArchive.CSARError> errors = sourcesPair.getValue();
+
+        assertThat(sources).contains(
+                new SourcesParser.Source("MRF.yaml", "SHA-256", "09e5a788acb180162c51679ae4c998039fa6644505db2415e35107d1ee213943"),
+                new SourcesParser.Source("some_file.sh", "", ""),
+                new SourcesParser.Source("scripts/install.sh", "", "d0e7828293355a07c2dccaaa765c80b507e60e6167067c950dc2e6b0da0dbd8b"),
+                new SourcesParser.Source("https://www.vendor_org.com/MRF/v4.1/scripts/scale/scale.sh", "SHA-256", ""));
+        assertThat(errors.size()).isEqualTo(0);
+    }
 
 
     @Test
     public void shouldFetchNonManoArtifactsFromFile() {
         Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>> mapListPair = pnfManifestParser.fetchNonManoArtifacts().get();
         Map<String, Map<String, List<String>>> nonManoArtifacts = mapListPair.getKey();
-        List<CSARArchive.CSARError> errors= mapListPair.getValue();
+        List<CSARArchive.CSARError> errors = mapListPair.getValue();
 
         assertThat(nonManoArtifacts.get("onap_ves_events").get("source"))
                 .isEqualTo(Lists.newArrayList("Artifacts/Events/VES_registration.yml")
@@ -89,5 +109,57 @@ public class PnfManifestParserTest {
                         )
                 );
         assertThat(errors.size()).isEqualTo(0);
+    }
+
+
+    @Test
+    public void shouldFetchCMS() {
+
+        Pair<String, List<CSARArchive.CSARError>> sourcesPair = pnfManifestParser.fetchCMS();
+        String cms = sourcesPair.getKey();
+        List<CSARArchive.CSARError> errors = sourcesPair.getValue();
+
+        assertThat(cms).isEqualTo(
+                "MIGDBgsqhkiG9w0BCRABCaB0MHICAQAwDQYLKoZIhvcNAQkQAwgwXgYJKoZIhvcN" +
+                        "AQcBoFEET3icc87PK0nNK9ENqSxItVIoSa0o0S/ISczMs1ZIzkgsKk4tsQ0N1nUM" +
+                        "dvb05OXi5XLPLEtViMwvLVLwSE0sKlFIVHAqSk3MBkkBAJv0Fx0="
+        );
+        assertThat(errors.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void shouldReportAnErrorWhenCMSSectionDoesNotHaveEndingMarker() throws IOException {
+        pnfManifestParser = PnfManifestParser.getInstance(new File("./src/test/resources/pnf/MainServiceTemplateBrokenCMSNoEndMarker.mf"));
+        Pair<String, List<CSARArchive.CSARError>> sourcesPair = pnfManifestParser.fetchCMS();
+        String cms = sourcesPair.getKey();
+        List<CSARArchive.CSARError> errors = sourcesPair.getValue();
+
+        assertThat(cms).isEmpty();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(errors.get(0).getMessage()).isEqualTo("Invalid. Entry [Unable to find END CMS marker!]");
+    }
+
+    @Test
+    public void shouldReturnEmptyCmsWhenBeginMarkerDoesNotExist() throws IOException {
+        pnfManifestParser = PnfManifestParser.getInstance(new File("./src/test/resources/pnf/MainServiceTemplateBrokenCMSNoBeginMarker.mf"));
+        Pair<String, List<CSARArchive.CSARError>> sourcesPair = pnfManifestParser.fetchCMS();
+        String cms = sourcesPair.getKey();
+        List<CSARArchive.CSARError> errors = sourcesPair.getValue();
+
+        assertThat(cms).isEmpty();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(errors.get(0).getMessage()).isEqualTo("Invalid. Entry [Unable to find BEGIN CMS marker!]");
+    }
+
+
+    @Test
+    public void shouldReportAnErrorWhenCMSIsNotAtTheEndOfFile() throws IOException {
+        pnfManifestParser = PnfManifestParser.getInstance(new File("./src/test/resources/pnf/MainServiceTemplateCMSSectionNotAtTheEnd.mf"));
+        Pair<String, List<CSARArchive.CSARError>> sourcesPair = pnfManifestParser.fetchCMS();
+
+        List<CSARArchive.CSARError> errors = sourcesPair.getValue();
+
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(errors.get(0).getMessage()).isEqualTo("Invalid. Entry [CMS section is not at the end of file!]");
     }
 }

@@ -18,6 +18,7 @@ package org.onap.cvc.csar;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
+import org.onap.cvc.csar.parser.SourcesParser;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PnfCSARArchiveTest {
 
-    public static final String SOURCE_TAG = "Source";
+    private static final String SOURCE_TAG = "Source";
 
     @Test
     public void shouldUseDataStoredInManifestMfFileToConfigurePnfCSARArchive() throws Exception {
@@ -41,8 +42,10 @@ public class PnfCSARArchiveTest {
             // then
             PnfCSARArchive.PnfManifest manifest = (PnfCSARArchive.PnfManifest) pnfCSARArchive.getManifest();
             verifyThatMetadataWasSet(manifest);
+            verifyThatCmsSectionWasSet(manifest);
             verifyThatSourcesSectionWasSet(manifest);
             verifyThatNonManoArtifactsWereSet(manifest);
+            assertThat(pnfCSARArchive.getErrors().size()).isEqualTo(0);
         }
 
     }
@@ -57,8 +60,18 @@ public class PnfCSARArchiveTest {
 
     private void verifyThatSourcesSectionWasSet(PnfCSARArchive.PnfManifest manifest) {
 
-        List<String> sources = manifest.getSources();
-        assertThat(sources).contains("Definitions/MainServiceTemplate.yaml", "Definitions/etsi_nfv_sol001_vnfd_2_5_1_types.yaml");
+        List<SourcesParser.Source> sources = manifest.getSources();
+        assertThat(sources).contains(
+                new SourcesParser.Source("MRF.yaml", "SHA-256", "09e5a788acb180162c51679ae4c998039fa6644505db2415e35107d1ee213943"),
+                new SourcesParser.Source("scripts/install.sh", "SHA-256", "d0e7828293355a07c2dccaaa765c80b507e60e6167067c950dc2e6b0da0dbd8b"),
+                new SourcesParser.Source("https://www.vendor_org.com/MRF/v4.1/scripts/scale/scale.sh", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165")
+        );
+    }
+
+    private void verifyThatCmsSectionWasSet(PnfCSARArchive.PnfManifest manifest) {
+
+        String cms = manifest.getCms();
+        assertThat(cms).isEqualTo("MIGDBgsqhkiG9w0BCRABCaB0MHICAQAwDQYLKoZIhvcNAQkQAwgwXgYJKoZIhvcNAQcBoFEET3icc87PK0nNK9ENqSxItVIoSa0o0S/ISczMs1ZIzkgsKk4tsQ0N1nUMdvb05OXi5XLPLEtViMwvLVLwSE0sKlFIVHAqSk3MBkkBAJv0Fx0=");
     }
 
     private void verifyThatNonManoArtifactsWereSet(PnfCSARArchive.PnfManifest manifest) {
