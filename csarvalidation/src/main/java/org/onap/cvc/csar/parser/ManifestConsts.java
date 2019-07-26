@@ -20,8 +20,6 @@ package org.onap.cvc.csar.parser;
 
 final class ManifestConsts {
 
-    private ManifestConsts(){}
-
     static final String METADATA_SECTION_TAG_SECTION = "metadata";
     static final String SOURCE_TAG_SECTION = "source";
     static final String ALGORITHM = "algorithm";
@@ -34,5 +32,7 @@ final class ManifestConsts {
     static final String CMS = "CMS";
     static final String BEGIN_CMS_SECTION = "BEGIN CMS";
     static final String END_CMS_SECTION = "END CMS";
+
+    private ManifestConsts(){}
 
 }

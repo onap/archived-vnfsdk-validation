@@ -28,6 +28,7 @@ import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,14 +43,23 @@ public class IntegrationTestUtils {
                 .toURI().getPath();
     }
 
-    static void configureTestCase(VTPValidateCSARBase testCase, String fileName) throws OnapCommandException, URISyntaxException {
+    static void configureTestCase(VTPValidateCSARBase testCase, String fileName, String schema, boolean isPnf) throws OnapCommandException, URISyntaxException {
         configureCommandAttributes(testCase);
 
-        testCase.initializeSchema("vtp-validate-csar-r146092.yaml");
+        testCase.initializeSchema(schema);
+
+        configureCommandParameters(testCase, isPnf);
 
         configurePathToCsar(testCase, fileName);
     }
 
+    private static void configureCommandParameters(VTPValidateCSARBase testCase, boolean isPnf) throws OnapCommandInvalidParameterValue {
+        Set<OnapCommandParameter> parameters = testCase.getParameters();
+        final Optional<OnapCommandParameter> pnf = parameters.stream().filter(it -> it.getName().equals("pnf")).findFirst();
+        if(pnf.isPresent()){
+            pnf.get().setValue(isPnf);
+        }
+    }
     private static void configureCommandAttributes(VTPValidateCSARBase testCase) {
         OnapCommandResult onapCommandResult = new OnapCommandResult();
         OnapCommandResultAttribute onapCommandResultAttributeCode = new OnapCommandResultAttribute();
@@ -68,8 +78,10 @@ public class IntegrationTestUtils {
     private static void configurePathToCsar(VTPValidateCSARBase testCase, String fileName) throws URISyntaxException, OnapCommandInvalidParameterValue {
         String pathToFile = absoluteFilePath(fileName);
         Set<OnapCommandParameter> parameters = testCase.getParameters();
-        OnapCommandParameter csar = parameters.stream().filter(op -> op.getName().equals("csar")).findFirst().get();
-        csar.setValue(pathToFile);
+        Optional<OnapCommandParameter> csar = parameters.stream().filter(op -> op.getName().equals("csar")).findFirst();
+        if(csar.isPresent()) {
+            csar.get().setValue(pathToFile);
+        }
     }
 
     static List<String> convertToMessagesList(List<CSARArchive.CSARError> errors) {

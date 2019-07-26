@@ -30,6 +30,7 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessages
 
 public class VTPValidateCSARR10087IntegrationTest {
 
+    private static final boolean IS_PNF = true;
     private VTPValidateCSARR10087 testCase;
 
     @Before
@@ -45,7 +46,7 @@ public class VTPValidateCSARR10087IntegrationTest {
     @Test
     public void shouldReportThatDefinitionYAMLIsNotAvailable() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/noToscaMetaFile.csar");
+        configureTestCase(testCase, "pnf/noToscaMetaFile.csar", "vtp-validate-csar-r10087.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -64,7 +65,7 @@ public class VTPValidateCSARR10087IntegrationTest {
     @Test
     public void shouldReportThatDefinitionYAMLDoesNotExist() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r10087/invalidEntryDefinitionsInToscaMeta.csar");
+        configureTestCase(testCase, "pnf/r10087/invalidEntryDefinitionsInToscaMeta.csar", "vtp-validate-csar-r10087.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -81,7 +82,7 @@ public class VTPValidateCSARR10087IntegrationTest {
     @Test
     public void shouldReportThatManifestFileDoesNotExist() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r10087/invalidManifestFile.csar");
+        configureTestCase(testCase, "pnf/r10087/invalidManifestFile.csar", "vtp-validate-csar-r10087.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -98,7 +99,7 @@ public class VTPValidateCSARR10087IntegrationTest {
     @Test
     public void shouldReportThatChangeHistoryLogFileDoesNotExist() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r10087/invalidChangeHistoryLog.csar");
+        configureTestCase(testCase, "pnf/r10087/invalidChangeHistoryLog.csar", "vtp-validate-csar-r10087.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -114,7 +115,7 @@ public class VTPValidateCSARR10087IntegrationTest {
     @Test
     public void shouldReportThatTestDirectoryDoesNotExist() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r10087/invalidTestDirectory.csar");
+        configureTestCase(testCase, "pnf/r10087/invalidTestDirectory.csar", "vtp-validate-csar-r10087.yaml", IS_PNF);
 
         // when
         testCase.execute();
