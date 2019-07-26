@@ -27,6 +27,8 @@ import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.operator.OperatorCreationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -38,6 +40,8 @@ import java.security.cert.X509Certificate;
 import java.util.Collection;
 
 public class CmsSignatureValidator {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CmsSignatureValidator.class);
 
     public boolean verifySignedData(
             final byte[] signature,
@@ -51,6 +55,7 @@ public class CmsSignatureValidator {
             return firstSigner.verify(new JcaSimpleSignerInfoVerifierBuilder().build(cert));
         } catch (CMSSignerDigestMismatchException e){
             //message-digest attribute value does not match calculated value
+            LOG.warn("CMS signer digest mismatch.", e);
             return false;
         }
         catch (OperatorCreationException | IOException | CMSException e) {

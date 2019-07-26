@@ -45,9 +45,7 @@ public class SourcesParser {
         for (int lineNumber = 0; lineNumber < lines.size(); lineNumber++) {
             String line = lines.get(lineNumber);
             ManifestLine manifestLine = ManifestLine.of(line);
-            if (sourceSectionParsing && (manifestLine.startsWith(METADATA_SECTION_TAG_SECTION)
-                    || manifestLine.startsWith(NON_MANO_ARTIFACT_SETS_TAG_SECTION)
-                    || line.contains(CMS))) {
+            if (sourceSectionParsing && isContainSpecialTag(line, manifestLine)) {
                 isSpecialTagReached = true;
             } else if (!isSpecialTagReached && manifestLine.startsWith(SOURCE_TAG_SECTION)) {
                 sourceSectionParsing = true;
@@ -60,6 +58,12 @@ public class SourcesParser {
         }
 
         return Pair.of(sources, errors);
+    }
+
+    private boolean isContainSpecialTag(String line, ManifestLine manifestLine) {
+        return manifestLine.startsWith(METADATA_SECTION_TAG_SECTION)
+                || manifestLine.startsWith(NON_MANO_ARTIFACT_SETS_TAG_SECTION)
+                || line.contains(CMS);
     }
 
     private Source handleSourceLine(List<Source> sources, List<CSARArchive.CSARError> errors, int lineNumber, ManifestLine manifestLine) {
@@ -140,8 +144,14 @@ public class SourcesParser {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
             Source source1 = (Source) o;
             return Objects.equals(value, source1.value) &&
                     Objects.equals(algorithm, source1.algorithm) &&

@@ -24,9 +24,11 @@ import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.FileArchive;
 import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 import org.onap.cvc.csar.security.CmsSignatureValidator;
+import org.onap.cvc.csar.security.CmsSignatureValidatorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -100,7 +102,7 @@ public class VTPValidateCSARR787965 extends VTPValidateCSARBase {
         }
     }
 
-    private void verifyTwoFileCertification(Path pathToCsarFile, Path pathToCertFile, Path pathToCmsFile) throws Exception {
+    private void verifyTwoFileCertification(Path pathToCsarFile, Path pathToCertFile, Path pathToCmsFile) throws IOException, CmsSignatureValidatorException {
         final CmsSignatureValidator securityManager = new CmsSignatureValidator();
 
         byte[] csarContent = Files.readAllBytes(pathToCsarFile);

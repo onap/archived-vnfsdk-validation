@@ -30,6 +30,7 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessages
 
 public class VTPValidateCSARR787966IntegrationTest {
 
+    private static final boolean IS_PNF = true;
     private VTPValidateCSARR787966 testCase;
 
     @Before
@@ -46,7 +47,7 @@ public class VTPValidateCSARR787966IntegrationTest {
     public void shouldValidateProperCsar() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/r787966/csar-option1-valid.csar");
+        configureTestCase(testCase, "pnf/r787966/csar-option1-valid.csar", "vtp-validate-csar-r787966.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -60,7 +61,7 @@ public class VTPValidateCSARR787966IntegrationTest {
     public void shouldReportErrorsForInvalidCsar() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/r787966/csar-option1-invalid.csar");
+        configureTestCase(testCase, "pnf/r787966/csar-option1-invalid.csar", "vtp-validate-csar-r787966.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -74,6 +75,25 @@ public class VTPValidateCSARR787966IntegrationTest {
                 "Source 'Artifacts/Other/my_script.csh' has hash, but unable to find algorithm tag!"
         );
     }
+
+
+    @Test
+    public void shouldReportThanInVnfPackageCertFileWasNotDefined() throws Exception {
+
+        // given
+        configureTestCase(testCase, "sample2.csar", "vtp-validate-csar-r787966.yaml", false);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(convertToMessagesList(errors)).contains(
+                "Unable to find cert file defined by Entry-Certificate!",
+                "Missing. Entry [tosca_definitions_version]"
+        );
+    }
+
 
 
 }

@@ -40,7 +40,7 @@ public class PnfCSARArchiveTest {
             pnfCSARArchive.init(fileName);
             pnfCSARArchive.parse();
             // then
-            PnfCSARArchive.PnfManifest manifest = (PnfCSARArchive.PnfManifest) pnfCSARArchive.getManifest();
+            CSARArchive.Manifest manifest = pnfCSARArchive.getManifest();
             verifyThatMetadataWasSet(manifest);
             verifyThatCmsSectionWasSet(manifest);
             verifyThatSourcesSectionWasSet(manifest);
@@ -50,7 +50,7 @@ public class PnfCSARArchiveTest {
 
     }
 
-    private void verifyThatMetadataWasSet(PnfCSARArchive.PnfManifest manifest) {
+    private void verifyThatMetadataWasSet(CSARArchive.Manifest manifest) {
         CSARArchive.Manifest.Metadata metadata = manifest.getMetadata();
         assertThat(metadata.getProductName()).isEqualTo("RadioNode");
         assertThat(metadata.getProviderId()).isEqualTo("Ericsson");
@@ -58,7 +58,7 @@ public class PnfCSARArchiveTest {
         assertThat(metadata.getReleaseDateTime()).isEqualTo("2019-01-14T11:25:00+00:00");
     }
 
-    private void verifyThatSourcesSectionWasSet(PnfCSARArchive.PnfManifest manifest) {
+    private void verifyThatSourcesSectionWasSet(CSARArchive.Manifest manifest) {
 
         List<SourcesParser.Source> sources = manifest.getSources();
         assertThat(sources).contains(
@@ -68,13 +68,13 @@ public class PnfCSARArchiveTest {
         );
     }
 
-    private void verifyThatCmsSectionWasSet(PnfCSARArchive.PnfManifest manifest) {
+    private void verifyThatCmsSectionWasSet(CSARArchive.Manifest manifest) {
 
         String cms = manifest.getCms();
         assertThat(cms).isEqualTo("MIGDBgsqhkiG9w0BCRABCaB0MHICAQAwDQYLKoZIhvcNAQkQAwgwXgYJKoZIhvcNAQcBoFEET3icc87PK0nNK9ENqSxItVIoSa0o0S/ISczMs1ZIzkgsKk4tsQ0N1nUMdvb05OXi5XLPLEtViMwvLVLwSE0sKlFIVHAqSk3MBkkBAJv0Fx0=");
     }
 
-    private void verifyThatNonManoArtifactsWereSet(PnfCSARArchive.PnfManifest manifest) {
+    private void verifyThatNonManoArtifactsWereSet(CSARArchive.Manifest manifest) {
         Map<String, Map<String, List<String>>> nonManoArtifacts = manifest.getNonMano();
         assertThat(nonManoArtifacts.get("onap_ves_events").get(SOURCE_TAG))
                 .isEqualTo(Lists.newArrayList("Artifacts/Events/VES_registration.yml")

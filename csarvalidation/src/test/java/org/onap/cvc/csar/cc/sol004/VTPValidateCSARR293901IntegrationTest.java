@@ -30,6 +30,7 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessages
 
 public class VTPValidateCSARR293901IntegrationTest {
 
+    private static final boolean IS_PNF = true;
     private VTPValidateCSARR293901 testCase;
 
     @Before
@@ -45,7 +46,7 @@ public class VTPValidateCSARR293901IntegrationTest {
     @Test
     public void shouldReportThatMandatoryEntriesAreNotAvailable() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r293901/noMandatoryEntriesInTOSCAMeta.csar");
+        configureTestCase(testCase, "pnf/r293901/noMandatoryEntriesInTOSCAMeta.csar", "vtp-validate-csar-r293901.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -63,7 +64,7 @@ public class VTPValidateCSARR293901IntegrationTest {
     @Test
     public void shouldDoNotReportAnyErrorWhenAllMandatoryEntriesWereDefined() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r293901/allMandatoryEntriesDefinedInTOSCAMeta.csar");
+        configureTestCase(testCase, "pnf/r293901/allMandatoryEntriesDefinedInTOSCAMeta.csar", "vtp-validate-csar-r293901.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -74,9 +75,9 @@ public class VTPValidateCSARR293901IntegrationTest {
     }
 
     @Test
-    public void shouldReportAnyErrorWhneThereIsNoTOSCAMetaFileInTOSCADirectory() throws Exception {
+    public void shouldReportAnyErrorWhenThereIsNoTOSCAMetaFileInTOSCADirectory() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r293901/noTOSCAMetaInTOSCADirectory.csar");
+        configureTestCase(testCase, "pnf/r293901/noTOSCAMetaInTOSCADirectory.csar", "vtp-validate-csar-r293901.yaml", IS_PNF);
 
         // when
         testCase.execute();

@@ -74,6 +74,12 @@ public class VTPValidateCSARR146092 extends VTPValidateCSARBase {
         private final Map<String, Map<String, List<String>>> nonMano;
         private final List<CSARArchive.CSARError> errors = new ArrayList<>();
 
+        private ValidateNonManoSection(CSARArchive csar, String fileName, Map<String, Map<String, List<String>>> nonMano) {
+            this.csar = csar;
+            this.fileName = fileName;
+            this.nonMano = nonMano;
+        }
+
         static Optional<ValidateNonManoSection> getInstance(CSARArchive csar) {
             final File manifestMfFile = csar.getManifestMfFile();
             if(manifestMfFile == null){
@@ -82,12 +88,6 @@ public class VTPValidateCSARR146092 extends VTPValidateCSARBase {
             final String fileName = manifestMfFile.getName();
             final Map<String, Map<String, List<String>>> nonMano = csar.getManifest().getNonMano();
             return Optional.of(new ValidateNonManoSection(csar, fileName,nonMano));
-        }
-
-        private ValidateNonManoSection(CSARArchive csar, String fileName, Map<String, Map<String, List<String>>> nonMano) {
-            this.csar = csar;
-            this.fileName = fileName;
-            this.nonMano = nonMano;
         }
 
         public List<CSARArchive.CSARError> validate() {

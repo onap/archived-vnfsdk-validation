@@ -17,7 +17,7 @@ open_cli_schema_version: 1.0
 name: csar-validate-r787966
 
 description: |
-  The VNF/PNF package shall contain a Digest (a.k.a. hash) for each of the components of the VNF/PNF package. The table of hashes is included in the manifest file, which is signed with the VNF provider private key. In addition, the VNF provider shall include a signing certificate that includes the VNF provider public key, following a pre-defined naming convention and located either at the root of the archive or in a predefined location (e.g. directory).
+  The VNF/PNF package shall contain a Digest (a.k.a. hash) for each of the components of the VNF package. The table of hashes is included in the manifest file, which is signed with the VNF provider private key. In addition, the VNF provider shall include a signing certificate that includes the VNF provider public key, following a pre-defined naming convention and located either at the root of the archive or in a predefined location (e.g. directory).
 
 info:
   product: onap-vtp
@@ -38,7 +38,7 @@ parameters:
       short_option: p
       type: bool
       is_optional: true
-      default_value: true
+      default_value: false
 results:
     direction: landscape
     attributes:

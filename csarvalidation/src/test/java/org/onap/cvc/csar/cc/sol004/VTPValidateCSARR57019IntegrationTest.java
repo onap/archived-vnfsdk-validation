@@ -30,6 +30,7 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessages
 
 public class VTPValidateCSARR57019IntegrationTest {
 
+    private static final boolean IS_PNF = true;
     private VTPValidateCSARR57019 testCase;
 
     @Before
@@ -45,7 +46,7 @@ public class VTPValidateCSARR57019IntegrationTest {
     @Test
     public void shouldReportThatMandatoryEntriesInMetadataAreNotAvailable() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r57019/noMandatoryEntriesInMetadataManifest.csar");
+        configureTestCase(testCase, "pnf/r57019/noMandatoryEntriesInMetadataManifest.csar", "vtp-validate-csar-r57019.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -65,7 +66,7 @@ public class VTPValidateCSARR57019IntegrationTest {
     @Test
     public void shouldDoNotReportAnyErrorWhenAllMandatoryEntriesInMetadataWereDefined() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r57019/allMandatoryEntriesDefinedInMetadataManifest.csar");
+        configureTestCase(testCase, "pnf/r57019/allMandatoryEntriesDefinedInMetadataManifest.csar", "vtp-validate-csar-r57019.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -78,7 +79,7 @@ public class VTPValidateCSARR57019IntegrationTest {
     @Test
     public void shouldReportThatDefinitionYAMLIsNotAvailableWhenToscaMetaFileIsNotPresent() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/noToscaMetaFile.csar");
+        configureTestCase(testCase, "pnf/noToscaMetaFile.csar", "vtp-validate-csar-r57019.yaml", IS_PNF);
 
         // when
         testCase.execute();

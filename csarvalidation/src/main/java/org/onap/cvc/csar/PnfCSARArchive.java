@@ -19,8 +19,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.onap.cvc.csar.parser.SourcesParser;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,7 +26,7 @@ import java.util.Optional;
 public class PnfCSARArchive extends CSARArchive {
 
     public PnfCSARArchive(){
-        super(new PnfManifest());
+        super(new Manifest());
     }
 
     @Override
@@ -42,7 +40,7 @@ public class PnfCSARArchive extends CSARArchive {
         Pair<String, List<CSARError>> cmsSectionData = pnfManifestParser.fetchCMS();
         Optional<Pair<Map<String, Map<String, List<String>>>, List<CSARError>>> nonManoArtifactsData = pnfManifestParser.fetchNonManoArtifacts();
 
-        PnfManifest manifest = (PnfManifest) this.getManifest();
+        Manifest manifest = this.getManifest();
         manifest.setMetadata(metadataData.getKey());
         this.getErrors().addAll(metadataData.getValue());
 
@@ -67,26 +65,5 @@ public class PnfCSARArchive extends CSARArchive {
     @Override
     String getEntryChangeLogParamName() {
         return "ETSI-Entry-Change-Log";
-    }
-
-    public static class PnfManifest extends Manifest {
-        private List<SourcesParser.Source> sources = new ArrayList<>();
-        private String cms;
-
-        public List<SourcesParser.Source> getSources() {
-            return Collections.unmodifiableList(sources);
-        }
-
-        void setSources(List<SourcesParser.Source> sources) {
-            this.sources.addAll(sources);
-        }
-
-        public String getCms() {
-            return this.cms;
-        }
-
-        public void setCms(String cms) {
-            this.cms = cms;
-        }
     }
 }

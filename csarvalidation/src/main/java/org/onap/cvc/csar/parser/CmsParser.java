@@ -48,9 +48,7 @@ public class CmsParser {
 
         for (String line : lines) {
             ManifestLine manifestLine = ManifestLine.of(line);
-            if (cmsSectionParsing && (manifestLine.startsWith(METADATA_SECTION_TAG_SECTION)
-                    || manifestLine.startsWith(NON_MANO_ARTIFACT_SETS_TAG_SECTION)
-                    || manifestLine.startsWith(SOURCE_TAG_SECTION))) {
+            if (cmsSectionParsing && isContainSepecialTag(manifestLine)) {
                 isSpecialTagReached = true;
             } else if (!isSpecialTagReached && line.contains(BEGIN_CMS_SECTION)) {
                 cmsSectionParsing = true;
@@ -73,6 +71,12 @@ public class CmsParser {
         }
 
         return constructResponse(buf, errors, cmsSectionParsing, endCmsMarkerReached);
+    }
+
+    private boolean isContainSepecialTag(ManifestLine manifestLine) {
+        return manifestLine.startsWith(METADATA_SECTION_TAG_SECTION)
+                || manifestLine.startsWith(NON_MANO_ARTIFACT_SETS_TAG_SECTION)
+                || manifestLine.startsWith(SOURCE_TAG_SECTION);
     }
 
     private Pair<String, List<CSARArchive.CSARError>> constructResponse(StringBuilder buf, List<CSARArchive.CSARError> errors, boolean cmsSectionParsing, boolean endCmsMarkerReached) {

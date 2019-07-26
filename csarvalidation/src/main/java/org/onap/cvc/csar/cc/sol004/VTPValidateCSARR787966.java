@@ -22,7 +22,6 @@ import org.onap.cli.fw.error.OnapCommandException;
 import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.FileArchive;
-import org.onap.cvc.csar.PnfCSARArchive;
 import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 import org.onap.cvc.csar.parser.SourcesParser;
 import org.onap.cvc.csar.security.ShaHashCodeGenerator;
@@ -102,22 +101,31 @@ public class VTPValidateCSARR787966 extends VTPValidateCSARBase {
 
     private void validate(CSARArchive csar, Path csarRootDirectory ) throws IOException, NoSuchAlgorithmException {
 
-        final PnfCSARArchive.PnfManifest manifest = (PnfCSARArchive.PnfManifest) csar.getManifest();
+        final CSARArchive.Manifest manifest = csar.getManifest();
         final CSARArchive.TOSCAMeta toscaMeta = csar.getToscaMeta();
         validateSecurityStructure(toscaMeta, csarRootDirectory, manifest);
         validateSources(csarRootDirectory, manifest);
     }
 
-    private void validateSecurityStructure(CSARArchive.TOSCAMeta toscaMeta , Path csarRootDirectory, PnfCSARArchive.PnfManifest manifest) {
-        final File entryCertificate = csarRootDirectory.resolve(toscaMeta.getEntryCertificate()).toFile();
-        if (!entryCertificate.exists() && !manifest.getCms().isEmpty()) {
+    private void validateSecurityStructure(CSARArchive.TOSCAMeta toscaMeta , Path csarRootDirectory, CSARArchive.Manifest manifest) {
+        final Optional<File> entryCertificate = resolveCertificateFilePath(toscaMeta, csarRootDirectory);
+        if (!entryCertificate.isPresent() || !entryCertificate.get().exists() && !manifest.getCms().isEmpty()) {
             this.errors.add(new CSARErrorUnableToFindCertificate());
-        } else if (entryCertificate.exists() && manifest.getCms().isEmpty()) {
+        } else if (entryCertificate.get().exists() && manifest.getCms().isEmpty()) {
             this.errors.add(new CSARErrorUnableToFindCmsSection());
         }
     }
 
-    private void validateSources(Path csarRootDirectory, PnfCSARArchive.PnfManifest manifest) throws NoSuchAlgorithmException, IOException {
+    private Optional<File> resolveCertificateFilePath(CSARArchive.TOSCAMeta toscaMeta, Path csarRootDirectory) {
+        final String certificatePath = toscaMeta.getEntryCertificate();
+        if(certificatePath == null){
+            return Optional.empty();
+        } else {
+            return Optional.of(csarRootDirectory.resolve(certificatePath).toFile());
+        }
+    }
+
+    private void validateSources(Path csarRootDirectory, CSARArchive.Manifest manifest) throws NoSuchAlgorithmException, IOException {
         final List<SourcesParser.Source> sources = manifest.getSources();
         for (SourcesParser.Source source: sources){
             if(!source.getAlgorithm().isEmpty()) {
