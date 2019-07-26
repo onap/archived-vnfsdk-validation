@@ -30,6 +30,7 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessages
 
 public class VTPValidateCSARR787965IntegrationTest {
 
+    private static final boolean IS_PNF = true;
     private VTPValidateCSARR787965 testCase;
 
     @Before
@@ -46,7 +47,7 @@ public class VTPValidateCSARR787965IntegrationTest {
     public void shouldReportThatCsarHasInvalidSignature() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/signed-package-invalid-signature.zip");
+        configureTestCase(testCase, "pnf/signed-package-invalid-signature.zip", "vtp-validate-csar-r787965.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -63,7 +64,7 @@ public class VTPValidateCSARR787965IntegrationTest {
     public void shouldReportThatZipContainsSignatureWithCertificationFileAndPackageIsProbableValid() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/r787965/signature-and-certificate.zip");
+        configureTestCase(testCase, "pnf/r787965/signature-and-certificate.zip", "vtp-validate-csar-r787965.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -82,7 +83,7 @@ public class VTPValidateCSARR787965IntegrationTest {
     public void shouldReportThatZipPackageIsBroken() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/r787965/broken.zip");
+        configureTestCase(testCase, "pnf/r787965/broken.zip", "vtp-validate-csar-r787965.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -99,7 +100,7 @@ public class VTPValidateCSARR787965IntegrationTest {
     public void shouldDoNotReportAnyErrorWhenPackageHasValidSignature() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/signed-package-valid-signature.zip");
+        configureTestCase(testCase, "pnf/signed-package-valid-signature.zip", "vtp-validate-csar-r787965.yaml", IS_PNF);
 
         // when
         testCase.execute();

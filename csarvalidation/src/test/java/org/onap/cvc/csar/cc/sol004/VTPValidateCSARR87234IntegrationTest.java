@@ -30,6 +30,7 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessages
 
 public class VTPValidateCSARR87234IntegrationTest {
 
+    private static final boolean IS_PNF = true;
     private VTPValidateCSARR87234 testCase;
 
     @Before
@@ -46,7 +47,7 @@ public class VTPValidateCSARR87234IntegrationTest {
     @Test
     public void shouldReportThatToscaMetadataDirectoryIsNotPresent() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/noToscaMetaFile.csar");
+        configureTestCase(testCase, "pnf/noToscaMetaFile.csar", "vtp-validate-csar-r87234.yaml", IS_PNF);
 
         // when
         testCase.execute();

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.onap.cvc.csar.parser.SourcesParser;
 import org.yaml.snakeyaml.Yaml;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -104,18 +107,6 @@ public class CSARArchive implements AutoCloseable {
     public static final String Entry_Definition__template_author = "template_author";
 
     public static final String Entry_Definition__template_version = "template_version";
-
-    public static final String Entry_Manifest__metadata = "metadata";
-
-    public static final String Entry_Manifest__metadata__vnf_provider_id = "vnf_provider_id";
-
-    public static final String Entry_Manifest__metadata__vnf_product_name = "vnf_product_name";
-
-    public static final String Entry_Manifest__metadata__vnf_release_data_time = "vnf_release_data_time";
-
-    public static final String Entry_Manifest__metadata__vnf_package_version = "vnf_package_version";
-
-    public static final String Entry_Manifest__non_mano_artifact_sets = "non_mano_artifact_sets";
 
     public static final String CSAR_Archive = "CSAR Archive";
 
@@ -739,6 +730,9 @@ public class CSARArchive implements AutoCloseable {
 
     public static class Manifest{
         private boolean isNonManoAvailable;
+        private List<SourcesParser.Source> sources = new ArrayList<>();
+        private String cms;
+
 
         public static class Metadata {
             private String providerId;
@@ -805,6 +799,22 @@ public class CSARArchive implements AutoCloseable {
         public void setNonMano(Map<String, Map<String, List<String>>> nonMano) {
             this.nonMano = nonMano;
             this.isNonManoAvailable = true;
+        }
+
+        public List<SourcesParser.Source> getSources() {
+            return Collections.unmodifiableList(sources);
+        }
+
+        public void setSources(List<SourcesParser.Source> sources) {
+            this.sources.addAll(sources);
+        }
+
+        public String getCms() {
+            return this.cms;
+        }
+
+        public void setCms(String cms) {
+            this.cms = cms;
         }
     }
 
@@ -922,56 +932,24 @@ public class CSARArchive implements AutoCloseable {
 
     void parseManifest() throws IOException {
 
-        int lineNo =0;
-        List<String>lines = FileUtils.readLines(this.manifestMfFile);
-        //first hit the metadata: section
-        for (String line: lines) {
-            lineNo ++;
-            line = line.trim();
+        VnfManifestParser vnfManifestParser = VnfManifestParser.getInstance(
+                this.getManifestMfFile()
+        );
 
-            if (line.startsWith("#")) {
-                continue;
-            }
+        Pair<Manifest.Metadata, List<CSARError>> metadataData = vnfManifestParser.fetchMetadata();
+        Pair<List<SourcesParser.Source>, List<CSARError>> sourcesSectionData = vnfManifestParser.fetchSourcesSection();
+        Pair<String, List<CSARError>> cmsSectionData = vnfManifestParser.fetchCMS();
 
-            //continue till it reaches the metadata section
-            if (line.equalsIgnoreCase(Entry_Manifest__metadata + ":")) {
-                break;
-            }
-        }
+        CSARArchive.Manifest manifest = this.getManifest();
+        manifest.setMetadata(metadataData.getKey());
+        this.getErrors().addAll(metadataData.getValue());
 
-        if (lineNo < lines.size()) {
-            for (int i = lineNo; i< lines.size(); i++) {
-                String line = lines.get(i).trim();
+        manifest.setSources(sourcesSectionData.getKey());
+        this.getErrors().addAll(sourcesSectionData.getValue());
 
-                if (line.startsWith("#") || line.isEmpty()) {
-                    continue;
-                }
+        manifest.setCms(cmsSectionData.getKey());
+        this.getErrors().addAll(cmsSectionData.getValue());
 
-                String[] tokens = line.split(":");
-                if (tokens.length < 2) continue;
-                String key = tokens[0];
-                String value = tokens[1];
-
-                //continue till it reaches the metadata section
-                if (key.equalsIgnoreCase(Entry_Manifest__metadata__vnf_package_version)) {
-                    this.manifest.getMetadata().setPackageVersion(value);
-                } else if (key.equalsIgnoreCase(Entry_Manifest__metadata__vnf_product_name)) {
-                    this.manifest.getMetadata().setProductName(value);
-                } else if (key.equalsIgnoreCase(Entry_Manifest__metadata__vnf_provider_id)) {
-                    this.manifest.getMetadata().setProviderId(value);
-                } else if (key.equalsIgnoreCase(Entry_Manifest__metadata__vnf_release_data_time)) {
-                    this.manifest.getMetadata().setReleaseDateTime(value);
-                } else {
-                    //Non-Mano entries are not processed as of now...
-                    errors.add(
-                            new CSARErrorIgnored(
-                                    key,
-                                    this.manifestMfFile.getName(),
-                                    i,
-                                    null));
-                }
-            }
-        }
     }
 
     private void parseDefinitionMetadata() throws IOException {

@@ -30,6 +30,7 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessages
 
 public class VTPValidateCSARR146092IntegrationTest {
 
+    private static final boolean IS_PNF = true;
     private VTPValidateCSARR146092 testCase;
 
     @Before
@@ -45,7 +46,7 @@ public class VTPValidateCSARR146092IntegrationTest {
     @Test
     public void shouldDoNotReportErrorWhenNonManoArtifactIsNotAvailable() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r146092/missingNonManoArtifactInManifest.csar");
+        configureTestCase(testCase, "pnf/r146092/missingNonManoArtifactInManifest.csar", "vtp-validate-csar-r146092.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -58,7 +59,7 @@ public class VTPValidateCSARR146092IntegrationTest {
     @Test
     public void shouldReportThatMandatoryNonManoArtifactSetEntryHasNotAllFields() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r146092/missingFieldsInNonManoArtifactManifest.csar");
+        configureTestCase(testCase, "pnf/r146092/missingFieldsInNonManoArtifactManifest.csar", "vtp-validate-csar-r146092.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -78,7 +79,7 @@ public class VTPValidateCSARR146092IntegrationTest {
     @Test
     public void shouldReportThatNonManoArtifactEntryHasAnySource() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r146092/noSourceElementInNonManoArtifactEntryManifest.csar");
+        configureTestCase(testCase, "pnf/r146092/noSourceElementInNonManoArtifactEntryManifest.csar", "vtp-validate-csar-r146092.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -95,7 +96,7 @@ public class VTPValidateCSARR146092IntegrationTest {
     @Test
     public void shouldReportThatNonManoArtifactEntryHasSourceWithUnknownFile() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/r146092/sourceElementWithUnknownFileInNonManoArtifactEntryManifest.csar");
+        configureTestCase(testCase, "pnf/r146092/sourceElementWithUnknownFileInNonManoArtifactEntryManifest.csar", "vtp-validate-csar-r146092.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -111,7 +112,7 @@ public class VTPValidateCSARR146092IntegrationTest {
     @Test
     public void shouldReportThatDefinitionYAMLIsNotAvailableWhenToscaMetaFileIsNotPresent() throws Exception {
         // given
-        configureTestCase(testCase, "pnf/noToscaMetaFile.csar");
+        configureTestCase(testCase, "pnf/noToscaMetaFile.csar", "vtp-validate-csar-r146092.yaml", IS_PNF);
 
         // when
         testCase.execute();
