@@ -19,9 +19,9 @@ name: csar-validate
 description: Validate CSAR package formats compliants to ETSI SOL004, SOL001 and VNFREQS
 
 info:
-  product: onap-vtp
+  product: onap-dublin
   version: 1.0
-  service: validation
+  service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
 
 parameters:

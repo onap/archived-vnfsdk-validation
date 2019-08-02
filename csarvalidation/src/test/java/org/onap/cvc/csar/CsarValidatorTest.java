@@ -31,7 +31,7 @@ public class CsarValidatorTest {
     @Test
     public void testAllTestCasesForVNF() throws URISyntaxException {
         OnapCli cli = new OnapCli(new String [] {
-                "--product", "onap-vtp",
+                "--product", "onap-dublin",
                 "csar-validate",
                 "--format", "json",
                 "--csar", absoluteFilePath("vUSN.csar")});
@@ -43,7 +43,7 @@ public class CsarValidatorTest {
     @Test
     public void testAllTestCasesForPNF_CsarCase() throws URISyntaxException {
         OnapCli cli = new OnapCli(new String [] {
-                "--product", "onap-vtp",
+                "--product", "onap-dublin",
                 "csar-validate",
                 "--format", "json",
                 "--pnf",
@@ -56,7 +56,7 @@ public class CsarValidatorTest {
     @Test
     public void testAllTestCasesForPNF_ZipCase() throws URISyntaxException {
         OnapCli cli = new OnapCli(new String [] {
-                "--product", "onap-vtp",
+                "--product", "onap-dublin",
                 "csar-validate",
                 "--format", "json",
                 "--pnf",

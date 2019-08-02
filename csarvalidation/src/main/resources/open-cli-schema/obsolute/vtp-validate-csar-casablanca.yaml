@@ -21,7 +21,7 @@ description: Validate CSAR package formats
 info:
   product: onap-csablanca
   version: 1.0
-  service: validation
+  service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
   ignore: true
 

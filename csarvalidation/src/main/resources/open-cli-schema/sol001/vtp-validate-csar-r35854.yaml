@@ -21,9 +21,9 @@ description: |
   for VNF/PNF descriptor specified in ETSI NFV-SOL001.
 
 info:
-  product: onap-vtp
+  product: onap-dublin
   version: 1.0
-  service: validation
+  service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
 
 parameters:

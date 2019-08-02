@@ -21,9 +21,9 @@ description: |
   maintaining the gaps with the requirements specified in ETSI GS NFV-IFA011 standard.
 
 info:
-  product: onap-vtp
+  product: onap-dublin
   version: 1.0
-  service: validation
+  service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
 
 parameters:
