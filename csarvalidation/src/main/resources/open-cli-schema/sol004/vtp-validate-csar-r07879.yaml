@@ -19,9 +19,9 @@ name: csar-validate-r07879
 description: The VNF Package MUST include all relevant playbooks to ONAP to be loaded on the Ansible Server.
 
 info:
-  product: onap-vtp
+  product: onap-dublin
   version: 1.0
-  service: validation
+  service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
 
 parameters:

@@ -21,9 +21,9 @@ description: |
   these definitions MUST comply with TOSCA Simple Profile in YAML v.1.2.
 
 info:
-  product: onap-vtp
+  product: onap-dublin
   version: 1.0
-  service: validation
+  service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
 
 parameters:

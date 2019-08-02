@@ -22,9 +22,9 @@ description: |
   and interfaces requirements and MUST comply with info elements specified in ETSI GS NFV-IFA 011.
 
 info:
-  product: onap-vtp
+  product: onap-dublin
   version: 1.0
-  service: validation
+  service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
 
 parameters:

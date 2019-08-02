@@ -19,9 +19,9 @@ name: csar-validate-r77707
 description: VNF provider MUST include manifest file that contains a list of all the components in VNF package
 
 info:
-  product: onap-vtp
+  product: onap-dublin
   version: 1.0
-  service: validation
+  service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
 
 parameters:
