@@ -31,7 +31,7 @@ public class VSPComplianceCheckTest {
     @Test
     public void testComputeFlavorCheck() throws URISyntaxException {
         OnapCli cli = new OnapCli(new String [] {
-                "--product", "onap-vtp",
+                "--product", "onap-dublin",
                 "vsp-compliance-check-compute-flavor",
                 "--format", "json",
                 "--csar", absoluteFilePath("vSRIOV_flavor_sample.csar")});
@@ -42,7 +42,7 @@ public class VSPComplianceCheckTest {
     @Test
     public void testSRIOVFlavorCheckShouldNotExist() throws URISyntaxException {
         OnapCli cli = new OnapCli(new String [] {
-                "--product", "onap-vtp",
+                "--product", "onap-dublin",
                 "vsp-compliance-check-sriov-flavor",
                 "--format", "json",
                 "--csar", absoluteFilePath("vSRIOV_flavor_sample.csar")});
@@ -53,7 +53,7 @@ public class VSPComplianceCheckTest {
     @Test
     public void testComputeFlavorReportCheck() throws URISyntaxException {
         OnapCli cli = new OnapCli(new String [] {
-                "--product", "onap-vtp",
+                "--product", "onap-dublin",
                 "vsp-compliance-check-compute-flavor-report",
                 "--format", "json",
                 "--csar", absoluteFilePath("vSRIOV_flavor_sample.csar")});

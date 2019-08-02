@@ -19,9 +19,9 @@ name: vsp-compliance-check-compute-flavor-report
 description: Compute Flavor Check
 
 info:
-  product: onap-vtp
+  product: onap-dublin
   version: 1.0
-  service: validation
+  service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
 
 parameters:

@@ -19,9 +19,9 @@ name: csar-validate-r26881
 description: The VNF provider MUST provide the binaries and images needed to instantiate the VNF (VNF and VNFC images).
 
 info:
-  product: onap-vtp
+  product: onap-dublin
   version: 1.0
-  service: validation
+  service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
 
 parameters:
