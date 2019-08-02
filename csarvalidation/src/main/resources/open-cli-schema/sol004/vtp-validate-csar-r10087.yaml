@@ -22,9 +22,9 @@ description: |
   CSAR Manifest file as per SOL004 - for example ROOT\ MainServiceTemplate.mf
 
 info:
-  product: onap-vtp
+  product: onap-dublin
   version: 1.0
-  service: validation
+  service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
 
 parameters:
