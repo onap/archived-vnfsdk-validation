@@ -85,7 +85,7 @@ public class VTPValidateCSARR787965 extends VTPValidateCSARBase {
 
     }
 
-    private void verifyZipStructure(FileArchive.Workspace workspace) throws Exception {
+    private void verifyZipStructure(FileArchive.Workspace workspace) throws IOException, CmsSignatureValidatorException {
         final Optional<Path> pathToCsarFile = workspace.getPathToCsarFile();
         final Optional<Path> pathToCertFile = workspace.getPathToCertFile();
         final Optional<Path> pathToCmsFile = workspace.getPathToCmsFile();

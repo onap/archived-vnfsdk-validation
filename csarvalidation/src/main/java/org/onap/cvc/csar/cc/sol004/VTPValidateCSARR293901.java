@@ -43,7 +43,7 @@ public class VTPValidateCSARR293901 extends VTPValidateCSARBase {
         if (Objects.isNull(entryManifestMf)) {
             this.errors.add(new PnfCSARErrorEntryMissing(
                     toscaMetaAttributeName,
-                    CSARArchive.TOSCA_Metadata__TOSCA_Meta,
+                    CSARArchive.TOSCA_METADATA_TOSCA_META,
                     UNKNOWN_LINE_NUMBER)
             );
         }

@@ -26,7 +26,7 @@ public class VTPValidateCSARR40820 extends VTPValidateCSARBase {
 
     public static class CSARErrorEntryMissingLicenseTerm extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingLicenseTerm() {
-            super("Licenses/License_term.txt", CSARArchive.CSAR_Archive);
+            super("Licenses/License_term.txt", CSARArchive.CSAR_ARCHIVE);
             this.setCode("0x1000");
         }
     }

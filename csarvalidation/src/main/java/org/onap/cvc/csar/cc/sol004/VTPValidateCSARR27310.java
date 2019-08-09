@@ -26,7 +26,7 @@ public class VTPValidateCSARR27310 extends VTPValidateCSARBase {
 
     public static class CSARErrorEntryMissingChefArtifactsNotFound extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingChefArtifactsNotFound() {
-            super("cookbooks", CSARArchive.CSAR_Archive);
+            super("cookbooks", CSARArchive.CSAR_ARCHIVE);
             this.setCode("0x1000");
         }
     }

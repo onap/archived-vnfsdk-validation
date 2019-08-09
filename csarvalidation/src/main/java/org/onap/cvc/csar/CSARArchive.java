@@ -49,60 +49,54 @@ public class CSARArchive implements AutoCloseable {
 
     public static final String TEMP_DIR = "/tmp";
 
-    public static final String TOSCA_Metadata = "TOSCA-Metadata";
+    public static final String TOSCA_METADATA = "TOSCA-Metadata";
 
-    public static final String TOSCA_Metadata__TOSCA_Meta = "TOSCA.meta";
+    public static final String TOSCA_METADATA_TOSCA_META = "TOSCA.meta";
 
-    public static final String TOSCA_Metadata__TOSCA_Meta__TOSCA_Meta_File_Version = "TOSCA-Meta-File-Version";
+    public static final String TOSCA_METADATA_TOSCA_META_TOSCA_META_FILE_VERSION = "TOSCA-Meta-File-Version";
 
-    public static final String TOSCA_Metadata__TOSCA_Meta__CSAR_Version = "CSAR-Version";
+    public static final String TOSCA_METADATA_TOSCA_META_CSAR_VERSION = "CSAR-Version";
 
-    public static final String TOSCA_Metadata__TOSCA_Meta__Created_by = "Created-by";
+    public static final String TOSCA_METADATA_TOSCA_META_CREATED_BY = "Created-by";
 
-    public static final String TOSCA_Metadata__TOSCA_Meta__Entry_Definitions = "Entry-Definitions";
+    public static final String TOSCA_METADATA_TOSCA_META_ENTRY_DEFINITIONS = "Entry-Definitions";
 
-    public static final String TOSCA_Metadata__TOSCA_Meta__Entry_Manifest = "Entry-Manifest";
+    public static final String TOSCA_METADATA_TOSCA_META_ENTRY_MANIFEST = "Entry-Manifest";
 
-    public static final String TOSCA_Metadata__TOSCA_Meta__Entry_Change_Log = "Entry-Change-Log";
+    public static final String TOSCA_METADATA_TOSCA_META_ENTRY_CHANGE_LOG = "Entry-Change-Log";
 
-    public static final String Change_Logs_Txt = "Change-Logs.txt";
+    public static final String CHANGE_LOGS_TXT = "Change-Logs.txt";
 
-    public static final String TOSCA_Metadata__TOSCA_Meta__Entry_Tests = "Entry-Tests";
+    public static final String TOSCA_METADATA_TOSCA_META_ENTRY_TESTS = "Entry-Tests";
 
-    public static final String Tests = "Tests";
+    public static final String TESTS = "Tests";
 
-    public static final String TOSCA_Metadata__TOSCA_Meta__Entry_Licenses = "Entry-Licenses";
+    public static final String TOSCA_METADATA_TOSCA_META_ENTRY_LICENSES = "Entry-Licenses";
 
-    public static final String Licenses = "Licenses";
+    public static final String LICENSES = "Licenses";
 
-    public static final String TOSCA_Metadata__TOSCA_Meta__Entry_Certificate = "Entry-Certificate";
+    public static final String TOSCA_METADATA_TOSCA_META_ENTRY_CERTIFICATE = "Entry-Certificate";
 
-    public static final String Certificate = "Certificate";
+    public static final String ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION = "tosca_definitions_version";
 
-    public static final String TOSCA_Metadata__TOSCA_Meta__Name = "Name";
-
-    public static final String TOSCA_Metadata__TOSCA_Meta__Content_Type = "Content-Type";
-
-    public static final String Entry_Definition__tosca_definitions_version = "tosca_definitions_version";
-
-    public static final String Entry_Definition__tosca_definitions_version__simple_1_0 = "tosca_simple_yaml_1_0";
-    public static final String Entry_Definition__tosca_definitions_version__simple_1_1 = "tosca_simple_yaml_1_1";
-    public static final String Entry_Definition__tosca_definitions_version__simple_1_2 = "tosca_simple_yaml_1_2";
+    public static final String ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_0 = "tosca_simple_yaml_1_0";
+    public static final String ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_1 = "tosca_simple_yaml_1_1";
+    public static final String ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_2 = "tosca_simple_yaml_1_2";
 
     protected static final String[] Entry_Definition__tosca_definitions_versions = new String[] {
-            Entry_Definition__tosca_definitions_version__simple_1_0,
-            Entry_Definition__tosca_definitions_version__simple_1_1,
-            Entry_Definition__tosca_definitions_version__simple_1_2
+            ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_0,
+            ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_1,
+            ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_2
     };
-    public static final String Entry_Definition__metadata = "metadata";
+    public static final String ENTRY_DEFINITION_METADATA = "metadata";
 
-    public static final String Entry_Definition__template_name = "template_name";
+    public static final String ENTRY_DEFINITION_TEMPLATE_NAME = "template_name";
 
-    public static final String Entry_Definition__template_author = "template_author";
+    public static final String ENTRY_DEFINITION_TEMPLATE_AUTHOR = "template_author";
 
-    public static final String Entry_Definition__template_version = "template_version";
+    public static final String ENTRY_DEFINITION_TEMPLATE_VERSION = "template_version";
 
-    public static final String CSAR_Archive = "CSAR Archive";
+    public static final String CSAR_ARCHIVE = "CSAR Archive";
 
     public enum Mode {
         WITH_TOSCA_META_DIR,
@@ -110,10 +104,6 @@ public class CSARArchive implements AutoCloseable {
     }
 
     public static class CSARError{
-
-        public CSARError(String code) {
-            this.code = code;
-        }
 
         private String vnfreqNo;
 
@@ -124,6 +114,10 @@ public class CSARArchive implements AutoCloseable {
         protected String file = null;
 
         protected int lineNumber = -1;
+
+        public CSARError(String code) {
+            this.code = code;
+        }
 
         public String getCode() {
             return code;
@@ -293,7 +287,7 @@ public class CSARArchive implements AutoCloseable {
     //Specific errors
     public static class CSARErrorEntryMissingToscaDefinitionVersion extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingToscaDefinitionVersion(String definitionYaml) {
-            super(Entry_Definition__tosca_definitions_version,
+            super(ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION,
                     definitionYaml,
                     -1,
                     null);
@@ -303,11 +297,11 @@ public class CSARArchive implements AutoCloseable {
 
     public static class CSARErrorInvalidEntryValueToscaDefinitionVersion extends CSARErrorInvalidEntryValue {
         public CSARErrorInvalidEntryValueToscaDefinitionVersion(String definitionYaml) {
-            super(Entry_Definition__tosca_definitions_version,
+            super(ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION,
                     definitionYaml,
                     -1,
                     null,
-                    Entry_Definition__tosca_definitions_version__simple_1_1);
+                    ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_1);
 
             this.setCode("0x0002");
         }
@@ -316,7 +310,7 @@ public class CSARArchive implements AutoCloseable {
     //In non TOSCA-Meta mode, this is mandatory
     public static class CSARErrorEntryMissingToscaDefinitionMetadataTemplateAuthor extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingToscaDefinitionMetadataTemplateAuthor(String definitionYaml) {
-            super(Entry_Definition__template_author,
+            super(ENTRY_DEFINITION_TEMPLATE_AUTHOR,
                     definitionYaml,
                     -1,
                     null);
@@ -328,7 +322,7 @@ public class CSARArchive implements AutoCloseable {
     //In non TOSCA-Meta mode, this is mandatory
     public static class CSARErrorEntryMissingToscaDefinitionMetadataTemplateName extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingToscaDefinitionMetadataTemplateName(String definitionYaml) {
-            super(Entry_Definition__template_name,
+            super(ENTRY_DEFINITION_TEMPLATE_NAME,
                     definitionYaml,
                     -1,
                     null);
@@ -340,7 +334,7 @@ public class CSARArchive implements AutoCloseable {
     //In non TOSCA-Meta mode, this is mandatory
     public static class CSARErrorEntryMissingToscaDefinitionMetadataTemplateVersion extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingToscaDefinitionMetadataTemplateVersion(String definitionYaml) {
-            super(Entry_Definition__template_version,
+            super(ENTRY_DEFINITION_TEMPLATE_VERSION,
                     definitionYaml,
                     -1,
                     null);
@@ -351,8 +345,8 @@ public class CSARArchive implements AutoCloseable {
 
     public static class CSARErrorInvalidEntryValueToscaDefinitionNotFound extends CSARErrorInvalidEntryValue {
         public CSARErrorInvalidEntryValueToscaDefinitionNotFound(String definitionYaml, int lineNo) {
-            super(TOSCA_Metadata__TOSCA_Meta__Entry_Definitions,
-                    TOSCA_Metadata__TOSCA_Meta,
+            super(TOSCA_METADATA_TOSCA_META_ENTRY_DEFINITIONS,
+                    TOSCA_METADATA_TOSCA_META,
                     lineNo,
                     definitionYaml + " does not exist",
                     null);
@@ -364,7 +358,7 @@ public class CSARArchive implements AutoCloseable {
     public static class CSARErrorInvalidEntryValueManifestNotFound extends CSARErrorInvalidEntryValue {
         public CSARErrorInvalidEntryValueManifestNotFound(String manifest, int lineNo, String entryManifestArgumentName) {
             super(entryManifestArgumentName,
-                    TOSCA_Metadata__TOSCA_Meta,
+                    TOSCA_METADATA_TOSCA_META,
                     lineNo,
                     manifest + " does not exist",
                     null);
@@ -376,7 +370,7 @@ public class CSARArchive implements AutoCloseable {
     public static class CSARErrorInvalidEntryValueLogsNotFound extends CSARErrorInvalidEntryValue {
         public CSARErrorInvalidEntryValueLogsNotFound(String logs, int lineNo, String entryChangeLogArgumentName) {
             super(entryChangeLogArgumentName,
-                    TOSCA_Metadata__TOSCA_Meta,
+                    TOSCA_METADATA_TOSCA_META,
                     lineNo,
                     logs + " does not exist",
                     null);
@@ -387,8 +381,8 @@ public class CSARArchive implements AutoCloseable {
 
     public static class CSARErrorInvalidEntryValueTestsNotFound extends CSARErrorInvalidEntryValue {
         public CSARErrorInvalidEntryValueTestsNotFound(String tests, int lineNo) {
-            super(TOSCA_Metadata__TOSCA_Meta__Entry_Tests,
-                    TOSCA_Metadata__TOSCA_Meta,
+            super(TOSCA_METADATA_TOSCA_META_ENTRY_TESTS,
+                    TOSCA_METADATA_TOSCA_META,
                     lineNo,
                     tests + " folder does not exist",
                     null);
@@ -399,8 +393,8 @@ public class CSARArchive implements AutoCloseable {
 
     public static class CSARErrorInvalidEntryValueLicenseNotFound extends CSARErrorInvalidEntryValue {
         public CSARErrorInvalidEntryValueLicenseNotFound(String license, int lineNo) {
-            super(TOSCA_Metadata__TOSCA_Meta__Entry_Licenses,
-                    TOSCA_Metadata__TOSCA_Meta,
+            super(TOSCA_METADATA_TOSCA_META_ENTRY_LICENSES,
+                    TOSCA_METADATA_TOSCA_META,
                     lineNo,
                     license + " does not exist",
                     null);
@@ -411,8 +405,8 @@ public class CSARArchive implements AutoCloseable {
 
     public static class CSARErrorInvalidEntryValueCertificatesNotFound extends CSARErrorInvalidEntryValue {
         public CSARErrorInvalidEntryValueCertificatesNotFound(String certificate, int lineNo) {
-            super(TOSCA_Metadata__TOSCA_Meta__Entry_Certificate,
-                    TOSCA_Metadata__TOSCA_Meta,
+            super(TOSCA_METADATA_TOSCA_META_ENTRY_CERTIFICATE,
+                    TOSCA_METADATA_TOSCA_META,
                     lineNo,
                     certificate + " does not exist",
                     null);
@@ -423,8 +417,8 @@ public class CSARArchive implements AutoCloseable {
 
     public static class CSARErrorEntryMissingToscaMetaFileVersion extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingToscaMetaFileVersion() {
-            super(TOSCA_Metadata__TOSCA_Meta__TOSCA_Meta_File_Version,
-                    TOSCA_Metadata__TOSCA_Meta,
+            super(TOSCA_METADATA_TOSCA_META_TOSCA_META_FILE_VERSION,
+                    TOSCA_METADATA_TOSCA_META,
                     -1,
                     null);
 
@@ -434,8 +428,8 @@ public class CSARArchive implements AutoCloseable {
 
     public static class CSARErrorEntryMissingToscaMetaDefinition extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingToscaMetaDefinition() {
-            super(TOSCA_Metadata__TOSCA_Meta__Entry_Definitions,
-                    TOSCA_Metadata__TOSCA_Meta,
+            super(TOSCA_METADATA_TOSCA_META_ENTRY_DEFINITIONS,
+                    TOSCA_METADATA_TOSCA_META,
                     -1,
                     null);
 
@@ -445,8 +439,8 @@ public class CSARArchive implements AutoCloseable {
 
     public static class CSARErrorEntryMissingToscaMetaCSARVersion extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingToscaMetaCSARVersion() {
-            super(TOSCA_Metadata__TOSCA_Meta__CSAR_Version,
-                    TOSCA_Metadata__TOSCA_Meta,
+            super(TOSCA_METADATA_TOSCA_META_CSAR_VERSION,
+                    TOSCA_METADATA_TOSCA_META,
                     -1,
                     null);
 
@@ -456,8 +450,8 @@ public class CSARArchive implements AutoCloseable {
 
     public static class CSARErrorEntryMissingToscaMetaCreatedBy extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingToscaMetaCreatedBy() {
-            super(TOSCA_Metadata__TOSCA_Meta__Created_by,
-                    TOSCA_Metadata__TOSCA_Meta,
+            super(TOSCA_METADATA_TOSCA_META_CREATED_BY,
+                    TOSCA_METADATA_TOSCA_META,
                     -1,
                     null);
 
@@ -468,7 +462,7 @@ public class CSARArchive implements AutoCloseable {
     public static class CSARErrorEntryMissingToscaDefinitionNotFound extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingToscaDefinitionNotFound() {
             super("Definition YAML",
-                    CSAR_Archive,
+                    CSAR_ARCHIVE,
                     -1,
                     null);
 
@@ -479,7 +473,7 @@ public class CSARArchive implements AutoCloseable {
     public static class CSARErrorConflictsMultipleDefinitionYamls extends CSARErrorConflicts {
         public CSARErrorConflictsMultipleDefinitionYamls(String fileNames) {
             super("Definition YAML",
-                    CSAR_Archive,
+                    CSAR_ARCHIVE,
                     -1,
                     "Only one definition YAML should be provided at the root of the archive",
                     fileNames);
@@ -492,7 +486,7 @@ public class CSARArchive implements AutoCloseable {
     public static class CSARErrorConflictsMultipleManifests extends CSARErrorConflicts {
         public CSARErrorConflictsMultipleManifests(String fileNames) {
             super("Manifest MF",
-                    CSAR_Archive,
+                    CSAR_ARCHIVE,
                     -1,
                     "Only one manifest MF file should be provided at the root of the archive",
                     fileNames);
@@ -504,7 +498,7 @@ public class CSARArchive implements AutoCloseable {
     public static class CSARErrorMismatchDefinitionYamlVsManifestMf extends CSARErrorMismatch {
         public CSARErrorMismatchDefinitionYamlVsManifestMf(String definitionYaml, String manifest) {
             super("Manifest MF",
-                    CSAR_Archive,
+                    CSAR_ARCHIVE,
                     -1,
                     "Manifest file name should match the definition YAML name",
                     definitionYaml + ".mf", //fix the name part
@@ -517,7 +511,7 @@ public class CSARArchive implements AutoCloseable {
     public static class CSARErrorConflictsMultipleCertificates extends CSARErrorConflicts {
         public CSARErrorConflictsMultipleCertificates(String fileNames) {
             super("Certificate CERT",
-                    CSAR_Archive,
+                    CSAR_ARCHIVE,
                     -1,
                     "Only one certificates file should be provided at the root of the archive",
                     fileNames);
@@ -529,7 +523,7 @@ public class CSARArchive implements AutoCloseable {
     public static class CSARErrorMismatchDefinitionYamlVsCertificateCert extends CSARErrorMismatch {
         public CSARErrorMismatchDefinitionYamlVsCertificateCert(String definitionYaml, String certificate) {
             super("Certificate CERT",
-                    CSAR_Archive,
+                    CSAR_ARCHIVE,
                     -1,
                     "certificate file name should match the definition YAML name",
                     definitionYaml + ".cert", //fix the name part
@@ -929,7 +923,7 @@ public class CSARArchive implements AutoCloseable {
 
     private boolean isToscaMetaFileExist() {
         return new File(this.tempDir.toFile().getAbsolutePath() + File.separator +
-                TOSCA_Metadata + File.separator + TOSCA_Metadata__TOSCA_Meta).exists();
+                TOSCA_METADATA + File.separator + TOSCA_METADATA_TOSCA_META).exists();
     }
 
     void parseManifest() throws IOException {
@@ -942,14 +936,13 @@ public class CSARArchive implements AutoCloseable {
         Pair<List<SourcesParser.Source>, List<CSARError>> sourcesSectionData = vnfManifestParser.fetchSourcesSection();
         Pair<String, List<CSARError>> cmsSectionData = vnfManifestParser.fetchCMS();
 
-        CSARArchive.Manifest manifest = this.getManifest();
-        manifest.setMetadata(metadataData.getKey());
+        this.manifest.setMetadata(metadataData.getKey());
         this.getErrors().addAll(metadataData.getValue());
 
-        manifest.setSources(sourcesSectionData.getKey());
+        this.manifest.setSources(sourcesSectionData.getKey());
         this.getErrors().addAll(sourcesSectionData.getValue());
 
-        manifest.setCms(cmsSectionData.getKey());
+        this.manifest.setCms(cmsSectionData.getKey());
         this.getErrors().addAll(cmsSectionData.getValue());
 
     }
@@ -959,37 +952,37 @@ public class CSARArchive implements AutoCloseable {
             Map<String, ?> yaml = (Map<String, ?>) new Yaml().load(ipStream);
 
             //yaml is empty or version string missing
-            if (yaml == null || !yaml.keySet().contains(Entry_Definition__tosca_definitions_version)) {
+            if (yaml == null || !yaml.keySet().contains(ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION)) {
                 errors.add(
                         new CSARErrorEntryMissingToscaDefinitionVersion(
                                 this.definitionYamlFile.getName()));
             } else {
-                String version = (String) yaml.get(Entry_Definition__tosca_definitions_version);
+                String version = (String) yaml.get(ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION);
                 if (!Arrays.asList(Entry_Definition__tosca_definitions_versions).contains(version)) {
-                    errors.add(new CSARErrorInvalidEntry(Entry_Definition__tosca_definitions_version,
-                            this.definitionYamlFile.getName(), -1, "Should be " + Entry_Definition__tosca_definitions_version__simple_1_1));
+                    errors.add(new CSARErrorInvalidEntry(ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION,
+                            this.definitionYamlFile.getName(), -1, "Should be " + ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_1));
                 } else {
                     this.definition.setToscaDefinitionVersion(version);
 
                     if (this.toscaMeta.getMode().equals(Mode.WITHOUT_TOSCA_META_DIR)) {
                         //metadata section should be there
-                        if (!yaml.keySet().contains(Entry_Definition__metadata)) {
+                        if (!yaml.keySet().contains(ENTRY_DEFINITION_METADATA)) {
                             errors.add(
                                     new CSARErrorInvalidEntryValueToscaDefinitionVersion(
                                             this.definitionYamlFile.getName()));
                         } else {
-                            Map<String, String> metadata = (Map<String, String>) yaml.get(Entry_Definition__metadata);
+                            Map<String, String> metadata = (Map<String, String>) yaml.get(ENTRY_DEFINITION_METADATA);
 
                             for(Map.Entry<String, String> entry: metadata.entrySet()) {
                                 String key = entry.getKey();
                                 String value = entry.getValue();
 
                                 //continue till it reaches the metadata section
-                                if (key.equalsIgnoreCase(Entry_Definition__template_author)) {
+                                if (key.equalsIgnoreCase(ENTRY_DEFINITION_TEMPLATE_AUTHOR)) {
                                     this.definition.getMetadata().setTemplateAuthor(value);
-                                } else if (key.equalsIgnoreCase(Entry_Definition__template_name)) {
+                                } else if (key.equalsIgnoreCase(ENTRY_DEFINITION_TEMPLATE_NAME)) {
                                     this.definition.getMetadata().setTempalteName(value);
-                                } else if (key.equalsIgnoreCase(Entry_Definition__template_version)) {
+                                } else if (key.equalsIgnoreCase(ENTRY_DEFINITION_TEMPLATE_VERSION)) {
                                     this.definition.getMetadata().setTemplateVersion(value);
                                 } else {
                                     errors.add(
@@ -1024,7 +1017,7 @@ public class CSARArchive implements AutoCloseable {
 
     private void parseMeta() throws IOException {
         if (this.toscaMeta.getMode().equals(Mode.WITH_TOSCA_META_DIR)) {
-            this.toscaMetaFile = this.tempDir.resolve(TOSCA_Metadata+ File.separator + TOSCA_Metadata__TOSCA_Meta).toFile();
+            this.toscaMetaFile = this.tempDir.resolve(TOSCA_METADATA + File.separator + TOSCA_METADATA_TOSCA_META).toFile();
 
             int lineNo =0;
             for (String line: FileUtils.readLines(this.toscaMetaFile)) {
@@ -1043,7 +1036,7 @@ public class CSARArchive implements AutoCloseable {
                     errors.add(
                             new CSARErrorIgnored(
                                     line,
-                                    TOSCA_Metadata__TOSCA_Meta,
+                                    TOSCA_METADATA_TOSCA_META,
                                     lineNo,
                                     null));
                     continue;
@@ -1052,13 +1045,13 @@ public class CSARArchive implements AutoCloseable {
                 String key = lineTokens[0].trim();
                 String value = lineTokens[1].trim();
 
-                if(key.equalsIgnoreCase(TOSCA_Metadata__TOSCA_Meta__TOSCA_Meta_File_Version)) {
+                if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_TOSCA_META_FILE_VERSION)) {
                         this.toscaMeta.setMetaDataFileVersion(value);
-                } else if(key.equalsIgnoreCase(TOSCA_Metadata__TOSCA_Meta__CSAR_Version)){
+                } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_CSAR_VERSION)){
                         this.toscaMeta.setCsarVersion(value);
-                } else if(key.equalsIgnoreCase(TOSCA_Metadata__TOSCA_Meta__Created_by)) {
+                } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_CREATED_BY)) {
                         this.toscaMeta.setCompanyName(value);
-                } else if(key.equalsIgnoreCase(TOSCA_Metadata__TOSCA_Meta__Entry_Definitions)) {
+                } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_ENTRY_DEFINITIONS)) {
                         this.toscaMeta.setEntryDefinitionYaml(value);
                         this.definitionYamlFile = new File(this.tempDir.toFile().getAbsolutePath() + File.separator + (this.toscaMeta.getEntryDefinitionYaml()));
 
@@ -1084,7 +1077,7 @@ public class CSARArchive implements AutoCloseable {
                                     this.toscaMeta.getEntryChangeLog(),
                                     lineNo, getEntryChangeLogParamName()));
                         }
-                } else if(key.equalsIgnoreCase(TOSCA_Metadata__TOSCA_Meta__Entry_Tests)) {
+                } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_ENTRY_TESTS)) {
                         this.toscaMeta.setEntryTest(value);
                         this.testsFolder= this.tempDir.resolve(this.toscaMeta.getEntryTest()).toFile();
                         if (!this.testsFolder.exists() || !this.testsFolder.isDirectory()) {
@@ -1092,7 +1085,7 @@ public class CSARArchive implements AutoCloseable {
                                     this.toscaMeta.getEntryTest(),
                                     lineNo));
                         }
-                } else if(key.equalsIgnoreCase(TOSCA_Metadata__TOSCA_Meta__Entry_Licenses)) {
+                } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_ENTRY_LICENSES)) {
                         this.toscaMeta.setEntryLicense(value);
                         this.licensesFolder= this.tempDir.resolve(this.toscaMeta.getEntryLicense()).toFile();
                         if (!this.licensesFolder.exists() || !this.licensesFolder.isDirectory()) {
@@ -1100,7 +1093,7 @@ public class CSARArchive implements AutoCloseable {
                                     this.toscaMeta.getEntryLicense(),
                                     lineNo));
                         }
-                } else if(key.equalsIgnoreCase(TOSCA_Metadata__TOSCA_Meta__Entry_Certificate)) {
+                } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_ENTRY_CERTIFICATE)) {
                         this.toscaMeta.setEntryCertificate(value);
                         this.certificatesFile= this.tempDir.resolve(this.toscaMeta.getEntryCertificate()).toFile();
                         if (!this.certificatesFile.exists()) {
@@ -1112,7 +1105,7 @@ public class CSARArchive implements AutoCloseable {
                         errors.add(
                                 new CSARErrorIgnored(
                                         key,
-                                        TOSCA_Metadata__TOSCA_Meta,
+                                        TOSCA_METADATA_TOSCA_META,
                                         lineNo,
                                         null));
                 }
@@ -1230,15 +1223,15 @@ public class CSARArchive implements AutoCloseable {
 
 
             for (File file: this.tempDir.toFile().listFiles()) {
-                if (file.getName().equalsIgnoreCase(Change_Logs_Txt)) {
+                if (file.getName().equalsIgnoreCase(CHANGE_LOGS_TXT)) {
                     this.changeLogTxtFile = file;
                 }
 
-                else if (file.getName().equalsIgnoreCase(Tests)) {
+                else if (file.getName().equalsIgnoreCase(TESTS)) {
                     this.testsFolder = file;
                 }
 
-                else if (file.getName().equalsIgnoreCase(Licenses)) {
+                else if (file.getName().equalsIgnoreCase(LICENSES)) {
                     this.licensesFolder = file;
                 }
 
@@ -1246,7 +1239,7 @@ public class CSARArchive implements AutoCloseable {
                     errors.add(
                             new CSARErrorIgnored(
                                     file.getName(),
-                                    CSAR_Archive,
+                                    CSAR_ARCHIVE,
                                     -1,
                                     null));
                 }
@@ -1255,11 +1248,11 @@ public class CSARArchive implements AutoCloseable {
     }
 
     String getEntryManifestParamName(){
-        return TOSCA_Metadata__TOSCA_Meta__Entry_Manifest;
+        return TOSCA_METADATA_TOSCA_META_ENTRY_MANIFEST;
     }
 
     String getEntryChangeLogParamName(){
-        return TOSCA_Metadata__TOSCA_Meta__Entry_Change_Log;
+        return TOSCA_METADATA_TOSCA_META_ENTRY_CHANGE_LOG;
     }
 
     public void init(String csarPath) throws IOException {

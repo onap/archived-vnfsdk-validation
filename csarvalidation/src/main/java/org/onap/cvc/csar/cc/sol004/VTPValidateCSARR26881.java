@@ -26,7 +26,7 @@ public class VTPValidateCSARR26881 extends VTPValidateCSARBase {
 
     public static class CSARErrorEntryMissingArtifactsNotFound extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingArtifactsNotFound() {
-            super("Artifacts", CSARArchive.CSAR_Archive);
+            super("Artifacts", CSARArchive.CSAR_ARCHIVE);
             this.setCode("0x1000");
         }
     }

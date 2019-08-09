@@ -135,10 +135,7 @@ class VnfManifestParser {
     }
 
     private boolean skipLine(String line) {
-        return line.startsWith("#")
-                || line.isEmpty()
-                || line.toLowerCase().startsWith("source")
-                || line.toLowerCase().startsWith("algorithm")
-                || line.toLowerCase().startsWith("hash");
+        return  line.isEmpty()
+                || line.toLowerCase().matches("^(#|source|algorithm|hash).*$");
     }
 }

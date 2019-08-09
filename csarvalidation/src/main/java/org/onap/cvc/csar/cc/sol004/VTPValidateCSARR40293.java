@@ -26,7 +26,7 @@ public class VTPValidateCSARR40293 extends VTPValidateCSARBase {
 
     public static class CSARErrorEntryMissingAnsiblePlaybookNotFound extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingAnsiblePlaybookNotFound() {
-            super("playbooks", CSARArchive.CSAR_Archive);
+            super("playbooks", CSARArchive.CSAR_ARCHIVE);
             this.setCode("0x1000");
         }
     }

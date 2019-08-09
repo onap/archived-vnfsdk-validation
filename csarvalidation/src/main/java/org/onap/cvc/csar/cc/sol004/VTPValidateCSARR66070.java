@@ -27,7 +27,7 @@ public class VTPValidateCSARR66070 extends VTPValidateCSARBase {
     public static class CSARErrorEntryVNFProviderDetailsNotFound extends CSARErrorEntryMissing {
         public CSARErrorEntryVNFProviderDetailsNotFound() {
             super("VNF Vendor details",
-                    CSARArchive.TOSCA_Metadata + " or " + CSARArchive.TOSCA_Metadata__TOSCA_Meta__Entry_Definitions + " file");
+                    CSARArchive.TOSCA_METADATA + " or " + CSARArchive.TOSCA_METADATA_TOSCA_META_ENTRY_DEFINITIONS + " file");
             this.setCode("0x1000");
         }
     }

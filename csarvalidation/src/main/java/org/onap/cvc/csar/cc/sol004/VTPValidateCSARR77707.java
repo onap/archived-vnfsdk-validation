@@ -27,7 +27,7 @@ public class VTPValidateCSARR77707 extends VTPValidateCSARBase {
     public static class CSARErrorEntryMissingDefinitionNotFound extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionNotFound() {
             super("TOSCA definition or Tosca.Meata",
-                    CSARArchive.CSAR_Archive);
+                    CSARArchive.CSAR_ARCHIVE);
             this.setCode("0x1000");
         }
     }

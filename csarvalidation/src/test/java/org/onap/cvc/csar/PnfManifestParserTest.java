@@ -162,4 +162,28 @@ public class PnfManifestParserTest {
         assertThat(errors.size()).isEqualTo(1);
         assertThat(errors.get(0).getMessage()).isEqualTo("Invalid. Entry [CMS section is not at the end of file!]");
     }
+
+    @Test
+    public void shouldFetchSourcesSectionFromFileWithChangedSectionOrder() throws IOException {
+
+        pnfManifestParser = PnfManifestParser.getInstance(new File("./src/test/resources/pnf/MainServiceTemplateDifferentSectionOrder.mf"));
+        Pair<List<SourcesParser.Source>, List<CSARArchive.CSARError>> sourcesPair = pnfManifestParser.fetchSourcesSection();
+        List<SourcesParser.Source> sources = sourcesPair.getKey();
+        List<CSARArchive.CSARError> errors = sourcesPair.getValue();
+
+        assertThat(sources).contains(
+                new SourcesParser.Source("MRF.yaml", "SHA-256", "09e5a788acb180162c51679ae4c998039fa6644505db2415e35107d1ee213943"),
+                new SourcesParser.Source("scripts/install.sh", "SHA-256", "d0e7828293355a07c2dccaaa765c80b507e60e6167067c950dc2e6b0da0dbd8b"),
+                new SourcesParser.Source("https://www.vendor_org.com/MRF/v4.1/scripts/scale/scale.sh", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165"),
+                new SourcesParser.Source("Artifacts/Events/VES_registration.yml", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165"),
+                new SourcesParser.Source("Artifacts/Measurements/PM_Dictionary.yaml", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165"),
+                new SourcesParser.Source("Artifacts/Yang_module/Yang_module.yaml", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165"),
+                new SourcesParser.Source("Artifacts/scripts/install.sh", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165"),
+                new SourcesParser.Source("Artifacts/Informational/user_guide.txt", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165"),
+                new SourcesParser.Source("Artifacts/Other/installation_guide.txt", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165"),
+                new SourcesParser.Source("Artifacts/Other/review_log.txt", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165")
+
+        );
+        assertThat(errors.size()).isEqualTo(0);
+    }
 }

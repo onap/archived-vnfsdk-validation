@@ -26,7 +26,7 @@ public class VTPValidateCSARR43958 extends VTPValidateCSARBase {
 
     public static class CSARErrorEntryMissingTestReportNotFound extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingTestReportNotFound() {
-            super("Tests/report.txt", CSARArchive.CSAR_Archive);
+            super("Tests/report.txt", CSARArchive.CSAR_ARCHIVE);
             this.setCode("0x1000");
         }
     }

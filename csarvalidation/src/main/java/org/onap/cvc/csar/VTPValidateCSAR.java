@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.onap.cli.fw.cmd.OnapCommand;
 import org.onap.cli.fw.error.OnapCommandException;
 import org.onap.cli.fw.error.OnapCommandExecutionFailed;
@@ -174,10 +175,10 @@ public class VTPValidateCSAR extends OnapCommand {
         }
     }
 
-    private static Properties prp = new Properties();
+    private static Properties properties = new Properties();
     static {
         try {
-            prp.load(VTPValidateCSAR.class.getClass().getResourceAsStream("/vnfreqs.properties"));
+            properties.load(VTPValidateCSAR.class.getClass().getResourceAsStream("/vnfreqs.properties"));
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
@@ -194,14 +195,7 @@ public class VTPValidateCSAR extends OnapCommand {
             csar.init(path);
             csar.parse();
 
-
-            //Fill up the basic details
-            CSARValidation validation = new CSARValidation();
-            validation.getVnf().setName(csar.getProductName());
-            validation.getVnf().setVendor(csar.getVendorName());
-            validation.getVnf().setVersion(csar.getVersion());
-            validation.getVnf().setType("TOSCA");
-            validation.getVnf().setMode(csar.getToscaMeta().getMode().name());
+            CSARValidation validation = createCsarValidationFor(csar);
 
             String keyErrors = isPnf ? "pnferrors.ignored" : "vnferrors.ignored";
             List <String> ignoreCodes = this.getPropertiesList(keyErrors);
@@ -256,19 +250,34 @@ public class VTPValidateCSAR extends OnapCommand {
             validation.setDate(new Date().toString());
             validation.setCriteria(overallPass ? "PASS" : "FAILED");
 
-            this.getResult().getRecordsMap().get("vnf").getValues().add(
-                    new ObjectMapper().writeValueAsString(validation.getVnf()));
-            this.getResult().getRecordsMap().get("date").getValues().add(validation.getDate());
-            this.getResult().getRecordsMap().get("criteria").getValues().add(validation.getCriteria());
-            this.getResult().getRecordsMap().get("results").getValues().add(
-                    new ObjectMapper().writeValueAsString(validation.getResults()));
-
-            this.getResult().setOutput(new ObjectMapper().writeValueAsString(validation));
-            this.getResult().setType(OnapCommandResultType.TEXT);
+            setOperationResult(validation);
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             throw new OnapCommandExecutionFailed(e.getMessage());
         }
+    }
+
+    static CSARValidation createCsarValidationFor(CSARArchive csar) {
+        //Fill up the basic details
+        CSARValidation validation = new CSARValidation();
+        validation.getVnf().setName(csar.getProductName());
+        validation.getVnf().setVendor(csar.getVendorName());
+        validation.getVnf().setVersion(csar.getVersion());
+        validation.getVnf().setType("TOSCA");
+        validation.getVnf().setMode(csar.getToscaMeta().getMode().name());
+        return validation;
+    }
+
+    private void setOperationResult(CSARValidation validation) throws JsonProcessingException {
+        this.getResult().getRecordsMap().get("vnf").getValues().add(
+                new ObjectMapper().writeValueAsString(validation.getVnf()));
+        this.getResult().getRecordsMap().get("date").getValues().add(validation.getDate());
+        this.getResult().getRecordsMap().get("criteria").getValues().add(validation.getCriteria());
+        this.getResult().getRecordsMap().get("results").getValues().add(
+                new ObjectMapper().writeValueAsString(validation.getResults()));
+
+        this.getResult().setOutput(new ObjectMapper().writeValueAsString(validation));
+        this.getResult().setType(OnapCommandResultType.TEXT);
     }
 
     private void setPnfValueIfAvailable(boolean isPnf, OnapCommand cmd) throws OnapCommandInvalidParameterValue {
@@ -279,7 +288,7 @@ public class VTPValidateCSAR extends OnapCommand {
     }
 
     private List<String> getPropertiesList(String key) {
-        String[] enabledReqs = prp.getProperty(key, "").split(",");
+        String[] enabledReqs = properties.getProperty(key, "").split(",");
         List<String> list = new ArrayList<>();
         for(String req: enabledReqs) {
             if (!req.isEmpty()) list.add(req);
