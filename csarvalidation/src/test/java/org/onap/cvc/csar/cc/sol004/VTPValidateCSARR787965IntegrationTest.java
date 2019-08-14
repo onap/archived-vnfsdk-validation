@@ -18,6 +18,7 @@
 package org.onap.cvc.csar.cc.sol004;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.onap.cvc.csar.CSARArchive;
 
@@ -61,7 +62,11 @@ public class VTPValidateCSARR787965IntegrationTest {
     }
 
     @Test
-    public void shouldReportThatZipContainsSignatureWithCertificationFileAndPackageIsProbableValid() throws Exception {
+    @Ignore("It is impossible to write test which will always pass, because certificate used to sign the file has time validity." +
+            "To verify signed package please please follow instructions from test/resources/README.txt file and comment @Ignore tag. " +
+            "Use instructions for option 2. Test was created for manual verification."
+    )
+    public void manual_shouldReportThatZipContainsSignatureWithCertificationFileAndPackageIsValid() throws Exception {
 
         // given
         configureTestCase(testCase, "pnf/r787965/signature-and-certificate.zip", "vtp-validate-csar-r787965.yaml", IS_PNF);
@@ -71,12 +76,7 @@ public class VTPValidateCSARR787965IntegrationTest {
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(1);
-        assertThat(convertToMessagesList(errors)).contains(
-                "Warning. Zip package probably is valid. " +
-                        "It contains only signature with certification cms and csar package. " +
-                        "Unable to verify csar signature."
-        );
+        assertThat(errors.size()).isEqualTo(0);
     }
 
     @Test
@@ -97,7 +97,11 @@ public class VTPValidateCSARR787965IntegrationTest {
     }
 
     @Test
-    public void shouldDoNotReportAnyErrorWhenPackageHasValidSignature() throws Exception {
+    @Ignore("It is impossible to write test which will always pass, because certificate used to sign the file has time validity." +
+            "To verify signed package please please follow instructions from test/resources/README.txt file and comment @Ignore tag. " +
+            "Use instructions for option 2. Test was created for manual verification."
+    )
+    public void manual_shouldDoNotReportAnyErrorWhenPackageHasValidSignature() throws Exception {
 
         // given
         configureTestCase(testCase, "pnf/signed-package-valid-signature.zip", "vtp-validate-csar-r787965.yaml", IS_PNF);

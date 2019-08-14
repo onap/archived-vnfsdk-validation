@@ -18,6 +18,7 @@
 package org.onap.cvc.csar.cc.sol004;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.onap.cvc.csar.CSARArchive;
 
@@ -44,7 +45,11 @@ public class VTPValidateCSARR787966IntegrationTest {
     }
 
     @Test
-    public void shouldValidateProperCsar() throws Exception {
+    @Ignore("It is impossible to write test which will always pass, because certificate used to sign the file has time validity." +
+            "To verify signed package please please follow instructions from test/resources/README.txt file and comment @Ignore tag. " +
+            "Use instructions for option 1. Test was created for manual verification."
+    )
+    public void manual_shouldValidateProperCsar() throws Exception {
 
         // given
         configureTestCase(testCase, "pnf/r787966/csar-option1-valid.csar", "vtp-validate-csar-r787966.yaml", IS_PNF);
@@ -58,6 +63,23 @@ public class VTPValidateCSARR787966IntegrationTest {
     }
 
     @Test
+    public void shouldReportThatOnlySignatureIsInvalid() throws Exception {
+
+        // given
+        configureTestCase(testCase, "pnf/r787966/csar-option1-validSection.csar", "vtp-validate-csar-r787966.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors)).contains(
+                "File has invalid CMS signature!"
+        );
+    }
+
+    @Test
     public void shouldReportErrorsForInvalidCsar() throws Exception {
 
         // given
@@ -68,12 +90,13 @@ public class VTPValidateCSARR787966IntegrationTest {
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(4);
+        assertThat(errors.size()).isEqualTo(5);
         assertThat(convertToMessagesList(errors)).contains(
                 "Unable to find CMS section in manifest!",
                 "Source 'Definitions/MainServiceTemplate.yaml' has wrong hash!",
                 "Source 'Artifacts/Other/my_script.csh' has hash, but unable to find algorithm tag!",
-                "Source 'Artifacts/NonExisting.txt' does not exist!"
+                "Source 'Artifacts/NonExisting.txt' does not exist!",
+                "File has invalid CMS signature!"
         );
     }
 

@@ -23,18 +23,24 @@ import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.FileArchive;
 import org.onap.cvc.csar.cc.VTPValidateCSARBase;
+import org.onap.cvc.csar.parser.ManifestFileModel;
+import org.onap.cvc.csar.parser.ManifestFileSplitter;
 import org.onap.cvc.csar.parser.SourcesParser;
+import org.onap.cvc.csar.security.CmsSignatureValidator;
+import org.onap.cvc.csar.security.CmsSignatureValidatorException;
 import org.onap.cvc.csar.security.ShaHashCodeGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @OnapCommandSchema(schema = "vtp-validate-csar-r787966.yaml")
 public class VTPValidateCSARR787966 extends VTPValidateCSARBase {
@@ -44,6 +50,7 @@ public class VTPValidateCSARR787966 extends VTPValidateCSARBase {
     private static final String SHA_512 = "SHA-512";
 
     private final ShaHashCodeGenerator shaHashCodeGenerator = new ShaHashCodeGenerator();
+    private final ManifestFileSignatureValidator manifestFileSignatureValidator = new ManifestFileSignatureValidator();
 
 
     public static class CSARErrorUnableToFindCertificate extends CSARArchive.CSARError {
@@ -88,13 +95,20 @@ public class VTPValidateCSARR787966 extends VTPValidateCSARBase {
         }
     }
 
+    public static class CSARErrorInvalidSignature extends CSARArchive.CSARError {
+        CSARErrorInvalidSignature() {
+            super("0x4007");
+            this.message = "File has invalid CMS signature!";
+        }
+    }
+
     @Override
     protected void validateCSAR(CSARArchive csar) throws OnapCommandException {
 
         try {
             FileArchive.Workspace workspace = csar.getWorkspace();
             final Optional<Path> pathToCsarFolder = workspace.getPathToCsarFolder();
-            if(pathToCsarFolder.isPresent()) {
+            if (pathToCsarFolder.isPresent()) {
                 validate(csar, pathToCsarFolder.get());
             } else {
                 this.errors.add(new CSARErrorUnableToFindCsarContent());
@@ -106,15 +120,27 @@ public class VTPValidateCSARR787966 extends VTPValidateCSARBase {
 
     }
 
-    private void validate(CSARArchive csar, Path csarRootDirectory ) throws IOException, NoSuchAlgorithmException {
-
+    private void validate(CSARArchive csar, Path csarRootDirectory) throws IOException, NoSuchAlgorithmException {
         final CSARArchive.Manifest manifest = csar.getManifest();
         final CSARArchive.TOSCAMeta toscaMeta = csar.getToscaMeta();
+
         validateSecurityStructure(toscaMeta, csarRootDirectory, manifest);
         validateSources(csarRootDirectory, manifest);
+
+        final File manifestMfFile = csar.getManifestMfFile();
+        if (manifestMfFile != null) {
+            validateFileSignature(manifestMfFile);
+        }
     }
 
-    private void validateSecurityStructure(CSARArchive.TOSCAMeta toscaMeta , Path csarRootDirectory, CSARArchive.Manifest manifest) {
+    private void validateFileSignature(File manifestMfFile) {
+        final boolean isValid = this.manifestFileSignatureValidator.isValid(manifestMfFile);
+        if (!isValid) {
+            this.errors.add(new CSARErrorInvalidSignature());
+        }
+    }
+
+    private void validateSecurityStructure(CSARArchive.TOSCAMeta toscaMeta, Path csarRootDirectory, CSARArchive.Manifest manifest) {
         final Optional<File> entryCertificate = resolveCertificateFilePath(toscaMeta, csarRootDirectory);
         if (!entryCertificate.isPresent() || !entryCertificate.get().exists() && !manifest.getCms().isEmpty()) {
             this.errors.add(new CSARErrorUnableToFindCertificate());
@@ -125,7 +151,7 @@ public class VTPValidateCSARR787966 extends VTPValidateCSARBase {
 
     private Optional<File> resolveCertificateFilePath(CSARArchive.TOSCAMeta toscaMeta, Path csarRootDirectory) {
         final String certificatePath = toscaMeta.getEntryCertificate();
-        if(certificatePath == null){
+        if (certificatePath == null) {
             return Optional.empty();
         } else {
             return Optional.of(csarRootDirectory.resolve(certificatePath).toFile());
@@ -134,9 +160,9 @@ public class VTPValidateCSARR787966 extends VTPValidateCSARBase {
 
     private void validateSources(Path csarRootDirectory, CSARArchive.Manifest manifest) throws NoSuchAlgorithmException, IOException {
         final List<SourcesParser.Source> sources = manifest.getSources();
-        for (SourcesParser.Source source: sources){
+        for (SourcesParser.Source source : sources) {
             final Path sourcePath = csarRootDirectory.resolve(source.getValue());
-            if(!Files.exists(sourcePath)){
+            if (!sourcePath.toFile().exists()) {
                 this.errors.add(new CSARErrorUnableToFindSource(source.getValue()));
             } else {
                 if (!source.getAlgorithm().isEmpty()) {
@@ -159,9 +185,9 @@ public class VTPValidateCSARR787966 extends VTPValidateCSARBase {
         final byte[] sourceData = Files.readAllBytes(csarRootDirectory.resolve(source.getValue()));
         final String algorithm = source.getAlgorithm();
 
-        if(algorithm.equalsIgnoreCase(SHA_256)) {
+        if (algorithm.equalsIgnoreCase(SHA_256)) {
             return this.shaHashCodeGenerator.generateSha256(sourceData);
-        } else if(algorithm.equalsIgnoreCase(SHA_512)){
+        } else if (algorithm.equalsIgnoreCase(SHA_512)) {
             return this.shaHashCodeGenerator.generateSha512(sourceData);
         }
 
@@ -174,4 +200,25 @@ public class VTPValidateCSARR787966 extends VTPValidateCSARBase {
     }
 
 
+}
+
+class ManifestFileSignatureValidator {
+    private static final Logger LOG = LoggerFactory.getLogger(ManifestFileSignatureValidator.class);
+    private final ManifestFileSplitter manifestFileSplitter = new ManifestFileSplitter();
+    private final CmsSignatureValidator cmsSignatureValidator = new CmsSignatureValidator();
+
+    boolean isValid(File manifestFile) {
+        try {
+            ManifestFileModel mf = manifestFileSplitter.split(manifestFile);
+            return cmsSignatureValidator.verifySignedData(toBytes(mf.getCMS()), Optional.empty(), toBytes(mf.getData()));
+        } catch (CmsSignatureValidatorException e) {
+            LOG.error("Unable to verify signed data!", e);
+            return false;
+        }
+    }
+
+    private byte[] toBytes(List<String> data) {
+        final String updatedData = data.stream().map(it -> it + "\r\n").collect(Collectors.joining());
+        return updatedData.getBytes(Charset.defaultCharset());
+    }
 }
