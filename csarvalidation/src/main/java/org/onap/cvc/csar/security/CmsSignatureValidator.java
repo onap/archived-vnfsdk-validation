@@ -18,6 +18,7 @@
 package org.onap.cvc.csar.security;
 
 import org.bouncycastle.asn1.cms.ContentInfo;
+import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cms.CMSException;
 import org.bouncycastle.cms.CMSProcessableByteArray;
 import org.bouncycastle.cms.CMSSignedData;
@@ -27,6 +28,7 @@ import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.operator.OperatorCreationException;
+import org.bouncycastle.util.Store;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,23 +36,35 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
+import java.util.Optional;
 
 public class CmsSignatureValidator {
 
     private static final Logger LOG = LoggerFactory.getLogger(CmsSignatureValidator.class);
 
     public boolean verifySignedData(
-            final byte[] signature,
-            final byte[] certificate,
-            final byte[] csarFileContent) throws CmsSignatureValidatorException {
+            final byte[] cmsSignature,
+            final Optional<byte[]> certificate,
+            final byte[] fileContent) throws CmsSignatureValidatorException {
 
-        try (ByteArrayInputStream signatureStream = new ByteArrayInputStream(signature)) {
-            SignerInformation firstSigner = getSignerInformation(csarFileContent, signatureStream);
-            X509Certificate cert = loadCertificate(certificate);
+        try (ByteArrayInputStream cmsSignatureStream = new ByteArrayInputStream(cmsSignature)) {
+            CMSSignedData signedData = getCMSSignedData(fileContent, cmsSignatureStream);
+            Collection<SignerInformation> signers = signedData.getSignerInfos().getSigners();
+            SignerInformation firstSigner = signers.iterator().next();
+
+            Store certificates = signedData.getCertificates();
+            X509Certificate cert;
+            if (!certificate.isPresent()) {
+                X509CertificateHolder firstSignerFirstCertificate = getX509CertificateHolder(firstSigner, certificates);
+                cert = loadCertificate(firstSignerFirstCertificate.getEncoded());
+            } else {
+                cert = loadCertificate(certificate.get());
+            }
 
             return firstSigner.verify(new JcaSimpleSignerInfoVerifierBuilder().build(cert));
         } catch (CMSSignerDigestMismatchException e){
@@ -63,17 +77,22 @@ public class CmsSignatureValidator {
         }
     }
 
-    private SignerInformation getSignerInformation(byte[] innerPackageFileCSAR, ByteArrayInputStream signatureStream) throws IOException, CmsSignatureValidatorException, CMSException {
+    private X509CertificateHolder getX509CertificateHolder(SignerInformation firstSigner, Store certificates) throws CmsSignatureValidatorException {
+        Collection<X509CertificateHolder> firstSignerCertificates = certificates.getMatches(firstSigner.getSID());
+        if(!firstSignerCertificates.iterator().hasNext()){
+            throw new CmsSignatureValidatorException("No certificate found in cms signature that should contain one!");
+        }
+        return firstSignerCertificates.iterator().next();
+    }
+
+    private CMSSignedData getCMSSignedData(byte[] innerPackageFileCSAR, ByteArrayInputStream signatureStream) throws IOException, CmsSignatureValidatorException, CMSException {
         ContentInfo signature = produceSignature(signatureStream);
         CMSTypedData signedContent = new CMSProcessableByteArray(innerPackageFileCSAR);
-        CMSSignedData signedData = new CMSSignedData(signedContent, signature);
-
-        Collection<SignerInformation> signers = signedData.getSignerInfos().getSigners();
-        return signers.iterator().next();
+        return new CMSSignedData(signedContent, signature);
     }
 
     private ContentInfo produceSignature(ByteArrayInputStream signatureStream) throws IOException, CmsSignatureValidatorException {
-        Object parsedObject = new PEMParser(new InputStreamReader(signatureStream)).readObject();
+        Object parsedObject = new PEMParser(new InputStreamReader(signatureStream, Charset.defaultCharset())).readObject();
         if (!(parsedObject instanceof ContentInfo)) {
             throw new CmsSignatureValidatorException("Signature is not recognized!");
         }

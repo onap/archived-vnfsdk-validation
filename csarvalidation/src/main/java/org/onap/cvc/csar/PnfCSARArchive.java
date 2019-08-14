@@ -66,4 +66,9 @@ public class PnfCSARArchive extends CSARArchive {
     String getEntryChangeLogParamName() {
         return "ETSI-Entry-Change-Log";
     }
+
+    @Override
+    public String getEntryCertificateParamName() {
+        return "ETSI-Entry-Certificate";
+    }
 }
