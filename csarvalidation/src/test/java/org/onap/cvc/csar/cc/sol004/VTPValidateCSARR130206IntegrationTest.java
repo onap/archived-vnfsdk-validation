@@ -18,6 +18,7 @@
 package org.onap.cvc.csar.cc.sol004;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.onap.cvc.csar.CSARArchive;
 
@@ -28,26 +29,30 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.configureTestCase
 import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessagesList;
 
 
-public class VTPValidateCSARR787966IntegrationTest {
+public class VTPValidateCSARR130206IntegrationTest {
 
     private static final boolean IS_PNF = true;
-    private VTPValidateCSARR787966 testCase;
+    private VTPValidateCSARR130206 testCase;
 
     @Before
     public void setUp() {
-        testCase = new VTPValidateCSARR787966();
+        testCase = new VTPValidateCSARR130206();
     }
 
     @Test
     public void shouldReturnProperRequestNumber() {
-        assertThat(testCase.getVnfReqsNo()).isEqualTo("R787966");
+        assertThat(testCase.getVnfReqsNo()).isEqualTo("R130206");
     }
 
     @Test
-    public void shouldValidateProperCsar() throws Exception {
+    @Ignore("It is impossible to write test which will always pass, because certificate used to sign the file has time validity." +
+            "To verify signed package please please follow instructions from test/resources/README.txt file and comment @Ignore tag. " +
+            "Use instructions for option 1. Test was created for manual verification."
+    )
+    public void manual_shouldValidateProperCsar() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/r787966/csar-option1-valid.csar", "vtp-validate-csar-r787966.yaml", IS_PNF);
+        configureTestCase(testCase, "pnf/r130206/csar-option1-valid.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -58,22 +63,40 @@ public class VTPValidateCSARR787966IntegrationTest {
     }
 
     @Test
-    public void shouldReportErrorsForInvalidCsar() throws Exception {
+    public void shouldReportThatOnlySignatureIsInvalid() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/r787966/csar-option1-invalid.csar", "vtp-validate-csar-r787966.yaml", IS_PNF);
+        configureTestCase(testCase, "pnf/r130206/csar-option1-validSection.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
 
         // when
         testCase.execute();
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(4);
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors)).contains(
+                "File has invalid CMS signature!"
+        );
+    }
+
+    @Test
+    public void shouldReportErrorsForInvalidCsar() throws Exception {
+
+        // given
+        configureTestCase(testCase, "pnf/r130206/csar-option1-invalid.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(5);
         assertThat(convertToMessagesList(errors)).contains(
                 "Unable to find CMS section in manifest!",
                 "Source 'Definitions/MainServiceTemplate.yaml' has wrong hash!",
                 "Source 'Artifacts/Other/my_script.csh' has hash, but unable to find algorithm tag!",
-                "Source 'Artifacts/NonExisting.txt' does not exist!"
+                "Unable to calculate digest - file missing: Artifacts/NonExisting2.txt",
+                "File has invalid CMS signature!"
         );
     }
 
@@ -82,7 +105,7 @@ public class VTPValidateCSARR787966IntegrationTest {
     public void shouldReportThanInVnfPackageCertFileWasNotDefined() throws Exception {
 
         // given
-        configureTestCase(testCase, "sample2.csar", "vtp-validate-csar-r787966.yaml", false);
+        configureTestCase(testCase, "sample2.csar", "vtp-validate-csar-r130206.yaml", false);
 
         // when
         testCase.execute();
@@ -91,6 +114,7 @@ public class VTPValidateCSARR787966IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(convertToMessagesList(errors)).contains(
                 "Unable to find cert file defined by Entry-Certificate!",
+                "Unable to find CMS section in manifest!",
                 "Missing. Entry [tosca_definitions_version]"
         );
     }
