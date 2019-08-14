@@ -109,7 +109,7 @@ public class VTPValidateCSARR787965 extends VTPValidateCSARBase {
         byte[] signature = Files.readAllBytes(pathToCmsFile);
         byte[] publicCertification = Files.readAllBytes(pathToCertFile);
 
-        if (!securityManager.verifySignedData(signature, publicCertification,csarContent)) {
+        if (!securityManager.verifySignedData(signature, Optional.of(publicCertification) ,csarContent)) {
             this.errors.add(new CSARErrorInvalidSignature());
         }
     }
