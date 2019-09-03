@@ -29,13 +29,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.google.gson.Gson;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.onap.cvc.csar.parser.SourcesParser;
 import org.yaml.snakeyaml.Yaml;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Verify the CSAR package by following the SOL004 specifications and ONAP VNFREQS for TOSCA.
@@ -160,12 +158,8 @@ public class CSARArchive implements AutoCloseable {
         }
 
         public String toString() {
-            try {
-                return new ObjectMapper().writeValueAsString(this);
-            } catch (JsonProcessingException e) {
-                //never occurs
-                return "{}";
-            }
+            Gson gson = new Gson();
+                return gson.toJson(this);
         }
     }
 
