@@ -56,12 +56,12 @@ public class VTPValidateCSARR09467 extends VTPValidateCSARBase {
                 Map<String, ?> node = (Map<String, ?>) nodeO;
                 if (node.containsKey("type")) {
                     String type = (String)node.get("type");
-                    if (type.equalsIgnoreCase("tosca.nodes.nfv.VDU.Compute")) {
+                    if ("tosca.nodes.nfv.VDU.Compute".equalsIgnoreCase(type)) {
                         computeExist = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.nodes.nfv.VDU.VirtualStorage")) {
+                    if ("tosca.nodes.nfv.VDU.VirtualStorage".equalsIgnoreCase(type)) {
                         storageExist = true;
 
                     }

@@ -26,171 +26,172 @@ import java.util.Map;
 
 @OnapCommandSchema(schema = "vtp-validate-csar-r54356.yaml")
 public class VTPValidateCSARR54356 extends VTPValidateCSARBase {
+    private static final String SET_CODE = "0x1000";
     public static class CSARErrorEntryMissingDefinitionYamldatatypesL3AddressData extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesL3AddressData(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesAddressData extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesAddressData(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVirtualNetworkInterfaceRequirements extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVirtualNetworkInterfaceRequirements(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesConnectivityType extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesConnectivityType(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesRequestedAdditionalCapability extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesRequestedAdditionalCapability(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVirtualMemory extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVirtualMemory(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVirtualCpu extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVirtualCpu(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVirtualCpuPinning extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVirtualCpuPinning(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVnfcConfigurableProperties extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVnfcConfigurableProperties(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVduProfile extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVduProfile(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVlProfile extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVlProfile(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesInstantiationLevel extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesInstantiationLevel(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVduLevel extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVduLevel(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesScaleInfo extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesScaleInfo(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesinjectFile extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesinjectFile(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesScalingAspect extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesScalingAspect(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesLinkBitRateRequirements extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesLinkBitRateRequirements(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesQos extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesQos(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesCpProtocolData extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesCpProtocolData(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVnfConfigurableProperties extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVnfConfigurableProperties(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVnfAdditionalConfigurableProperties extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVnfAdditionalConfigurableProperties(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVnfInfoModifiableAttributes extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVnfInfoModifiableAttributes(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVnfInfoModifiableAttributesExtensions extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVnfInfoModifiableAttributesExtensions(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamldatatypesVnfInfoModifiableAttributesMetadata extends CSARArchive.CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamldatatypesVnfInfoModifiableAttributesMetadata(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode( SET_CODE);
         }
     }
 
@@ -201,125 +202,125 @@ public class VTPValidateCSARR54356 extends VTPValidateCSARBase {
             yaml = (Map<String, ?>) yaml.get("topology_template");
             Map<String, ?> nodeTmpls = (Map<String, ?>) yaml.get("node_templates");
 
-            boolean vlExist[] = new boolean[30];
+            boolean []vlExist = new boolean[30];
 
             for (Object nodeO : nodeTmpls.values()) {
                 Map<String, ?> node = (Map<String, ?>) nodeO;
                 if (node.containsKey("type")) {
                     String type = (String) node.get("type");
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.L3AddressData")) {
+                    if ("tosca.datatypes.nfv.L3AddressData".equalsIgnoreCase(type)) {
                         vlExist[0] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.AddressData")) {
+                    if ("tosca.datatypes.nfv.AddressData".equalsIgnoreCase(type)) {
                         vlExist[1] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VirtualNetworkInterfaceRequirements")) {
+                    if ("tosca.datatypes.nfv.VirtualNetworkInterfaceRequirements".equalsIgnoreCase(type)) {
                         vlExist[2] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.ConnectivityType")) {
+                    if ("tosca.datatypes.nfv.ConnectivityType".equalsIgnoreCase(type)) {
                         vlExist[3] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.RequestedAdditionalCapability")) {
+                    if ("tosca.datatypes.nfv.RequestedAdditionalCapability".equalsIgnoreCase(type)) {
                         vlExist[4] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VirtualMemory")) {
+                    if ("tosca.datatypes.nfv.VirtualMemory".equalsIgnoreCase(type)) {
                         vlExist[5] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VirtualCpu")) {
+                    if ("tosca.datatypes.nfv.VirtualCpu".equalsIgnoreCase(type)) {
                         vlExist[6] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VirtualCpuPinning")) {
+                    if ("tosca.datatypes.nfv.VirtualCpuPinning".equalsIgnoreCase(type)) {
                         vlExist[7] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VnfcConfigurableProperties")) {
+                    if ("tosca.datatypes.nfv.VnfcConfigurableProperties".equalsIgnoreCase(type)) {
                         vlExist[8] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VduProfile")) {
+                    if ("tosca.datatypes.nfv.VduProfile".equalsIgnoreCase(type)) {
                         vlExist[9] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VlProfile")) {
+                    if ("tosca.datatypes.nfv.VlProfile".equalsIgnoreCase(type)) {
                         vlExist[10] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.InstantiationLevel")) {
+                    if ("tosca.datatypes.nfv.InstantiationLevel".equalsIgnoreCase(type)) {
                         vlExist[11] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VduLevel")) {
+                    if ("tosca.datatypes.nfv.VduLevel".equalsIgnoreCase(type)) {
                         vlExist[12] = true;
 
                     }
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.ScaleInfo")) {
+                    if ("tosca.datatypes.nfv.ScaleInfo".equalsIgnoreCase(type)) {
                         vlExist[13] = true;
 
                     }
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.injectFile")) {
+                    if ("tosca.datatypes.nfv.injectFile".equalsIgnoreCase(type)) {
                         vlExist[14] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.ScalingAspect")) {
+                    if ("tosca.datatypes.nfv.ScalingAspect".equalsIgnoreCase(type)) {
                         vlExist[15] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.LinkBitRateRequirements")) {
+                    if ("tosca.datatypes.nfv.LinkBitRateRequirements".equalsIgnoreCase(type)) {
                         vlExist[16] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.Qos")) {
+                    if ("tosca.datatypes.nfv.Qos".equalsIgnoreCase(type)) {
                         vlExist[17] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.CpProtocolData")) {
+                    if ("tosca.datatypes.nfv.CpProtocolData".equalsIgnoreCase(type)) {
                         vlExist[18] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VnfConfigurableProperties")) {
+                    if ("tosca.datatypes.nfv.VnfConfigurableProperties".equalsIgnoreCase(type)) {
                         vlExist[19] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VnfAdditionalConfigurableProperties")) {
+                    if ("tosca.datatypes.nfv.VnfAdditionalConfigurableProperties".equalsIgnoreCase(type)) {
                         vlExist[20] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VnfInfoModifiableAttributes")) {
+                    if ("tosca.datatypes.nfv.VnfInfoModifiableAttributes".equalsIgnoreCase(type)) {
                         vlExist[21] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VnfInfoModifiableAttributesExtensions")) {
+                    if ("tosca.datatypes.nfv.VnfInfoModifiableAttributesExtensions".equalsIgnoreCase(type)) {
                         vlExist[22] = true;
 
                     }
-                    if (type.equalsIgnoreCase("tosca.datatypes.nfv.VnfInfoModifiableAttributesMetadata")) {
+                    if ("tosca.datatypes.nfv.VnfInfoModifiableAttributesMetadata".equalsIgnoreCase(type)) {
                         vlExist[23] = true;
 
                     }

@@ -46,13 +46,13 @@ public class CsarValidator {
     private static final Logger LOG = LoggerFactory.getLogger(CsarValidator.class);
 
     // Schema files
-    static private ValidatorSchemaLoader vsl;
+    private static ValidatorSchemaLoader vsl;
 
     // Map of CSAR file and un-zipped file indices
-    static private HashMap<String, String> csarFiles;
+    private static HashMap<String, String> csarFiles;
 
     // Map of packageId and CSAR files
-    private static HashMap<String, HashMap<String, String>> csar = new HashMap<String, HashMap<String, String>>();
+    private static HashMap<String, HashMap<String, String>> csar = new HashMap<>();
 
     private static String MAINSERV_TEMPLATE = CommonConstants.MAINSERV_TEMPLATE;
 
@@ -170,7 +170,7 @@ public class CsarValidator {
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String tempString = null;
                 while((tempString = reader.readLine()) != null) {
-                    if(!tempString.equals("")) {
+                    if(!"".equals(tempString)) {
                         int count1 = tempString.indexOf(":");
                         String meta = tempString.substring(0, count1).trim();
                         if(meta.equalsIgnoreCase(CommonConstants.CSAR_TYPE_META)) {
@@ -285,7 +285,6 @@ public class CsarValidator {
         // Rel-2 SOL004 requirement
         if(StringUtils.isEmpty(mainServManifest)) {
             // Do nothing for Rel-1
-            // return false;
         }
 
         String mainservTemplate = MAINSERV_TEMPLATE;
@@ -392,10 +391,7 @@ public class CsarValidator {
         List<? super String> lResult =
                 subValues.keySet().stream().filter(attributes::contains).collect(Collectors.toList());
 
-        if(lResult.size() == 0) {
-            return false;
-        }
-        return true;
+        return !lResult.isEmpty();
     }
 
     /**

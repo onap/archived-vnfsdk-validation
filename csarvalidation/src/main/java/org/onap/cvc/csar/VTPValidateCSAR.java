@@ -291,7 +291,9 @@ public class VTPValidateCSAR extends OnapCommand {
         String[] enabledReqs = properties.getProperty(key, "").split(",");
         List<String> list = new ArrayList<>();
         for(String req: enabledReqs) {
-            if (!req.isEmpty()) list.add(req);
+            if (!req.isEmpty()) {
+                list.add(req);
+            }
         }
         return list;
     }
