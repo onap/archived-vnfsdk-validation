@@ -1093,7 +1093,7 @@ public class CSARArchive implements AutoCloseable {
                                     this.toscaMeta.getEntryLicense(),
                                     lineNo));
                         }
-                } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_ENTRY_CERTIFICATE)) {
+                } else if(key.equalsIgnoreCase(getEntryCertificateParamName())) {
                         this.toscaMeta.setEntryCertificate(value);
                         this.certificatesFile= this.tempDir.resolve(this.toscaMeta.getEntryCertificate()).toFile();
                         if (!this.certificatesFile.exists()) {
@@ -1245,6 +1245,10 @@ public class CSARArchive implements AutoCloseable {
                 }
             }
         }
+    }
+
+    public String getEntryCertificateParamName() {
+        return TOSCA_METADATA_TOSCA_META_ENTRY_CERTIFICATE;
     }
 
     String getEntryManifestParamName(){
