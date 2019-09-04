@@ -16,26 +16,17 @@
 
 package org.onap.validation.csar;
 
-import org.apache.commons.io.FileSystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.*;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Stream;
-
-import org.apache.commons.io.FilenameUtils;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.scanner.ScannerException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
 
 public class ValidatorSchemaLoader {
+
+    private static final String FILE_NAME = "/schema/";
 
     private static final Logger LOG = LoggerFactory.getLogger(ValidatorSchemaLoader.class);
 
@@ -49,16 +40,16 @@ public class ValidatorSchemaLoader {
     private Map<String, ?> mrfManifest;
 
     // List of configured schemas
-    static List<String> schemaFileList = new ArrayList<String>();
+    static List<String> schemaFileList = new ArrayList<>();
 
     // SOL004 rule files
     static HashMap<String, String> optionOneSchema;
 
     static HashMap<String, String> optionTwoSchema;
 
-    private String schema_folder;
+    private String schemaFolder;
 
-    public ValidatorSchemaLoader() throws NullPointerException, FileNotFoundException, ScannerException, IOException {
+    public ValidatorSchemaLoader() {
 
         try {
             loadResources();
@@ -67,7 +58,7 @@ public class ValidatorSchemaLoader {
 
         } catch(URISyntaxException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error("Illegal character in query at index", e);
         }
     }
 
@@ -81,16 +72,16 @@ public class ValidatorSchemaLoader {
         for (String metaFile: new String []{"TOSCA.meta", "CSAR.meta", "MRF.mf" }) {
             switch(metaFile) {
                 case "TOSCA.meta":
-                     toscaMeta = this.readYaml("/schema/" + metaFile);
+                     toscaMeta = this.readYaml(FILE_NAME + metaFile);
                     break;
                 case "CSAR.meta":
-                    csarentryd = this.readYaml("/schema/" + metaFile);
+                    csarentryd = this.readYaml(FILE_NAME + metaFile);
                     break;
                 case "MRF.yaml":
-                    mrfYaml = this.readYaml("/schema/" + metaFile);
+                    mrfYaml = this.readYaml(FILE_NAME + metaFile);
                     break;
-                case "MRF.mf":
-                    mrfManifest = this.readYaml("/schema/" + metaFile);
+                default:
+                    mrfManifest = this.readYaml(FILE_NAME + metaFile);
                     break;
             }
         }

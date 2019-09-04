@@ -49,18 +49,18 @@ public class VTPValidateCSARR95321 extends VTPValidateCSARBase {
             yaml = (Map<String, ?>) yaml.get("topology_template");
             Map<String, ?> nodeTmpls = (Map<String, ?>) yaml.get("node_templates");
 
-            boolean vlExist[] = new boolean[2];
+            boolean []vlExist = new boolean[2];
 
             for (Object nodeO : nodeTmpls.values()) {
                 Map<String, ?> node = (Map<String, ?>) nodeO;
                 if (node.containsKey("type")) {
                     String type = (String) node.get("type");
-                    if (type.equalsIgnoreCase("tosca.relationships.nfv.VirtualBindsTo")) {
+                    if ("tosca.relationships.nfv.VirtualBindsTo".equalsIgnoreCase(type)) {
                         vlExist[0] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.relationships.nfv.VirtualLinksTo")) {
+                    if ("tosca.relationships.nfv.VirtualLinksTo".equalsIgnoreCase(type)) {
                         vlExist[1] = true;
 
                     }

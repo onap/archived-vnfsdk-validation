@@ -28,10 +28,12 @@ import org.yaml.snakeyaml.Yaml;
 @OnapCommandSchema(schema = "vtp-validate-csar-r35851.yaml")
 public class VTPValidateCSARR35851 extends VTPValidateCSARBase {
 
+    private static final String SET_CODE = "0x1000";
+
     public static class CSARErrorEntryMissingDefinitionYamlVnfVirtualLink extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamlVnfVirtualLink(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode(SET_CODE);
         }
     }
 
@@ -39,14 +41,14 @@ public class VTPValidateCSARR35851 extends VTPValidateCSARBase {
     public static class CSARErrorEntryMissingDefinitionYamlVduCp extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamlVduCp(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode(SET_CODE);
         }
     }
 
     public static class CSARErrorEntryMissingDefinitionYamlVnfExtCp extends CSARErrorEntryMissing {
         public CSARErrorEntryMissingDefinitionYamlVnfExtCp(String defYaml, String entry) {
             super(entry, defYaml);
-            this.setCode("0x1000");
+            this.setCode(SET_CODE);
         }
     }
 
@@ -63,17 +65,17 @@ public class VTPValidateCSARR35851 extends VTPValidateCSARBase {
                 Map<String, ?> node = (Map<String, ?>) nodeO;
                 if (node.containsKey("type")) {
                     String type = (String)node.get("type");
-                    if (type.equalsIgnoreCase("tosca.nodes.nfv.VnfVirtualLink")) {
+                    if ("tosca.nodes.nfv.VnfVirtualLink".equalsIgnoreCase(type)) {
                         vlExist[0] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.nodes.nfv.VduCp")) {
+                    if ("tosca.nodes.nfv.VduCp".equalsIgnoreCase(type)) {
                         vlExist[1] = true;
 
                     }
 
-                    if (type.equalsIgnoreCase("tosca.nodes.nfv.VnfExtCp")) {
+                    if ("tosca.nodes.nfv.VnfExtCp".equalsIgnoreCase(type)) {
                         vlExist[2] = true;
 
                     }

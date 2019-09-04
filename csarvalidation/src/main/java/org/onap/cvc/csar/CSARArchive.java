@@ -98,6 +98,8 @@ public class CSARArchive implements AutoCloseable {
 
     public static final String CSAR_ARCHIVE = "CSAR Archive";
 
+    public static final String DOESS_NOT_EXIST = " does not exist";
+
     public enum Mode {
         WITH_TOSCA_META_DIR,
         WITHOUT_TOSCA_META_DIR
@@ -348,7 +350,7 @@ public class CSARArchive implements AutoCloseable {
             super(TOSCA_METADATA_TOSCA_META_ENTRY_DEFINITIONS,
                     TOSCA_METADATA_TOSCA_META,
                     lineNo,
-                    definitionYaml + " does not exist",
+                    definitionYaml + DOESS_NOT_EXIST,
                     null);
 
             this.setCode("0x0006");
@@ -360,7 +362,7 @@ public class CSARArchive implements AutoCloseable {
             super(entryManifestArgumentName,
                     TOSCA_METADATA_TOSCA_META,
                     lineNo,
-                    manifest + " does not exist",
+                    manifest + DOESS_NOT_EXIST,
                     null);
 
             this.setCode("0x0007");
@@ -372,7 +374,7 @@ public class CSARArchive implements AutoCloseable {
             super(entryChangeLogArgumentName,
                     TOSCA_METADATA_TOSCA_META,
                     lineNo,
-                    logs + " does not exist",
+                    logs + DOESS_NOT_EXIST,
                     null);
 
             this.setCode("0x0008");
@@ -396,7 +398,7 @@ public class CSARArchive implements AutoCloseable {
             super(TOSCA_METADATA_TOSCA_META_ENTRY_LICENSES,
                     TOSCA_METADATA_TOSCA_META,
                     lineNo,
-                    license + " does not exist",
+                    license + DOESS_NOT_EXIST,
                     null);
 
             this.setCode("0x000a");
@@ -408,7 +410,7 @@ public class CSARArchive implements AutoCloseable {
             super(TOSCA_METADATA_TOSCA_META_ENTRY_CERTIFICATE,
                     TOSCA_METADATA_TOSCA_META,
                     lineNo,
-                    certificate + " does not exist",
+                    certificate + DOESS_NOT_EXIST,
                     null);
 
             this.setCode("0x000b");
@@ -661,6 +663,8 @@ public class CSARArchive implements AutoCloseable {
     public static class Definition {
         private String toscaDefinitionVersion;
 
+        private Definition.Metadata metadata = new Metadata();
+
         public String getToscaDefinitionVersion() {
             return toscaDefinitionVersion;
         }
@@ -700,8 +704,6 @@ public class CSARArchive implements AutoCloseable {
                 this.templateVersion = templateVersion;
             }
         }
-
-        private Definition.Metadata metadata = new Metadata();
 
         public Definition.Metadata getMetadata() {
             return metadata;
@@ -1024,9 +1026,7 @@ public class CSARArchive implements AutoCloseable {
                 lineNo ++;
                 line = line.trim();
 
-                if (line.startsWith("#")) {
-                    continue;
-                } else if (line.trim().isEmpty()) {
+                if (line.startsWith("#") || line.trim().isEmpty()) {
                     continue;
                 }
 
@@ -1131,13 +1131,7 @@ public class CSARArchive implements AutoCloseable {
 
         } else {
             //definition files
-            File []files = this.tempDir.toFile().listFiles(new FilenameFilter() {
-
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".yaml");
-                }
-            });
+            File []files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(".yaml"));
 
             if (files.length == 0) {
                 errors.add(
@@ -1154,13 +1148,7 @@ public class CSARArchive implements AutoCloseable {
                 this.toscaMeta.setEntryDefinitionYaml(this.definitionYamlFile.getName());
 
                 //manifest
-                files = this.tempDir.toFile().listFiles(new FilenameFilter() {
-
-                    @Override
-                    public boolean accept(File dir, String name) {
-                        return name.endsWith(".mf");
-                    }
-                });
+                files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(".mf"));
 
                 if (files.length > 1) {
                     List<String> fileNames = new ArrayList<>();
@@ -1187,13 +1175,7 @@ public class CSARArchive implements AutoCloseable {
                 }
 
                 //certificate
-                files = this.tempDir.toFile().listFiles(new FilenameFilter() {
-
-                    @Override
-                    public boolean accept(File dir, String name) {
-                        return name.endsWith(".cert");
-                    }
-                });
+                files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(".cert"));
 
                 if (files.length > 1) {
                     List<String> fileNames = new ArrayList<>();

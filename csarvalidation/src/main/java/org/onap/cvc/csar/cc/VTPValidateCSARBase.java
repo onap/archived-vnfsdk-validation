@@ -32,11 +32,13 @@ import java.util.List;
 public abstract class VTPValidateCSARBase extends OnapCommand {
     protected static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSARBase.class);
 
+    protected List<CSARError> errors = new ArrayList<>();
+
     protected abstract void validateCSAR(CSARArchive csar) throws Exception;
 
     protected abstract String getVnfReqsNo();
 
-    protected List<CSARError> errors = new ArrayList<>();
+
 
     @Override
     protected void run() throws OnapCommandException {

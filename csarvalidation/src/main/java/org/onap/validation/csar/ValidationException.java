@@ -21,21 +21,47 @@ import java.util.TreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 public class ValidationException extends RuntimeException {
+
+    private static final long serialVersionUID = 1L;
 	public static final Logger logger = LoggerFactory.getLogger(ValidationException.class);
 	private String errorMessage;
+    private ErrorCodes errorCode;
+    private final transient Map<String,Object> properties = new TreeMap<>();
+
     public  ValidationException(){
         super();
     }
 
-    
+    public static ValidationException wrappedInfo(Throwable exception) {
+        return wrappedInfo(exception, null);
+    }
+
     public ValidationException(ErrorCodes errCode, String message) {
         super(message);
+    }
+
+    public ValidationException(ErrorCodes fileIo) {
+        this.errorCode = fileIo;
+    }
+
+    public ValidationException(String message, ErrorCodes errorCode) {
+        super(message);
+        this.errorCode = errorCode;
+    }
+
+    public ValidationException(Throwable cause, ErrorCodes errorCode) {
+        super(cause);
+        this.errorCode = errorCode;
+    }
+
+    public ValidationException(String message, Throwable cause, ErrorCodes errorCode) {
+        super(message, cause);
+        this.errorCode = errorCode;
     }
     
     public String toString(){
         return ("Exception Number =  "+errorMessage) ;
     }
-    private static final long serialVersionUID = 1L;
 
     public static ValidationException wrappedInfo(Throwable exception, ErrorCodes errorCode) {
         if (exception instanceof ValidationException) {
@@ -49,31 +75,9 @@ public class ValidationException extends RuntimeException {
         }
     }
     
-    public static ValidationException wrappedInfo(Throwable exception) {
-    	return wrappedInfo(exception, null);
-    }
+
     
-    private ErrorCodes errorCode;
-    private final transient Map<String,Object> properties = new TreeMap<String,Object>();
-    
-    public ValidationException(ErrorCodes fileIo) {
-		this.errorCode = fileIo;
-	}
 
-	public ValidationException(String message, ErrorCodes errorCode) {
-		super(message);
-		this.errorCode = errorCode;
-	}
-
-	public ValidationException(Throwable cause, ErrorCodes errorCode) {
-		super(cause);
-		this.errorCode = errorCode;
-	}
-
-	public ValidationException(String message, Throwable cause, ErrorCodes errorCode) {
-		super(message, cause);
-		this.errorCode = errorCode;
-	}
 	
 	public ErrorCodes getErrorCode() {
         return errorCode;

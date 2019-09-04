@@ -17,9 +17,6 @@ package org.onap.validation.csar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
