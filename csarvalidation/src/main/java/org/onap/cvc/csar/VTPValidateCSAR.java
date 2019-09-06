@@ -240,6 +240,7 @@ public class VTPValidateCSAR extends OnapCommand {
                     result.setPassed(result.getErrors().isEmpty());
                     validation.getResults().add(result);
                 } catch (Exception e) {
+                    LOG.error(e.getMessage(), e);
                     result.setPassed(false);
                     overallPass = false;
                     result.getErrors().add(new CSARArchive.CSARErrorUnknown(e.getMessage()));

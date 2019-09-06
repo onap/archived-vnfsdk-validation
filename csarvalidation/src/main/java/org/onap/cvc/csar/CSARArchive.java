@@ -17,7 +17,6 @@ package org.onap.cvc.csar;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -29,9 +28,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.onap.cvc.csar.parser.SourcesParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,6 +46,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 public class CSARArchive implements AutoCloseable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CSARArchive.class);
+
+    private static final String CERT = ".certt";
 
     public static final String SOL0004_2_4_1 = "V2.4.1 (2018-02)";
 
@@ -165,7 +171,7 @@ public class CSARArchive implements AutoCloseable {
             try {
                 return new ObjectMapper().writeValueAsString(this);
             } catch (JsonProcessingException e) {
-                //never occurs
+                LOG.error(e.getMessage(), e);
                 return "{}";
             }
         }
@@ -528,7 +534,7 @@ public class CSARArchive implements AutoCloseable {
                     CSAR_ARCHIVE,
                     -1,
                     "certificate file name should match the definition YAML name",
-                    definitionYaml + ".cert", //fix the name part
+                    definitionYaml + CERT, //fix the name part
                     certificate);
 
             this.setCode("0x0015");
@@ -1175,7 +1181,7 @@ public class CSARArchive implements AutoCloseable {
                 }
 
                 //certificate
-                files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(".cert"));
+                files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(CERT));
 
                 if (files.length > 1) {
                     List<String> fileNames = new ArrayList<>();
@@ -1192,7 +1198,7 @@ public class CSARArchive implements AutoCloseable {
                     String defYaml = this.toscaMeta.getEntryDefinitionYaml().substring(
                             0, this.toscaMeta.getEntryDefinitionYaml().lastIndexOf(".yaml"));
                     String certFile = this.toscaMeta.getEntryCertificate().substring(
-                            0, this.toscaMeta.getEntryCertificate().lastIndexOf(".cert"));
+                            0, this.toscaMeta.getEntryCertificate().lastIndexOf(CERT));
 
                     if (!defYaml.equalsIgnoreCase(certFile)) {
                         errors.add(new CSARErrorMismatchDefinitionYamlVsCertificateCert(

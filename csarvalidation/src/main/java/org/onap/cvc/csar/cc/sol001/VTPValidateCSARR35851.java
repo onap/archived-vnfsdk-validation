@@ -59,7 +59,7 @@ public class VTPValidateCSARR35851 extends VTPValidateCSARBase {
             yaml = (Map<String, ?>) yaml.get("topology_template");
             Map<String, ?> nodeTmpls = (Map<String,?>) yaml.get("node_templates");
 
-            boolean vlExist[] = new boolean[3];
+            boolean []vlExist = new boolean[3];
 
             for (Object nodeO: nodeTmpls.values()) {
                 Map<String, ?> node = (Map<String, ?>) nodeO;

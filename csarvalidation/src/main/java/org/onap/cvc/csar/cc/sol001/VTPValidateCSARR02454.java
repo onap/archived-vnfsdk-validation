@@ -53,7 +53,7 @@ public class VTPValidateCSARR02454 extends VTPValidateCSARBase {
                 Map<String, ?> node = (Map<String, ?>) nodeO;
                 if (node.containsKey("type")) {
                     String type = (String)node.get("type");
-                    if (type.equalsIgnoreCase("tosca.artifacts.nfv.SwImage")) {
+                    if ("tosca.artifacts.nfv.SwImage".equalsIgnoreCase(type)) {
                         vlExist = true;
                         break;
                     }
