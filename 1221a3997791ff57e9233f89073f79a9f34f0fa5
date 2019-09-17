@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6c1e9e94_8802596b",
+        "filename": "csarvalidation/src/test/java/org/onap/cvc/csar/CSARArchiveTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2019-09-17T07:10:47Z",
+      "side": 1,
+      "message": "1. pls do not duplicate the code, rather that pls create method which can be reused in multiple scenarios\n2. make methods more descriptive, do not add numbers at the end of method\n3. Test should have at least one assert.",
+      "revId": "1221a3997791ff57e9233f89073f79a9f34f0fa5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
