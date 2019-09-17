@@ -38,7 +38,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -102,6 +104,13 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         }
     }
 
+    public static class CSARErrorContentMismatch extends CSARArchive.CSARError {
+        CSARErrorContentMismatch() {
+            super("0x4008");
+            this.message = "Mismatch between contents of non-mano-artifact-sets and source files of the package";
+        }
+    }
+
     @Override
     protected void validateCSAR(CSARArchive csar) throws OnapCommandException {
 
@@ -126,10 +135,35 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         validateSecurityStructure(csar, csarRootDirectory);
         validateSources(csarRootDirectory, manifest);
 
+        final Map<String, Map<String, List<String>>> nonMano = manifest.getNonMano();
+        final List<SourcesParser.Source> sources = manifest.getSources();
+
+        validateNonManoCohesionWithSources(nonMano, sources);
+
         final File manifestMfFile = csar.getManifestMfFile();
         if (manifestMfFile != null) {
             validateFileSignature(manifestMfFile);
         }
+    }
+
+    private void validateNonManoCohesionWithSources(final Map<String, Map<String, List<String>>> nonMano, final List<SourcesParser.Source> sources) {
+
+        final Collection<Map<String, List<String>>> values = nonMano.values();
+        final List<String> nonManoSourcePaths = values.stream()
+                .map(Map::values)
+                .flatMap(Collection::stream)
+                .flatMap(List::stream)
+                .filter(it -> !it.isEmpty())
+                .collect(Collectors.toList());
+
+        final List<String> sourcePaths = sources.stream()
+                .map(SourcesParser.Source::getValue)
+                .collect(Collectors.toList());
+
+        if(!sourcePaths.containsAll(nonManoSourcePaths)){
+            this.errors.add(new CSARErrorContentMismatch());
+        }
+
     }
 
     private void validateFileSignature(File manifestMfFile) {

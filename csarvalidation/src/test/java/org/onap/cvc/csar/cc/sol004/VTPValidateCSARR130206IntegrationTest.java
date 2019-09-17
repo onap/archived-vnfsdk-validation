@@ -73,9 +73,10 @@ public class VTPValidateCSARR130206IntegrationTest {
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(1);
+        assertThat(errors.size()).isEqualTo(2);
         assertThat(convertToMessagesList(errors)).contains(
-                "File has invalid CMS signature!"
+                "File has invalid CMS signature!",
+                "Mismatch between contents of non-mano-artifact-sets and source files of the package"
         );
     }
 
@@ -90,12 +91,13 @@ public class VTPValidateCSARR130206IntegrationTest {
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(5);
+        assertThat(errors.size()).isEqualTo(6);
         assertThat(convertToMessagesList(errors)).contains(
                 "Unable to find CMS section in manifest!",
                 "Source 'Definitions/MainServiceTemplate.yaml' has wrong hash!",
                 "Source 'Artifacts/Other/my_script.csh' has hash, but unable to find algorithm tag!",
                 "Unable to calculate digest - file missing: Artifacts/NonExisting2.txt",
+                "Mismatch between contents of non-mano-artifact-sets and source files of the package",
                 "File has invalid CMS signature!"
         );
     }
