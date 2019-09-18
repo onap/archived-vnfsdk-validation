@@ -15,27 +15,25 @@
  */
 package org.onap.cvc.csar;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.onap.cvc.csar.parser.SourcesParser;
+import org.onap.cvc.csar.parser.vnf.DefinitionMetadataParser;
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.tuple.Pair;
-import org.onap.cvc.csar.parser.SourcesParser;
-import org.yaml.snakeyaml.Yaml;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Verify the CSAR package by following the SOL004 specifications and ONAP VNFREQS for TOSCA.
@@ -83,11 +81,6 @@ public class CSARArchive implements AutoCloseable {
     public static final String ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_1 = "tosca_simple_yaml_1_1";
     public static final String ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_2 = "tosca_simple_yaml_1_2";
 
-    protected static final String[] Entry_Definition__tosca_definitions_versions = new String[] {
-            ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_0,
-            ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_1,
-            ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_2
-    };
     public static final String ENTRY_DEFINITION_METADATA = "metadata";
 
     public static final String ENTRY_DEFINITION_TEMPLATE_NAME = "template_name";
@@ -680,7 +673,7 @@ public class CSARArchive implements AutoCloseable {
 
             private String templateVersion;
 
-            public String getTempalteName() {
+            public String getTemplateName() {
                 return tempalteName;
             }
 
@@ -953,67 +946,14 @@ public class CSARArchive implements AutoCloseable {
         try(FileInputStream ipStream = new FileInputStream(this.definitionYamlFile)) {
             Map<String, ?> yaml = (Map<String, ?>) new Yaml().load(ipStream);
 
-            //yaml is empty or version string missing
-            if (yaml == null || !yaml.keySet().contains(ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION)) {
-                errors.add(
-                        new CSARErrorEntryMissingToscaDefinitionVersion(
-                                this.definitionYamlFile.getName()));
-            } else {
-                String version = (String) yaml.get(ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION);
-                if (!Arrays.asList(Entry_Definition__tosca_definitions_versions).contains(version)) {
-                    errors.add(new CSARErrorInvalidEntry(ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION,
-                            this.definitionYamlFile.getName(), -1, "Should be " + ENTRY_DEFINITION_TOSCA_DEFINITIONS_VERSION_SIMPLE_1_1));
-                } else {
-                    this.definition.setToscaDefinitionVersion(version);
-
-                    if (this.toscaMeta.getMode().equals(Mode.WITHOUT_TOSCA_META_DIR)) {
-                        //metadata section should be there
-                        if (!yaml.keySet().contains(ENTRY_DEFINITION_METADATA)) {
-                            errors.add(
-                                    new CSARErrorInvalidEntryValueToscaDefinitionVersion(
-                                            this.definitionYamlFile.getName()));
-                        } else {
-                            Map<String, String> metadata = (Map<String, String>) yaml.get(ENTRY_DEFINITION_METADATA);
-
-                            for(Map.Entry<String, String> entry: metadata.entrySet()) {
-                                String key = entry.getKey();
-                                String value = entry.getValue();
-
-                                //continue till it reaches the metadata section
-                                if (key.equalsIgnoreCase(ENTRY_DEFINITION_TEMPLATE_AUTHOR)) {
-                                    this.definition.getMetadata().setTemplateAuthor(value);
-                                } else if (key.equalsIgnoreCase(ENTRY_DEFINITION_TEMPLATE_NAME)) {
-                                    this.definition.getMetadata().setTempalteName(value);
-                                } else if (key.equalsIgnoreCase(ENTRY_DEFINITION_TEMPLATE_VERSION)) {
-                                    this.definition.getMetadata().setTemplateVersion(value);
-                                } else {
-                                    errors.add(
-                                            new CSARErrorIgnored(
-                                                    key,
-                                                    this.definitionYamlFile.getName(),
-                                                    -1,
-                                                    null));
-                                }
-                            }
-
-                            if (this.definition.getMetadata().getTemplateAuthor() == null) {
-                                this.errors.add(
-                                        new CSARErrorEntryMissingToscaDefinitionMetadataTemplateAuthor(
-                                        this.definitionYamlFile.getName()));
-                            }
-                            if (this.definition.getMetadata().getTempalteName() == null) {
-                                this.errors.add(new CSARErrorEntryMissingToscaDefinitionMetadataTemplateName(
-                                        this.definitionYamlFile.getName()));
-                            }
-
-                            if (this.definition.getMetadata().getTemplateVersion() == null) {
-                                this.errors.add(new CSARErrorEntryMissingToscaDefinitionMetadataTemplateVersion(
-                                        this.definitionYamlFile.getName()));
-                            }
-                        }
-                    }
-                }
-            }
+            DefinitionMetadataParser definitionMetadataParser = new DefinitionMetadataParser(
+                    yaml,
+                    this.definitionYamlFile.getName(),
+                    this.toscaMeta.getMode()
+            );
+            final Pair<Definition, List<CSARError>> data = definitionMetadataParser.parse();
+            this.definition = data.getLeft();
+            this.errors.addAll(data.getRight());
         }
     }
 
