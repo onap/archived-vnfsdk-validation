@@ -18,6 +18,9 @@
 package org.onap.cvc.csar.parser;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,6 +32,8 @@ import java.util.stream.Stream;
 
 public class ManifestFileSplitter {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ManifestFileSplitter.class);
+
     public ManifestFileModel split(File manifestFile) {
         String fileName = manifestFile.getAbsolutePath();
         List<String> data = new ArrayList<>();
@@ -39,6 +44,7 @@ public class ManifestFileSplitter {
             return createManifestFileModel(data, cms, lines);
 
         } catch (IOException e) {
+            LOG.error("Unable to process manifest file!", e);
             throw new IllegalArgumentException(String.format("Unable to process manifest file! Wrong file path: '%s'", fileName));
         }
     }
