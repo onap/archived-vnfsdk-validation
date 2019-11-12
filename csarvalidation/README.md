@@ -79,11 +79,11 @@ How to run CSAR validation
 --------------------------
 Follow the setups given below to run as csar-validate command
 
-1. Install OCLIP (wget https://raw.githubusercontent.com/onap/cli/master/deployment/zip/installer/install-latest.sh | sh)
+1. Install OCLIP (`wget -O - https://raw.githubusercontent.com/onap/cli/master/deployment/zip/installer/install-latest.sh | sh`)
 
-2. Run mvn clean install on this project, and copy the target/validation-csar-x.y.z.jar in to $OPEN_CLI_HOME/lib
+2. Run `mvn clean install` on this project, and copy the target/validation-csar-x.y.z.jar in to $OPEN_CLI_HOME/lib
 
-3. Run oclip --product onap-vtp csar-validate --csar <CSAR path>
+3. Run `oclip --product onap-vtp csar-validate --csar <CSAR path>`
 
 Contact
 -------
