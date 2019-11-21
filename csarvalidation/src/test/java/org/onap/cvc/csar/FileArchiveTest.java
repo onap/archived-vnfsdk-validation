@@ -66,4 +66,37 @@ public class FileArchiveTest {
         assertTrue(workspace.getPathToCmsFile().isPresent());
     }
 
+    @Test
+    public void shouldUnpackCsarNoDirectoryEntry() throws URISyntaxException, IOException {
+       /*
+        * We should be able to unpack the csar with the following simlary zip entries:
+        * $ unzip -l /tmp/output1.csar
+        * Archive:  /tmp/output1.csar
+        * Length      Date    Time    Name
+        * ---------  ---------- -----   ----
+        *         0  2019-11-01 14:29   ChangeLog.txt
+        *      1143  2019-11-01 14:29   test.crt
+        *       782  2019-11-01 14:29   test_entry.yaml
+        *         0  2019-11-01 14:29   Tests/test
+        *      1516  2019-11-12 09:52   test_entry.mf
+        *       237  2019-11-12 09:52   TOSCA-Metadata/TOSCA.meta
+        * ---------                     -------
+        *      3678                     7 files
+        */
+
+        // given
+        String absolutePath = folder.getRoot().getAbsolutePath();
+
+        // when
+        FileArchive.Workspace workspace = new FileArchive(absolutePath).unpack(absoluteFilePath("vnf/noDirectoryEntry.csar"));
+
+        // then
+        assertFalse(workspace.isZip());
+        assertTrue(workspace.getRootFolder().isPresent());
+        assertTrue(workspace.getPathToCsarFolder().isPresent());
+        assertFalse(workspace.getPathToCertFile().isPresent());
+        assertFalse(workspace.getPathToCmsFile().isPresent());
+    }
+
+
 }

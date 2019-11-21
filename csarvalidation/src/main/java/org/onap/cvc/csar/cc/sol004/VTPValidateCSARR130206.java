@@ -124,7 +124,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
             }
         } catch (Exception e) {
             LOG.error("Internal VTPValidateCSARR130206 command error", e);
-            throw new OnapCommandException("0x3000", "Internal VTPValidateCSARR787966 command error. See logs.");
+            throw new OnapCommandException("0x3000", "Internal VTPValidateCSARR130206 command error. See logs.");
         }
 
     }
