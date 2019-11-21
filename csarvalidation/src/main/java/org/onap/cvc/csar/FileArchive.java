@@ -122,6 +122,8 @@ public class FileArchive {
                 if(entry.isDirectory()){
                     filePath.mkdirs();
                 } else {
+                    //create directories for sub directories in zip
+                    new File(filePath.getParent()).mkdirs();
                     extract(zipInputStream, filePath);
                 }
             }
