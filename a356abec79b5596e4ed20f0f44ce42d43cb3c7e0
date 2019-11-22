@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0c22eeac_2eec8a1a",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/parser/ManifestFileModel.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2019-11-22T06:21:38Z",
+      "side": 1,
+      "message": "pls use constructor this(data, cms, \"\\n\");",
+      "revId": "a356abec79b5596e4ed20f0f44ce42d43cb3c7e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4653a8ab_c00b8fb0",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/parser/ManifestFileSplitter.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2019-11-22T06:21:38Z",
+      "side": 1,
+      "message": "please add private conctructor",
+      "revId": "a356abec79b5596e4ed20f0f44ce42d43cb3c7e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68521e73_90fae45e",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/parser/ManifestFileSplitter.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2019-11-22T06:21:38Z",
+      "side": 1,
+      "message": "Pls use try-catch autocloseable mechanism",
+      "revId": "a356abec79b5596e4ed20f0f44ce42d43cb3c7e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c783f373_9fb338d5",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/parser/ManifestFileSplitter.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2019-11-22T06:21:38Z",
+      "side": 1,
+      "message": "pls fix code formatting",
+      "revId": "a356abec79b5596e4ed20f0f44ce42d43cb3c7e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25811ba4_00ffbdf5",
+        "filename": "csarvalidation/src/test/java/org/onap/cvc/csar/parser/ManifestFileSplitterTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2019-11-22T06:21:38Z",
+      "side": 1,
+      "message": "pls use assertj assertion",
+      "revId": "a356abec79b5596e4ed20f0f44ce42d43cb3c7e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23b4dec0_1cbbdabe",
+        "filename": "csarvalidation/src/test/java/org/onap/cvc/csar/parser/ManifestFileSplitterTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2019-11-22T06:21:38Z",
+      "side": 1,
+      "message": "pls use assertj assertion",
+      "revId": "a356abec79b5596e4ed20f0f44ce42d43cb3c7e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
