@@ -1,0 +1,10 @@
+metadata:
+    pnfd_name: RadioNode
+    pnfd_provider: Ericsson
+    pnfd_archive_version: 1.0
+    pnfd_release_date_time: 2019-01-14T11:25:00+00:00
+
+-----BEGIN CMS-----
+MIIGDAYJKoZIhvcNAQcCoIIF/TCCBfkCAQExDTALBglghkgBZQMEAgEwCwYJKoZI
+hvcNAQcBoIIDRTCCA0EwggIpAhRJ6KO7OFR2BuRDZwcd2TT4/wrEqDANBgkqhkiG
+-----END CMS-----

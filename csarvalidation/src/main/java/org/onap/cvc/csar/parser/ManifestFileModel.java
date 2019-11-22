@@ -23,10 +23,18 @@ import java.util.List;
 public class ManifestFileModel {
     private final List<String> data;
     private final List<String> cms;
+    private final String newLine;
 
     public ManifestFileModel(List<String> data, List<String> cms) {
         this.data = data;
         this.cms = cms;
+        this.newLine = "\n";
+    }
+
+    public ManifestFileModel(List<String> data, List<String> cms, String newLine) {
+        this.data = data;
+        this.cms = cms;
+        this.newLine = newLine;
     }
 
     public List<String> getData() {
@@ -35,5 +43,9 @@ public class ManifestFileModel {
 
     public List<String> getCMS() {
         return Collections.unmodifiableList(cms);
+    }
+
+    public String getNewLine() {
+        return newLine;
     }
 }
