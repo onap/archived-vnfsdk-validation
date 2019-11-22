@@ -21,14 +21,59 @@ package org.onap.cvc.csar.parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+class FileFormat {
+    public enum FileType { WINDOWS, UNIX, MAC, UNKNOWN }
+
+    private static final char CR = '\r';
+    private static final char LF = '\n';
+
+    private FileFormat() {
+    }
+
+    public static FileType discover(String fileName) throws IOException {
+
+        try (Reader reader = new BufferedReader(new FileReader(fileName))) {
+            return discover(reader);
+        }
+    }
+
+    public static String getNewLine(String fileName) throws IOException {
+        switch(discover(fileName)) {
+            case WINDOWS: return String.valueOf(CR) + String.valueOf(LF);
+            case MAC: return String.valueOf(CR);
+            default: return String.valueOf(LF);
+        }
+    }
+
+    private static FileType discover(Reader reader) throws IOException {
+        int c;
+        while ((c = reader.read()) != -1) {
+            switch(c) {
+                case LF: return FileType.UNIX;
+                case CR: {
+                    if (reader.read() == LF)
+                        return FileType.WINDOWS;
+                    else
+                        return FileType.MAC;
+                }
+                default: continue;
+            }
+        }
+        return FileType.UNKNOWN;
+    }
+}
 
 public class ManifestFileSplitter {
 
@@ -41,7 +86,7 @@ public class ManifestFileSplitter {
 
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
             List<String> lines = stream.collect(Collectors.toList());
-            return createManifestFileModel(data, cms, lines);
+            return createManifestFileModel(data, cms, lines, FileFormat.getNewLine(fileName));
 
         } catch (IOException e) {
             LOG.error("Unable to process manifest file!", e);
@@ -49,7 +94,7 @@ public class ManifestFileSplitter {
         }
     }
 
-    private ManifestFileModel createManifestFileModel(List<String> data, List<String> cms, List<String> lines) {
+    private ManifestFileModel createManifestFileModel(List<String> data, List<String> cms, List<String> lines, String newLine) {
         boolean isCmsSection = false;
 
         for (String line : lines) {
@@ -63,6 +108,6 @@ public class ManifestFileSplitter {
                 data.add(line);
             }
         }
-        return new ManifestFileModel(data, cms);
+        return new ManifestFileModel(data, cms, newLine);
     }
 }

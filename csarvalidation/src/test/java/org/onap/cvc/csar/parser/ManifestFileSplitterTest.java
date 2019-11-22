@@ -21,19 +21,27 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.io.File;
+import java.net.URISyntaxException;
+
+import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.absoluteFilePath;
 
 /*
  How to sing files see to README.txt file into test/resources folder
  */
 public class ManifestFileSplitterTest {
 
-    @Test
-    public void shouldSplitManifestFileOnDataPartAndCMS() {
-        File file = new File("./src/test/resources/cvc/csar/parser/MainServiceTemplate.mf");
+    private ManifestFileModel getModel(String resourceFilePath) throws URISyntaxException {
+        File file = new File(absoluteFilePath(resourceFilePath));
         ManifestFileSplitter manifestFileSplitter = new ManifestFileSplitter();
+        return manifestFileSplitter.split(file);
+    }
 
-        ManifestFileModel manifestFileModel = manifestFileSplitter.split(file);
+    @Test
+    public void shouldSplitManifestFileOnDataPartAndCMS() throws URISyntaxException {
+        String resource = "cvc/csar/parser/MainServiceTemplate.mf";
+        ManifestFileModel manifestFileModel = getModel(resource);
 
+        Assertions.assertThat(manifestFileModel.getNewLine()).isEqualTo("\n");
         Assertions.assertThat(manifestFileModel.getData()).contains("metadata:",
                 "    pnfd_name: RadioNode",
                 "    pnfd_provider: Ericsson",
@@ -46,5 +54,12 @@ public class ManifestFileSplitterTest {
                 "hvcNAQcBoIIDRTCCA0EwggIpAhRJ6KO7OFR2BuRDZwcd2TT4/wrEqDANBgkqhkiG",
                 "-----END CMS-----"
         );
+    }
+
+    @Test
+    public void shouldBeWindowsStyle() throws URISyntaxException {
+        String resource = "cvc/csar/parser/MainServiceTemplate.windows.mf";
+        ManifestFileModel manifestFileModel = getModel(resource);
+        Assertions.assertThat(manifestFileModel.getNewLine()).isEqualTo("\r\n");
     }
 }
