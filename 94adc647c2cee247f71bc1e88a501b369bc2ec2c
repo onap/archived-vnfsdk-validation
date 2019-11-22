@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "9ccfc493_3168ff23",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/FileArchive.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2019-11-22T06:29:21Z",
+      "side": 1,
+      "message": "maybe it is worth to add junit to cover this scenario",
+      "revId": "94adc647c2cee247f71bc1e88a501b369bc2ec2c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dd58c534_19f288e0",
         "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/FileArchive.java",
         "patchSetId": 2
