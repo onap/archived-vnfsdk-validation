@@ -254,15 +254,17 @@ class ManifestFileSignatureValidator {
     boolean isValid(File manifestFile) {
         try {
             ManifestFileModel mf = manifestFileSplitter.split(manifestFile);
-            return cmsSignatureValidator.verifySignedData(toBytes(mf.getCMS()), Optional.empty(), toBytes(mf.getData()));
+            return cmsSignatureValidator.verifySignedData(toBytes(mf.getCMS(), mf.getNewLine()),
+                                                          Optional.empty(),
+                                                          toBytes(mf.getData(), mf.getNewLine()));
         } catch (CmsSignatureValidatorException e) {
             LOG.error("Unable to verify signed data!", e);
             return false;
         }
     }
 
-    private byte[] toBytes(List<String> data) {
-        final String updatedData = data.stream().map(it -> it + "\r\n").collect(Collectors.joining());
+    private byte[] toBytes(List<String> data, String newLine) {
+        final String updatedData = data.stream().map(it -> it + newLine).collect(Collectors.joining());
         return updatedData.getBytes(Charset.defaultCharset());
     }
 }
