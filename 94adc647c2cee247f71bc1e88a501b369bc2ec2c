@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dd58c534_19f288e0",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/FileArchive.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2019-11-22T06:28:01Z",
+      "side": 1,
+      "message": "pls extract to separate method with descriptive name",
+      "revId": "94adc647c2cee247f71bc1e88a501b369bc2ec2c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
