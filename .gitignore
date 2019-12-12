@@ -11,3 +11,4 @@ coverage-report/
 *.iml
 *.log
 .idea
+.attach_pid*
