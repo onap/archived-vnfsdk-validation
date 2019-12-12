@@ -54,8 +54,8 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     private final ShaHashCodeGenerator shaHashCodeGenerator = new ShaHashCodeGenerator();
     private final ManifestFileSignatureValidator manifestFileSignatureValidator = new ManifestFileSignatureValidator();
 
-
     public static class CSARErrorUnableToFindCertificate extends CSARArchive.CSARError {
+
         CSARErrorUnableToFindCertificate(String paramName) {
             super("0x4001");
             this.message = String.format("Unable to find cert file defined by %s!", paramName);
@@ -63,6 +63,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     public static class CSARErrorUnableToFindCmsSection extends CSARArchive.CSARError {
+
         CSARErrorUnableToFindCmsSection() {
             super("0x4002");
             this.message = "Unable to find CMS section in manifest!";
@@ -70,6 +71,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     public static class CSARErrorUnableToFindCsarContent extends CSARArchive.CSARError {
+
         CSARErrorUnableToFindCsarContent() {
             super("0x4003");
             this.message = "Unable to find csar content!";
@@ -77,6 +79,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     public static class CSARErrorWrongHashCode extends CSARArchive.CSARError {
+
         CSARErrorWrongHashCode(String path) {
             super("0x4004");
             this.message = String.format("Source '%s' has wrong hash!", path);
@@ -84,6 +87,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     public static class CSARErrorUnableToFindAlgorithm extends CSARArchive.CSARError {
+
         CSARErrorUnableToFindAlgorithm(String path) {
             super("0x4005");
             this.message = String.format("Source '%s' has hash, but unable to find algorithm tag!", path);
@@ -91,6 +95,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     public static class CSARErrorUnableToFindSource extends CSARArchive.CSARError {
+
         CSARErrorUnableToFindSource(String path) {
             super("0x4006");
             this.message = String.format("Unable to calculate digest - file missing: %s", path);
@@ -98,6 +103,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     public static class CSARErrorInvalidSignature extends CSARArchive.CSARError {
+
         CSARErrorInvalidSignature() {
             super("0x4007");
             this.message = "File has invalid CMS signature!";
@@ -105,6 +111,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     public static class CSARErrorContentMismatch extends CSARArchive.CSARError {
+
         CSARErrorContentMismatch() {
             super("0x4008");
             this.message = "Mismatch between contents of non-mano-artifact-sets and source files of the package";
@@ -146,21 +153,22 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         }
     }
 
-    private void validateNonManoCohesionWithSources(final Map<String, Map<String, List<String>>> nonMano, final List<SourcesParser.Source> sources) {
+    private void validateNonManoCohesionWithSources(final Map<String, Map<String, List<String>>> nonMano,
+                                                    final List<SourcesParser.Source> sources) {
 
         final Collection<Map<String, List<String>>> values = nonMano.values();
         final List<String> nonManoSourcePaths = values.stream()
-                .map(Map::values)
-                .flatMap(Collection::stream)
-                .flatMap(List::stream)
-                .filter(it -> !it.isEmpty())
-                .collect(Collectors.toList());
+            .map(Map::values)
+            .flatMap(Collection::stream)
+            .flatMap(List::stream)
+            .filter(it -> !it.isEmpty())
+            .collect(Collectors.toList());
 
         final List<String> sourcePaths = sources.stream()
-                .map(SourcesParser.Source::getValue)
-                .collect(Collectors.toList());
+            .map(SourcesParser.Source::getValue)
+            .collect(Collectors.toList());
 
-        if(!sourcePaths.containsAll(nonManoSourcePaths)){
+        if (!sourcePaths.containsAll(nonManoSourcePaths)) {
             this.errors.add(new CSARErrorContentMismatch());
         }
 
@@ -196,7 +204,8 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         }
     }
 
-    private void validateSources(Path csarRootDirectory, CSARArchive.Manifest manifest) throws NoSuchAlgorithmException, IOException {
+    private void validateSources(Path csarRootDirectory, CSARArchive.Manifest manifest)
+        throws NoSuchAlgorithmException, IOException {
         final List<SourcesParser.Source> sources = manifest.getSources();
         for (SourcesParser.Source source : sources) {
             if (!source.getAlgorithm().isEmpty() || !source.getHash().isEmpty()) {
@@ -205,7 +214,8 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         }
     }
 
-    private void validateSource(Path csarRootDirectory, SourcesParser.Source source) throws NoSuchAlgorithmException, IOException {
+    private void validateSource(Path csarRootDirectory, SourcesParser.Source source)
+        throws NoSuchAlgorithmException, IOException {
         final Path sourcePath = csarRootDirectory.resolve(source.getValue());
         if (!sourcePath.toFile().exists()) {
             this.errors.add(new CSARErrorUnableToFindSource(source.getValue()));
@@ -218,14 +228,16 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         }
     }
 
-    private void validateSourceHashCode(Path csarRootDirectory, SourcesParser.Source source) throws NoSuchAlgorithmException, IOException {
+    private void validateSourceHashCode(Path csarRootDirectory, SourcesParser.Source source)
+        throws NoSuchAlgorithmException, IOException {
         String hashCode = generateHashCode(csarRootDirectory, source);
         if (!hashCode.equals(source.getHash())) {
             this.errors.add(new CSARErrorWrongHashCode(source.getValue()));
         }
     }
 
-    private String generateHashCode(Path csarRootDirectory, SourcesParser.Source source) throws NoSuchAlgorithmException, IOException {
+    private String generateHashCode(Path csarRootDirectory, SourcesParser.Source source)
+        throws NoSuchAlgorithmException, IOException {
         final byte[] sourceData = Files.readAllBytes(csarRootDirectory.resolve(source.getValue()));
         final String algorithm = source.getAlgorithm();
 
@@ -244,27 +256,27 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
 
-}
+    class ManifestFileSignatureValidator {
 
-class ManifestFileSignatureValidator {
-    private static final Logger LOG = LoggerFactory.getLogger(ManifestFileSignatureValidator.class);
-    private final ManifestFileSplitter manifestFileSplitter = new ManifestFileSplitter();
-    private final CmsSignatureValidator cmsSignatureValidator = new CmsSignatureValidator();
+        private final Logger LOG = LoggerFactory.getLogger(ManifestFileSignatureValidator.class);
+        private final ManifestFileSplitter manifestFileSplitter = new ManifestFileSplitter();
+        private final CmsSignatureValidator cmsSignatureValidator = new CmsSignatureValidator();
 
-    boolean isValid(File manifestFile) {
-        try {
-            ManifestFileModel mf = manifestFileSplitter.split(manifestFile);
-            return cmsSignatureValidator.verifySignedData(toBytes(mf.getCMS(), mf.getNewLine()),
-                                                          Optional.empty(),
-                                                          toBytes(mf.getData(), mf.getNewLine()));
-        } catch (CmsSignatureValidatorException e) {
-            LOG.error("Unable to verify signed data!", e);
-            return false;
+        boolean isValid(File manifestFile) {
+            try {
+                ManifestFileModel mf = manifestFileSplitter.split(manifestFile);
+                return cmsSignatureValidator.verifySignedData(toBytes(mf.getCMS(), mf.getNewLine()),
+                    Optional.empty(),
+                    toBytes(mf.getData(), mf.getNewLine()));
+            } catch (CmsSignatureValidatorException e) {
+                LOG.error("Unable to verify signed data!", e);
+                return false;
+            }
         }
-    }
 
-    private byte[] toBytes(List<String> data, String newLine) {
-        final String updatedData = data.stream().map(it -> it + newLine).collect(Collectors.joining());
-        return updatedData.getBytes(Charset.defaultCharset());
+        private byte[] toBytes(List<String> data, String newLine) {
+            final String updatedData = data.stream().map(it -> it + newLine).collect(Collectors.joining());
+            return updatedData.getBytes(Charset.defaultCharset());
+        }
     }
 }

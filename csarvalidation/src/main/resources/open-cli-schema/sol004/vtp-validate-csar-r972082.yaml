@@ -1,4 +1,4 @@
-# Copyright 2019 Nokia
+# Copyright 2019 Nordix
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,17 +14,14 @@
 
 open_cli_schema_version: 1.0
 
-name: csar-validate-r146092
+name: csar-validate-r972082
 
 description: |
-  The VNF/PNF package Manifest file MUST contain: non-mano artifact set with following ONAP public tag
-  -onap_ansible_playbooks
-  -onap_others
-  -onap_pm_dictionary
-  -onap_pnf_sw_information
-  -onap_scripts
-  -onap_ves_events
-  -onap_yang_modules
+  The PNF software information file is included in the package and it MUST be compliant to:
+   - The file extension which contains the PNF software version must be .yaml
+   - The PNF software version information must be specified as following:
+    onap_pnf_sw_information:
+      - pnf_software_version:  "<version>"
 
 info:
   product: onap-dublin
