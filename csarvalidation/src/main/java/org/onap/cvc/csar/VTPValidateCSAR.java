@@ -20,8 +20,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.bouncycastle.util.test.TestResult;
 import org.onap.cli.fw.cmd.OnapCommand;
 import org.onap.cli.fw.error.OnapCommandException;
 import org.onap.cli.fw.error.OnapCommandExecutionFailed;
@@ -31,6 +33,7 @@ import org.onap.cli.fw.output.OnapCommandResultType;
 import org.onap.cli.fw.registrar.OnapCommandRegistrar;
 import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.onap.cvc.csar.CSARArchive.CSARError;
+import org.onap.cvc.results.StandardTestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +46,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class VTPValidateCSAR extends OnapCommand {
     private static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSAR.class);
     public static final String PNF_ATTRIBUTE_NAME = "pnf";
+    public static final String OUTPUT_MODE_ATTRIBUTE_NAME = "outputMode";
 
     public static class CSARValidation {
         public static class VNF {
@@ -190,6 +194,8 @@ public class VTPValidateCSAR extends OnapCommand {
         String path = (String) getParametersMap().get("csar").getValue();
         boolean isPnf = (boolean) getParametersMap().get(PNF_ATTRIBUTE_NAME).getValue();
 
+        String outputMode = getParametersMap().get(OUTPUT_MODE_ATTRIBUTE_NAME).getValue().toString();
+
         boolean overallPass = true;
         try(CSARArchive csar = isPnf ? new PnfCSARArchive(): new CSARArchive()){
             csar.init(path);
@@ -250,10 +256,45 @@ public class VTPValidateCSAR extends OnapCommand {
             validation.setDate(new Date().toString());
             validation.setCriteria(overallPass ? "PASS" : "FAILED");
 
-            setOperationResult(validation);
+            if ("standard".equalsIgnoreCase(outputMode)) {
+                setStandardizedResult(validation);
+            }
+            else {
+                setOperationResult(validation);
+            }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             throw new OnapCommandExecutionFailed(e.getMessage());
+        }
+    }
+
+    private void setStandardizedResult(CSARValidation validation) {
+        List<StandardTestResult> results = validation.results.stream().map(r -> {
+            StandardTestResult tr = new StandardTestResult();
+            tr.setResult(r.passed ? "PASS" : "FAIL");
+            tr.setTestname(r.getVnfreqName());
+            tr.setDescription(r.getDescription());
+            if ((r.errors != null) && (!r.errors.isEmpty())) {
+                tr.setError(r.errors.stream().map(e -> {
+                    String s = e.getCode() + ": " + e.getMessage();
+                    if (e.getFile() != null) {
+                        s = s + " in file " + e.getFile();
+                    }
+                    if (e.lineNumber >= 0) {
+                        s = s + " at line " + e.lineNumber;
+                    }
+                    return s;
+                }).collect(Collectors.joining(" | ")));
+            }
+            return tr;
+        }).collect(Collectors.toList());
+        try {
+            this.getResult().setOutput(new ObjectMapper().writeValueAsString(results));
+            this.getResult().setType(OnapCommandResultType.TEXT);
+        }
+        catch (JsonProcessingException e) {
+            this.getResult().setOutput(e.getMessage());
+            this.getResult().setType(OnapCommandResultType.TEXT);
         }
     }
 

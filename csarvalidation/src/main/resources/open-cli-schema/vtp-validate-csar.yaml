@@ -38,7 +38,21 @@ parameters:
       type: bool
       is_optional: true
       default_value: false
-
+    - name: outputMode
+      type: string
+      description: Define output mode as original or SDC-compliant standard format.
+      long_option: outputMode
+      short_option: m
+      is_optional: true
+      default_value: original
+      metadata:
+        hidden: true
+        uidefault: standard
+        choices:
+          - key: standard
+            label: Standard
+          - key: original
+            label: Original
 results:
     direction: portrait
     attributes:

@@ -21,6 +21,12 @@
   <packaging>jar</packaging>
   <name>csarvalidation/validation</name>
 
+  <properties>
+    <lombok.version>1.18.2</lombok.version>
+    <!--<enforcer.skip>true</enforcer.skip>-->
+    <cli.version>4.0.0-SNAPSHOT</cli.version>
+  </properties>
+
   <repositories>
     <repository>
       <id>google-collections</id>
@@ -78,13 +84,17 @@
     <dependency>
       <groupId>org.onap.cli</groupId>
       <artifactId>cli-framework</artifactId>
-      <version>3.0.0</version>
+      <version>${cli.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.onap.cli</groupId>
+      <artifactId>cli-profiles-command</artifactId>
+      <version>${cli.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.onap.cli</groupId>
       <artifactId>cli-main</artifactId>
-      <version>3.0.0</version>
+      <version>${cli.version}</version>
       <scope>test</scope>
     </dependency>
 

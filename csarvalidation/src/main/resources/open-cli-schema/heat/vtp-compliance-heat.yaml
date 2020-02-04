@@ -1,0 +1,65 @@
+#
+# Copyright © 2019 iconectiv
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+#
+# This is used by the VTP proxy to expose the service to SDC / upstream.
+# (ignore: true) tells the VTP not to report this as a test that can be invoked.
+# If not supplied, the test will appear published both by the proxy and VTP.
+#
+
+open_cli_schema_version: 1.0
+name: heat-compliance
+description: Execute the VVP-based heat test suite using a heat zip file as input.
+
+info:
+  product: onap-dublin
+  version: 1.0
+  service: vnf-compliance
+  author: ONAP CLI Team onap-discuss@lists.onap.org
+
+parameters:
+  - name: heat
+    type: binary
+    description: HEAT archive zip
+    long_option: heat
+    short_option: a
+  - name: preserveOutput
+    type: bool
+    description: If true, preserve output of tests
+    long_option: preserve
+    short_option: p
+    is_optional: true
+    default_value: false
+  - name: outputMode
+    type: string
+    description: Define output mode as table or json.
+    long_option: outputMode
+    short_option: m
+    is_optional: true
+    default_value: json
+    metadata:
+      hidden: true
+  - name: script-folder
+    description: Pytest script folder path
+    long_option: script-folder
+    default_value: $s{env:ONAP_VVP_HOME}
+    short_option: n
+    type: string
+    is_optional: true
+    metadata:
+      hidden: true
+heat:
+  preserveOutput: false
