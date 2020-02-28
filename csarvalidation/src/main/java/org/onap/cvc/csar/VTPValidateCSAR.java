@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.Gson;
 import org.onap.cli.fw.cmd.OnapCommand;
 import org.onap.cli.fw.error.OnapCommandException;
 import org.onap.cli.fw.error.OnapCommandExecutionFailed;
@@ -34,7 +34,6 @@ import org.onap.cvc.csar.CSARArchive.CSARError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Validates CSAR
@@ -42,6 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @OnapCommandSchema(schema = "vtp-validate-csar.yaml")
 public class VTPValidateCSAR extends OnapCommand {
     private static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSAR.class);
+    private static Gson gson = new Gson();
     public static final String PNF_ATTRIBUTE_NAME = "pnf";
 
     public static class CSARValidation {
@@ -268,15 +268,15 @@ public class VTPValidateCSAR extends OnapCommand {
         return validation;
     }
 
-    private void setOperationResult(CSARValidation validation) throws JsonProcessingException {
+    private void setOperationResult(CSARValidation validation) throws Exception {
         this.getResult().getRecordsMap().get("vnf").getValues().add(
-                new ObjectMapper().writeValueAsString(validation.getVnf()));
+                gson.toJson(validation.getVnf()));
         this.getResult().getRecordsMap().get("date").getValues().add(validation.getDate());
         this.getResult().getRecordsMap().get("criteria").getValues().add(validation.getCriteria());
         this.getResult().getRecordsMap().get("results").getValues().add(
-                new ObjectMapper().writeValueAsString(validation.getResults()));
+                gson.toJson(validation.getResults()));
 
-        this.getResult().setOutput(new ObjectMapper().writeValueAsString(validation));
+        this.getResult().setOutput(gson.toJson(validation));
         this.getResult().setType(OnapCommandResultType.TEXT);
     }
 
@@ -297,4 +297,5 @@ public class VTPValidateCSAR extends OnapCommand {
         }
         return list;
     }
+
 }
