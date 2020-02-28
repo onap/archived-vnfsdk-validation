@@ -15,8 +15,7 @@
  */
 package org.onap.cvc.csar;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.onap.cvc.csar.parser.SourcesParser;
@@ -43,6 +42,7 @@ import java.util.Optional;
  */
 public class CSARArchive implements AutoCloseable {
 
+    private static Gson gson = new Gson();
     public static final String SOL0004_2_4_1 = "V2.4.1 (2018-02)";
 
     public static final String TEMP_DIR = "/tmp";
@@ -156,8 +156,8 @@ public class CSARArchive implements AutoCloseable {
 
         public String toString() {
             try {
-                return new ObjectMapper().writeValueAsString(this);
-            } catch (JsonProcessingException e) {
+                return gson.toJson(this);
+            } catch (Exception e) { //NOSONAR
                 //never occurs
                 return "{}";
             }
