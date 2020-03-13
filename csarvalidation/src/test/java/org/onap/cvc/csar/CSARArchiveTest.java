@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 public class CSARArchiveTest {
 
     @Test
@@ -40,6 +41,16 @@ public class CSARArchiveTest {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Test
+    public void testErrorToStringForGson(){
+
+        String expected = "{\"code\":\"0x1001\",\"message\":\"Invalid value. Entry [testEntry]. Valid values are [-1]. InvalidEntry\",\"file\":\"abc\",\"lineNumber\":-1}";
+        CSARArchive.CSARErrorInvalidEntryValue testError =
+                new CSARArchive.CSARErrorInvalidEntryValue("testEntry","abc","InvalidEntry","-1");
+        assertEquals(expected,testError.toString());
+
     }
 
 }

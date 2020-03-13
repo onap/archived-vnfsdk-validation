@@ -84,13 +84,13 @@
     <dependency>
       <groupId>org.onap.cli</groupId>
       <artifactId>cli-framework</artifactId>
-      <version>3.0.0</version>
+      <version>5.0.2</version>
     </dependency>
 
     <dependency>
       <groupId>org.onap.cli</groupId>
       <artifactId>cli-main</artifactId>
-      <version>3.0.0</version>
+      <version>5.0.2</version>
       <scope>test</scope>
     </dependency>
 
