@@ -41,7 +41,7 @@ public class ManifestFileSplitterTest {
         String resource = "cvc/csar/parser/MainServiceTemplate.mf";
         ManifestFileModel manifestFileModel = getModel(resource);
 
-        Assertions.assertThat(manifestFileModel.getNewLine()).isEqualTo("\n");
+        Assertions.assertThat(manifestFileModel.getNewLine()).isEqualTo(System.lineSeparator());
         Assertions.assertThat(manifestFileModel.getData()).contains("metadata:",
                 "    pnfd_name: RadioNode",
                 "    pnfd_provider: Ericsson",
