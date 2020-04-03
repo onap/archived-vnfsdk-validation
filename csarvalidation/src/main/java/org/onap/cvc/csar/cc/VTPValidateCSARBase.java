@@ -70,6 +70,7 @@ public abstract class VTPValidateCSARBase extends OnapCommand {
         }
 
         this.getResult().setOutput(this.errors);
+        this.getResult().setPassed(this.errors.isEmpty());
    }
 
     private boolean isPnf() {
