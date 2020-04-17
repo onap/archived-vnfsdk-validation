@@ -278,6 +278,7 @@ public class VTPValidateCSAR extends OnapCommand {
 
         this.getResult().setOutput(gson.toJson(validation));
         this.getResult().setType(OnapCommandResultType.TEXT);
+		this.getResult().setPassed(validation.getCriteria().equalsIgnoreCase("PASS"));
     }
 
     private void setPnfValueIfAvailable(boolean isPnf, OnapCommand cmd) throws OnapCommandInvalidParameterValue {
