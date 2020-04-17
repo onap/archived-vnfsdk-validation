@@ -36,7 +36,7 @@ public class CsarValidatorTest {
                 "--format", "json",
                 "--csar", absoluteFilePath("VoLTE.csar")});
         cli.handle();
-        assertEquals(0, cli.getExitCode());
+        assertEquals(1, cli.getExitCode());
     }
 
 
@@ -49,7 +49,7 @@ public class CsarValidatorTest {
                 "--pnf",
                 "--csar", absoluteFilePath("pnf/r57019/allMandatoryEntriesDefinedInMetadataManifest.csar")});
         cli.handle();
-        assertEquals(0, cli.getExitCode());
+        assertEquals(1, cli.getExitCode());
     }
 
 
@@ -62,7 +62,7 @@ public class CsarValidatorTest {
                 "--pnf",
                 "--csar", absoluteFilePath("pnf/signed-package-valid-signature.zip")});
         cli.handle();
-        assertEquals(0, cli.getExitCode());
+        assertEquals(1, cli.getExitCode());
     }
 
 }
