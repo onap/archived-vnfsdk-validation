@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "62b7efbc_c7ee2cc1",
+        "filename": "csarvalidation/src/test/java/org/onap/cvc/csar/CsarValidatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2020-04-17T03:48:24Z",
+      "side": 1,
+      "message": "it should be 0, can you check the vnfreqs.properties and i think it got updated with error codes to ignore. in that aspect it should be 0. otherwise can you check why its failed.\nalso see why below test failed? pls chk. thanks",
+      "revId": "b8667b155c1d8de96987cccd9876a93cc6b81ea6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
