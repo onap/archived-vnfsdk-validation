@@ -54,4 +54,8 @@ public class ManifestLine {
         return line.trim().isEmpty();
     }
 
+    boolean contains(String word) {
+        return line.contains(word);
+    }
+
 }
