@@ -19,10 +19,9 @@ package org.onap.cvc.csar.cc.sol004;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.onap.cvc.csar.CSARArchive;
+import org.onap.cvc.csar.CSARArchive.CSARError;
 
 import java.util.List;
-import org.onap.cvc.csar.CSARArchive.CSARError;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.configureTestCase;
@@ -45,10 +44,24 @@ public class VTPValidateCSARR146092IntegrationTest {
     }
 
     @Test
+    public void shouldDoNotReportErrorWhenCSARValid() throws Exception {
+        //given
+        configureTestCase(testCase, "pnf/r146092/validFile.csar",
+                "vtp-validate-csar-r146092.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        final List<CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(0);
+    }
+
+    @Test
     public void shouldDoNotReportErrorWhenNonManoArtifactIsNotAvailable() throws Exception {
         // given
         configureTestCase(testCase, "pnf/r146092/missingNonManoArtifactInManifest.csar",
-            "vtp-validate-csar-r146092.yaml", IS_PNF);
+                "vtp-validate-csar-r146092.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -62,7 +75,7 @@ public class VTPValidateCSARR146092IntegrationTest {
     public void shouldReportThatMandatoryNonManoArtifactSetEntryHasNotAllFields() throws Exception {
         // given
         configureTestCase(testCase, "pnf/r146092/missingFieldsInNonManoArtifactManifest.csar",
-            "vtp-validate-csar-r146092.yaml", IS_PNF);
+                "vtp-validate-csar-r146092.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -71,7 +84,7 @@ public class VTPValidateCSARR146092IntegrationTest {
         final List<CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).contains(
-            "Missing. Entry [[onap_ansible_playbooks, onap_others, onap_pm_dictionary, onap_pnf_sw_information, onap_scripts, onap_ves_events, onap_yang_modules]]"
+                "Missing. Entry [[onap_ansible_playbooks, onap_others, onap_pm_dictionary, onap_pnf_sw_information, onap_scripts, onap_ves_events, onap_yang_modules]]"
         );
     }
 
@@ -79,7 +92,7 @@ public class VTPValidateCSARR146092IntegrationTest {
     public void shouldReportThatNonManoArtifactEntryHasAnySource() throws Exception {
         // given
         configureTestCase(testCase, "pnf/r146092/noSourceElementInNonManoArtifactEntryManifest.csar",
-            "vtp-validate-csar-r146092.yaml", IS_PNF);
+                "vtp-validate-csar-r146092.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -88,7 +101,7 @@ public class VTPValidateCSARR146092IntegrationTest {
         final List<CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).contains(
-            "Missing. Entry [Source under onap_ves_events]"
+                "Missing. Entry [Source under onap_ves_events]"
         );
     }
 
@@ -104,7 +117,7 @@ public class VTPValidateCSARR146092IntegrationTest {
         final List<CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).contains(
-            "Invalid. Entry [Source under onap_ves_events has invalid 'Artifacts/Deployment/Events/RadioNode.yml' path]"
+                "Invalid. Entry [Source under onap_ves_events has invalid 'Artifacts/Deployment/Events/RadioNode.yml' path]"
         );
     }
 
@@ -120,7 +133,7 @@ public class VTPValidateCSARR146092IntegrationTest {
         final List<CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(4);
         assertThat(convertToMessagesList(errors)).contains(
-            "Missing. Entry [Definition YAML]"
+                "Missing. Entry [Definition YAML]"
         );
     }
 
@@ -128,7 +141,7 @@ public class VTPValidateCSARR146092IntegrationTest {
     public void shouldReportThatEntryHasInvalidPathWhenYamlFileIsNotPresent() throws Exception {
         // given
         configureTestCase(testCase, "pnf/r146092/missingYamlFileReferedInSourceSessionOfManifest.csar", "vtp-validate-csar-r146092.yaml",
-            IS_PNF);
+                IS_PNF);
 
         // when
         testCase.execute();
@@ -137,7 +150,7 @@ public class VTPValidateCSARR146092IntegrationTest {
         final List<CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).contains(
-            "Invalid. Entry [Source under onap_pnf_sw_information has invalid 'Files/pnf-sw-information/pnf-sw-information.yaml' path]"
+                "Invalid. Entry [Source under onap_pnf_sw_information has invalid 'Files/pnf-sw-information/pnf-sw-information.yaml' path]"
         );
     }
 
