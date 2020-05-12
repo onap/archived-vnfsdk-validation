@@ -16,6 +16,23 @@
       "revId": "1f99e33eadb761738be3434bd44a10748ab808d3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8ee35dc_8da6735c",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/parser/NonManoArtifactsParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-05-12T22:25:35Z",
+      "side": 1,
+      "message": "For optimization reason, I would set that \u0027else if\u0027 as last condition block.\n\nAnd of course test is needed.",
+      "revId": "1f99e33eadb761738be3434bd44a10748ab808d3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
