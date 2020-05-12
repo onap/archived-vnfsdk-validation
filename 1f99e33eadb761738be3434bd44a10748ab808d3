@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8f6fd73d_fe5c3b85",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/parser/NonManoArtifactsParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-05-12T16:41:53Z",
+      "side": 1,
+      "message": "1. pls extract to constants\n2. I don\u0027t see a test which confirms that correction works.\nPls add a new test which will cover this scenario for this class.",
+      "revId": "1f99e33eadb761738be3434bd44a10748ab808d3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
