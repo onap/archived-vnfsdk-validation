@@ -26,9 +26,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.onap.cvc.csar.parser.ManifestConsts.BEGIN_CMS_SECTION;
 import static org.onap.cvc.csar.parser.ManifestConsts.NON_MANO_ARTIFACT_SETS_TAG_SECTION;
 
 public class NonManoArtifactsParser {
+
+
 
     public Optional<Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>>> parse(List<String> lines) {
         Map<String, Map<String, List<String>>> nonManoArtifacts = new HashMap<>();
@@ -41,6 +44,8 @@ public class NonManoArtifactsParser {
             ManifestLine manifestLine = ManifestLine.of(line);
             if (manifestLine.startsWith(NON_MANO_ARTIFACT_SETS_TAG_SECTION)) {
                 isNonManoArtifactsSectionAvailable = true;
+            } else if (manifestLine.contains(BEGIN_CMS_SECTION)) {
+                break;
             } else if (isNonManoArtifactsSectionAvailable) {
                 Pair<String, String> data = manifestLine.parse();
 

@@ -19,8 +19,10 @@ package org.onap.cvc.csar.cc.sol004;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.onap.cli.fw.error.OnapCommandException;
 import org.onap.cvc.csar.CSARArchive;
 
+import java.net.URISyntaxException;
 import java.util.List;
 import org.onap.cvc.csar.CSARArchive.CSARError;
 
@@ -42,6 +44,20 @@ public class VTPValidateCSARR146092IntegrationTest {
     @Test
     public void shouldReturnProperRequestNumber() {
         assertThat(testCase.getVnfReqsNo()).isEqualTo("R146092");
+    }
+
+    @Test
+    public void shouldDoNotReportErrorWhenCSARValid() throws Exception {
+        //given
+        configureTestCase(testCase, "pnf/r146092/validFile.csar",
+                "vtp-validate-csar-r146092.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        final List<CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(0);
     }
 
     @Test
