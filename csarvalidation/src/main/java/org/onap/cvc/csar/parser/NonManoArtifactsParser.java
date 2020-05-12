@@ -41,6 +41,8 @@ public class NonManoArtifactsParser {
             ManifestLine manifestLine = ManifestLine.of(line);
             if (manifestLine.startsWith(NON_MANO_ARTIFACT_SETS_TAG_SECTION)) {
                 isNonManoArtifactsSectionAvailable = true;
+            } else if (manifestLine.contains("BEGIN CMS")) {
+                break;
             } else if (isNonManoArtifactsSectionAvailable) {
                 Pair<String, String> data = manifestLine.parse();
 
