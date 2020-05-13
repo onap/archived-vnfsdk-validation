@@ -148,8 +148,10 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         validateNonManoCohesionWithSources(nonMano, sources);
 
         final File manifestMfFile = csar.getManifestMfFile();
+        final String entryCertificateFileName =  csar.getToscaMeta().getEntryCertificate();
+        final String entryCertificateDirectory = String.format("%s/%s", csarRootDirectory.toAbsolutePath(), entryCertificateFileName);
         if (manifestMfFile != null) {
-            validateFileSignature(manifestMfFile);
+            validateFileSignature(manifestMfFile,entryCertificateDirectory);
         }
     }
 
@@ -174,8 +176,8 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
 
     }
 
-    private void validateFileSignature(File manifestMfFile) {
-        final boolean isValid = this.manifestFileSignatureValidator.isValid(manifestMfFile);
+    private void validateFileSignature(File manifestMfFile, String entryCertificateDirectory) {
+        final boolean isValid = this.manifestFileSignatureValidator.isValid(manifestMfFile,entryCertificateDirectory);
         if (!isValid) {
             this.errors.add(new CSARErrorInvalidSignature());
         }
@@ -262,13 +264,14 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         private final ManifestFileSplitter manifestFileSplitter = new ManifestFileSplitter();
         private final CmsSignatureValidator cmsSignatureValidator = new CmsSignatureValidator();
 
-        boolean isValid(File manifestFile) {
+        boolean isValid(File manifestFile, String entryCertificateDirectory) {
             try {
+                byte[] entryCertificate = Files.readAllBytes(new File(entryCertificateDirectory).toPath());
                 ManifestFileModel mf = manifestFileSplitter.split(manifestFile);
                 return cmsSignatureValidator.verifySignedData(toBytes(mf.getCMS(), mf.getNewLine()),
-                    Optional.empty(),
+                    Optional.of(entryCertificate),
                     toBytes(mf.getData(), mf.getNewLine()));
-            } catch (CmsSignatureValidatorException e) {
+            } catch (CmsSignatureValidatorException | IOException e) {
                 LOG.error("Unable to verify signed data!", e);
                 return false;
             }
