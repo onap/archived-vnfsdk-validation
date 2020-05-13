@@ -57,13 +57,14 @@ public class CmsSignatureValidator {
             Collection<SignerInformation> signers = signedData.getSignerInfos().getSigners();
             SignerInformation firstSigner = signers.iterator().next();
 
-            Store certificates = signedData.getCertificates();
+            Store<X509CertificateHolder> certificates = signedData.getCertificates();
+            Collection<X509CertificateHolder> firstSignerCertificates = certificates.getMatches(firstSigner.getSID());
             X509Certificate cert;
-            if (!certificate.isPresent()) {
-                X509CertificateHolder firstSignerFirstCertificate = getX509CertificateHolder(firstSigner, certificates);
+            if (!firstSignerCertificates.isEmpty()) {
+                X509CertificateHolder firstSignerFirstCertificate = getX509CertificateHolder(firstSignerCertificates);
                 cert = loadCertificate(firstSignerFirstCertificate.getEncoded());
             } else {
-                cert = loadCertificate(certificate.get());
+                cert = loadCertificate(certificate.orElseThrow(() -> new CmsSignatureValidatorException("No certificate found in cms signature and ETSI-Entry-Certificate doesn't exist")));
             }
 
             return firstSigner.verify(new JcaSimpleSignerInfoVerifierBuilder().build(cert));
@@ -77,8 +78,7 @@ public class CmsSignatureValidator {
         }
     }
 
-    private X509CertificateHolder getX509CertificateHolder(SignerInformation firstSigner, Store certificates) throws CmsSignatureValidatorException {
-        Collection<X509CertificateHolder> firstSignerCertificates = certificates.getMatches(firstSigner.getSID());
+    private X509CertificateHolder getX509CertificateHolder(Collection<X509CertificateHolder> firstSignerCertificates) throws CmsSignatureValidatorException {
         if(!firstSignerCertificates.iterator().hasNext()){
             throw new CmsSignatureValidatorException("No certificate found in cms signature that should contain one!");
         }
