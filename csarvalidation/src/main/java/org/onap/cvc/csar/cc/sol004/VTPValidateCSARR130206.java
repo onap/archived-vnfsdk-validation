@@ -148,25 +148,32 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         validateNonManoCohesionWithSources(nonMano, sources);
 
         final File manifestMfFile = csar.getManifestMfFile();
+        final String absolutePathToEntryCertificate = getAbsolutePathToEntryCertificate(csar, csarRootDirectory);
         if (manifestMfFile != null) {
-            validateFileSignature(manifestMfFile);
+            validateFileSignature(manifestMfFile, absolutePathToEntryCertificate);
         }
     }
+
+    private String getAbsolutePathToEntryCertificate(CSARArchive csar, Path csarRootDirectory) {
+        final String entryCertificateFileName = csar.getToscaMeta().getEntryCertificate();
+        return String.format("%s/%s", csarRootDirectory.toAbsolutePath(), entryCertificateFileName);
+    }
+
 
     private void validateNonManoCohesionWithSources(final Map<String, Map<String, List<String>>> nonMano,
                                                     final List<SourcesParser.Source> sources) {
 
         final Collection<Map<String, List<String>>> values = nonMano.values();
         final List<String> nonManoSourcePaths = values.stream()
-            .map(Map::values)
-            .flatMap(Collection::stream)
-            .flatMap(List::stream)
-            .filter(it -> !it.isEmpty())
-            .collect(Collectors.toList());
+                .map(Map::values)
+                .flatMap(Collection::stream)
+                .flatMap(List::stream)
+                .filter(it -> !it.isEmpty())
+                .collect(Collectors.toList());
 
         final List<String> sourcePaths = sources.stream()
-            .map(SourcesParser.Source::getValue)
-            .collect(Collectors.toList());
+                .map(SourcesParser.Source::getValue)
+                .collect(Collectors.toList());
 
         if (!sourcePaths.containsAll(nonManoSourcePaths)) {
             this.errors.add(new CSARErrorContentMismatch());
@@ -174,8 +181,8 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
 
     }
 
-    private void validateFileSignature(File manifestMfFile) {
-        final boolean isValid = this.manifestFileSignatureValidator.isValid(manifestMfFile);
+    private void validateFileSignature(File manifestMfFile, String absolutePathToEntryCertificate) {
+        final boolean isValid = this.manifestFileSignatureValidator.isValid(manifestMfFile, absolutePathToEntryCertificate);
         if (!isValid) {
             this.errors.add(new CSARErrorInvalidSignature());
         }
@@ -205,7 +212,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     private void validateSources(Path csarRootDirectory, CSARArchive.Manifest manifest)
-        throws NoSuchAlgorithmException, IOException {
+            throws NoSuchAlgorithmException, IOException {
         final List<SourcesParser.Source> sources = manifest.getSources();
         for (SourcesParser.Source source : sources) {
             if (!source.getAlgorithm().isEmpty() || !source.getHash().isEmpty()) {
@@ -215,7 +222,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     private void validateSource(Path csarRootDirectory, SourcesParser.Source source)
-        throws NoSuchAlgorithmException, IOException {
+            throws NoSuchAlgorithmException, IOException {
         final Path sourcePath = csarRootDirectory.resolve(source.getValue());
         if (!sourcePath.toFile().exists()) {
             this.errors.add(new CSARErrorUnableToFindSource(source.getValue()));
@@ -229,7 +236,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     private void validateSourceHashCode(Path csarRootDirectory, SourcesParser.Source source)
-        throws NoSuchAlgorithmException, IOException {
+            throws NoSuchAlgorithmException, IOException {
         String hashCode = generateHashCode(csarRootDirectory, source);
         if (!hashCode.equals(source.getHash())) {
             this.errors.add(new CSARErrorWrongHashCode(source.getValue()));
@@ -237,7 +244,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     private String generateHashCode(Path csarRootDirectory, SourcesParser.Source source)
-        throws NoSuchAlgorithmException, IOException {
+            throws NoSuchAlgorithmException, IOException {
         final byte[] sourceData = Files.readAllBytes(csarRootDirectory.resolve(source.getValue()));
         final String algorithm = source.getAlgorithm();
 
@@ -262,14 +269,18 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         private final ManifestFileSplitter manifestFileSplitter = new ManifestFileSplitter();
         private final CmsSignatureValidator cmsSignatureValidator = new CmsSignatureValidator();
 
-        boolean isValid(File manifestFile) {
+        boolean isValid(File manifestFile, String absolutePathToEntryCertificate) {
             try {
+                byte[] entryCertificate = Files.readAllBytes(new File(absolutePathToEntryCertificate).toPath());
                 ManifestFileModel mf = manifestFileSplitter.split(manifestFile);
                 return cmsSignatureValidator.verifySignedData(toBytes(mf.getCMS(), mf.getNewLine()),
-                    Optional.empty(),
-                    toBytes(mf.getData(), mf.getNewLine()));
+                        Optional.of(entryCertificate),
+                        toBytes(mf.getData(), mf.getNewLine()));
             } catch (CmsSignatureValidatorException e) {
                 LOG.error("Unable to verify signed data!", e);
+                return false;
+            } catch (IOException e) {
+                LOG.error("Unable to read ETSI entry certificate file!", e);
                 return false;
             }
         }

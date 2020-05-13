@@ -63,6 +63,25 @@ public class VTPValidateCSARR130206IntegrationTest {
     }
 
     @Test
+    @Ignore("It is impossible to write test which will always pass, because certificate used to sign the file has time validity." +
+            "To verify signed package please please follow instructions from test/resources/README.txt file and comment @Ignore tag. " +
+            "Use instructions for option 1. Test was created for manual verification."
+    )
+    public void manual_shouldValidateCsarWithCertificateInEtsiAndMissingInCMS() throws Exception {
+
+        // given
+        configureTestCase(testCase, "pnf/r130206/csar-with-etsi-cert-without-cert-in-cms.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(0);
+    }
+
+
+    @Test
     public void shouldReportThatOnlySignatureIsInvalid() throws Exception {
 
         // given
@@ -121,6 +140,24 @@ public class VTPValidateCSARR130206IntegrationTest {
         );
     }
 
+
+    @Test
+    public void shouldReportThanInVnfPackageETSIFileIsMissingAndNoCertificateInCMS() throws Exception {
+
+        // given
+        configureTestCase(testCase, "pnf/r130206/csar-with-no-certificate.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(convertToMessagesList(errors)).contains(
+                "Unable to find cert file defined by ETSI-Entry-Certificate!",
+                "Unable to find CMS section in manifest!"
+
+        );
+    }
 
 
 }
