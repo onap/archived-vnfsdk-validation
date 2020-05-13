@@ -33,6 +33,42 @@
       "revId": "1f99e33eadb761738be3434bd44a10748ab808d3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66ef7310_c84cdb28",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/parser/NonManoArtifactsParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 6482
+      },
+      "writtenOn": "2020-05-13T05:37:23Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "8f6fd73d_fe5c3b85",
+      "revId": "1f99e33eadb761738be3434bd44a10748ab808d3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "17f64556_4d18558a",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/parser/NonManoArtifactsParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 6482
+      },
+      "writtenOn": "2020-05-13T05:37:23Z",
+      "side": 1,
+      "message": "This would cause an error. The order in this case is important.",
+      "parentUuid": "b8ee35dc_8da6735c",
+      "revId": "1f99e33eadb761738be3434bd44a10748ab808d3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
