@@ -21,10 +21,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.configureTestCase;
 import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessagesList;
 
+import java.net.URISyntaxException;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.onap.cli.fw.error.OnapCommandException;
 import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.CSARArchive.CSARError;
 
@@ -110,4 +112,37 @@ public class VTPValidateCSARR972082IntegrationTest {
         );
     }
 
+    @Test
+    public void shouldReportMissingSourceElementUnderAttribute() throws OnapCommandException, URISyntaxException {
+        // given
+        configureTestCase(testCase, PNF_R_972082 + "missingSourceElementUnderAttributeError.csar",
+                VTP_VALIDATE_CSAR_R_972082_YAML, IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        final List<CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors)).contains(
+                "Missing. Entry [Source under onap_pnf_sw_information]"
+        );
+    }
+
+    @Test
+    public void shouldReportInvalidYamlStructure() throws OnapCommandException, URISyntaxException {
+        // given
+        configureTestCase(testCase, PNF_R_972082 + "invalidYamlStructure.csar",
+                VTP_VALIDATE_CSAR_R_972082_YAML, IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        final List<CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors)).contains(
+                "Invalid. Yaml file Files/pnf-sw-information/pnf-sw-information.yaml is invalid"
+        );
+    }
 }
