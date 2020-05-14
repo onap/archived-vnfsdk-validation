@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c66f9a2a_bc7c60dd",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR130206.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-05-14T07:29:57Z",
+      "side": 1,
+      "message": "extract this two lines to separate method: getAbsolutePathToEntryCertificate",
+      "revId": "d1ce722f163f8e51a16732abf68e333c275330ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4597222e_c7b819d1",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR130206.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-05-14T07:29:57Z",
+      "side": 1,
+      "message": "bad variable name - it should be absolutePathToEntryCertificate",
+      "revId": "d1ce722f163f8e51a16732abf68e333c275330ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d62587eb_f9b25e73",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR130206.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-05-14T07:29:57Z",
+      "side": 1,
+      "message": "it should be space between parameters .., ...",
+      "revId": "d1ce722f163f8e51a16732abf68e333c275330ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4f3e237_b36a6afd",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR130206.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-05-14T07:29:57Z",
+      "side": 1,
+      "message": "bad param name. It is absolutePathToEntryCertificate",
+      "revId": "d1ce722f163f8e51a16732abf68e333c275330ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e474886_a676acfe",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR130206.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-05-14T07:29:57Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "d1ce722f163f8e51a16732abf68e333c275330ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
