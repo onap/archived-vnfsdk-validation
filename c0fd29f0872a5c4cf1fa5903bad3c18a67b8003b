@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e6dec91_8420f504",
+        "filename": "csarvalidation/src/main/resources/vnfreqs.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-05-18T08:40:25Z",
+      "side": 1,
+      "message": "could you pls sort list of rules? ascending order",
+      "revId": "c0fd29f0872a5c4cf1fa5903bad3c18a67b8003b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
