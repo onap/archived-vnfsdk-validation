@@ -1,0 +1,71 @@
+metadata:
+    pnfd_name: RadioNode
+    pnfd_provider: Ericsson
+    pnfd_archive_version: 1.0
+    pnfd_release_date_time: 2019-01-14T11:25:00+00:00
+
+#The manifest file shall include a list of all files contained in or referenced from the VNF package with their location
+Source: MRF.yaml
+Algorithm: SHA-256
+Hash: 09e5a788acb180162c51679ae4c998039fa6644505db2415e35107d1ee213943
+
+Source: scripts/install.sh
+Algorithm: SHA-256
+Hash: d0e7828293355a07c2dccaaa765c80b507e60e6167067c950dc2e6b0da0dbd8b
+
+Source: https://www.vendor_org.com/MRF/v4.1/scripts/scale/scale.sh
+Algorithm: SHA-256
+Hash: 36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165
+
+non_mano_artifact_sets:
+
+    onap_ves_events:
+        source: Artifacts/Events/VES_registration.yml
+
+    onap_pm_dictionary:
+        source: Artifacts/Measurements/PM_Dictionary.yaml
+
+    onap_yang_module:
+        source: Artifacts/Yang_module/Yang_module.yaml
+
+    onap_others:
+            source: Artifacts/scripts/install.sh
+            source: Artifacts/Informational/user_guide.txt
+            source: Artifacts/Other/installation_guide.txt
+            source: Artifacts/Other/review_log.txt
+
+-----BEGIN CMS-----
+MIIGDAYJKoZIhvcNAQcCoIIF/TCCBfkCAQExDTALBglghkgBZQMEAgEwCwYJKoZI
+hvcNAQcBoIIDRTCCA0EwggIpAhRJ6KO7OFR2BuRDZwcd2TT4/wrEqDANBgkqhkiG
+9w0BAQsFADBlMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8G
+A1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMR4wHAYDVQQLDBVDZXJ0aWZp
+Y2F0ZSBBdXRob3JpdHkwHhcNMTkwODEzMDg0NDU4WhcNMTkwOTEyMDg0NDU4WjBV
+MQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50
+ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMQ4wDAYDVQQLDAVOb2tpYTCCASIwDQYJKoZI
+hvcNAQEBBQADggEPADCCAQoCggEBAPRCM8g0cm1nuojFuk01Lo1iAbj7STEbiqJn
+Xk4BEEspM4snShj35bO9DHSunXivdCzen4BE7hLpetpbr+7ptqpV7NuR9DgYD399
+eAltb4oLnkLWgODCxhFOnwrKjnXSbP8KX3kmYRJmDzsSjJrpattfxNCa2aHzubyA
+W0Mv9Ni2R0scnBY+ubydwn223d/743T2pfXsiOV6Ucjhz+9XWU96b7e9GxN12EJQ
+R6R4O9dz3CSZmQsiMMYROD5elV59Y9ucSkhdrUjPzjveqjEA9FWc0piBpe42c9Mo
+Lr8S5hKaaC8ONfSUBuEysKC5g6D6OS1Kxii3zbUbNzpxXti8tmUCAwEAATANBgkq
+hkiG9w0BAQsFAAOCAQEAVJGCH8VL/ha1RYmoZBefCT/AQc50GlcIJtPCB8Y7ygkX
+Y2Ybj6SrF66+wq6hQsU9xtxHyn08nfOdGWfNJ9yq4SO8RF7Oz4NxkQ+KFhi2QUGZ
+5TwdWLr0Q+zKTZgpLZm1rtlyyz+2AUwcPPVHhDfJX0kqz/0UPHWFDxXfJyOwmQdN
+E4qhO9uB3zEujJwM8B7wXfDwsNg6xbKBytm67IHQN3OF/Bfcugx7eCVJ08XA8Irj
+CovwPvjxaL32iYTXmiBl+vSb3lEarbinMkMCq80yx3LtIg1goGVO+Tp+yOoVxNUL
+psSXr9kdWncI1venEjk/SvggxtT4RJ6dLH358qFu+TGCAo0wggKJAgEBMH0wZTEL
+MAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoMGEludGVy
+bmV0IFdpZGdpdHMgUHR5IEx0ZDEeMBwGA1UECwwVQ2VydGlmaWNhdGUgQXV0aG9y
+aXR5AhRJ6KO7OFR2BuRDZwcd2TT4/wrEqDALBglghkgBZQMEAgGggeQwGAYJKoZI
+hvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTkwODEzMDg0NTI2
+WjAvBgkqhkiG9w0BCQQxIgQgOtAYNJkSFj5rU8K7Ujz6BdefH7sITKBcMmBcm/hI
+TUAweQYJKoZIhvcNAQkPMWwwajALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsG
+CWCGSAFlAwQBAjAKBggqhkiG9w0DBzAOBggqhkiG9w0DAgICAIAwDQYIKoZIhvcN
+AwICAUAwBwYFKw4DAgcwDQYIKoZIhvcNAwICASgwDQYJKoZIhvcNAQEBBQAEggEA
+Sj+3i3Mcxz6Uqf8WcLNiR3K3QeQUEQJurPHW/BzidjPx+PoZ+6jP8sAkulUu/yeo
+rv3dDQGq0cF6KE3gKi3IXgCOB5nZ/O4BtvPcKOlQk14fMdBnHQMgGb27dNLMheuo
+t4YJVEZNm+1NoYZBMyESm1Ns3DHmq7dqpFMWSad85gMTsbD/q896ZMiua+bLvnlg
+qJXtYrnJPx9KqSzNFhzTqwFMJ9OASaHm+eV9/EWWLJ0rgUmheI0sb2Pa5i93w6dr
+HhE7UbSCHDlDDgrOosJkbuI4UCX/njXrU2ukXbrWz/FjH84Mek039z+w4M6fBnl5
+4xuyO1o65LlKHoxwnRH9lQ==
+-----END CMS-----
