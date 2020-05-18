@@ -61,6 +61,20 @@ public class VTPValidateCSARR972082IntegrationTest {
     }
 
     @Test
+    public void shouldReturnNoErrorWhenOptionalNonManoArtifactSetEntryIsNotPresent() throws Exception {
+        // given
+        configureTestCase(testCase, PNF_R_972082 + "missingOnapPnfSwInformationArtifactSetEntry.csar",
+                VTP_VALIDATE_CSAR_R_972082_YAML, IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        final List<CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(0);
+    }
+
+    @Test
     public void shouldReportThatEntryHasInvalidPathWhenYamlFileIsNotPresent() throws Exception {
         // given
         configureTestCase(testCase, PNF_R_972082 + "missingYamlFileReferedInSourceSessionOfManifest.csar",
@@ -75,23 +89,6 @@ public class VTPValidateCSARR972082IntegrationTest {
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).contains(
             "Invalid. Entry [Source under onap_pnf_sw_information has invalid 'Files/pnf-sw-information/pnf-sw-information.yaml' path]"
-        );
-    }
-
-    @Test
-    public void shouldReportThatMandatoryNonManoArtifactSetEntryHasNotAllFields_() throws Exception {
-        // given
-        configureTestCase(testCase, PNF_R_972082 + "missingFieldsInNonManoArtifactManifest.csar",
-            VTP_VALIDATE_CSAR_R_972082_YAML, IS_PNF);
-
-        // when
-        testCase.execute();
-
-        // then
-        final List<CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(1);
-        assertThat(convertToMessagesList(errors)).contains(
-            "Missing. Entry [[onap_pnf_sw_information]]"
         );
     }
 

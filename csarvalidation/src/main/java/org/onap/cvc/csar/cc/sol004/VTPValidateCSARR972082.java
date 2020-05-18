@@ -23,13 +23,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -115,13 +117,12 @@ public class VTPValidateCSARR972082 extends VTPValidateCSARBase {
 
     private static class ValidateNonManoSection {
 
+        private static final String ATTRIBUTE_NAME = "onap_pnf_sw_information";
+
         private final CSARArchive csar;
         private final String fileName;
         private final Map<String, Map<String, List<String>>> nonMano;
         private final List<CSARError> errors = new ArrayList<>();
-        private final List<String> attributeNames = Arrays.asList(
-            "onap_pnf_sw_information"
-        );
 
         private ValidateNonManoSection(final CSARArchive csar, final String fileName,
                                        final Map<String, Map<String, List<String>>> nonMano) {
@@ -141,28 +142,20 @@ public class VTPValidateCSARR972082 extends VTPValidateCSARBase {
         }
 
         private List<CSARError> validate() {
-            if (nonMano.keySet().stream().filter(Objects::nonNull).count() > 0) {
-                nonMano.keySet().stream().filter(Objects::nonNull).forEach(this::validateAttribute);
+            List<String> attributesNotNull = nonMano.keySet().stream()
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            if (!attributesNotNull.isEmpty()) {
+                attributesNotNull.forEach(this::validateAttribute);
             } else {
-                errors.add(new PnfCSARErrorEntryMissing(
-                    attributeNames.toString(),
-                    fileName,
-                    UNKNOWN_LINE_NUMBER)
-                );
+                errors.add(new PnfCSARErrorEntryMissing(ATTRIBUTE_NAME, fileName, UNKNOWN_LINE_NUMBER));
             }
 
             return errors;
         }
 
         private void validateAttribute(final String nonManoAttributes) {
-
-            if (!attributeNames.contains(nonManoAttributes)) {
-                errors.add(new PnfCSARErrorEntryMissing(
-                    nonManoAttributes,
-                    fileName,
-                    UNKNOWN_LINE_NUMBER)
-                );
-            } else {
+            if (ATTRIBUTE_NAME.equals(nonManoAttributes)) {
                 validateSourceElementsUnderAttribute(nonManoAttributes);
             }
         }
