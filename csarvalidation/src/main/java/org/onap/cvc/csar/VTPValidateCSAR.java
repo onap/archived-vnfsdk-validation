@@ -237,7 +237,7 @@ public class VTPValidateCSAR extends OnapCommand {
                         }
                     }
 
-                    result.setPassed(overallPass);
+                    result.setPassed(result.getErrors().isEmpty());
                     validation.getResults().add(result);
                 } catch (Exception e) {
                     result.setPassed(false);
