@@ -61,6 +61,22 @@ public class VTPValidateCSARR972082IntegrationTest {
     }
 
     @Test
+    public void shouldReturnErrorWhenFileExtensionIsNotYaml() throws Exception {
+        // given
+        configureTestCase(testCase, PNF_R_972082 + "fileExtensionOfArtifactIsNotYaml.csar", VTP_VALIDATE_CSAR_R_972082_YAML, IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        final List<CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors)).contains(
+                "Invalid. File extension Files/pnf-sw-information/pnf-sw-information.json is invalid"
+        );
+    }
+
+    @Test
     public void shouldReturnNoErrorWhenOptionalNonManoArtifactSetEntryIsNotPresent() throws Exception {
         // given
         configureTestCase(testCase, PNF_R_972082 + "missingOnapPnfSwInformationArtifactSetEntry.csar",

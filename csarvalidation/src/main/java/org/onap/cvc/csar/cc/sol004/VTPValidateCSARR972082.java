@@ -115,6 +115,16 @@ public class VTPValidateCSARR972082 extends VTPValidateCSARBase {
         }
     }
 
+    private static class InvalidFileExtensionError extends PnfCSARError {
+
+        private InvalidFileExtensionError(final String fileName) {
+            super(ERROR_CODE,
+                    String.format("Invalid. File extension %s is invalid", fileName),
+                    UNKNOWN_LINE_NUMBER,
+                    fileName);
+        }
+    }
+
     private static class ValidateNonManoSection {
 
         private static final String ATTRIBUTE_NAME = "onap_pnf_sw_information";
@@ -186,6 +196,9 @@ public class VTPValidateCSARR972082 extends VTPValidateCSARBase {
         private void validateSoftwareInformationNonManoArtifact(final String swInformationFilePath) {
             if (StringUtils.isEmpty(swInformationFilePath)) {
                 errors.add(new MissingSourceElementUnderAttributeError("", swInformationFilePath));
+                return;
+            } else if (!swInformationFilePath.matches(".*\\.yaml$")) {
+                errors.add(new InvalidFileExtensionError(swInformationFilePath));
                 return;
             }
             final Optional<PnfSoftwareInformation> parsedYaml = parse(swInformationFilePath);
