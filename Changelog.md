@@ -28,7 +28,7 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-586
 
 
-## [1.2.x]
+## [1.2.7]
 
 ### Fixed
 - Fixed bug that was causing problem with loading rules properties.
