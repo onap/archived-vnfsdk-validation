@@ -26,3 +26,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Fixed bug that was generating invalid report when user run validation with all rules and single validation fails.
     - https://jira.onap.org/browse/VNFSDK-586
+
+
+## [1.2.x]
+
+### Fixed
+- Fix bug that was causing problem with loading rules properties.
+    - https://jira.onap.org/browse/VNFSDK-587
