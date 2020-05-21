@@ -178,7 +178,7 @@ public class VTPValidateCSAR extends OnapCommand {
     private static Properties properties = new Properties();
     static {
         try {
-            properties.load(VTPValidateCSAR.class.getClass().getResourceAsStream("/vnfreqs.properties"));
+            properties.load(VTPValidateCSAR.class.getResourceAsStream("/vnfreqs.properties"));
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
