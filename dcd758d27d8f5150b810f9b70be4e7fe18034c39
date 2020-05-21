@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "025650e4_da9936c9",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/VTPValidateCSAR.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-05-21T09:55:08Z",
+      "side": 1,
+      "message": "update Changelog.md file \n\nadd new entry with information about fixed bug\nsee content changelog file\n\n## [1.2.x]\n...",
+      "revId": "dcd758d27d8f5150b810f9b70be4e7fe18034c39",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
