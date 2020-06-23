@@ -16,6 +16,24 @@
       "revId": "c7e44c66f3f1491438ec54868384761de7343f77",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1ae0363_e2df2ff1",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR01123.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-06-23T07:30:54Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "f1a7a2d7_4b740886",
+      "revId": "c7e44c66f3f1491438ec54868384761de7343f77",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }

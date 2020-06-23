@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "764b4428_8adf820d",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR01123.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-06-23T07:30:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83ec0173_e3739135",
+      "revId": "14d01c9f24667eca1d11eec036badc23a1325dd0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a1857341_afe52e83",
         "filename": "csarvalidation/src/main/resources/open-cli-schema/sol004/vtp-validate-csar-r01123.yaml",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "14d01c9f24667eca1d11eec036badc23a1325dd0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1066f8f5_0e12f3f6",
+        "filename": "csarvalidation/src/main/resources/open-cli-schema/sol004/vtp-validate-csar-r01123.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-06-23T07:30:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1857341_afe52e83",
+      "revId": "14d01c9f24667eca1d11eec036badc23a1325dd0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
