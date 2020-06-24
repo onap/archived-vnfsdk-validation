@@ -20,16 +20,33 @@ import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 
+import java.util.List;
+import java.util.Map;
+
 @OnapCommandSchema(schema = "vtp-validate-csar-r816745.yaml")
 public class VTPValidateCSARR816745 extends VTPValidateCSARBase {
 
+    private static final String PM_DICTIONARY = "onap_pm_dictionary";
+
     @Override
     protected void validateCSAR(CSARArchive csar) throws Exception {
+        Map<String, Map<String, List<String>>> nonManoFields = csar.getManifest().getNonMano();
+        if(nonManoFields.containsKey(PM_DICTIONARY)) {
+            validateYamlFile(getLocationOfPmDictionaryFile(nonManoFields));
+        }
+    }
 
+    private String getLocationOfPmDictionaryFile(Map<String, Map<String, List<String>>> nonManoFields) {
+        return nonManoFields.get(PM_DICTIONARY).get("source").get(0);
+    }
+
+    private void validateYamlFile(String path) {
+        throw  new UnsupportedOperationException("Under development");
     }
 
     @Override
     protected String getVnfReqsNo() {
         return "R816745";
     }
+
 }
