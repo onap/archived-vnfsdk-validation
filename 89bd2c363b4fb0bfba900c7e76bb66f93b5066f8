@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ff2d191_1f25811f",
+        "filename": "csarvalidation/src/test/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR01123IntegrationTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-06-24T05:16:02Z",
+      "side": 1,
+      "message": "pls cover also original behavior of this rule",
+      "revId": "89bd2c363b4fb0bfba900c7e76bb66f93b5066f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
