@@ -1,0 +1,66 @@
+# Copyright 2020 Nokia.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+open_cli_schema_version: 1.0
+
+name: csar-validate-r816745
+
+description: |
+  The VNF or PNF PROVIDER MUST provide the Service Provider with PM Meta Data (PM Dictionary)
+  to support the analysis of PM events delivered to DCAE.
+  The PM Dictionary is to be provided as a separate YAML artifact at onboarding and must follow
+  the VES Event Listener Specification and VES Event Registration Specification
+  which contain the format and content required.
+
+
+info:
+  product: onap-dublin
+  version: 1.0
+  service: vnf-compliance
+  author: ONAP VTP Team onap-discuss@lists.onap.org
+
+parameters:
+    - name: csar
+      description: CSAR file path
+      long_option: csar
+      short_option: b
+      type: binary
+      is_optional: false
+    - name: pnf
+      description: CSAR file contains PNF
+      long_option: pnf
+      short_option: p
+      type: bool
+      is_optional: true
+      default_value: false
+
+results:
+    direction: landscape
+    attributes:
+     - name: code
+       description: Error code
+       scope: short
+       type: string
+     - name: message
+       description: Error message
+       scope: short
+       type: string
+     - name: file
+       description: File in which error occured
+       scope: short
+       type: string
+     - name: line-no
+       description: Line no at which error occured
+       scope: short
+       type: string
