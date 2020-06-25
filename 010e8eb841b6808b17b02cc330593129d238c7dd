@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3c126d1b_7cea0e02",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR816745.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-06-25T05:42:49Z",
+      "side": 1,
+      "message": "extract nonManoFields.get(PM_DICTIONARY).get(\"source\").get(0) to meaningful method",
+      "range": {
+        "startLine": 35,
+        "startChar": 29,
+        "endLine": 35,
+        "endChar": 42
+      },
+      "revId": "010e8eb841b6808b17b02cc330593129d238c7dd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5266b8fa_2d4479d3",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR816745.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-06-25T05:42:49Z",
+      "side": 1,
+      "message": "add throw new UnsupportedOperationException(\"Under development\") to prove that your test works",
+      "revId": "010e8eb841b6808b17b02cc330593129d238c7dd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
