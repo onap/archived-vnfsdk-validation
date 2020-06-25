@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c0b2bea6_fdd9b2b2",
+        "filename": "csarvalidation/src/test/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR816745IntegrationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-06-25T09:47:58Z",
+      "side": 1,
+      "message": "more friendly way of checking that exception was thrown: https://www.baeldung.com/assertj-exception-assertion",
+      "revId": "4d94d239aa4f768f5348ac11401fa63d986f963d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
