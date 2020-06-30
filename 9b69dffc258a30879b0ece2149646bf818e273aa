@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e6df1bd5_5f5ce13f",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR130206.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 6100
+      },
+      "writtenOn": "2020-06-30T12:26:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8212939_12b31b22",
+      "revId": "9b69dffc258a30879b0ece2149646bf818e273aa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dfda7eb8_3996e716",
         "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR130206.java",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "9b69dffc258a30879b0ece2149646bf818e273aa",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3699581e_86529bb6",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR130206.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 6100
+      },
+      "writtenOn": "2020-06-30T12:26:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfda7eb8_3996e716",
+      "revId": "9b69dffc258a30879b0ece2149646bf818e273aa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
