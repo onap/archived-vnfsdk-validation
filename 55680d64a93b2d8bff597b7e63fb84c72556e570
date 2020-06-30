@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5f678058_0c92f2ff",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/YamlLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-06-30T12:39:45Z",
+      "side": 1,
+      "message": "use logger instead of stdout",
+      "revId": "55680d64a93b2d8bff597b7e63fb84c72556e570",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e915108_a1b6a656",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/model/YamlDocument.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-06-30T12:39:45Z",
+      "side": 1,
+      "message": "private final",
+      "revId": "55680d64a93b2d8bff597b7e63fb84c72556e570",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "def007e6_5c2d7c86",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/model/YamlDocumentFactory.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-06-30T12:39:45Z",
+      "side": 1,
+      "message": "use String.format rather +",
+      "revId": "55680d64a93b2d8bff597b7e63fb84c72556e570",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
