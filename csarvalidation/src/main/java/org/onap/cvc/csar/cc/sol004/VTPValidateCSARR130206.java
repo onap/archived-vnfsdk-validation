@@ -118,6 +118,13 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         }
     }
 
+    public static class CSARWarningNoSecurity extends CSARArchive.CSARErrorWarning{
+        CSARWarningNoSecurity(){
+            super("","",-1,"");
+            this.message = "Warning. Consider adding security options (CMS and hash codes for sources) in manifest file.";
+        }
+    }
+
     @Override
     protected void validateCSAR(CSARArchive csar) throws OnapCommandException {
 
@@ -138,20 +145,34 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
 
     private void validate(CSARArchive csar, Path csarRootDirectory) throws IOException, NoSuchAlgorithmException {
         final CSARArchive.Manifest manifest = csar.getManifest();
+        validateEntryCertificate(csar, csarRootDirectory);
+        if(verifyThatCsarIsSecure(manifest)){
 
-        validateSecurityStructure(csar, csarRootDirectory);
-        validateSources(csarRootDirectory, manifest);
+            validateManifestCms(manifest);
+            validateSources(csarRootDirectory, manifest);
 
-        final Map<String, Map<String, List<String>>> nonMano = manifest.getNonMano();
-        final List<SourcesParser.Source> sources = manifest.getSources();
+            final Map<String, Map<String, List<String>>> nonMano = manifest.getNonMano();
+            final List<SourcesParser.Source> sources = manifest.getSources();
 
-        validateNonManoCohesionWithSources(nonMano, sources);
+            validateNonManoCohesionWithSources(nonMano, sources);
 
-        final File manifestMfFile = csar.getManifestMfFile();
-        final String absolutePathToEntryCertificate = getAbsolutePathToEntryCertificate(csar, csarRootDirectory);
-        if (manifestMfFile != null) {
-            validateFileSignature(manifestMfFile, absolutePathToEntryCertificate);
+            final File manifestMfFile = csar.getManifestMfFile();
+            final String absolutePathToEntryCertificate = getAbsolutePathToEntryCertificate(csar, csarRootDirectory);
+            if (manifestMfFile != null) {
+                validateFileSignature(manifestMfFile, absolutePathToEntryCertificate);
+            }
+        }else{
+            this.errors.add(new CSARWarningNoSecurity());
         }
+
+    }
+
+    private boolean verifyThatCsarIsSecure(CSARArchive.Manifest manifest) {
+        final List<SourcesParser.Source> sources = manifest.getSources();
+        final String cms = manifest.getCms();
+        final boolean containsHashOrAlgorithm = (sources.stream().anyMatch(source -> (!source.getAlgorithm().equals("") || !source.getHash().equals(""))));
+        final boolean containsCms = (cms != null && !cms.equals(""));
+        return containsCms || containsHashOrAlgorithm;
     }
 
     private String getAbsolutePathToEntryCertificate(CSARArchive csar, Path csarRootDirectory) {
@@ -188,7 +209,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         }
     }
 
-    private void validateSecurityStructure(CSARArchive csar, Path csarRootDirectory) {
+    private void validateEntryCertificate(CSARArchive csar, Path csarRootDirectory) {
         final CSARArchive.Manifest manifest = csar.getManifest();
         final CSARArchive.TOSCAMeta toscaMeta = csar.getToscaMeta();
         final String entryCertificateParamName = csar.getEntryCertificateParamName();
@@ -197,6 +218,10 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
             this.errors.add(new CSARErrorUnableToFindCertificate(entryCertificateParamName));
         }
 
+
+    }
+
+    private void validateManifestCms(CSARArchive.Manifest manifest) {
         if (manifest.getCms() == null || manifest.getCms().isEmpty()) {
             this.errors.add(new CSARErrorUnableToFindCmsSection());
         }
