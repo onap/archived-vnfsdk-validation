@@ -80,6 +80,22 @@ public class VTPValidateCSARR130206IntegrationTest {
         assertThat(errors.size()).isEqualTo(0);
     }
 
+    @Test
+    public void shouldReportWarningForMissingCMSAndHashCodes() throws Exception{
+        // given
+        configureTestCase(testCase, "pnf/r130206/csar-option1-warning.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors)).contains(
+                "Warning. Consider adding security options (CMS and hash codes for sources) in manifest file."
+        );
+    }
+
 
     @Test
     public void shouldReportThatOnlySignatureIsInvalid() throws Exception {
@@ -135,14 +151,14 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(convertToMessagesList(errors)).contains(
                 "Unable to find cert file defined by Entry-Certificate!",
-                "Unable to find CMS section in manifest!",
+                "Warning. Consider adding security options (CMS and hash codes for sources) in manifest file.",
                 "Missing. Entry [tosca_definitions_version]"
         );
     }
 
 
     @Test
-    public void shouldReportThanInVnfPackageETSIFileIsMissingAndNoCertificateInCMS() throws Exception {
+    public void shouldReportThanInVnfPackageETSIFileIsMissing() throws Exception {
 
         // given
         configureTestCase(testCase, "pnf/r130206/csar-with-no-certificate.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
@@ -154,7 +170,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(convertToMessagesList(errors)).contains(
                 "Unable to find cert file defined by ETSI-Entry-Certificate!",
-                "Unable to find CMS section in manifest!"
+                "Warning. Consider adding security options (CMS and hash codes for sources) in manifest file."
 
         );
     }
