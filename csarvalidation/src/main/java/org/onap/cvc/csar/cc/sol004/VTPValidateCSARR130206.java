@@ -50,6 +50,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     private static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSARR130206.class);
     private static final String SHA_256 = "SHA-256";
     private static final String SHA_512 = "SHA-512";
+    private static final String EMPTY_STRING = "";
 
     private final ShaHashCodeGenerator shaHashCodeGenerator = new ShaHashCodeGenerator();
     private final ManifestFileSignatureValidator manifestFileSignatureValidator = new ManifestFileSignatureValidator();
@@ -118,6 +119,13 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         }
     }
 
+    public static class CSARWarningNoSecurity extends CSARArchive.CSARErrorWarning{
+        CSARWarningNoSecurity(){
+            super(EMPTY_STRING, EMPTY_STRING,-1, EMPTY_STRING);
+            this.message = "Warning. Consider adding security options (CMS and hash codes for sources) in manifest file.";
+        }
+    }
+
     @Override
     protected void validateCSAR(CSARArchive csar) throws OnapCommandException {
 
@@ -138,20 +146,39 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
 
     private void validate(CSARArchive csar, Path csarRootDirectory) throws IOException, NoSuchAlgorithmException {
         final CSARArchive.Manifest manifest = csar.getManifest();
+        validateEntryCertificate(csar, csarRootDirectory);
+        if(verifyThatCsarIsSecure(manifest)){
 
-        validateSecurityStructure(csar, csarRootDirectory);
-        validateSources(csarRootDirectory, manifest);
+            validateManifestCms(manifest);
+            validateSources(csarRootDirectory, manifest);
 
-        final Map<String, Map<String, List<String>>> nonMano = manifest.getNonMano();
-        final List<SourcesParser.Source> sources = manifest.getSources();
+            final Map<String, Map<String, List<String>>> nonMano = manifest.getNonMano();
+            final List<SourcesParser.Source> sources = manifest.getSources();
 
-        validateNonManoCohesionWithSources(nonMano, sources);
+            validateNonManoCohesionWithSources(nonMano, sources);
 
-        final File manifestMfFile = csar.getManifestMfFile();
-        final String absolutePathToEntryCertificate = getAbsolutePathToEntryCertificate(csar, csarRootDirectory);
-        if (manifestMfFile != null) {
-            validateFileSignature(manifestMfFile, absolutePathToEntryCertificate);
+            final File manifestMfFile = csar.getManifestMfFile();
+            final String absolutePathToEntryCertificate = getAbsolutePathToEntryCertificate(csar, csarRootDirectory);
+            if (manifestMfFile != null) {
+                validateFileSignature(manifestMfFile, absolutePathToEntryCertificate);
+            }
+        }else{
+            this.errors.add(new CSARWarningNoSecurity());
         }
+
+    }
+
+    private boolean verifyThatCsarIsSecure(CSARArchive.Manifest manifest) {
+        final List<SourcesParser.Source> sources = manifest.getSources();
+        final String cms = manifest.getCms();
+        final boolean containsHashOrAlgorithm = (sources.stream().anyMatch(
+            source ->
+                !source.getAlgorithm().equals(EMPTY_STRING) ||
+                !source.getHash().equals(EMPTY_STRING)
+            )
+        );
+        final boolean containsCms = cms != null && !cms.equals(EMPTY_STRING);
+        return containsCms || containsHashOrAlgorithm;
     }
 
     private String getAbsolutePathToEntryCertificate(CSARArchive csar, Path csarRootDirectory) {
@@ -188,15 +215,16 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         }
     }
 
-    private void validateSecurityStructure(CSARArchive csar, Path csarRootDirectory) {
-        final CSARArchive.Manifest manifest = csar.getManifest();
+    private void validateEntryCertificate(CSARArchive csar, Path csarRootDirectory) {
         final CSARArchive.TOSCAMeta toscaMeta = csar.getToscaMeta();
         final String entryCertificateParamName = csar.getEntryCertificateParamName();
         final Optional<File> entryCertificate = resolveCertificateFilePath(toscaMeta, csarRootDirectory);
         if (!entryCertificate.isPresent() || !entryCertificate.get().exists()) {
             this.errors.add(new CSARErrorUnableToFindCertificate(entryCertificateParamName));
         }
+    }
 
+    private void validateManifestCms(CSARArchive.Manifest manifest) {
         if (manifest.getCms() == null || manifest.getCms().isEmpty()) {
             this.errors.add(new CSARErrorUnableToFindCmsSection());
         }
