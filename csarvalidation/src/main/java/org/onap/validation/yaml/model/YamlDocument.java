@@ -23,12 +23,34 @@ public class YamlDocument {
 
     private final Map<String, ?> yaml;
 
-    public YamlDocument(Map<String, ?> yaml) {
+    YamlDocument(Map<String, ?> yaml) {
         this.yaml = yaml;
     }
 
     public Map<String, ?> getYaml() {
         return yaml;
+    }
+
+    public boolean containsKey(String key) {
+        return yaml.containsKey(key);
+    }
+
+    public String getValue(String key) {
+        return yaml.get(key).toString();
+    }
+
+    public YamlParametersList getListOfValues(String key)
+        throws YamlParameterListFactory.YamlParameterListParsingException {
+        return new YamlParameterListFactory().createYamlParameterList(
+            yaml.get(key)
+        );
+    }
+
+    public YamlDocument getSubStructure(String name)
+        throws YamlDocumentFactory.YamlDocumentParsingException {
+        return new YamlDocumentFactory().createYamlDocument(
+            yaml.get(name)
+        );
     }
 }
 
