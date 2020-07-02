@@ -17,6 +17,8 @@
 
 package org.onap.validation.yaml.model;
 
+import org.onap.validation.yaml.exception.YamlProcessingException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,8 +43,7 @@ public class YamlDocumentFactory {
         return parsedYaml;
     }
 
-    public static class YamlDocumentParsingException extends Exception {
-
+    public static class YamlDocumentParsingException extends YamlProcessingException {
         YamlDocumentParsingException(String message, Throwable throwable) {
             super(message, throwable);
         }

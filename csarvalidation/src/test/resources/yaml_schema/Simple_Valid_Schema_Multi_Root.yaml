@@ -1,0 +1,23 @@
+---
+root1: { presence: required, structure: {
+  field1: {
+    presence: required,
+    value: [X, Y, Z],
+    comment: "field 1 description"
+  }
+}}
+root2: { presence: required, structure: {
+  field2: {
+    presence: required,
+    value: [X, Y, Z],
+    comment: "field 1 description"
+  }
+}}
+root3: { presence: required, structure: {
+  field3: {
+    presence: required,
+    value: [X, Y, Z],
+    comment: "field 1 description"
+  }
+}}
+...
