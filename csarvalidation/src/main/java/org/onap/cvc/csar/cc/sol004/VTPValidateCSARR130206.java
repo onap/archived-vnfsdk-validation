@@ -122,7 +122,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     public static class CSARWarningNoSecurity extends CSARArchive.CSARErrorWarning{
         CSARWarningNoSecurity(){
             super(EMPTY_STRING, EMPTY_STRING,-1, EMPTY_STRING);
-            this.message = "Warning. Consider adding security options (CMS and hash codes for sources) in manifest file.";
+            this.message = "Warning. Consider adding package integrity and authenticity assurance according to ETSI NFV-SOL 004 Security Option 1";
         }
     }
 

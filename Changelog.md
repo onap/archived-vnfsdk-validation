@@ -33,3 +33,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Fixed bug that was causing problem with loading rules properties.
     - https://jira.onap.org/browse/VNFSDK-587
+- Fixed VNFSDK doesn't check if all files in package are listed in manifest file
+    - https://jira.onap.org/browse/VNFSDK-583
+- Fixed package security SOL004 Option 1 make rule less restrictive as this rule is not implemented in SDC Onboarding
+    - https://jira.onap.org/browse/VNFSDK-595
