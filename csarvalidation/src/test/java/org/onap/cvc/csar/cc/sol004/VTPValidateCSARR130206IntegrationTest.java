@@ -92,7 +92,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).contains(
-                "Warning. Consider adding security options (CMS and hash codes for sources) in manifest file."
+                "Warning. Consider adding package integrity and authenticity assurance according to ETSI NFV-SOL 004 Security Option 1"
         );
     }
 
@@ -151,7 +151,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(convertToMessagesList(errors)).contains(
                 "Unable to find cert file defined by Entry-Certificate!",
-                "Warning. Consider adding security options (CMS and hash codes for sources) in manifest file.",
+                "Warning. Consider adding package integrity and authenticity assurance according to ETSI NFV-SOL 004 Security Option 1",
                 "Missing. Entry [tosca_definitions_version]"
         );
     }
@@ -170,7 +170,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(convertToMessagesList(errors)).contains(
                 "Unable to find cert file defined by ETSI-Entry-Certificate!",
-                "Warning. Consider adding security options (CMS and hash codes for sources) in manifest file."
+                "Warning. Consider adding package integrity and authenticity assurance according to ETSI NFV-SOL 004 Security Option 1"
 
         );
     }
