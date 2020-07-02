@@ -15,27 +15,21 @@
  *
  */
 
-package org.onap.validation.yaml;
+package org.onap.validation.yaml.schema;
 
-import org.junit.Test;
-import org.onap.validation.yaml.model.YamlDocument;
-import org.onap.validation.yaml.model.YamlDocumentFactory;
+import org.onap.validation.yaml.schema.node.YamlSchemaNode;
 
-import java.net.URL;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+public class YamlSchema {
 
+    private final List<YamlSchemaNode> rootNodes;
 
-public class YamlLoaderTest {
-
-    @Test
-    public void shouldLoadAllDocumentsFromYamlFile() throws YamlDocumentFactory.YamlDocumentParsingException {
-        // when
-        List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFile();
-
-        // then
-        assertThat(documents.size()).isEqualTo(4);
+    public List<YamlSchemaNode> getRootNodes() {
+        return rootNodes;
     }
 
+    YamlSchema(List<YamlSchemaNode> rootNodes) {
+        this.rootNodes = rootNodes;
+    }
 }
