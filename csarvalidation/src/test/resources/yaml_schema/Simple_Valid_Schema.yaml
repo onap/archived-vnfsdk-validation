@@ -1,0 +1,39 @@
+---
+pmMetaData: { presence: required, structure: {
+  pmHeader: {
+    presence: required,
+    structure: {
+      nfType: {
+        presence: required,
+        comment: "nfType comment"
+      }
+    }
+  },
+  pmFields: {
+    presence: required,
+    structure: {
+      measChangeType: {
+        presence: required,
+        value: [added, modified, deleted],
+        comment: "measChangeType comment"
+      },
+      measAdditionalFields: {
+        presence: required,
+        comment: "measAdditionalFields comment",
+        structure: {
+          vendorField1: {
+            presence: required,
+            value: [X, Y, Z],
+            comment: "vendorField1 comment"
+          },
+          vendorField2: {
+            presence: optional,
+            value: [A, B],
+            comment: "vendorField2 comment"
+          }
+        }
+      }
+    }
+  }
+}}
+...
