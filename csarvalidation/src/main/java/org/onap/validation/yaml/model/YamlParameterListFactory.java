@@ -17,6 +17,8 @@
 
 package org.onap.validation.yaml.model;
 
+import org.onap.validation.yaml.exception.YamlProcessingException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,8 +53,7 @@ public class YamlParameterListFactory {
     }
 
 
-    public static class YamlParameterListParsingException extends Exception {
-
+    public static class YamlParameterListParsingException extends YamlProcessingException {
         YamlParameterListParsingException(String message, Throwable throwable) {
             super(message, throwable);
         }
