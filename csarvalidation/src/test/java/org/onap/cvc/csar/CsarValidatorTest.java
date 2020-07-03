@@ -35,6 +35,7 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.absoluteFilePath;
 public class CsarValidatorTest {
 
     public static final String NO_CERTIFICATE_RULE = "r130206";
+    public static final String NO_ALL_FILES_LISTED_IN_MANIFEST = "r01123";
     public static final String OPERATION_STATUS_FAILED = "FAILED";
 
     @Test
@@ -93,8 +94,9 @@ public class CsarValidatorTest {
         // then
         final OnapCommandResult onapCommandResult = cli.getCommandResult();
         verifyThatOperation(onapCommandResult, OPERATION_STATUS_FAILED);
-        verifyThatXRulesFails(onapCommandResult, 1);
+        verifyThatXRulesFails(onapCommandResult, 2);
         verifyThatRuleFails(onapCommandResult, NO_CERTIFICATE_RULE);
+        verifyThatRuleFails(onapCommandResult, NO_ALL_FILES_LISTED_IN_MANIFEST);
         verifyThatOperationFinishedWithoutAnyError(cli);
     }
 
