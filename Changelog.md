@@ -41,3 +41,5 @@ All notable changes to this project will be documented in this file.
 ## Fixed
 - Fixed VNFSDK doesn't check if all files in package are listed in manifest file
     - https://jira.onap.org/browse/VNFSDK-583
+
+## [1.2.9]
