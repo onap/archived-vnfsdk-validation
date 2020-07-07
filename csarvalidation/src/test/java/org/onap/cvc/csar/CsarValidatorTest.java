@@ -34,18 +34,17 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.absoluteFilePath;
 
 public class CsarValidatorTest {
 
-    public static final String NO_CERTIFICATE_RULE = "r130206";
-    public static final String NO_ALL_FILES_LISTED_IN_MANIFEST = "r01123";
-    public static final String OPERATION_STATUS_FAILED = "FAILED";
+    private static final String NO_CERTIFICATE_RULE = "r130206";
+    private static final String OPERATION_STATUS_FAILED = "FAILED";
 
     @Test
     public void shouldReportThanVnfValidationFailed() throws URISyntaxException {
         // given
         OnapCliWrapper cli = new OnapCliWrapper(new String[]{
-                "--product", "onap-dublin",
-                "csar-validate",
-                "--format", "json",
-                "--csar", absoluteFilePath("VoLTE.csar")});
+            "--product", "onap-dublin",
+            "csar-validate",
+            "--format", "json",
+            "--csar", absoluteFilePath("VoLTE.csar")});
 
         // when
         cli.handle();
@@ -62,11 +61,11 @@ public class CsarValidatorTest {
     public void shouldReportThatPnfValidationFailedWhenCsarDoNotHaveCertificate_allOtherRulesShouldPass() throws URISyntaxException {
         // given
         OnapCliWrapper cli = new OnapCliWrapper(new String[]{
-                "--product", "onap-dublin",
-                "csar-validate",
-                "--format", "json",
-                "--pnf",
-                "--csar", absoluteFilePath("pnf/r972082/validFile.csar")});
+            "--product", "onap-dublin",
+            "csar-validate",
+            "--format", "json",
+            "--pnf",
+            "--csar", absoluteFilePath("pnf/r972082/validFile.csar")});
         // when
         cli.handle();
 
@@ -82,11 +81,11 @@ public class CsarValidatorTest {
     public void shouldReportThatPnfValidationFailedWhenZipDoNotHaveCertificate_allOtherRulesShouldPass() throws URISyntaxException {
         // given
         OnapCliWrapper cli = new OnapCliWrapper(new String[]{
-                "--product", "onap-dublin",
-                "csar-validate",
-                "--format", "json",
-                "--pnf",
-                "--csar", absoluteFilePath("pnf/signed-package-valid-signature.zip")});
+            "--product", "onap-dublin",
+            "csar-validate",
+            "--format", "json",
+            "--pnf",
+            "--csar", absoluteFilePath("pnf/signed-package-valid-signature.zip")});
 
         // when
         cli.handle();
@@ -94,9 +93,8 @@ public class CsarValidatorTest {
         // then
         final OnapCommandResult onapCommandResult = cli.getCommandResult();
         verifyThatOperation(onapCommandResult, OPERATION_STATUS_FAILED);
-        verifyThatXRulesFails(onapCommandResult, 2);
+        verifyThatXRulesFails(onapCommandResult, 1);
         verifyThatRuleFails(onapCommandResult, NO_CERTIFICATE_RULE);
-        verifyThatRuleFails(onapCommandResult, NO_ALL_FILES_LISTED_IN_MANIFEST);
         verifyThatOperationFinishedWithoutAnyError(cli);
     }
 
@@ -136,11 +134,11 @@ public class CsarValidatorTest {
         assertEquals(0, cli.getExitCode());
     }
 
-    class OnapCliWrapper extends OnapCli {
+    static class OnapCliWrapper extends OnapCli {
 
         private OnapCommandResult commandResult;
 
-        public OnapCliWrapper(String[] args) {
+        OnapCliWrapper(String[] args) {
             super(args);
         }
 
@@ -150,7 +148,7 @@ public class CsarValidatorTest {
             this.commandResult = cmd.getResult();
         }
 
-        public OnapCommandResult getCommandResult() {
+        OnapCommandResult getCommandResult() {
             return this.commandResult;
         }
     }

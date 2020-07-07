@@ -59,8 +59,7 @@ public class VTPValidateCSARR01123 extends VTPValidateCSARBase {
             csar.getVersion() == null) {
             errors.add(new CSARErrorEntryVNFProviderDetailsNotFound());
         }
-
-        Path rootFolder = csar.getWorkspace().getRootFolder()
+        Path rootFolder = csar.getWorkspace().getPathToCsarFolder()
             .orElseThrow(() -> new IOException("Couldn't find CSAR root catalog"));
         List<String> filesInCsar = getAllFilesInDirectory(rootFolder);
         List<String> sourcesInManifest = getAllFilesFromManifestSources(csar.getManifest());
