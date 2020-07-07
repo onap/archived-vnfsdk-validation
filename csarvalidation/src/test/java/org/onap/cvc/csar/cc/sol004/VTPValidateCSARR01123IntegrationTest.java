@@ -123,4 +123,35 @@ public class VTPValidateCSARR01123IntegrationTest {
         assertThat(errors.size()).isEqualTo(0);
     }
 
+    @Test
+    public void shouldNotReportAnyErrorWhenValidCsarIsZippedWithCmsFile() throws Exception {
+        // given
+        configureTestCase(testCase, TEST_CSAR_DIRECTORY + "csar-option2-valid-with-cms.zip", "vtp-validate-csar-r01123.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void shouldReportThatFileIsNotPresentInSourcesWhenInvalidCsarFileIsZippedWithCmsFile() throws Exception {
+        // given
+        configureTestCase(testCase, TEST_CSAR_DIRECTORY + "csar-option2-invalid-with-cms.zip", "vtp-validate-csar-r01123.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        Condition<String> containingMissingFiles = new HamcrestCondition<>(
+            containsString("Artifacts/Informational/user_guide.txt")
+        );
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors)).haveExactly(1, containingMissingFiles);
+    }
+
 }
