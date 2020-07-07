@@ -17,19 +17,28 @@
 
 package org.onap.validation.yaml.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class YamlDocumentFactory {
 
     public YamlDocument createYamlDocument(Object yaml) throws YamlDocumentParsingException {
         try {
-            Map<String, ?> parsedYaml = (Map<String, ?>) yaml;
+            Map<String, Object> parsedYaml = transformMap((Map) yaml);
             return new YamlDocument(parsedYaml);
         } catch (ClassCastException e) {
             throw new YamlDocumentParsingException(
-                String.format("Fail to parse given objects: %s as yaml",yaml), e
+                String.format("Fail to parse given objects: %s as yaml document.", yaml), e
             );
         }
+    }
+
+    private Map<String, Object> transformMap(Map<?, ?> yaml) {
+        Map<String, Object> parsedYaml = new HashMap<>();
+        for (Map.Entry entry: yaml.entrySet()) {
+            parsedYaml.put(entry.getKey().toString(), entry.getValue());
+        }
+        return parsedYaml;
     }
 
     public static class YamlDocumentParsingException extends Exception {
