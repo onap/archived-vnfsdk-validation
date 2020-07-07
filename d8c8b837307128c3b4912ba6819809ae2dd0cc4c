@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3baf45cd_4250f5e0",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/schema/YamlSchemaFactory.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-07-07T08:35:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88ba67ec_efbc95d3",
+      "revId": "d8c8b837307128c3b4912ba6819809ae2dd0cc4c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c85f54af_b4d021f3",
         "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactory.java",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "d8c8b837307128c3b4912ba6819809ae2dd0cc4c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a8e5b29_7c2af4d0",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactory.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-07-07T08:35:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c85f54af_b4d021f3",
+      "revId": "d8c8b837307128c3b4912ba6819809ae2dd0cc4c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "38eaf31f_33a5da44",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactory.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-07-07T08:35:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89e46494_85dca06a",
+      "revId": "d8c8b837307128c3b4912ba6819809ae2dd0cc4c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "665271de_1e09ea12",
         "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactory.java",
         "patchSetId": 3
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "362bb355_48c4d71e",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactory.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-07-07T08:35:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "665271de_1e09ea12",
+      "revId": "d8c8b837307128c3b4912ba6819809ae2dd0cc4c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e6e0bd7e_9c8d95c1",
         "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactory.java",
         "patchSetId": 3
@@ -84,6 +156,24 @@
       "revId": "d8c8b837307128c3b4912ba6819809ae2dd0cc4c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d86cebe9_9d3478f0",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactory.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-07-07T08:35:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6e0bd7e_9c8d95c1",
+      "revId": "d8c8b837307128c3b4912ba6819809ae2dd0cc4c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
