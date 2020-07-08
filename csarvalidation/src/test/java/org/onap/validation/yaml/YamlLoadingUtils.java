@@ -28,11 +28,16 @@ public final class YamlLoadingUtils {
 
     private YamlLoadingUtils() {}
 
+    public static final int VALID_YAML_DOCUMENT_INDEX = 3;
+    public static final int YAML_DOCUMENT_WITH_MISSING_FIELD_INDEX = 2;
+    public static final int YAML_DOCUMENT_WITH_MISSING_FIELD_AND_WRONG_VALUE_INDEX = 1;
+
     private static final String PATH_TO_VALID_YAML = "yaml_schema/PM_Dictionary.yaml";
     private static final String PATH_TO_SIMPLE_VALID_SCHEMA = "yaml_schema/Simple_Valid_Schema.yaml";
     private static final String PATH_TO_SIMPLE_VALID_SCHEMA_MULTI_ROOT = "yaml_schema/Simple_Valid_Schema_Multi_Root.yaml";
     private static final String PATH_TO_SIMPLE_INVALID_SCHEMA = "yaml_schema/Simple_Invalid_Schema_Construction.yaml";
     private static final String PATH_TO_SIMPLE_INVALID_SCHEMA_FOR_LAZY_LOADING = "yaml_schema/Simple_Invalid_Schema_LazyLoading.yaml";
+    private static final String PATH_TO_MULTI_DOCUMENT_INVALID_YAML = "yaml_schema/Multi_Document_Invalid.yaml";
 
     public static List<YamlDocument> loadValidMultiDocumentYamlFile() throws YamlDocumentParsingException {
         return new YamlLoader().loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_VALID_YAML));
@@ -52,6 +57,10 @@ public final class YamlLoadingUtils {
 
     public static YamlDocument loadSimpleValidYamlSchemaWithMultiRootFile() throws YamlDocumentParsingException {
         return new YamlLoader().loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_SIMPLE_VALID_SCHEMA_MULTI_ROOT)).get(0);
+    }
+
+    public static List<YamlDocument> tryToLoadMultiDocumentInvalidYamlFile() throws YamlDocumentParsingException {
+        return new YamlLoader().loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_MULTI_DOCUMENT_INVALID_YAML));
     }
 
     private static URL getUrlForGivenPath(String path) {

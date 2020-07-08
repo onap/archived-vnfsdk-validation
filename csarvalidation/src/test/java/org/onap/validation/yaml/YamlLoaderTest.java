@@ -20,11 +20,12 @@ package org.onap.validation.yaml;
 import org.junit.Test;
 import org.onap.validation.yaml.model.YamlDocument;
 import org.onap.validation.yaml.model.YamlDocumentFactory;
+import org.yaml.snakeyaml.parser.ParserException;
 
-import java.net.URL;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 public class YamlLoaderTest {
@@ -35,7 +36,15 @@ public class YamlLoaderTest {
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFile();
 
         // then
-        assertThat(documents.size()).isEqualTo(4);
+        assertThat(documents).hasSize(4);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenLoadingDocumentsFromInvalidYamlFile() {
+        // when then
+        assertThatThrownBy(YamlLoadingUtils::tryToLoadMultiDocumentInvalidYamlFile
+        ).isInstanceOf(ParserException.class)
+            .hasMessageContaining("expected the node content, but found DocumentEnd");
     }
 
 }
