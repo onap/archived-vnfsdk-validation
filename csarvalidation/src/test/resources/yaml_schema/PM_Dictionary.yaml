@@ -12,7 +12,7 @@ pmMetaData: { presence: required, structure: {
       },
       pmDefSchemaVsn: {
         presence: required,
-        value: [2.0],
+        value: 2.0,
         comment: "PM Dictionary Schema Version from the VES Event
                       Registration specification"
       },
@@ -170,7 +170,7 @@ pmMetaData: {
     measLastChange: 5G18A_1807_003,
     measObjClass: NGCELL,
     measResultRange: 0-4096,
-    measResultType: integer,
+    measResultType: float,
     measResultUnits: number,
     measType: VS.NINFC.IntraFrPscelChFailTdcExp,
     measAdditionalFields: {
@@ -197,7 +197,8 @@ pmMetaData: {
     measLastChange: 5G19_1906_002,
     measObjClass: NGCELL,
     measResultRange: 0-4096,
-    measResultType: integer,
+    measResultType: float,
+    measChangeType: added,
     measResultUnits: number,
     measType: VS.NINFC.IntraFrPscelChFailMenbRef,
     measAdditionalFields: {
