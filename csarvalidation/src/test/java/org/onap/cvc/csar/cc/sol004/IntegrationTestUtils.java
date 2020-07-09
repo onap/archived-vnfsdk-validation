@@ -87,4 +87,8 @@ public class IntegrationTestUtils {
     public static List<String> convertToMessagesList(List<CSARArchive.CSARError> errors) {
         return errors.stream().map(CSARArchive.CSARError::getMessage).collect(Collectors.toList());
     }
+
+    public static List<String> convertToFilesList(List<CSARArchive.CSARError> errors) {
+        return errors.stream().map(CSARArchive.CSARError::getFile).collect(Collectors.toList());
+    }
 }
