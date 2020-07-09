@@ -26,9 +26,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.onap.validation.yaml.model.YamlDocumentFactory.YamlDocumentParsingException;
-import static org.onap.validation.yaml.model.YamlParameterListFactory.YamlParameterListParsingException;
-
 public class YamlSchemaBranchNode extends YamlSchemaNode {
 
     private final YamlDocument nextNodesInLazyForm;
