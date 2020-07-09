@@ -17,6 +17,7 @@
 
 package org.onap.validation.yaml;
 
+import org.onap.validation.yaml.exception.YamlProcessingException;
 import org.onap.validation.yaml.model.YamlDocument;
 import org.onap.validation.yaml.model.YamlDocumentFactory;
 import org.slf4j.Logger;
@@ -25,15 +26,16 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YamlLoader {
+class YamlLoader {
 
     private static final Logger LOGGER =  LoggerFactory.getLogger(YamlLoader.class);
 
-    public List<YamlDocument> loadMultiDocumentYamlFile(URL path)
+    List<YamlDocument> loadMultiDocumentYamlFile(URL path)
         throws YamlDocumentFactory.YamlDocumentParsingException {
         List<YamlDocument> documentsFromFile = new ArrayList<>();
         try (InputStream yamlStream = path.openStream()) {
@@ -48,4 +50,12 @@ public class YamlLoader {
         return documentsFromFile;
     }
 
+    List<YamlDocument> loadMultiDocumentYamlFile(String path)
+        throws YamlProcessingException {
+        try {
+            return loadMultiDocumentYamlFile(new URL("file://" + path));
+        } catch (MalformedURLException e) {
+            throw new YamlProcessingException("Fail to read file under given path.", e);
+        }
+    }
 }

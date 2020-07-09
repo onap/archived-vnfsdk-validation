@@ -24,7 +24,7 @@ import java.util.List;
 
 public class YamlSchemaLeafNode extends YamlSchemaNode {
 
-    private YamlParametersList acceptedValues;
+    private final YamlParametersList acceptedValues;
 
     YamlSchemaLeafNode(String name, String path, boolean required, String comment,
                        YamlParametersList acceptedValues) {
