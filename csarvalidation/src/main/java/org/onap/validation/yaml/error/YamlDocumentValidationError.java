@@ -15,22 +15,27 @@
  *
  */
 
-package org.onap.validation.yaml.model;
+package org.onap.validation.yaml.error;
 
-public class SchemaValidationError {
-    private final String path;
-    private final String message;
+public class YamlDocumentValidationError {
+    private final int yamlDocumentNumber;
+    private final SchemaValidationError schemaValidationErrors;
+
+    public YamlDocumentValidationError(int yamlDocumentNumber, SchemaValidationError schemaValidationErrors) {
+        this.yamlDocumentNumber = yamlDocumentNumber;
+        this.schemaValidationErrors = schemaValidationErrors;
+    }
+
+    public int getYamlDocumentNumber() {
+        return yamlDocumentNumber;
+    }
 
     public String getPath() {
-        return path;
+        return  schemaValidationErrors.getPath();
     }
 
     public String getMessage() {
-        return message;
+        return  schemaValidationErrors.getMessage();
     }
 
-    public SchemaValidationError(String path, String message) {
-        this.path = path;
-        this.message = message;
-    }
 }

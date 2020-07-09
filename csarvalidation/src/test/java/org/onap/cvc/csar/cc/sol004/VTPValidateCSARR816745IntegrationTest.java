@@ -17,17 +17,22 @@
 
 package org.onap.cvc.csar.cc.sol004;
 
+import org.assertj.core.api.Condition;
+import org.assertj.core.api.HamcrestCondition;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.onap.cli.fw.error.OnapCommandExecutionFailed;
 import org.onap.cvc.csar.CSARArchive;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.configureTestCase;
+import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessagesList;
+import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToFilesList;
 
 public class VTPValidateCSARR816745IntegrationTest {
 
@@ -58,16 +63,75 @@ public class VTPValidateCSARR816745IntegrationTest {
     }
 
     @Test
-    public void shouldThrowUnsupportedOperationExceptionWhenCsarContainsPmDictionary() throws Exception {
+    public void shouldReturnNoErrorsWhenCsarContainsValidPmDictionary() throws Exception {
         // given
-        configureTestCase(testCase, TEST_CSAR_DIRECTORY + "csar-with-pm-dictionary.csar", "vtp-validate-csar-r816745.yaml", IS_PNF);
-
-        // then
-        exceptionRule.expect(OnapCommandExecutionFailed.class);
-        exceptionRule.expectMessage("Under development");
+        configureTestCase(testCase, TEST_CSAR_DIRECTORY + "csar-with-valid-pm-dictionary.csar", "vtp-validate-csar-r816745.yaml", IS_PNF);
 
         // when
         testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(0);
+    }
+
+
+    @Test
+    public void shouldReturnListOfErrorsWhenCsarContainsInvalidPmDictionary() throws Exception {
+        // given
+        configureTestCase(testCase, TEST_CSAR_DIRECTORY + "csar-with-invalid-pm-dictionary.csar", "vtp-validate-csar-r816745.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(3);
+
+        Condition<String> containingSameFileForAllErrors = new HamcrestCondition<>(
+            containsString("Artifacts/Deployment/Measurements/PM_Dictionary.yml")
+        );
+        assertThat(convertToFilesList(errors)).haveExactly(3, containingSameFileForAllErrors);
+
+        Condition<String> containingErrorForMissingValueInFirstDocument = new HamcrestCondition<>(allOf(
+            containsString("Invalid YAML document in PM_Dictionary file."),
+            containsString("In document number 1"),
+            containsString("Path: /pmMetaData/pmFields/"),
+            containsString("Key not found: measChangeType")
+        ));
+        assertThat(convertToMessagesList(errors)).haveExactly(1, containingErrorForMissingValueInFirstDocument);
+
+        Condition<String> containingErrorForWrongValueInFirstDocument = new HamcrestCondition<>(allOf(
+            containsString("Invalid YAML document in PM_Dictionary file."),
+            containsString("In document number 1"),
+            containsString("Path: /pmMetaData/pmFields/measResultType"),
+            containsString("Value is not in array of accepted values."),
+            containsString("value:  integer"),
+            containsString("accepted values:  [float, uint32, uint64]")
+        ));
+        assertThat(convertToMessagesList(errors)).haveExactly(1, containingErrorForWrongValueInFirstDocument);
+
+        Condition<String> containingErrorForMissingValueInSecondDocument = new HamcrestCondition<>(allOf(
+            containsString("Invalid YAML document in PM_Dictionary file."),
+            containsString("In document number 2"),
+            containsString("Path: /pmMetaData/pmFields/"),
+            containsString("Key not found: measChangeType")
+        ));
+        assertThat(convertToMessagesList(errors)).haveExactly(1, containingErrorForMissingValueInSecondDocument);
+    }
+
+    @Test
+    public void shouldAddPmDictionaryLoadingErrorWhenGivenInvalidPath() throws Exception {
+        // given
+        configureTestCase(testCase, TEST_CSAR_DIRECTORY + "csar-with-empty-pm-dictionary.csar", "vtp-validate-csar-r816745.yaml", IS_PNF);
+
+        // when then
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors)).contains("Fail to load PM_Dictionary With error: PM_Dictionary YAML file is empty");
     }
 
     @Test

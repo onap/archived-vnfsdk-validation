@@ -15,19 +15,22 @@
  *
  */
 
-package org.onap.validation.yaml.exception;
+package org.onap.validation.yaml.error;
 
-public class YamlProcessingException extends Exception {
+public class SchemaValidationError {
+    private final String path;
+    private final String message;
 
-    public YamlProcessingException(String message, Throwable throwable) {
-        super(message, throwable);
+    public String getPath() {
+        return path;
     }
 
-    public YamlProcessingException(String message) {
-        super(message);
+    public String getMessage() {
+        return message;
     }
 
-    public YamlProcessingException(Throwable throwable) {
-        super(throwable);
+    public SchemaValidationError(String path, String message) {
+        this.path = path;
+        this.message = message;
     }
 }

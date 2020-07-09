@@ -20,7 +20,7 @@ package org.onap.validation.yaml;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.onap.validation.yaml.exception.YamlProcessingException;
-import org.onap.validation.yaml.model.SchemaValidationError;
+import org.onap.validation.yaml.error.SchemaValidationError;
 import org.onap.validation.yaml.model.YamlDocument;
 import org.onap.validation.yaml.schema.YamlSchemaFactory;
 
