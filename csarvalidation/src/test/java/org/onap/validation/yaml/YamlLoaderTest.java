@@ -18,6 +18,7 @@
 package org.onap.validation.yaml;
 
 import org.junit.Test;
+import org.onap.validation.yaml.exception.YamlProcessingException;
 import org.onap.validation.yaml.model.YamlDocument;
 import org.onap.validation.yaml.model.YamlDocumentFactory;
 import org.yaml.snakeyaml.parser.ParserException;
@@ -40,9 +41,26 @@ public class YamlLoaderTest {
     }
 
     @Test
+    public void shouldLoadAllDocumentsFromYamlFileUsingPathInString() throws YamlProcessingException {
+        // when
+        List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFileUsingStringPath();
+
+        // then
+        assertThat(documents).hasSize(4);
+    }
+
+    @Test
     public void shouldThrowExceptionWhenLoadingDocumentsFromInvalidYamlFile() {
         // when then
         assertThatThrownBy(YamlLoadingUtils::tryToLoadMultiDocumentInvalidYamlFile
+        ).isInstanceOf(ParserException.class)
+            .hasMessageContaining("expected the node content, but found DocumentEnd");
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenLoadingDocumentsFromInvalidYamlFileUsingPathInString() {
+        // when then
+        assertThatThrownBy(YamlLoadingUtils::tryToLoadMultiDocumentInvalidYamlFileUsingStringPath
         ).isInstanceOf(ParserException.class)
             .hasMessageContaining("expected the node content, but found DocumentEnd");
     }
