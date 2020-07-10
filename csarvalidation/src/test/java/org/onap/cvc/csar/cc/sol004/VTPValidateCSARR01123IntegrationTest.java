@@ -67,7 +67,7 @@ public class VTPValidateCSARR01123IntegrationTest {
     }
 
     @Test
-    public void shouldReportThatFileIsNotPresentInSources() throws Exception {
+    public void shouldReportThatFileAvailableInCsarIsNotPresentInManifestSources() throws Exception {
         // given
         configureTestCase(testCase, TEST_CSAR_DIRECTORY + "csar-option1-invalid-noFileInManifest.csar", "vtp-validate-csar-r01123.yaml", IS_PNF);
 
@@ -80,6 +80,25 @@ public class VTPValidateCSARR01123IntegrationTest {
             containsString("Artifacts/Deployment/Yang_module/yang-module1.yang"),
             containsString("Artifacts/Informational/user_guide.txt"),
             containsString("Artifacts/sample-pnf.cert")
+        ));
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors)).haveExactly(1, containingMissingFiles);
+    }
+
+    @Test
+    public void shouldReportThatFilePresentInManifestIsNotPresentInCsarFile() throws Exception {
+        // given
+        configureTestCase(testCase, TEST_CSAR_DIRECTORY + "csar-option1-invalid-missing-files.csar", "vtp-validate-csar-r01123.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        Condition<String> containingMissingFiles = new HamcrestCondition<>(allOf(
+                containsString("Definitions/a.yaml"),
+                containsString("Definitions/b.yaml")
         ));
 
         // then
@@ -120,7 +139,7 @@ public class VTPValidateCSARR01123IntegrationTest {
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
     }
 
     @Test
@@ -133,7 +152,7 @@ public class VTPValidateCSARR01123IntegrationTest {
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
     }
 
     @Test
