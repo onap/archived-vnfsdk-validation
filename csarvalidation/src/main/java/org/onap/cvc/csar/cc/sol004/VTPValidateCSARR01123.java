@@ -26,6 +26,7 @@ import org.onap.cvc.csar.parser.SourcesParser;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -46,28 +47,76 @@ public class VTPValidateCSARR01123 extends VTPValidateCSARBase {
         CSARErrorNotAllFilesLocatedInCSARWhereListedInManifest(List<String> fileInCsarThatAreNotLocatedInManifest) {
             super("Source",
                 CSARArchive.TOSCA_METADATA);
-            this.setCode("0x1000");
-            this.message = "files: "
+            this.setCode("0x1001");
+            this.message = "file(s): ["
                 + String.join(", ", fileInCsarThatAreNotLocatedInManifest)
-                + " are located in CSAR, but are not located in Manifest as Source";
+                + "] available in CSAR, but cannot be found in Manifest as Source";
+        }
+    }
+
+    public static class CSARErrorNotAllFilesLocatedInManifestWhereListedInCsar extends CSARErrorEntryMissing {
+        CSARErrorNotAllFilesLocatedInManifestWhereListedInCsar(List<String> fileInCsarThatAreNotLocatedInManifest) {
+            super("Source",
+                    CSARArchive.TOSCA_METADATA);
+            this.setCode("0x1002");
+            this.message = "file(s): ["
+                    + String.join(", ", fileInCsarThatAreNotLocatedInManifest)
+                    + "] defined in Manifest as Source, but cannot be found in CSAR";
         }
     }
 
     @Override
     protected void validateCSAR(CSARArchive csar) throws Exception {
+        verifyThatProviderDataAreDefined(csar);
+        verifyPackageFileStructure(csar);
+    }
+
+    private void verifyPackageFileStructure(CSARArchive csar) throws IOException {
+        Path rootFolder = getRootFolder(csar);
+        List<String> filesInCsar = getAllFilesInDirectory(rootFolder);
+        List<String> sourcesInManifest = getAllFilesFromManifestSources(csar.getManifest());
+
+        if (areAllFilesDefinedInManifest(filesInCsar, sourcesInManifest)) {
+            verifyThatAllFilesFromCsarAreDefinedInManifest(filesInCsar, sourcesInManifest);
+            verifyThatAllFilesDefinedInManifestAreAvailableInCsar(sourcesInManifest, filesInCsar);
+        }
+    }
+
+    private void verifyThatProviderDataAreDefined(CSARArchive csar) {
         if (csar.getVendorName() == null ||
             csar.getVersion() == null) {
             errors.add(new CSARErrorEntryVNFProviderDetailsNotFound());
         }
-        Path rootFolder = csar.getWorkspace().getPathToCsarFolder()
-            .orElseThrow(() -> new IOException("Couldn't find CSAR root catalog"));
-        List<String> filesInCsar = getAllFilesInDirectory(rootFolder);
-        List<String> sourcesInManifest = getAllFilesFromManifestSources(csar.getManifest());
+    }
 
-        if (filesInCsar.size() != sourcesInManifest.size() || !sourcesInManifest.containsAll(filesInCsar)) {
-            filesInCsar.removeAll(sourcesInManifest);
-            errors.add(new VTPValidateCSARR01123.CSARErrorNotAllFilesLocatedInCSARWhereListedInManifest(filesInCsar));
+    private Path getRootFolder(CSARArchive csar) throws IOException {
+        return csar.getWorkspace().getPathToCsarFolder()
+                .orElseThrow(() -> new IOException("Couldn't find CSAR root catalog"));
+    }
+
+
+    private void verifyThatAllFilesDefinedInManifestAreAvailableInCsar(List<String> sourcesInManifest, List<String> filesInCsar) {
+        if(!filesInCsar.containsAll(sourcesInManifest)){
+            List<String> sourcesNotAvailableInCsarFile = fetchElementsNotAvailableAtSecondList(sourcesInManifest, filesInCsar);
+            errors.add(new CSARErrorNotAllFilesLocatedInManifestWhereListedInCsar(sourcesNotAvailableInCsarFile));
         }
+    }
+
+    private void verifyThatAllFilesFromCsarAreDefinedInManifest(List<String> filesInCsar, List<String> sourcesInManifest) {
+        if(!sourcesInManifest.containsAll(filesInCsar) ){
+            List<String> filesNotDefinedInManifestFile = fetchElementsNotAvailableAtSecondList(filesInCsar, sourcesInManifest);
+            errors.add(new CSARErrorNotAllFilesLocatedInCSARWhereListedInManifest(filesNotDefinedInManifestFile));
+        }
+    }
+
+    private List<String> fetchElementsNotAvailableAtSecondList(List<String> firstList, List<String> secondList) {
+        List<String> copyOfFirstList = new ArrayList<>(firstList);
+        copyOfFirstList.removeAll(secondList);
+        return copyOfFirstList;
+    }
+
+    private boolean areAllFilesDefinedInManifest(List<String> filesInCsar, List<String> sourcesInManifest) {
+        return filesInCsar.size() != sourcesInManifest.size();
     }
 
     private List<String> getAllFilesFromManifestSources(CSARArchive.Manifest manifest) {
