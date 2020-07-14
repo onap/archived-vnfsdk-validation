@@ -15,27 +15,15 @@
  *
  */
 
-package org.onap.validation.yaml;
+package org.onap.validation.yaml.exception;
 
-import org.junit.Test;
-import org.onap.validation.yaml.model.YamlDocument;
-import org.onap.validation.yaml.model.YamlDocumentFactory;
+public class YamlProcessingException extends Exception {
 
-import java.net.URL;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-
-public class YamlLoaderTest {
-
-    @Test
-    public void shouldLoadAllDocumentsFromYamlFile() throws YamlDocumentFactory.YamlDocumentParsingException {
-        // when
-        List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFile();
-
-        // then
-        assertThat(documents.size()).isEqualTo(4);
+    public YamlProcessingException(String message, Throwable throwable) {
+        super(message, throwable);
     }
 
+    public YamlProcessingException(Throwable throwable) {
+        super(throwable);
+    }
 }
