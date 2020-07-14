@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f460db55_6d517003",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/YamlFileValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-07-14T10:35:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1d0861f_94af3ad5",
+      "range": {
+        "startLine": 40,
+        "startChar": 3,
+        "endLine": 40,
+        "endChar": 4
+      },
+      "revId": "71fee8c833b42da541fe46c31e60587b31339db5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "08b98226_19c7bc0d",
         "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/error/YamlDocumentValidationError.java",
         "patchSetId": 3
@@ -39,6 +63,24 @@
       "revId": "71fee8c833b42da541fe46c31e60587b31339db5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7a14a71_c1386150",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/error/YamlDocumentValidationError.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-07-14T10:35:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08b98226_19c7bc0d",
+      "revId": "71fee8c833b42da541fe46c31e60587b31339db5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "0e69dfcb_70196974",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/error/YamlDocumentValidationError.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-07-14T10:35:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0a44da7_93ab2071",
+      "revId": "71fee8c833b42da541fe46c31e60587b31339db5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c5d345ed_5b6cb324",
         "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/error/YamlDocumentValidationError.java",
         "patchSetId": 3
@@ -73,6 +133,24 @@
       "revId": "71fee8c833b42da541fe46c31e60587b31339db5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b195b51_4f8a7a37",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/error/YamlDocumentValidationError.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-07-14T10:35:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5d345ed_5b6cb324",
+      "revId": "71fee8c833b42da541fe46c31e60587b31339db5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
