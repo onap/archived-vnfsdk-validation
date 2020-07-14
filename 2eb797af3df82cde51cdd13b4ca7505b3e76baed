@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4efa8414_ac355eed",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/process/YamlValidationStep.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T11:36:43Z",
+      "side": 1,
+      "message": "make a copy of collection",
+      "revId": "2eb797af3df82cde51cdd13b4ca7505b3e76baed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f13822a_88f250f8",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/process/YamlValidationStep.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T11:36:43Z",
+      "side": 1,
+      "message": "unmodifiable",
+      "revId": "2eb797af3df82cde51cdd13b4ca7505b3e76baed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
