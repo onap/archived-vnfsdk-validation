@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "16958f9c_17879b72",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/schema/YamlSchema.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T08:35:36Z",
+      "side": 1,
+      "message": "returns unmodifiable list",
+      "revId": "25de1205c0562eb7c27a88f80eb34b9d22ccc4cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b535ee52_e645c419",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/schema/YamlSchema.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T08:35:36Z",
+      "side": 1,
+      "message": "make copy of list and assign to class field",
+      "revId": "25de1205c0562eb7c27a88f80eb34b9d22ccc4cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a0376f1_380d91c8",
+        "filename": "csarvalidation/src/test/java/org/onap/validation/yaml/YamlLoadingUtils.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T08:35:36Z",
+      "side": 1,
+      "message": "mark class as final and add private constructor",
+      "revId": "25de1205c0562eb7c27a88f80eb34b9d22ccc4cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ecb82275_fefa5cbf",
+        "filename": "csarvalidation/src/test/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactoryTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T08:35:36Z",
+      "side": 1,
+      "message": "extract and reuse it",
+      "revId": "25de1205c0562eb7c27a88f80eb34b9d22ccc4cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
