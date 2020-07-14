@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b1d0861f_94af3ad5",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/YamlFileValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T08:44:43Z",
+      "side": 1,
+      "message": "too long.\nSplit it. Extract validation section to separate method",
+      "range": {
+        "startLine": 40,
+        "startChar": 3,
+        "endLine": 40,
+        "endChar": 4
+      },
+      "revId": "71fee8c833b42da541fe46c31e60587b31339db5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08b98226_19c7bc0d",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/error/YamlDocumentValidationError.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T08:44:43Z",
+      "side": 1,
+      "message": "pass concrete values rather instance of SchemaValidatorError",
+      "revId": "71fee8c833b42da541fe46c31e60587b31339db5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0a44da7_93ab2071",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/error/YamlDocumentValidationError.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T08:44:43Z",
+      "side": 1,
+      "message": "code smell",
+      "revId": "71fee8c833b42da541fe46c31e60587b31339db5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5d345ed_5b6cb324",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/yaml/error/YamlDocumentValidationError.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T08:44:43Z",
+      "side": 1,
+      "message": "code smell",
+      "revId": "71fee8c833b42da541fe46c31e60587b31339db5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
