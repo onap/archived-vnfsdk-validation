@@ -31,6 +31,8 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
+import mockit.Mock;
+import mockit.MockUp;
 import org.junit.Test;
 import org.onap.validation.csar.CommonConstants;
 import org.onap.validation.csar.CsarValidator;
@@ -218,5 +220,44 @@ public class CsarValidatorTest {
     private void testR02454(CsarValidator cv) {
         String result = CsarValidator.r02454();
         assertEquals(true, result == CommonConstants.SUCCESS_STR);
+    }
+    @Test
+    public void testValidateCsar() throws IOException {
+        new MockUp<CsarValidator>(){
+            @Mock
+            public String validateCsarMeta(){
+                          return "FAIL";
+            }
+            @Mock
+            public String validateAndScanToscaMeta(){
+                return "SUCCESS";
+            }
+            @Mock
+            public String validateMainService(){
+                return "FAIL";
+            }
+        };
+        String res=CsarValidator.validateCsar();
+        assertEquals("FAIL OR FAIL",res);
+
+    }
+    @Test
+    public void testValidateCsar2() throws IOException {
+        new MockUp<CsarValidator>(){
+            @Mock
+            public String validateCsarMeta(){
+                return "SUCCESS";
+            }
+            @Mock
+            public String validateAndScanToscaMeta(){
+                return "FAIL";
+            }
+            @Mock
+            public String validateMainService(){
+                return "SUCCESS";
+            }
+        };
+        String res=CsarValidator.validateCsar();
+        assertEquals("FAIL",res);
     }
 }

@@ -110,12 +110,12 @@ public class CsarValidator {
 
         //String r02454 = r02454();
 
-        if((CommonConstants.SUCCESS_STR != vsm) && (CommonConstants.SUCCESS_STR != vms)) {
+        if((!CommonConstants.SUCCESS_STR.equals(vsm)) && (!CommonConstants.SUCCESS_STR.equals(vms))) {
 
             return vsm + " OR " + vms;
         }
 
-        if(CommonConstants.SUCCESS_STR != vtm) {
+        if(!CommonConstants.SUCCESS_STR.equals(vtm)) {
             return vtm;
         }
 /*
