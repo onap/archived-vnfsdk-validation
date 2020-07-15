@@ -15,19 +15,28 @@
  *
  */
 
-package org.onap.validation.yaml.exception;
+package org.onap.validation.yaml.error;
 
-public class YamlProcessingException extends Exception {
+public class YamlDocumentValidationError {
+    private final int yamlDocumentNumber;
+    private final String path;
+    private final String message;
 
-    public YamlProcessingException(String message, Throwable throwable) {
-        super(message, throwable);
+    public YamlDocumentValidationError(int yamlDocumentNumber, String path, String message) {
+        this.yamlDocumentNumber = yamlDocumentNumber;
+        this.path = path;
+        this.message = message;
     }
 
-    public YamlProcessingException(String message) {
-        super(message);
+    public int getYamlDocumentNumber() {
+        return yamlDocumentNumber;
     }
 
-    public YamlProcessingException(Throwable throwable) {
-        super(throwable);
+    public String getPath() {
+        return path;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

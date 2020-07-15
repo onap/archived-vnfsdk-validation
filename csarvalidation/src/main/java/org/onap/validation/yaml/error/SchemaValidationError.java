@@ -15,7 +15,7 @@
  *
  */
 
-package org.onap.validation.yaml.model;
+package org.onap.validation.yaml.error;
 
 public class SchemaValidationError {
     private final String path;
