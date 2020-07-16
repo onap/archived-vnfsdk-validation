@@ -51,3 +51,6 @@ All notable changes to this project will be documented in this file.
 ## Fixed
 - Fixed rule R01123 that was reporting all files in ZIP as not present in manifest
     - https://jira.onap.org/browse/VNFSDK-583
+    
+    
+## [1.2.10]
