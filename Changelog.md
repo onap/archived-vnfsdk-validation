@@ -43,3 +43,11 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-583
 
 ## [1.2.9]
+
+### Added
+- Added rule R972082 to validate PM_Dictionary using schema.
+    - https://jira.onap.org/browse/VNFSDK-594
+    
+## Fixed
+- Fixed rule R01123 that was reporting all files in ZIP as not present in manifest
+    - https://jira.onap.org/browse/VNFSDK-583
