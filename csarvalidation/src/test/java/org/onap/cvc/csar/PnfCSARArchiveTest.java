@@ -20,6 +20,8 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.onap.cvc.csar.parser.SourcesParser;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +47,7 @@ public class PnfCSARArchiveTest {
             verifyThatCmsSectionWasSet(manifest);
             verifyThatSourcesSectionWasSet(manifest);
             verifyThatNonManoArtifactsWereSet(manifest);
-            assertThat(pnfCSARArchive.getErrors().size()).isEqualTo(0);
+            assertThat(pnfCSARArchive.getErrors().size()).isZero();
         }
 
     }
@@ -76,23 +78,27 @@ public class PnfCSARArchiveTest {
 
     private void verifyThatNonManoArtifactsWereSet(CSARArchive.Manifest manifest) {
         Map<String, Map<String, List<String>>> nonManoArtifacts = manifest.getNonMano();
-        assertThat(nonManoArtifacts.get("onap_ves_events").get(SOURCE_TAG))
-                .isEqualTo(Lists.newArrayList("Artifacts/Events/VES_registration.yml")
-                );
-        assertThat(nonManoArtifacts.get("onap_pm_dictionary").get(SOURCE_TAG))
-                .isEqualTo(Lists.newArrayList("Artifacts/Measurements/PM_Dictionary.yaml")
-                );
-        assertThat(nonManoArtifacts.get("onap_yang_modules").get(SOURCE_TAG))
-                .isEqualTo(Lists.newArrayList("Artifacts/Yang_module/Yang_module.yaml")
-                );
-        assertThat(nonManoArtifacts.get("onap_others").get(SOURCE_TAG))
-                .isEqualTo(Lists.newArrayList(
-                        "Artifacts/scripts/install.sh",
+        Map<String, List<String>>mapValue1=new HashMap<>();
+        Map<String, List<String>>mapValue2=new HashMap<>();
+        Map<String, List<String>>mapValue3=new HashMap<>();
+        Map<String, List<String>>mapValue4=new HashMap<>();
+
+        mapValue1.put("", Collections.singletonList(""));
+        mapValue1.put(SOURCE_TAG,Lists.newArrayList("Artifacts/Events/VES_registration.yml"));
+        mapValue2.put("", Collections.singletonList(""));
+        mapValue2.put(SOURCE_TAG,Lists.newArrayList("Artifacts/Measurements/PM_Dictionary.yaml"));
+        mapValue3.put("", Collections.singletonList(""));
+        mapValue3.put(SOURCE_TAG,Lists.newArrayList("Artifacts/Yang_module/Yang_module.yaml"));
+        mapValue4.put("", Collections.singletonList(""));
+        mapValue4.put(SOURCE_TAG,Lists.newArrayList
+                ("Artifacts/scripts/install.sh",
                         "Artifacts/Informational/user_guide.txt",
                         "Artifacts/Other/installation_guide.txt",
-                        "Artifacts/Other/review_log.txt"
-                        )
-                );
+                        "Artifacts/Other/review_log.txt"));
+        assertThat(nonManoArtifacts).containsEntry("onap_ves_events",mapValue1);
+        assertThat(nonManoArtifacts).containsEntry("onap_pm_dictionary",mapValue2);
+        assertThat(nonManoArtifacts).containsEntry("onap_yang_modules",mapValue3);
+        assertThat(nonManoArtifacts).containsEntry("onap_others",mapValue4);
     }
 
 }
