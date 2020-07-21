@@ -123,106 +123,117 @@ pmMetaData: { presence: required, structure: {
 ...
 # PM Dictionary perf3gpp measurements for the gnb-Nokia NF (bracket style yaml)
 ---
-pmMetaData:
-  pmHeader:
-    nfType: gnb-Nokia
-    pmDefSchemaVsn: 2.0
+pmMetaData: {
+  pmHeader: {
+    nfType: gnb-Nokia,
+    pmDefSchemaVsn: 2.0,
     pmDefVsn: 5G19_1906_002
-  pmFields:
-    iMeasInfoId: 2204
-    iMeasType: 1
-    measCollectionMethod: CC
+  },
+  pmFields: {
+    iMeasInfoId: 2204,
+    iMeasType: 1,
+
+    measCollectionMethod: CC,
     measCondition: "This measurement is updated when X2AP: SgNB Modification Required message is sent to MeNB
-                      with the SCG Change Indication set as PSCellChange."
-    measDescription: "This counter indicates the number of intra gNB intra frequency PSCell change attempts."
-    measFamily: NINFC
-    measInfoId: "NR Intra Frequency PSCell Change"
-    measLastChange: 5G18A_1807_003
-    measObjClass: NGCELL
-    measResultRange: 0-4096
-    measResultType: integer
-    measResultUnits: number
-    measType: VS.NINFC.IntraFrPscelChAttempt
-    measAdditionalFields:
-      vendorField1: X
+                      with the SCG Change Indication set as PSCellChange.",
+    measDescription: "This counter indicates the number of intra gNB intra frequency PSCell change attempts.",
+    measFamily: NINFC,
+    measInfoId: "NR Intra Frequency PSCell Change",
+    measLastChange: 5G18A_1807_003,
+    measObjClass: NGCELL,
+    measResultRange: 0-4096,
+    measResultType: integer,
+    measResultUnits: number,
+    measType: VS.NINFC.IntraFrPscelChAttempt,
+    measAdditionalFields: {
+      vendorField1: X,
       vendorField2: B
+    }
+  }
+}
 ...
 ---
-pmMetaData:
-  pmHeader:
-    nfType: gnb-Nokia
-    pmDefSchemaVsn: 2.0
+pmMetaData: {
+  pmHeader: {
+    nfType: gnb-Nokia,
+    pmDefSchemaVsn: 2.0,
     pmDefVsn: 5G19_1906_002
-  pmFields:
-    iMeasInfoId: 2204
-    iMeasType: 2
-    measCollectionMethod: CC
-    measCondition: "This measurement is updated when the TDCoverall timer has elapsed before gNB receives the X2AP: SgNB Modification Confirm message."
-    measDescription: "This measurement the number of intra gNB intra frequency PSCell change failures due to TDCoverall timer expiry."
-    measFamily: NINFC
-    measInfoId: "NR Intra Frequency PSCell Change"
-    measLastChange: 5G18A_1807_003
-    measObjClass: NGCELL
-    measResultRange: 0-4096
-    measResultType: float
-    measResultUnits: number
-    measType: VS.NINFC.IntraFrPscelChFailTdcExp
-    measAdditionalFields:
-      vendorField1:
-        - Y
-        - X
+  },
+  pmFields: {
+    iMeasInfoId: 2204,
+    iMeasType: 2,
+    measCollectionMethod: CC,
+    measCondition: "This measurement is updated when the TDCoverall timer has elapsed before gNB receives the X2AP: SgNB Modification Confirm message.",
+    measDescription: "This measurement the number of intra gNB intra frequency PSCell change failures due to TDCoverall timer expiry.",
+    measFamily: NINFC,
+    measInfoId: "NR Intra Frequency PSCell Change",
+    measLastChange: 5G18A_1807_003,
+    measObjClass: NGCELL,
+    measResultRange: 0-4096,
+    measResultType: float,
+    measResultUnits: number,
+    measType: VS.NINFC.IntraFrPscelChFailTdcExp,
+    measAdditionalFields: {
+      vendorField1: [Y,Z]
+    }
+  }
+}
 ...
 ---
-pmMetaData:
-  pmHeader:
-    nfType: gnb-Nokia
-    pmDefSchemaVsn: 2.0
+pmMetaData: {
+  pmHeader: {
+    nfType: gnb-Nokia,
+    pmDefSchemaVsn: 2.0,
     pmDefVsn: 5G19_1906_002
-  pmFields:
-    iMeasInfoId: 2206
-    iMeasType: 1
-    measCondition: "This measurement is updated when MeNB replies to X2AP: SgNB Modification Required message with the X2AP: SgNB Modification Refuse message."
-    measCollectionMethod: CC
-    measDescription: "This counter indicates the number of intra gNB intra frequency PSCell change failures due to MeNB refusal."
-    measFamily: NINFC
-    measInfoId: "NR Intra Frequency PSCell Change"
-    measLastChange: 5G19_1906_002
-    measObjClass: NGCELL
-    measResultRange: 0-4096
-    measResultType: float
-    measChangeType: added
-    measResultUnits: number
-    measType: VS.NINFC.IntraFrPscelChFailMenbRef
-    measAdditionalFields:
-      vendorField1:
-        - Z
-        - A
+  },
+  pmFields: {
+    iMeasInfoId: 2206,
+    iMeasType: 1,
+    measCondition: "This measurement is updated when MeNB replies to X2AP: SgNB Modification Required message with the X2AP: SgNB Modification Refuse message.",
+    measCollectionMethod: CC,
+    measDescription: "This counter indicates the number of intra gNB intra frequency PSCell change failures due to MeNB refusal.",
+    measFamily: NINFC,
+    measInfoId: "NR Intra Frequency PSCell Change",
+    measLastChange: 5G19_1906_002,
+    measObjClass: NGCELL,
+    measResultRange: 0-4096,
+    measResultType: float,
+    measChangeType: added,
+    measResultUnits: number,
+    measType: VS.NINFC.IntraFrPscelChFailMenbRef,
+    measAdditionalFields: {
+      vendorField1: [Z,A],
       vendorField2: A
+    }
+  }
+}
 ...
 ---
-pmMetaData:
-  pmHeader:
-    nfType: gnb-Nokia
-    pmDefSchemaVsn: 2.0
+pmMetaData: {
+  pmHeader: {
+    nfType: gnb-Nokia,
+    pmDefSchemaVsn: 2.0,
     pmDefVsn: 5G19_1906_002
-  pmFields:
-    iMeasInfoId: 2206
-    iMeasType: 1
-    measCondition: "This measurement is updated when MeNB replies to X2AP: SgNB Modification Required message with the X2AP: SgNB Modification Refuse message."
-    measCollectionMethod: CC
-    measDescription: "This counter indicates the number of intra gNB intra frequency PSCell change failures due to MeNB refusal."
-    measFamily: NINFC
-    measInfoId: "NR Intra Frequency PSCell Change"
-    measLastChange: 5G19_1906_002
-    measObjClass: NGCELL
-    measResultRange: 0-4096
-    measResultType: float
-    measChangeType: added
-    measResultUnits: number
-    measType: VS.NINFC.IntraFrPscelChFailMenbRef
-    measAdditionalFields:
-      vendorField1:
-        - X
-        - Y
+  },
+  pmFields: {
+    iMeasInfoId: 2206,
+    iMeasType: 1,
+    measCondition: "This measurement is updated when MeNB replies to X2AP: SgNB Modification Required message with the X2AP: SgNB Modification Refuse message.",
+    measCollectionMethod: CC,
+    measDescription: "This counter indicates the number of intra gNB intra frequency PSCell change failures due to MeNB refusal.",
+    measFamily: NINFC,
+    measInfoId: "NR Intra Frequency PSCell Change",
+    measLastChange: 5G19_1906_002,
+    measObjClass: NGCELL,
+    measResultRange: 0-4096,
+    measResultType: float,
+    measChangeType: added,
+    measResultUnits: number,
+    measType: VS.NINFC.IntraFrPscelChFailMenbRef,
+    measAdditionalFields: {
+      vendorField1: [X,Y],
       vendorField2: A
+    }
+  }
+}
 ...

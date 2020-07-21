@@ -37,8 +37,7 @@ public class YamlParameterListFactoryTest {
     }
 
     @Test
-    public void shouldCreateParametersListContainingStringsFromListContainingSimpleTypes()
-        throws YamlParameterListFactory.YamlParameterListParsingException {
+    public void shouldCreateParametersListContainingStringsFromListContainingSimpleTypes() {
         // given
         List<Object> testList = Lists.list("test1",3,23.45,'a',"test2");
 
@@ -52,8 +51,7 @@ public class YamlParameterListFactoryTest {
     }
 
     @Test
-    public void shouldCreateParametersListContainingStringsFromListContainingVariousTypes()
-        throws YamlParameterListFactory.YamlParameterListParsingException {
+    public void shouldCreateParametersListContainingStringsFromListContainingVariousTypes() {
         // given
         List<Object> testList = Lists.list("test1",3,Lists.list(2,3,4),"test2");
 
@@ -67,8 +65,7 @@ public class YamlParameterListFactoryTest {
     }
 
     @Test
-    public void shouldCreateListWithOneStringWhenGivenObjectIsNotList()
-        throws YamlParameterListFactory.YamlParameterListParsingException {
+    public void shouldCreateListWithOneStringWhenGivenObjectIsNotList() {
         // given
         Object testObject = "test";
 

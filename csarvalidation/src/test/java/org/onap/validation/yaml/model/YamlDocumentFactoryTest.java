@@ -29,7 +29,6 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.onap.validation.yaml.model.YamlDocumentFactory.YamlDocumentParsingException;
-import static org.onap.validation.yaml.model.YamlParameterListFactory.YamlParameterListParsingException;
 
 public class YamlDocumentFactoryTest {
 
@@ -91,7 +90,7 @@ public class YamlDocumentFactoryTest {
 
     @Test
     public void shouldTurnMapOfUnknownKeyTypeToMapWithStringKeysAndBeAbleToExtractParametersList()
-        throws YamlDocumentParsingException, YamlParameterListParsingException {
+        throws YamlDocumentParsingException {
         // given
         Map<Object, Object> inputMap = new HashMap<>();
         List<String> parametersList = new LinkedList<>();

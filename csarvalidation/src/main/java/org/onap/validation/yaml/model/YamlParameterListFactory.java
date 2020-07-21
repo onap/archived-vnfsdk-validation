@@ -17,8 +17,6 @@
 
 package org.onap.validation.yaml.model;
 
-import org.onap.validation.yaml.exception.YamlProcessingException;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,18 +27,7 @@ public class YamlParameterListFactory {
         return new YamlParametersList(Collections.emptyList());
     }
 
-    public YamlParametersList createYamlParameterList(Object yaml)
-        throws YamlParameterListParsingException {
-        try {
-            return parseYamlToListOfPossibleValues(yaml);
-        } catch (ClassCastException e) {
-            throw new YamlParameterListParsingException(
-                String.format("Fail to parse given objects: %s as list.",yaml), e
-            );
-        }
-    }
-
-    private YamlParametersList parseYamlToListOfPossibleValues(Object yaml) {
+    public YamlParametersList createYamlParameterList(Object yaml) {
         List<String> parametersList = new ArrayList<>();
         if( yaml instanceof List) {
             for (Object element : (List) yaml) {
@@ -50,13 +37,6 @@ public class YamlParameterListFactory {
             parametersList.add(yaml.toString());
         }
         return new YamlParametersList(parametersList);
-    }
-
-
-    public static class YamlParameterListParsingException extends YamlProcessingException {
-        YamlParameterListParsingException(String message, Throwable throwable) {
-            super(message, throwable);
-        }
     }
 
 }

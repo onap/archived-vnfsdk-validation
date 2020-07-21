@@ -74,7 +74,9 @@ public class YamlValidationProcess {
 
     private boolean isValueOfNodeInAcceptedValuesList(YamlDocument document, YamlSchemaNode node) {
         return node.getAcceptedValues().isEmpty() ||
-            node.getAcceptedValues().contains(document.getValue(node.getName()));
+            node.getAcceptedValues().containsAll(
+                document.getListOfValues(node.getName()).getParameters()
+            );
     }
 
     private void addNextLevelNodeToValidationNodesQueue(YamlDocument document, YamlSchemaNode node)
@@ -101,7 +103,7 @@ public class YamlValidationProcess {
             new SchemaValidationError(
                 node.getPath() + node.getName(),
                 String.format(
-                    "Value is not in array of accepted values.%n value:  %s%n  accepted values:  %s",
+                    "Value(s) is/are not in array of accepted values.%n value(s):  %s%n  accepted value(s):  %s",
                     document.getValue(node.getName()), node.getAcceptedValues())
             )
         );
