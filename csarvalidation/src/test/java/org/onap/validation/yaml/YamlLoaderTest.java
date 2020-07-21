@@ -31,13 +31,24 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class YamlLoaderTest {
 
+    private static final int EXPECTED_NUMBER_OF_DOCUMENTS = 5;
+
     @Test
     public void shouldLoadAllDocumentsFromYamlFile() throws YamlDocumentFactory.YamlDocumentParsingException {
         // when
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFile();
 
         // then
-        assertThat(documents).hasSize(4);
+        assertThat(documents).hasSize(EXPECTED_NUMBER_OF_DOCUMENTS);
+    }
+
+    @Test
+    public void shouldLoadAllDocumentsFromJsonStyleYamlFile() throws YamlDocumentFactory.YamlDocumentParsingException {
+        // when
+        List<YamlDocument> documents = YamlLoadingUtils.loadValidJsonStyleMultiDocumentYamlFile();
+
+        // then
+        assertThat(documents).hasSize(EXPECTED_NUMBER_OF_DOCUMENTS);
     }
 
     @Test
@@ -46,7 +57,7 @@ public class YamlLoaderTest {
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFileUsingStringPath();
 
         // then
-        assertThat(documents).hasSize(4);
+        assertThat(documents).hasSize(EXPECTED_NUMBER_OF_DOCUMENTS);
     }
 
     @Test

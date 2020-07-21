@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class YamlFileValidatorTest {
 
     @Test
-    public void shouldReturnNoErrorsWhenGivenPathToValidPmDictionaryFile() throws YamlProcessingException {
+    public void shouldReturnCorrectErrorsWhenGivenPathToValidPmDictionaryFile() throws YamlProcessingException {
         // given
         String path = getFullPathForGivenResources(YamlLoadingUtils.PATH_TO_VALID_YAML);
 
@@ -40,25 +40,48 @@ public class YamlFileValidatorTest {
             new YamlFileValidator().validateYamlFileWithSchema(path);
 
         // then
+        assertValidationReturnedExpectedErrors(validationErrors);
+
+    }
+
+    @Test
+    public void shouldReturnCorrecErrorsWhenGivenPathToValidJsonStylePmDictionaryFile() throws YamlProcessingException {
+        // given
+        String path = getFullPathForGivenResources(YamlLoadingUtils.PATH_TO_VALID_JSON_STYLE_YAML);
+
+        // when
+        List<YamlDocumentValidationError> validationErrors =
+            new YamlFileValidator().validateYamlFileWithSchema(path);
+
+        // then
+        assertValidationReturnedExpectedErrors(validationErrors);
+    }
+
+
+    private void assertValidationReturnedExpectedErrors(List<YamlDocumentValidationError> validationErrors) {
         assertThat(validationErrors).isNotNull();
-        assertThat(validationErrors).hasSize(3);
+        assertThat(validationErrors).hasSize(4);
         assertThat(validationErrors).usingRecursiveFieldByFieldElementComparator().containsAll(
             Lists.list(
-                new YamlDocumentValidationError(1 ,
-                    "/pmMetaData/pmFields/measResultType" ,
-                        "Value is not in array of accepted values.\n" +
-                            " value:  integer\n" +
-                            "  accepted values:  [float, uint32, uint64]"),
-                new YamlDocumentValidationError(1 ,
+                new YamlDocumentValidationError(1,
+                    "/pmMetaData/pmFields/measResultType",
+                    "Value(s) is/are not in array of accepted values.\n" +
+                        " value(s):  integer\n" +
+                        "  accepted value(s):  [float, uint32, uint64]"),
+                new YamlDocumentValidationError(1,
                     "/pmMetaData/pmFields/",
-                        "Key not found: measChangeType"),
-                new YamlDocumentValidationError(2 ,
+                    "Key not found: measChangeType"),
+                new YamlDocumentValidationError(2,
                     "/pmMetaData/pmFields/",
-                        "Key not found: measChangeType")
+                    "Key not found: measChangeType"),
+                new YamlDocumentValidationError(3,
+                    "/pmMetaData/pmFields/measAdditionalFields/vendorField1",
+                    "Value(s) is/are not in array of accepted values.\n" +
+                        " value(s):  [Z, A]\n" +
+                        "  accepted value(s):  [X, Y, Z]")
             )
         );
     }
-
     @Test
     public void shouldThrowErrorWhenGivenPathToInvalidPmDictionaryFile() {
         // given

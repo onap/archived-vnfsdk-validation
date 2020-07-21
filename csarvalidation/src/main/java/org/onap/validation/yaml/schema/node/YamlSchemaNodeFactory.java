@@ -24,7 +24,6 @@ import org.onap.validation.yaml.model.YamlParameterListFactory;
 import org.onap.validation.yaml.model.YamlParametersList;
 
 import static org.onap.validation.yaml.model.YamlDocumentFactory.YamlDocumentParsingException;
-import static org.onap.validation.yaml.model.YamlParameterListFactory.YamlParameterListParsingException;
 
 public class YamlSchemaNodeFactory {
 
@@ -65,8 +64,7 @@ public class YamlSchemaNodeFactory {
             : EMPTY_COMMENT;
     }
 
-    private YamlParametersList getAcceptedValues(YamlDocument yamlDocument)
-        throws YamlParameterListParsingException {
+    private YamlParametersList getAcceptedValues(YamlDocument yamlDocument) {
 
         return isYamlContainingKey(yamlDocument, VALUE_KET)
             ? new YamlParameterListFactory().createYamlParameterList(yamlDocument.getYaml().get(VALUE_KET))

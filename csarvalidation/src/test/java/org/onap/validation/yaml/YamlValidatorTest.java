@@ -32,8 +32,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.onap.validation.yaml.YamlLoadingUtils.VALID_YAML_DOCUMENT_INDEX;
 import static org.onap.validation.yaml.YamlLoadingUtils.YAML_DOCUMENT_WITH_MISSING_FIELD_INDEX;
 import static org.onap.validation.yaml.YamlLoadingUtils.YAML_DOCUMENT_WITH_MISSING_FIELD_AND_WRONG_VALUE_INDEX;
+import static org.onap.validation.yaml.YamlLoadingUtils.YAML_DOCUMENT_WITH_WRONG_VALUE_IN_ARRAY_INDEX;
 
 public class YamlValidatorTest {
+
+
+    @Test
+    public void shouldCreateValidatorUsingSchemaLoadedFromYamlFileAndValidatedJsonStyleDocumentsFromThatFile()
+        throws YamlProcessingException {
+
+        // given
+        List<YamlDocument> documents = YamlLoadingUtils.loadValidJsonStyleMultiDocumentYamlFile();
+        YamlValidator validator = new YamlValidator(new YamlSchemaFactory().createTreeStructuredYamlSchema(documents.get(0)));
+        Map<Integer,List<SchemaValidationError>> validationErrors = new HashMap<>();
+
+        // when
+        for (int documentIndex = 1 ; documentIndex < documents.size() ; documentIndex++) {
+            validationErrors.put(documentIndex, validator.validate(documents.get(documentIndex)));
+        }
+
+        // then
+        assertValidatorReturnedCorrectErrors(validationErrors);
+    }
 
     @Test
     public void shouldCreateValidatorUsingSchemaLoadedFromYamlFileAndValidatedDocumentsFromThatFile()
@@ -44,26 +64,38 @@ public class YamlValidatorTest {
         YamlValidator validator = new YamlValidator(new YamlSchemaFactory().createTreeStructuredYamlSchema(documents.get(0)));
         Map<Integer,List<SchemaValidationError>> validationErrors = new HashMap<>();
 
-        SchemaValidationError expectedValidationValueError =
-            new SchemaValidationError(
-                "/pmMetaData/pmFields/measResultType",
-                "Value is not in array of accepted values.\n"
-                    + " value:  integer\n"
-                    + "  accepted values:  [float, uint32, uint64]"
-            );
-        SchemaValidationError expectedValidationKeyError =
-            new SchemaValidationError(
-                "/pmMetaData/pmFields/",
-                "Key not found: measChangeType"
-            );
-
         // when
         for (int documentIndex = 1 ; documentIndex < documents.size() ; documentIndex++) {
             validationErrors.put(documentIndex, validator.validate(documents.get(documentIndex)));
         }
 
         // then
-        assertThat(validationErrors.size()).isEqualTo(3);
+        assertValidatorReturnedCorrectErrors(validationErrors);
+    }
+
+    private void assertValidatorReturnedCorrectErrors(Map<Integer, List<SchemaValidationError>> validationErrors) {
+
+        SchemaValidationError expectedValidationValueError =
+            new SchemaValidationError(
+                "/pmMetaData/pmFields/measResultType",
+                "Value(s) is/are not in array of accepted values.\n"
+                    + " value(s):  integer\n"
+                    + "  accepted value(s):  [float, uint32, uint64]"
+            );
+        SchemaValidationError expectedValidationKeyError =
+            new SchemaValidationError(
+                "/pmMetaData/pmFields/",
+                "Key not found: measChangeType"
+            );
+        SchemaValidationError expectedValidationValuesInArrayError =
+            new SchemaValidationError(
+                "/pmMetaData/pmFields/measAdditionalFields/vendorField1",
+                "Value(s) is/are not in array of accepted values.\n"
+                    + " value(s):  [Z, A]\n"
+                    + "  accepted value(s):  [X, Y, Z]"
+            );
+
+        assertThat(validationErrors.size()).isEqualTo(4);
         assertThat(validationErrors).containsKeys(1,2,3);
         assertThat(validationErrors.get(YAML_DOCUMENT_WITH_MISSING_FIELD_AND_WRONG_VALUE_INDEX)).hasSize(2);
         assertThat(validationErrors.get(YAML_DOCUMENT_WITH_MISSING_FIELD_AND_WRONG_VALUE_INDEX))
@@ -78,6 +110,12 @@ public class YamlValidatorTest {
             .usingFieldByFieldElementComparator()
             .contains(
                     expectedValidationKeyError
+            );
+        assertThat(validationErrors.get(YAML_DOCUMENT_WITH_WRONG_VALUE_IN_ARRAY_INDEX)).hasSize(1);
+        assertThat(validationErrors.get(YAML_DOCUMENT_WITH_WRONG_VALUE_IN_ARRAY_INDEX))
+            .usingFieldByFieldElementComparator()
+            .contains(
+                expectedValidationValuesInArrayError
             );
         assertThat(validationErrors.get(VALID_YAML_DOCUMENT_INDEX)).hasSize(0);
     }

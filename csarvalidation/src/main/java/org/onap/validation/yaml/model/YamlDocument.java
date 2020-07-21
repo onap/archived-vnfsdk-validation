@@ -39,8 +39,7 @@ public class YamlDocument {
         return yaml.get(key).toString();
     }
 
-    public YamlParametersList getListOfValues(String key)
-        throws YamlParameterListFactory.YamlParameterListParsingException {
+    public YamlParametersList getListOfValues(String key) {
         return new YamlParameterListFactory().createYamlParameterList(
             yaml.get(key)
         );

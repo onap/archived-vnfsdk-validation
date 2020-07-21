@@ -38,6 +38,7 @@ public class VTPValidateCSARR816745IntegrationTest {
 
     private static final boolean IS_PNF = true;
     private static final String TEST_CSAR_DIRECTORY = "pnf/r816745/";
+    private static final int NUMBER_OF_EXPECTED_ERRORS = 4;
 
     private VTPValidateCSARR816745 testCase;
 
@@ -132,12 +133,13 @@ public class VTPValidateCSARR816745IntegrationTest {
     }
 
     private void assertThatReturnedErrorsAreCorrect(List<CSARArchive.CSARError> errors) {
-        assertThat(errors.size()).isEqualTo(3);
+        assertThat(errors.size()).isEqualTo(NUMBER_OF_EXPECTED_ERRORS);
 
         Condition<String> containingSameFileForAllErrors = new HamcrestCondition<>(
             containsString("Artifacts/Deployment/Measurements/PM_Dictionary.yml")
         );
-        assertThat(convertToFilesList(errors)).haveExactly(3, containingSameFileForAllErrors);
+        assertThat(convertToFilesList(errors))
+            .haveExactly(NUMBER_OF_EXPECTED_ERRORS, containingSameFileForAllErrors);
 
         Condition<String> containingErrorForMissingValueInFirstDocument = new HamcrestCondition<>(allOf(
             containsString("Invalid YAML document in PM_Dictionary file."),
@@ -151,9 +153,9 @@ public class VTPValidateCSARR816745IntegrationTest {
             containsString("Invalid YAML document in PM_Dictionary file."),
             containsString("In document number 1"),
             containsString("Path: /pmMetaData/pmFields/measResultType"),
-            containsString("Value is not in array of accepted values."),
-            containsString("value:  integer"),
-            containsString("accepted values:  [float, uint32, uint64]")
+            containsString("Value(s) is/are not in array of accepted values."),
+            containsString("value(s):  integer"),
+            containsString("accepted value(s):  [float, uint32, uint64]")
         ));
         assertThat(convertToMessagesList(errors)).haveExactly(1, containingErrorForWrongValueInFirstDocument);
 
@@ -164,6 +166,16 @@ public class VTPValidateCSARR816745IntegrationTest {
             containsString("Key not found: measChangeType")
         ));
         assertThat(convertToMessagesList(errors)).haveExactly(1, containingErrorForMissingValueInSecondDocument);
+
+        Condition<String> containingErrorForWrongValueInArrayInThirdDocument = new HamcrestCondition<>(allOf(
+            containsString("Invalid YAML document in PM_Dictionary file."),
+            containsString("In document number 3"),
+            containsString("Path: /pmMetaData/pmFields/measAdditionalFields/vendorField1"),
+            containsString("Value(s) is/are not in array of accepted values."),
+            containsString("value(s):  [Z, A]"),
+            containsString("accepted value(s):  [X, Y, Z]")
+        ));
+        assertThat(convertToMessagesList(errors)).haveExactly(1, containingErrorForWrongValueInArrayInThirdDocument);
     }
 
 }
