@@ -54,3 +54,7 @@ All notable changes to this project will be documented in this file.
     
     
 ## [1.2.10]
+
+### Added
+- Added parameters list validation to PM Dictionary .
+    - https://jira.onap.org/browse/VNFSDK-594
