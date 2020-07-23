@@ -21,13 +21,13 @@ import java.util.Map;
 
 public class YamlDocument {
 
-    private final Map<String, ?> yaml;
+    private final Map<String, Object> yaml;
 
-    YamlDocument(Map<String, ?> yaml) {
+    YamlDocument(Map<String, Object> yaml) {
         this.yaml = yaml;
     }
 
-    public Map<String, ?> getYaml() {
+    public Map<String, Object> getYaml() {
         return yaml;
     }
 

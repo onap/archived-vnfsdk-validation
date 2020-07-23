@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Enumeration;
 
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -54,7 +55,7 @@ public class CsarUtil {
 	 *             e1
 	 * @throws ValidationException 
 	 */
-	public static HashMap<String, String> unzip(String zipFileName, String extPlace) throws IOException {
+	public static Map<String, String> unzip(String zipFileName, String extPlace) throws IOException {
 		HashMap<String, String> unzipFileNames = new HashMap<>();
 
 		try(ZipFile zipFile = new ZipFile(zipFileName)) {
@@ -145,7 +146,7 @@ public class CsarUtil {
 	 * @param filePath
 	 * @return HashMap<String, String>
 	 */
-	public static HashMap<String, String> csarExtract(String filePath) {
+	public static Map<String, String> csarExtract(String filePath) {
 
 		try {
 			String tempfolder = CsarUtil.getUnzipDir(filePath);
