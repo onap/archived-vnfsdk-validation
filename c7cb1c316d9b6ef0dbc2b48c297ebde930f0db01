@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8ce53540_c8dbb746",
+        "filename": "csarvalidation/src/test/java/org/onap/validation/csarvalidationtest/CsarValidatorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-24T04:29:48Z",
+      "side": 1,
+      "message": "new imports should be below existing imports. Thanks.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 21
+      },
+      "revId": "c7cb1c316d9b6ef0dbc2b48c297ebde930f0db01",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
