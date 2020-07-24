@@ -966,10 +966,7 @@ public class CSARArchive implements AutoCloseable {
                 lineNo ++;
                 line = line.trim();
 
-                if (line.startsWith("#") || line.trim().isEmpty()) {
-                    continue;
-                }
-
+                if (!line.startsWith("#") && !line.trim().isEmpty()) {
                 String []lineTokens = line.split(":");
 
                 if (lineTokens.length != 2) {
@@ -1048,6 +1045,7 @@ public class CSARArchive implements AutoCloseable {
                                         TOSCA_METADATA_TOSCA_META,
                                         lineNo,
                                         null));
+                }
                 }
             }
 

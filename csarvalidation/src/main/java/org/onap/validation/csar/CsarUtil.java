@@ -66,12 +66,9 @@ public class CsarUtil {
 			while (fileEn.hasMoreElements()) {
 				InputStream input = null;
 				BufferedOutputStream bos = null;
+				ZipEntry entry = (ZipEntry) fileEn.nextElement();
+				if (!entry.isDirectory()) {
 				try {
-					ZipEntry entry = (ZipEntry) fileEn.nextElement();
-					if (entry.isDirectory()) {
-						continue;
-					}
-
 					input = zipFile.getInputStream(entry);
 					File file = new File(extPlace, entry.getName());
 
@@ -100,6 +97,7 @@ public class CsarUtil {
 					closeOutputStream(bos);
 					closeInputStream(input);
 				}
+			    }
 			}
 		}
 		return unzipFileNames;

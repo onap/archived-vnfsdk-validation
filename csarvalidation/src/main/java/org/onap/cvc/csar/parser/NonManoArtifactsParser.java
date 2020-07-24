@@ -51,10 +51,9 @@ public class NonManoArtifactsParser {
                 if (isNewSection(data)) {
                     attributeName = data.getKey();
                     nonManoArtifacts.put(attributeName, new HashMap<>());
-                    continue;
-                }
-
+                } else{
                 handleNonManoArtifactLine(nonManoArtifacts, attributeName, data);
+                }
             }
         }
 
