@@ -30,6 +30,7 @@ public final class FileUtil {
     public static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
     private static final int TRY_COUNT = 3;
+    public static final String FILE_IO_STR = "FILE_IO";
 
     private FileUtil() {
 
@@ -92,7 +93,7 @@ public final class FileUtil {
                 inputStream.close();
             }
         } catch (Exception e1) {
-            logger.error("FILE_IO" + ":" + "close InputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            logger.error(FILE_IO_STR + ":" + "close InputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
             throw new ValidationException(ErrorCodes.FILE_IO);
         }
     }
@@ -109,7 +110,7 @@ public final class FileUtil {
                 outputStream.close();
             }
         } catch (Exception e1) {
-        	logger.error("FILE_IO" + ":" + "close OutputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            logger.error(FILE_IO_STR + ":" + "close OutputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
             throw new ValidationException(ErrorCodes.FILE_IO);
         }
     }
@@ -120,7 +121,7 @@ public final class FileUtil {
                 ifs.close();
             }
         } catch (Exception e1) {
-        	logger.error("FILE_IO" + ":" + "close OutputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            logger.error(FILE_IO_STR + ":" + "close OutputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
             throw new ValidationException(ErrorCodes.FILE_IO);
         }
     }

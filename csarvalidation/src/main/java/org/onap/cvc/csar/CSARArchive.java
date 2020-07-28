@@ -92,6 +92,8 @@ public class CSARArchive implements AutoCloseable {
     public static final String CSAR_ARCHIVE = "CSAR Archive";
 
     public static final String DOESS_NOT_EXIST = " does not exist";
+    public static final String CERT = ".cert";
+    public static final String YAML = ".yaml";
 
     public enum Mode {
         WITH_TOSCA_META_DIR,
@@ -521,7 +523,7 @@ public class CSARArchive implements AutoCloseable {
                     CSAR_ARCHIVE,
                     -1,
                     "certificate file name should match the definition YAML name",
-                    definitionYaml + ".cert", //fix the name part
+                    definitionYaml + CERT, //fix the name part
                     certificate);
 
             this.setCode("0x0015");
@@ -1069,7 +1071,7 @@ public class CSARArchive implements AutoCloseable {
 
         } else {
             //definition files
-            File []files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(".yaml"));
+            File []files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(YAML));
 
             if (files.length == 0) {
                 errors.add(
@@ -1100,7 +1102,7 @@ public class CSARArchive implements AutoCloseable {
 
                     //name should match the definition yaml
                     String defYaml = this.toscaMeta.getEntryDefinitionYaml().substring(
-                            0, this.toscaMeta.getEntryDefinitionYaml().lastIndexOf(".yaml"));
+                            0, this.toscaMeta.getEntryDefinitionYaml().lastIndexOf(YAML));
                     String mfFile = this.toscaMeta.getEntryManifestMf().substring(
                             0, this.toscaMeta.getEntryManifestMf().lastIndexOf(".mf"));
 
@@ -1113,7 +1115,7 @@ public class CSARArchive implements AutoCloseable {
                 }
 
                 //certificate
-                files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(".cert"));
+                files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(CERT));
 
                 if (files.length > 1) {
                     List<String> fileNames = new ArrayList<>();
@@ -1128,9 +1130,9 @@ public class CSARArchive implements AutoCloseable {
 
                     //name should match the definition yaml
                     String defYaml = this.toscaMeta.getEntryDefinitionYaml().substring(
-                            0, this.toscaMeta.getEntryDefinitionYaml().lastIndexOf(".yaml"));
+                            0, this.toscaMeta.getEntryDefinitionYaml().lastIndexOf(YAML));
                     String certFile = this.toscaMeta.getEntryCertificate().substring(
-                            0, this.toscaMeta.getEntryCertificate().lastIndexOf(".cert"));
+                            0, this.toscaMeta.getEntryCertificate().lastIndexOf(CERT));
 
                     if (!defYaml.equalsIgnoreCase(certFile)) {
                         errors.add(new CSARErrorMismatchDefinitionYamlVsCertificateCert(

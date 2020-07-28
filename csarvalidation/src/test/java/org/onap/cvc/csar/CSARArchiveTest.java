@@ -20,8 +20,9 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class CSARArchiveTest {
 
     @Test
@@ -35,6 +36,7 @@ public class CSARArchiveTest {
                 csar.init("./src/test/resources/" + csarFileName + ".csar");
                 csar.parse();
                 csar.cleanup();
+                assertTrue(csar.getErrors().size()>0);
                 System.out.println(csar.getErrors());
             } catch (Exception e) {
                 // TODO Auto-generated catch block
