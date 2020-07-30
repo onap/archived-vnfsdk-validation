@@ -54,7 +54,7 @@ public class VTPValidateCSARR146092IntegrationTest {
 
         // then
         final List<CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
     }
 
     @Test
@@ -68,7 +68,7 @@ public class VTPValidateCSARR146092IntegrationTest {
 
         // then
         final List<CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
     }
 
     @Test
