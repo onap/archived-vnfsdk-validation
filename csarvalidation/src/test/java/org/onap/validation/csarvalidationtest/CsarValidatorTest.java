@@ -301,4 +301,11 @@ public class CsarValidatorTest {
         String res=CsarValidator.validateCsar();
         assertEquals("FAIL",res);
     }
+    @Test
+    public void testDeleteDir(){
+        String dstPath = "./dstPathForTest1";
+        File dst = new File(dstPath);
+        dst.mkdir();
+        assertTrue(FileUtil.deleteFile(dstPath));
+    }
 }

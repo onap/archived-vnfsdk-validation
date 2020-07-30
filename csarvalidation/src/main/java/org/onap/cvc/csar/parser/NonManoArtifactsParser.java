@@ -67,7 +67,7 @@ public class NonManoArtifactsParser {
     private boolean isNewSection(Pair<String, String> data) {
         String key = data.getKey().trim();
         String value = data.getValue().trim();
-        return key.matches("[a-zA-z_0-9]+") && (value.isEmpty() || ManifestLine.of(value).startsWith("#"));
+        return key.matches("[a-zA-Z_0-9]+") && (value.isEmpty() || ManifestLine.of(value).startsWith("#"));
     }
 
     private void handleNonManoArtifactLine(
