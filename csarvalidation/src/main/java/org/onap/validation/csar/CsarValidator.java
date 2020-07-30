@@ -49,10 +49,10 @@ public class CsarValidator {
     private static ValidatorSchemaLoader vsl;
 
     // Map of CSAR file and un-zipped file indices
-    private static HashMap<String, String> csarFiles;
+    private static Map<String, String> csarFiles;
 
     // Map of packageId and CSAR files
-    private static HashMap<String, HashMap<String, String>> csar = new HashMap<>();
+    private static Map<String, Map<String, String>> csar = new HashMap<>();
 
     private static String MAINSERV_TEMPLATE = CommonConstants.MAINSERV_TEMPLATE;
 
@@ -110,12 +110,12 @@ public class CsarValidator {
 
         //String r02454 = r02454();
 
-        if((CommonConstants.SUCCESS_STR != vsm) && (CommonConstants.SUCCESS_STR != vms)) {
+        if((!CommonConstants.SUCCESS_STR.equals(vsm)) && (!CommonConstants.SUCCESS_STR.equals(vms))) {
 
             return vsm + " OR " + vms;
         }
 
-        if(CommonConstants.SUCCESS_STR != vtm) {
+        if(!CommonConstants.SUCCESS_STR.equals(vtm)) {
             return vtm;
         }
 /*
@@ -422,19 +422,19 @@ public class CsarValidator {
         }
     }
 
-    public static HashMap<String, HashMap<String, String>> getCsar() {
+    public static Map<String, Map<String, String>> getCsar() {
         return csar;
     }
 
-    public static void setCsar(HashMap<String, HashMap<String, String>> csar) {
+    public static void setCsar(Map<String, Map<String, String>> csar) {
         CsarValidator.csar = csar;
     }
 
-    public static HashMap<String, String> getCsarFiles() {
+    public static Map<String, String> getCsarFiles() {
         return csarFiles;
     }
 
-    public static void setCsarFiles(HashMap<String, String> csarFiles) {
+    public static void setCsarFiles(Map<String, String> csarFiles) {
         CsarValidator.csarFiles = csarFiles;
     }
 }

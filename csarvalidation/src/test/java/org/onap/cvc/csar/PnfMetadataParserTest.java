@@ -122,7 +122,7 @@ public class PnfMetadataParserTest {
 
         //then
         List<CSARArchive.CSARError> errors = data.getRight();
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
 
     }
 
