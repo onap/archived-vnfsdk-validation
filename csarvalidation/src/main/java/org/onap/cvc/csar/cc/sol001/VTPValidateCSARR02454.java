@@ -60,10 +60,11 @@ public class VTPValidateCSARR02454 extends VTPValidateCSARBase {
                 }
             }
 
-            if (!vlExist)
-            this.errors.add(new CSARErrorEntryMissingSwImage(
+            if (!vlExist) {
+                this.errors.add(new CSARErrorEntryMissingSwImage(
                     csar.getDefinitionYamlFile().getName(),
                     "Software Image"));
+            }
         }
     }
 }
