@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb7617c1_1cb0867e",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/VTPValidateCSAR.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-07-30T16:32:47Z",
+      "side": 1,
+      "message": "arrow symbol should not come. thanks",
+      "revId": "c5b3da342a9b8df8de5aa5a68f2ffab4ae0ba630",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59fad4ce_f6b7a97a",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/csar/FileUtil.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-07-30T16:32:47Z",
+      "side": 1,
+      "message": "! can remove. thanks",
+      "revId": "c5b3da342a9b8df8de5aa5a68f2ffab4ae0ba630",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
