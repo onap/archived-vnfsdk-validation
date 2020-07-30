@@ -56,7 +56,7 @@ public class PnfNonManoArtifactsParserTest {
                 pnfManifestParser.fetchNonManoArtifacts();
 
         //then
-        assertThat(nonManoArtifacts.isPresent()).isFalse();
+        assertThat(nonManoArtifacts).isNotPresent();
     }
 
     @Test
@@ -88,7 +88,7 @@ public class PnfNonManoArtifactsParserTest {
 
         //then
         List<CSARArchive.CSARError> errors = data.getRight();
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
 
     }
 }

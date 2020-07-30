@@ -60,7 +60,7 @@ public class VTPValidateCSARR816745IntegrationTest {
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
     }
 
     @Test

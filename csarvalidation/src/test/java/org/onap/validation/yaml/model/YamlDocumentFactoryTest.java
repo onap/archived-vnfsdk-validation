@@ -52,13 +52,13 @@ public class YamlDocumentFactoryTest {
         assertThat(document).isNotNull();
         assertThat(document.getYaml()).containsKeys("test", "345", "test2", "2.67");
 
-        assertThat(document.getYaml().get("test")).isEqualTo(testList);
+        assertThat((Map<String, Object>)document.getYaml()).containsEntry("test",testList);
         assertThat(document.getValue("test")).isEqualTo("[element1, element11]");
 
         assertThat(document.getValue("345")).isEqualTo("element2");
         assertThat(document.getValue("test2")).isEqualTo("element3");
 
-        assertThat(document.getYaml().get("2.67")).isEqualTo(testEmptyMap);
+        assertThat((Map<String, Object>)document.getYaml()).containsEntry("2.67",testEmptyMap);
         assertThat(document.getValue("2.67")).isEqualTo("{}");
     }
 

@@ -43,7 +43,7 @@ public class VnfManifestParserTest {
         CSARArchive.Manifest.Metadata metadata = metadataListPair.getKey();
         List<CSARArchive.CSARError> errors = metadataListPair.getValue();
 
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
         assertThat(metadata.getProductName()).isEqualTo(" vCSCF");
         assertThat(metadata.getProviderId()).isEqualTo(" ZTE");
         assertThat(metadata.getPackageVersion()).isEqualTo(" 1.0");
@@ -64,7 +64,7 @@ public class VnfManifestParserTest {
                 new SourcesParser.Source("scripts/install.sh", "SHA-256", "d0e7828293355a07c2dccaaa765c80b507e60e6167067c950dc2e6b0da0dbd8b"),
                 new SourcesParser.Source("https://www.vendor_org.com/MRF/v4.1/scripts/scale/scale.sh", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165")
         );
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
     }
 
     @Test
@@ -79,6 +79,6 @@ public class VnfManifestParserTest {
                         "AQcBoFEET3icc87PK0nNK9ENqSxItVIoSa0o0S/ISczMs1ZIzkgsKk4tsQ0N1nUM" +
                         "dvb05OXi5XLPLEtViMwvLVLwSE0sKlFIVHAqSk3MBkkBAJv0Fx0="
         );
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
     }
 }

@@ -61,6 +61,18 @@ public class VTPValidateCSARR10087IntegrationTest {
                 "Ignored. Entry [Definitions]"
         );
     }
+    @Test
+    public void testWithoutTOSCAMetaDir() throws Exception {
+        // given
+        configureTestCase(testCase, "pnf/toscaMetaFile.csar", "vtp-validate-csar-r10087.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(7);
+    }
 
     @Test
     public void shouldReportThatDefinitionYAMLDoesNotExist() throws Exception {
