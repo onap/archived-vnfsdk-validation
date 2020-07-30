@@ -293,7 +293,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
 
     class ManifestFileSignatureValidator {
 
-        private final Logger LOG = LoggerFactory.getLogger(ManifestFileSignatureValidator.class);
+        private final Logger log = LoggerFactory.getLogger(ManifestFileSignatureValidator.class);
         private final ManifestFileSplitter manifestFileSplitter = new ManifestFileSplitter();
         private final CmsSignatureValidator cmsSignatureValidator = new CmsSignatureValidator();
 

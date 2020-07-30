@@ -39,8 +39,9 @@ public class ShaHashCodeGeneratorTest {
 
         final String hashCode = shaHashCodeGenerator.generateSha256("test".getBytes());
 
-        assertThat(hashCode).isEqualTo(shaHashCodeGenerator.generateSha256("test".getBytes()));
-        assertThat(hashCode).isNotEqualTo(shaHashCodeGenerator.generateSha256("Test".getBytes()));
+        assertThat(hashCode)
+        .isEqualTo(shaHashCodeGenerator.generateSha256("test".getBytes()))
+        .isNotEqualTo(shaHashCodeGenerator.generateSha256("Test".getBytes()));
     }
 
     @Test
@@ -48,7 +49,8 @@ public class ShaHashCodeGeneratorTest {
 
         final String hashCode = shaHashCodeGenerator.generateSha512("test".getBytes());
 
-        assertThat(hashCode).isEqualTo(shaHashCodeGenerator.generateSha512("test".getBytes()));
-        assertThat(hashCode).isNotEqualTo(shaHashCodeGenerator.generateSha512("Test".getBytes()));
+        assertThat(hashCode)
+        .isEqualTo(shaHashCodeGenerator.generateSha512("test".getBytes()))
+        .isNotEqualTo(shaHashCodeGenerator.generateSha512("Test".getBytes()));
     }
 }
