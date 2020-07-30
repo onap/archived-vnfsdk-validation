@@ -65,10 +65,8 @@ public class CsarValidator {
      */
     public CsarValidator(String packageId, String csarWithPath) throws IOException {
 
-        try (FileInputStream is = new FileInputStream(csarWithPath)) {
-
-        } catch(FileNotFoundException e2) {
-            LOG.error(csarWithPath + ":CSAR  is not found! " + ErrorCodes.RESOURCE_MISSING, e2);
+        if (!isCsarExist(csarWithPath)) {
+            LOG.error(csarWithPath + ":CSAR  is not found! " + ErrorCodes.RESOURCE_MISSING);
             throw new ValidationException(ErrorCodes.RESOURCE_MISSING,
                     "RESOURCE MISSING" + csarWithPath + ":CSAR  is not found!");
         }
@@ -80,8 +78,8 @@ public class CsarValidator {
                 LOG.debug("CSAR extracted sucessfully.");
             }
         } catch(Exception e1) {
-            LOG.error("INVALID_CSAR_CONTENT" + ":" + csarWithPath + ": CSAR is not a valid CSAR/ZIP file! "
-                    + ErrorCodes.INVALID_CSAR_CONTENT, e1);
+            LOG.error("INVALID_CSAR_CONTENT:{}: CSAR is not a valid CSAR/ZIP file! {} {}",
+                    csarWithPath, ErrorCodes.INVALID_CSAR_CONTENT, e1);
             throw new ValidationException(ErrorCodes.INVALID_CSAR_CONTENT,
                     "INVALID_CSAR_CONTENT" + ":" + csarWithPath + ": CSAR is not a valid CSAR/ZIP file! ");
         }
@@ -89,9 +87,7 @@ public class CsarValidator {
         try {
             vsl = new ValidatorSchemaLoader();
         } catch(Exception e) {
-            LOG.error(
-                    "SCHEMA_LOAD_ERROR" + ":" + "CSAR schema is not loaded correctly! " + ErrorCodes.SCHEMA_LOAD_ERROR,
-                    e);
+            LOG.error("SCHEMA_LOAD_ERROR:CSAR schema is not loaded correctly! {} {}", ErrorCodes.SCHEMA_LOAD_ERROR, e);
             throw new ValidationException(ErrorCodes.SCHEMA_LOAD_ERROR,
                     "SCHEMA_LOAD_ERROR" + ":" + "CSAR schema is not loaded correctly! ");
         }
@@ -127,8 +123,6 @@ public class CsarValidator {
 
         String vms = csarValidatorSeam.validateMainService();
 
-        //String r02454 = r02454();
-
         if((!CommonConstants.SUCCESS_STR.equals(vsm)) && (!CommonConstants.SUCCESS_STR.equals(vms))) {
 
             return vsm + " OR " + vms;
@@ -137,11 +131,6 @@ public class CsarValidator {
         if(!CommonConstants.SUCCESS_STR.equals(vtm)) {
             return vtm;
         }
-/*
-        if (CommonConstants.SUCCESS_STR != r02454) {
-            return r02454;
-        }
-*/
         return CommonConstants.SUCCESS_STR;
     }
 
@@ -283,8 +272,7 @@ public class CsarValidator {
                 }
             }
         } catch(IOException | NullPointerException e) {
-            LOG.error("CSAR_TOSCA_VALIDATION" + ":" + "Could not read file %s ! " + ErrorCodes.FILE_IO + " "
-                    + ErrorCodes.RESOURCE_MISSING, e);
+            LOG.error("CSAR_TOSCA_VALIDATION:Could not read file {} {} ! {}", ErrorCodes.FILE_IO, ErrorCodes.RESOURCE_MISSING, e);
             throw new ValidationException(ErrorCodes.RESOURCE_MISSING);
         }
 
@@ -383,14 +371,16 @@ public class CsarValidator {
 
         Yaml yaml = new Yaml();
         Map<String, ?> values;
+        String exceptionMessage;
         try (InputStream input = new FileInputStream(new File(cFile))) {
             values = (Map<String, ?>)yaml.load(input);
         } catch(FileNotFoundException e) {
-            LOG.error("FILE_NOT_FOUND" + ":" + "Exception caught while trying to find the file ! " + e.getMessage(), e);
+            exceptionMessage = e.getMessage();
+            LOG.error("FILE_NOT_FOUND:Exception caught while trying to find the file ! {} {}", exceptionMessage, e);
             return false;
         } catch(IOException e1) {
-            LOG.error("FILE_NOT_FOUND" + ":" + "Exception caught while trying to open the file ! " + e1.getMessage(),
-                    e1);
+            exceptionMessage = e1.getMessage();
+            LOG.error("FILE_NOT_FOUND:Exception caught while trying to open the file ! {} {}", exceptionMessage, e1);
             return false;
         }
 
@@ -435,9 +425,9 @@ public class CsarValidator {
             try (InputStream input = new FileInputStream(new File(cfile))) {
                 toscaMeta = (Map<String, ?>)yaml.load(input);
             } catch(FileNotFoundException e) {
-                LOG.error("CSAR_TOSCA_LOAD" + ":" + "TOSCA metadata is not loaded by Yaml! " + ErrorCodes.FILE_IO, e);
+                LOG.error("CSAR_TOSCA_LOAD:TOSCA metadata is not loaded by Yaml! {} {}", ErrorCodes.FILE_IO, e);
             } catch(IOException e1) {
-                LOG.error("CSAR_TOSCA_LOAD" + ":" + "TOSCA metadata is not loaded by Yaml! " + ErrorCodes.FILE_IO, e1);
+                LOG.error("CSAR_TOSCA_LOAD:TOSCA metadata is not loaded by Yaml! {} {}", ErrorCodes.FILE_IO, e1);
             }
             if(toscaMeta != null) {
                 return toscaMeta.keySet().containsAll((vsl.getToscaMeta().keySet()));
@@ -460,5 +450,9 @@ public class CsarValidator {
 
     public static void setCsarFiles(Map<String, String> csarFiles) {
         CsarValidator.csarFiles = csarFiles;
+    }
+
+    public static boolean isCsarExist(String csarWithPath){
+        return new File(csarWithPath).exists();
     }
 }
