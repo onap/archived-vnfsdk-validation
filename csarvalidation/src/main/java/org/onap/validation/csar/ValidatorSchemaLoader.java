@@ -46,8 +46,6 @@ public class ValidatorSchemaLoader {
 
     static HashMap<String, String> optionTwoSchema;
 
-    private String schemaFolder;
-
     public ValidatorSchemaLoader() {
 
             loadResources();

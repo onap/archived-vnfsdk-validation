@@ -63,17 +63,19 @@ public final class FileUtil {
      */
     public static boolean deleteFile(File file) {
         String hintInfo = file.isDirectory() ? "dir " : "file ";
-        boolean isFileDeleted=false;
-        try {
-            if (file.exists()) {
-                Files.delete(Paths.get(file.getPath()));
-                logger.info("delete {} {}" ,hintInfo, file.getAbsolutePath());
+        boolean isFileDeleted = file.delete();
+        boolean isFileExist = file.exists();
+        String fileAbsolutePath = file.getAbsolutePath();
+        if (!isFileExist) {
+            if (isFileDeleted) {
+                logger.info("delete {}{}", hintInfo, fileAbsolutePath);
             } else {
-                logger.info("file not exist. no need delete {} {}" ,hintInfo , file.getAbsolutePath());
+                isFileDeleted = true;
+                logger.info("file not exist. no need delete {}{}", hintInfo, fileAbsolutePath);
             }
-            isFileDeleted=true;
-        } catch (IOException e) {
-            logger.error("fail to delete {} {} ", hintInfo, file.getAbsolutePath(), ", exception :: ", e);
+        } else {
+            logger.info("fail to delete {}{}", hintInfo, fileAbsolutePath);
+
         }
         return isFileDeleted;
     }
@@ -91,7 +93,8 @@ public final class FileUtil {
                 inputStream.close();
             }
         } catch (Exception e1) {
-            logger.error(FILE_IO_STR + ":" + "close InputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            String errCodeMessage = ErrorCodes.FILE_IO+ " " + e1.getMessage();
+            logger.error("FILE_IO:close InputStream error! {}{}", errCodeMessage, e1);
             throw new ValidationException(ErrorCodes.FILE_IO);
         }
     }
@@ -108,7 +111,8 @@ public final class FileUtil {
                 outputStream.close();
             }
         } catch (Exception e1) {
-            logger.error(FILE_IO_STR + ":" + "close OutputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            String errCodeMessage = ErrorCodes.FILE_IO+ " " + e1.getMessage();
+            logger.error("FILE_IO:close OutputStream error! {}{}", errCodeMessage, e1);
             throw new ValidationException(ErrorCodes.FILE_IO);
         }
     }
@@ -119,7 +123,8 @@ public final class FileUtil {
                 ifs.close();
             }
         } catch (Exception e1) {
-            logger.error(FILE_IO_STR + ":" + "close OutputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            String errCodeMessage = ErrorCodes.FILE_IO+ " " + e1.getMessage();
+            logger.error("FILE_IO:close OutputStream error! {}{}", errCodeMessage, e1);
             throw new ValidationException(ErrorCodes.FILE_IO);
         }
     }
@@ -136,7 +141,8 @@ public final class FileUtil {
                 zipFile.close();
                 }
         } catch (IOException e1) {
-		    logger.error("CLOSE_ZIPFILE" + ":" + "close ZipFile error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            String errCodeMessage = ErrorCodes.FILE_IO+ " " + e1.getMessage();
+            logger.error("CLOSE_ZIPFILE:close ZipFile error! {}{}", errCodeMessage, e1);
 			throw new ValidationException(ErrorCodes.FILE_IO); 
         }
     }
