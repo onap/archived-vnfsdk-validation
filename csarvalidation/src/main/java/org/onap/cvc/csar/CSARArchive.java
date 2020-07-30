@@ -92,6 +92,9 @@ public class CSARArchive implements AutoCloseable {
     public static final String CSAR_ARCHIVE = "CSAR Archive";
 
     public static final String DOESS_NOT_EXIST = " does not exist";
+    public static final String CERT = ".cert";
+    public static final String YAML = ".yaml";
+    public static final String MF = ".mf";
 
     public enum Mode {
         WITH_TOSCA_META_DIR,
@@ -496,7 +499,7 @@ public class CSARArchive implements AutoCloseable {
                     CSAR_ARCHIVE,
                     -1,
                     "Manifest file name should match the definition YAML name",
-                    definitionYaml + ".mf", //fix the name part
+                    definitionYaml + MF, //fix the name part
                     manifest);
 
             this.setCode("0x0013");
@@ -521,7 +524,7 @@ public class CSARArchive implements AutoCloseable {
                     CSAR_ARCHIVE,
                     -1,
                     "certificate file name should match the definition YAML name",
-                    definitionYaml + ".cert", //fix the name part
+                    definitionYaml + CERT, //fix the name part
                     certificate);
 
             this.setCode("0x0015");
@@ -966,32 +969,29 @@ public class CSARArchive implements AutoCloseable {
                 lineNo ++;
                 line = line.trim();
 
-                if (line.startsWith("#") || line.trim().isEmpty()) {
-                    continue;
-                }
+                if (!line.startsWith("#") && !line.trim().isEmpty()) {
+                    String []lineTokens = line.split(":");
 
-                String []lineTokens = line.split(":");
+                    if (lineTokens.length != 2) {
+                        errors.add(
+                                new CSARErrorIgnored(
+                                        line,
+                                        TOSCA_METADATA_TOSCA_META,
+                                        lineNo,
+                                        null));
+                        continue;
+                    }
 
-                if (lineTokens.length != 2) {
-                    errors.add(
-                            new CSARErrorIgnored(
-                                    line,
-                                    TOSCA_METADATA_TOSCA_META,
-                                    lineNo,
-                                    null));
-                    continue;
-                }
+                    String key = lineTokens[0].trim();
+                    String value = lineTokens[1].trim();
 
-                String key = lineTokens[0].trim();
-                String value = lineTokens[1].trim();
-
-                if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_TOSCA_META_FILE_VERSION)) {
+                    if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_TOSCA_META_FILE_VERSION)) {
                         this.toscaMeta.setMetaDataFileVersion(value);
-                } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_CSAR_VERSION)){
+                    } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_CSAR_VERSION)){
                         this.toscaMeta.setCsarVersion(value);
-                } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_CREATED_BY)) {
+                    } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_CREATED_BY)) {
                         this.toscaMeta.setCompanyName(value);
-                } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_ENTRY_DEFINITIONS)) {
+                    } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_ENTRY_DEFINITIONS)) {
                         this.toscaMeta.setEntryDefinitionYaml(value);
                         this.definitionYamlFile = new File(this.tempDir.toFile().getAbsolutePath() + File.separator + (this.toscaMeta.getEntryDefinitionYaml()));
 
@@ -1001,7 +1001,7 @@ public class CSARArchive implements AutoCloseable {
                                             this.toscaMeta.getEntryDefinitionYaml(),
                                             lineNo));
                         }
-                } else if(key.equalsIgnoreCase(getEntryManifestParamName())) {
+                    } else if(key.equalsIgnoreCase(getEntryManifestParamName())) {
                         this.toscaMeta.setEntryManifestMf(value);
                         this.manifestMfFile = this.tempDir.resolve(this.toscaMeta.getEntryManifestMf()).toFile();
                         if (!this.manifestMfFile.exists()) {
@@ -1009,7 +1009,7 @@ public class CSARArchive implements AutoCloseable {
                                     this.toscaMeta.getEntryManifestMf(),
                                     lineNo, getEntryManifestParamName()));
                         }
-                } else if(key.equalsIgnoreCase(getEntryChangeLogParamName())) {
+                    } else if(key.equalsIgnoreCase(getEntryChangeLogParamName())) {
                         this.toscaMeta.setEntryChangeLog(value);
                         this.changeLogTxtFile = this.tempDir.resolve(this.toscaMeta.getEntryChangeLog()).toFile();
                         if (!this.changeLogTxtFile.exists()) {
@@ -1017,37 +1017,38 @@ public class CSARArchive implements AutoCloseable {
                                     this.toscaMeta.getEntryChangeLog(),
                                     lineNo, getEntryChangeLogParamName()));
                         }
-                } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_ENTRY_TESTS)) {
+                    } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_ENTRY_TESTS)) {
                         this.toscaMeta.setEntryTest(value);
-                        this.testsFolder= this.tempDir.resolve(this.toscaMeta.getEntryTest()).toFile();
+                        this.testsFolder = this.tempDir.resolve(this.toscaMeta.getEntryTest()).toFile();
                         if (!this.testsFolder.exists() || !this.testsFolder.isDirectory()) {
                             errors.add(new CSARErrorInvalidEntryValueTestsNotFound(
                                     this.toscaMeta.getEntryTest(),
                                     lineNo));
                         }
-                } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_ENTRY_LICENSES)) {
+                    } else if(key.equalsIgnoreCase(TOSCA_METADATA_TOSCA_META_ENTRY_LICENSES)) {
                         this.toscaMeta.setEntryLicense(value);
-                        this.licensesFolder= this.tempDir.resolve(this.toscaMeta.getEntryLicense()).toFile();
+                        this.licensesFolder = this.tempDir.resolve(this.toscaMeta.getEntryLicense()).toFile();
                         if (!this.licensesFolder.exists() || !this.licensesFolder.isDirectory()) {
                             errors.add(new CSARErrorInvalidEntryValueLicenseNotFound(
                                     this.toscaMeta.getEntryLicense(),
                                     lineNo));
                         }
-                } else if(key.equalsIgnoreCase(getEntryCertificateParamName())) {
+                    } else if(key.equalsIgnoreCase(getEntryCertificateParamName())) {
                         this.toscaMeta.setEntryCertificate(value);
-                        this.certificatesFile= this.tempDir.resolve(this.toscaMeta.getEntryCertificate()).toFile();
+                        this.certificatesFile = this.tempDir.resolve(this.toscaMeta.getEntryCertificate()).toFile();
                         if (!this.certificatesFile.exists()) {
                             errors.add(new CSARErrorInvalidEntryValueCertificatesNotFound(
                                     this.toscaMeta.getEntryCertificate(),
                                     lineNo));
                         }
-                } else {
+                    } else {
                         errors.add(
                                 new CSARErrorIgnored(
                                         key,
                                         TOSCA_METADATA_TOSCA_META,
                                         lineNo,
                                         null));
+                    }
                 }
             }
 
@@ -1071,7 +1072,7 @@ public class CSARArchive implements AutoCloseable {
 
         } else {
             //definition files
-            File []files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(".yaml"));
+            File []files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(YAML));
 
             if (files.length == 0) {
                 errors.add(
@@ -1088,7 +1089,7 @@ public class CSARArchive implements AutoCloseable {
                 this.toscaMeta.setEntryDefinitionYaml(this.definitionYamlFile.getName());
 
                 //manifest
-                files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(".mf"));
+                files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(MF));
 
                 if (files.length > 1) {
                     List<String> fileNames = new ArrayList<>();
@@ -1102,9 +1103,9 @@ public class CSARArchive implements AutoCloseable {
 
                     //name should match the definition yaml
                     String defYaml = this.toscaMeta.getEntryDefinitionYaml().substring(
-                            0, this.toscaMeta.getEntryDefinitionYaml().lastIndexOf(".yaml"));
+                            0, this.toscaMeta.getEntryDefinitionYaml().lastIndexOf(YAML));
                     String mfFile = this.toscaMeta.getEntryManifestMf().substring(
-                            0, this.toscaMeta.getEntryManifestMf().lastIndexOf(".mf"));
+                            0, this.toscaMeta.getEntryManifestMf().lastIndexOf(MF));
 
                     if (!defYaml.equalsIgnoreCase(mfFile)) {
                         errors.add(new CSARErrorMismatchDefinitionYamlVsManifestMf(
@@ -1115,7 +1116,7 @@ public class CSARArchive implements AutoCloseable {
                 }
 
                 //certificate
-                files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(".cert"));
+                files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(CERT));
 
                 if (files.length > 1) {
                     List<String> fileNames = new ArrayList<>();
@@ -1130,9 +1131,9 @@ public class CSARArchive implements AutoCloseable {
 
                     //name should match the definition yaml
                     String defYaml = this.toscaMeta.getEntryDefinitionYaml().substring(
-                            0, this.toscaMeta.getEntryDefinitionYaml().lastIndexOf(".yaml"));
+                            0, this.toscaMeta.getEntryDefinitionYaml().lastIndexOf(YAML));
                     String certFile = this.toscaMeta.getEntryCertificate().substring(
-                            0, this.toscaMeta.getEntryCertificate().lastIndexOf(".cert"));
+                            0, this.toscaMeta.getEntryCertificate().lastIndexOf(CERT));
 
                     if (!defYaml.equalsIgnoreCase(certFile)) {
                         errors.add(new CSARErrorMismatchDefinitionYamlVsCertificateCert(
