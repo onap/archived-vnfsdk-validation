@@ -22,7 +22,6 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.util.*;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.scanner.ScannerException;
 
 public class ValidatorSchemaLoader {
 
@@ -51,15 +50,7 @@ public class ValidatorSchemaLoader {
 
     public ValidatorSchemaLoader() {
 
-        try {
             loadResources();
-        } catch(FileNotFoundException e1) {
-            LOG.error("Schema file not found or schema repository corrupted", e1);
-
-        } catch(URISyntaxException e) {
-            // TODO Auto-generated catch block
-            LOG.error("Illegal character in query at index", e);
-        }
     }
 
     private Map<String, ?> readYaml(String fileName) {
@@ -68,7 +59,7 @@ public class ValidatorSchemaLoader {
     }
 
     @SuppressWarnings("unchecked")
-    private boolean loadResources() throws FileNotFoundException, URISyntaxException {
+    private boolean loadResources() {
         for (String metaFile: new String []{"TOSCA.meta", "CSAR.meta", "MRF.mf" }) {
             switch(metaFile) {
                 case "TOSCA.meta":

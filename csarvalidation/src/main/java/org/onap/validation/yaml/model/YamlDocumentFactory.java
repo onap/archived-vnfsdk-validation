@@ -35,9 +35,9 @@ public class YamlDocumentFactory {
         }
     }
 
-    private Map<String, Object> transformMap(Map<?, ?> yaml) {
+    private Map<String, Object> transformMap(Map<Object, Object> yaml) {
         Map<String, Object> parsedYaml = new HashMap<>();
-        for (Map.Entry entry: yaml.entrySet()) {
+        for (Map.Entry<Object, Object> entry: yaml.entrySet()) {
             parsedYaml.put(entry.getKey().toString(), entry.getValue());
         }
         return parsedYaml;
