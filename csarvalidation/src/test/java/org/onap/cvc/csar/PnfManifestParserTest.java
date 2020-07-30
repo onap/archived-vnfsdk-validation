@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
+import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -48,7 +50,7 @@ public class PnfManifestParserTest {
         assertThat(metadata.getProviderId()).isEqualTo("Ericsson");
         assertThat(metadata.getPackageVersion()).isEqualTo("1.0");
         assertThat(metadata.getReleaseDateTime()).isEqualTo("2019-01-14T11:25:00+00:00");
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
     }
 
 
@@ -64,7 +66,7 @@ public class PnfManifestParserTest {
                 new SourcesParser.Source("scripts/install.sh", "SHA-256", "d0e7828293355a07c2dccaaa765c80b507e60e6167067c950dc2e6b0da0dbd8b"),
                 new SourcesParser.Source("https://www.vendor_org.com/MRF/v4.1/scripts/scale/scale.sh", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165")
         );
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
     }
 
 
@@ -81,7 +83,7 @@ public class PnfManifestParserTest {
                 new SourcesParser.Source("some_file.sh", "", ""),
                 new SourcesParser.Source("scripts/install.sh", "", "d0e7828293355a07c2dccaaa765c80b507e60e6167067c950dc2e6b0da0dbd8b"),
                 new SourcesParser.Source("https://www.vendor_org.com/MRF/v4.1/scripts/scale/scale.sh", "SHA-256", ""));
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
     }
 
 
@@ -90,25 +92,28 @@ public class PnfManifestParserTest {
         Pair<Map<String, Map<String, List<String>>>, List<CSARArchive.CSARError>> mapListPair = pnfManifestParser.fetchNonManoArtifacts().get();
         Map<String, Map<String, List<String>>> nonManoArtifacts = mapListPair.getKey();
         List<CSARArchive.CSARError> errors = mapListPair.getValue();
+        Map<String, List<String>>mapValue1=new HashMap<>();
+        Map<String, List<String>>mapValue2=new HashMap<>();
+        Map<String, List<String>>mapValue3=new HashMap<>();
+        Map<String, List<String>>mapValue4=new HashMap<>();
 
-        assertThat(nonManoArtifacts.get("onap_ves_events").get("source"))
-                .isEqualTo(Lists.newArrayList("Artifacts/Events/VES_registration.yml")
-                );
-        assertThat(nonManoArtifacts.get("onap_pm_dictionary").get("source"))
-                .isEqualTo(Lists.newArrayList("Artifacts/Measurements/PM_Dictionary.yaml")
-                );
-        assertThat(nonManoArtifacts.get("onap_yang_module").get("source"))
-                .isEqualTo(Lists.newArrayList("Artifacts/Yang_module/Yang_module.yaml")
-                );
-        assertThat(nonManoArtifacts.get("onap_others").get("source"))
-                .isEqualTo(Lists.newArrayList(
-                        "Artifacts/scripts/install.sh",
+        mapValue1.put("", Collections.singletonList(""));
+        mapValue1.put("source",Lists.newArrayList("Artifacts/Events/VES_registration.yml"));
+        mapValue2.put("", Collections.singletonList(""));
+        mapValue2.put("source",Lists.newArrayList("Artifacts/Measurements/PM_Dictionary.yaml"));
+        mapValue3.put("", Collections.singletonList(""));
+        mapValue3.put("source",Lists.newArrayList("Artifacts/Yang_module/Yang_module.yaml"));
+        mapValue4.put("", Collections.singletonList(""));
+        mapValue4.put("source",Lists.newArrayList
+                ("Artifacts/scripts/install.sh",
                         "Artifacts/Informational/user_guide.txt",
                         "Artifacts/Other/installation_guide.txt",
-                        "Artifacts/Other/review_log.txt"
-                        )
-                );
-        assertThat(errors.size()).isEqualTo(0);
+                        "Artifacts/Other/review_log.txt"));
+        assertThat(nonManoArtifacts).containsEntry("onap_ves_events",mapValue1);
+        assertThat(nonManoArtifacts).containsEntry("onap_pm_dictionary",mapValue2);
+        assertThat(nonManoArtifacts).containsEntry("onap_yang_module",mapValue3);
+        assertThat(nonManoArtifacts).containsEntry("onap_others",mapValue4);
+        assertThat(errors.size()).isZero();
     }
 
 
@@ -154,7 +159,7 @@ public class PnfManifestParserTest {
                 "HhE7UbSCHDlDDgrOosJkbuI4UCX/njXrU2ukXbrWz/FjH84Mek039z+w4M6fBnl5"+
                 "4xuyO1o65LlKHoxwnRH9lQ=="
         );
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
     }
 
     @Test
@@ -214,6 +219,6 @@ public class PnfManifestParserTest {
                 new SourcesParser.Source("Artifacts/Other/review_log.txt", "SHA-256", "36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165")
 
         );
-        assertThat(errors.size()).isEqualTo(0);
+        assertThat(errors.size()).isZero();
     }
 }
