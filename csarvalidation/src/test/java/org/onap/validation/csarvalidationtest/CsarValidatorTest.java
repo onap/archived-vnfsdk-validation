@@ -312,4 +312,11 @@ public class CsarValidatorTest {
         dst.mkdir();
         assertTrue(FileUtil.deleteFile(dstPath));
     }
+
+    @Test
+    public void testCreateDirectory() {
+        String dirPath = "src//test//resources//TestDirectory";
+        boolean res = FileUtil.createDirectory(dirPath);
+        assertTrue(res);
+    }
 }

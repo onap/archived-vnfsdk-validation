@@ -54,9 +54,9 @@ public class CsarValidator {
     // Map of packageId and CSAR files
     private static Map<String, Map<String, String>> csar = new HashMap<>();
 
-    private static String MAINSERV_TEMPLATE = CommonConstants.MAINSERV_TEMPLATE;
+    private static String mainServiceTemplate = CommonConstants.MAINSERV_TEMPLATE;
 
-    private static String MAINSERV_MANIFEST;
+    private static String mainServiceManifest;
 
     /**
      * @param packageId
@@ -134,23 +134,32 @@ public class CsarValidator {
 
         try {
             RandomAccessFile raf = new RandomAccessFile(csarWithPath, "r");
-            try {
-                long n = raf.readInt();
-
-                // Check for the CSAR's integrity
-                if(n != 0x504B0304) {
-                    LOG.error("CSAR %s contents are not a valid! ");
-                    return false;
-                }
-            } catch(FileNotFoundException e1) {
-                LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
-                return false;
-            } finally {
-                raf.close();
-            }
+            return checkCsarIntegrity(raf);
         } catch(IOException e1) {
             LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
             return false;
+        }
+    }
+
+    /**
+     * @param raf
+     * @throws IOException
+     */
+    private static boolean checkCsarIntegrity(RandomAccessFile raf) throws IOException {
+
+        try {
+            long n = raf.readInt();
+
+            // Check for the CSAR's integrity
+            if (n != 0x504B0304) {
+                LOG.error("CSAR %s contents are not a valid! ");
+                return false;
+            }
+        } catch (FileNotFoundException e1) {
+            LOG.error("CSAR %s is not a valid CSAR/ZIP file! ", e1);
+            return false;
+        } finally {
+            raf.close();
         }
         return true;
     }
@@ -192,7 +201,6 @@ public class CsarValidator {
                             }
                         }
                     }
-                    reader.close();
                     return CommonConstants.SUCCESS_STR;
                 }
             } catch(IOException e2) {
@@ -220,14 +228,14 @@ public class CsarValidator {
         }
 
         try {
-            MAINSERV_MANIFEST = checkAndGetMRF(cfile, "Entry-Manifest");
-            if(MAINSERV_MANIFEST == null) {
-                MAINSERV_MANIFEST = CommonConstants.MAINSERV_MANIFEST;
+            mainServiceManifest = checkAndGetMRF(cfile, "Entry-Manifest");
+            if(mainServiceManifest == null) {
+                mainServiceManifest = CommonConstants.MAINSERV_MANIFEST;
             }
 
-            MAINSERV_TEMPLATE = checkAndGetMRF(cfile, "Entry-Definitions");
-            if(MAINSERV_TEMPLATE == null) {
-                MAINSERV_TEMPLATE = CommonConstants.MAINSERV_TEMPLATE;
+            mainServiceTemplate = checkAndGetMRF(cfile, "Entry-Definitions");
+            if(mainServiceTemplate == null) {
+                mainServiceTemplate = CommonConstants.MAINSERV_TEMPLATE;
             }
 
             return CommonConstants.SUCCESS_STR;
@@ -276,9 +284,9 @@ public class CsarValidator {
                 Arrays.asList("vnf_product_name", "vnf_provider_id", "vnf_package_version", "vnf_release_data_time");
 
         @SuppressWarnings("unused")
-        boolean mfResult = checkEntryFor(CommonConstants.MAINSERV_MANIFEST, mListMetadata, key);
+        boolean mfResult = checkEntryFor(CommonConstants.MAINSERV_MANIFEST, mListMetadata, key); //NOSONAR
 
-        String mainServManifest = MAINSERV_MANIFEST;
+        String mainServManifest = mainServiceManifest;
         if(!Paths.get(mainServManifest).isAbsolute()) {
             mainServManifest = csarFiles.get(FilenameUtils.getName(mainServManifest));
         }
@@ -287,8 +295,8 @@ public class CsarValidator {
             // Do nothing for Rel-1
         }
 
-        String mainservTemplate = MAINSERV_TEMPLATE;
-        if(!Paths.get(MAINSERV_TEMPLATE).isAbsolute()) {
+        String mainservTemplate = mainServiceTemplate;
+        if(!Paths.get(mainServiceTemplate).isAbsolute()) {
             mainservTemplate = csarFiles.get(FilenameUtils.getName(mainservTemplate));
         }
 
@@ -306,10 +314,10 @@ public class CsarValidator {
      * @return: boolean
      **/
     public static String r02454() {
-        String mainservTemplate = MAINSERV_TEMPLATE;
+        String mainservTemplate = mainServiceTemplate;
         mainservTemplate = csarFiles.get(FilenameUtils.getName(mainservTemplate));
 
-        //TODO: Fixme R3 only check the existence of swImage filed inside VNFD.
+        //TODO: Fixme R3 only check the existence of swImage filed inside VNFD. //NOSONAR
         File file = new File(mainservTemplate);
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String tempString = null;
@@ -345,8 +353,6 @@ public class CsarValidator {
 
     @SuppressWarnings("unchecked")
     private static boolean checkEntryFor(String cFile, List<String> attributes, String key) {
-        @SuppressWarnings("unused")
-        String tFileWithPath;
 
         if(!Paths.get(cFile).isAbsolute()) {
             cFile = csarFiles.get(FilenameUtils.getName(cFile));
@@ -403,7 +409,6 @@ public class CsarValidator {
         if(StringUtils.isEmpty(cfile)) {
             return false;
         } else {
-            File file = new File(cfile);
 
             Yaml yaml = new Yaml();
 

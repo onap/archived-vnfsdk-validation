@@ -36,7 +36,7 @@ public class ValidationException extends RuntimeException {
         return wrappedInfo(exception, null);
     }
 
-    public ValidationException(ErrorCodes errCode, String message) {
+    public ValidationException(ErrorCodes errCode, String message) { //NOSONAR
         super(message);
     }
 
@@ -58,7 +58,8 @@ public class ValidationException extends RuntimeException {
         super(message, cause);
         this.errorCode = errorCode;
     }
-    
+
+    @Override
     public String toString(){
         return ("Exception Number =  "+errorMessage) ;
     }

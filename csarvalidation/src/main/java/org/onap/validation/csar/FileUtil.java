@@ -48,9 +48,7 @@ public final class FileUtil {
         int tryCount = 0;
         while (tryCount < TRY_COUNT) {
             tryCount++;
-            if (!folder.exists() && !folder.mkdirs()) {
-                continue;
-            } else {
+            if (folder.exists() || folder.mkdirs()) {
                 return true;
             }
         }

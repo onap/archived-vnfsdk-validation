@@ -221,30 +221,7 @@ public class VTPValidateCSAR extends OnapCommand {
                 CSARValidation.Result result = new CSARValidation.Result();
                 result.setVnfreqName(vnfreq);
 
-                try {
-                    String command = "csar-validate-" + vnfreq;
-                    OnapCommand cmd = OnapCommandRegistrar.getRegistrar().get(command, this.getInfo().getProduct());
-                    cmd.getParametersMap().get("csar").setValue(path);
-                    setPnfValueIfAvailable(isPnf, cmd);
-
-                    result.setDescription(cmd.getDescription());
-                    cmd.execute();
-
-                    for (CSARError error: (List<CSARError>) cmd.getResult().getOutput()) {
-                        if (!ignoreCodes.contains(error.getCode()) && !ignoreCodes.contains(vnfreq + "-"+ error.getCode())) {
-                            result.getErrors().add(error);
-                            overallPass = false;
-                        }
-                    }
-
-                    result.setPassed(result.getErrors().isEmpty());
-                    validation.getResults().add(result);
-                } catch (Exception e) {
-                    result.setPassed(false);
-                    overallPass = false;
-                    result.getErrors().add(new CSARArchive.CSARErrorUnknown(e.getMessage()));
-                    validation.getResults().add(result);
-                }
+                overallPass = validateVnfOrPnf(path, validation, ignoreCodes, vnfreq, result, isPnf, overallPass);
             }
 
             validation.setDate(new Date().toString());
@@ -255,6 +232,35 @@ public class VTPValidateCSAR extends OnapCommand {
             LOG.error(e.getMessage(), e);
             throw new OnapCommandExecutionFailed(e.getMessage());
         }
+    }
+
+    private boolean validateVnfOrPnf(String path, CSARValidation validation,
+        List < String > ignoreCodes, String vnfreq, CSARValidation.Result result, boolean isPnf, boolean overallPass) {
+        try {
+            String command = "csar-validate-" + vnfreq;
+            OnapCommand cmd = OnapCommandRegistrar.getRegistrar().get(command, this.getInfo().getProduct());
+            cmd.getParametersMap().get("csar").setValue(path);
+            setPnfValueIfAvailable(isPnf, cmd);
+
+            result.setDescription(cmd.getDescription());
+            cmd.execute();
+
+            for (CSARError error: (List < CSARError > ) cmd.getResult().getOutput()) {
+                if (!ignoreCodes.contains(error.getCode()) && !ignoreCodes.contains(vnfreq + "-" + error.getCode())) {
+                    result.getErrors().add(error);
+                    overallPass = false;
+                }
+            }
+
+            result.setPassed(result.getErrors().isEmpty());
+            validation.getResults().add(result);
+        } catch (Exception e) {
+            result.setPassed(false);
+            overallPass = false;
+            result.getErrors().add(new CSARArchive.CSARErrorUnknown(e.getMessage()));
+            validation.getResults().add(result);
+        }
+        return overallPass;
     }
 
     static CSARValidation createCsarValidationFor(CSARArchive csar) {

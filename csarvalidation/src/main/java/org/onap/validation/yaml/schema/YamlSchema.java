@@ -22,7 +22,6 @@ import org.onap.validation.yaml.schema.node.YamlSchemaNode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class YamlSchema {
 
