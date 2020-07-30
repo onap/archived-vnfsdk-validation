@@ -34,7 +34,7 @@ public abstract class VTPValidateCSARBase extends OnapCommand {
 
     protected List<CSARError> errors = new ArrayList<>();
 
-    protected abstract void validateCSAR(CSARArchive csar) throws Exception;
+    protected abstract void validateCSAR(CSARArchive csar) throws Exception; //NOSONAR
 
     protected abstract String getVnfReqsNo();
 
