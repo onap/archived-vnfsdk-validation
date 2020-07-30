@@ -67,13 +67,16 @@ public final class FileUtil {
         boolean isFileExist = file.exists();
         if (!isFileExist) {
             if (isFileDeleted) {
-                logger.info("delete " + hintInfo + file.getAbsolutePath());
+                String fileAbsolutePath = file.getAbsolutePath();
+                logger.info("delete {}{}", hintInfo, fileAbsolutePath);
             } else {
                 isFileDeleted = true;
-                logger.info("file not exist. no need delete " + hintInfo + file.getAbsolutePath());
+                String fileAbsolutePath = file.getAbsolutePath();
+                logger.info("file not exist. no need delete {}{}", hintInfo, fileAbsolutePath);
             }
         } else {
-            logger.info("fail to delete " + hintInfo + file.getAbsolutePath());
+            String fileAbsolutePath = file.getAbsolutePath();
+            logger.info("fail to delete {}{}", hintInfo, fileAbsolutePath);
 
         }
         return isFileDeleted;
@@ -92,7 +95,8 @@ public final class FileUtil {
                 inputStream.close();
             }
         } catch (Exception e1) {
-            logger.error("FILE_IO" + ":" + "close InputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            String errCodeMessage = ErrorCodes.FILE_IO+ " " + e1.getMessage();
+            logger.error("FILE_IO:close InputStream error! {}{}", errCodeMessage, e1);
             throw new ValidationException(ErrorCodes.FILE_IO);
         }
     }
@@ -109,7 +113,8 @@ public final class FileUtil {
                 outputStream.close();
             }
         } catch (Exception e1) {
-        	logger.error("FILE_IO" + ":" + "close OutputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            String errCodeMessage = ErrorCodes.FILE_IO+ " " + e1.getMessage();
+            logger.error("FILE_IO:close OutputStream error! {}{}", errCodeMessage, e1);
             throw new ValidationException(ErrorCodes.FILE_IO);
         }
     }
@@ -120,7 +125,8 @@ public final class FileUtil {
                 ifs.close();
             }
         } catch (Exception e1) {
-        	logger.error("FILE_IO" + ":" + "close OutputStream error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            String errCodeMessage = ErrorCodes.FILE_IO+ " " + e1.getMessage();
+            logger.error("FILE_IO:close OutputStream error! {}{}", errCodeMessage, e1);
             throw new ValidationException(ErrorCodes.FILE_IO);
         }
     }
@@ -137,7 +143,8 @@ public final class FileUtil {
                 zipFile.close();
                 }
         } catch (IOException e1) {
-		    logger.error("CLOSE_ZIPFILE" + ":" + "close ZipFile error! "+ErrorCodes.FILE_IO+ " " + e1.getMessage(), e1);
+            String errCodeMessage = ErrorCodes.FILE_IO+ " " + e1.getMessage();
+            logger.error("CLOSE_ZIPFILE:close ZipFile error! {}{}", errCodeMessage, e1);
 			throw new ValidationException(ErrorCodes.FILE_IO); 
         }
     }
