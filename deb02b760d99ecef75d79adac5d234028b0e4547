@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e72989f4_e83dcd31",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/CSARArchive.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-30T14:47:56Z",
+      "side": 1,
+      "message": "proper indentation should be followed. thanks.",
+      "range": {
+        "startLine": 1050,
+        "startChar": 15,
+        "endLine": 1051,
+        "endChar": 17
+      },
+      "revId": "deb02b760d99ecef75d79adac5d234028b0e4547",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ce8df2d_30db1ddc",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/CSARArchive.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1107,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-30T14:47:56Z",
+      "side": 1,
+      "message": "why not to make constant for .mf as similar as .cert and .yaml?",
+      "range": {
+        "startLine": 1107,
+        "startChar": 80,
+        "endLine": 1107,
+        "endChar": 83
+      },
+      "revId": "deb02b760d99ecef75d79adac5d234028b0e4547",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "552c6292_14ea9265",
+        "filename": "csarvalidation/src/test/java/org/onap/cvc/csar/CSARArchiveTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-30T14:47:56Z",
+      "side": 1,
+      "message": "maintain space. thanks.",
+      "range": {
+        "startLine": 39,
+        "startChar": 50,
+        "endLine": 39,
+        "endChar": 51
+      },
+      "revId": "deb02b760d99ecef75d79adac5d234028b0e4547",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87984f57_3fcb2786",
+        "filename": "csarvalidation/src/test/java/org/onap/cvc/csar/PnfCSARArchiveTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-30T14:47:56Z",
+      "side": 1,
+      "message": "new imports should be kept below existing imports. thanks.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 6
+      },
+      "revId": "deb02b760d99ecef75d79adac5d234028b0e4547",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
