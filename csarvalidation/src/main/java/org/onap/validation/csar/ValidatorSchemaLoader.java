@@ -31,13 +31,13 @@ public class ValidatorSchemaLoader {
     private static final Logger LOG = LoggerFactory.getLogger(ValidatorSchemaLoader.class);
 
     // Map of Schema files
-    private Map<String, ?> toscaMeta;
+    private Map<String, Object> toscaMeta;
 
-    private Map<String, ?> csarentryd;
+    private Map<String, Object> csarentryd;
 
-    private Map<String, ?> mrfYaml;
+    private Map<String, Object> mrfYaml;
 
-    private Map<String, ?> mrfManifest;
+    private Map<String, Object> mrfManifest;
 
     // List of configured schemas
     static List<String> schemaFileList = new ArrayList<>();
@@ -62,9 +62,9 @@ public class ValidatorSchemaLoader {
         }
     }
 
-    private Map<String, ?> readYaml(String fileName) {
+    private Map<String, Object> readYaml(String fileName) {
         Yaml yaml = new Yaml();
-           return (Map<String, ?>)yaml.load(this.getClass().getResourceAsStream(fileName));
+           return (Map<String, Object>)yaml.load(this.getClass().getResourceAsStream(fileName));
     }
 
     @SuppressWarnings("unchecked")
@@ -88,19 +88,19 @@ public class ValidatorSchemaLoader {
         return true;
     }
 
-    public Map<String, ?> getToscaMeta() {
+    public Map<String, Object> getToscaMeta() {
         return toscaMeta;
     }
 
-    public Map<String, ?> getCsarentryd() {
+    public Map<String, Object> getCsarentryd() {
         return csarentryd;
     }
 
-    public Map<String, ?> getMrfYaml() {
+    public Map<String, Object> getMrfYaml() {
         return mrfYaml;
     }
 
-    public Map<String, ?> getMrfManifest() {
+    public Map<String, Object> getMrfManifest() {
         return mrfManifest;
     }
 }

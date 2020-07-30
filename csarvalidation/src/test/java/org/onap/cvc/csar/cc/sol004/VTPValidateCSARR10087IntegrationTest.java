@@ -63,6 +63,19 @@ public class VTPValidateCSARR10087IntegrationTest {
     }
 
     @Test
+    public void testWithoutTOSCAMetaDir() throws Exception {
+        // given
+        configureTestCase(testCase, "pnf/toscaMetaFile.csar", "vtp-validate-csar-r10087.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(7);
+    }
+
+    @Test
     public void shouldReportThatDefinitionYAMLDoesNotExist() throws Exception {
         // given
         configureTestCase(testCase, "pnf/r10087/invalidEntryDefinitionsInToscaMeta.csar", "vtp-validate-csar-r10087.yaml", IS_PNF);
