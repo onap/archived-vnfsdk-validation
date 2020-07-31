@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "29200385_7ef63a87",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/csar/CsarValidator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 6539
+      },
+      "writtenOn": "2020-07-31T04:03:10Z",
+      "side": 1,
+      "message": "add one space before {",
+      "range": {
+        "startLine": 126,
+        "startChar": 73,
+        "endLine": 126,
+        "endChar": 74
+      },
+      "revId": "d35805e66ed08081357a935a64c1fbfcb76f3f5c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
