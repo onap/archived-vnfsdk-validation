@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e41c88f1_6334be24",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/parser/NonManoArtifactsParser.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 6539
+      },
+      "writtenOn": "2020-07-31T04:16:15Z",
+      "side": 1,
+      "message": "add one space before {",
+      "range": {
+        "startLine": 54,
+        "startChar": 22,
+        "endLine": 54,
+        "endChar": 23
+      },
+      "revId": "f22b030cfb3db70df9bcfa91259a78ebe08015a2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45283554_e36d6d52",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/csar/FileUtil.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 6539
+      },
+      "writtenOn": "2020-07-31T04:16:15Z",
+      "side": 1,
+      "message": "add one space before {",
+      "range": {
+        "startLine": 70,
+        "startChar": 30,
+        "endLine": 70,
+        "endChar": 31
+      },
+      "revId": "f22b030cfb3db70df9bcfa91259a78ebe08015a2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42ed3568_23e3d02a",
+        "filename": "csarvalidation/src/test/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR10087IntegrationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 6539
+      },
+      "writtenOn": "2020-07-31T04:16:15Z",
+      "side": 1,
+      "message": "add one space between one method to another method across all classes",
+      "range": {
+        "startLine": 64,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 5
+      },
+      "revId": "f22b030cfb3db70df9bcfa91259a78ebe08015a2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
