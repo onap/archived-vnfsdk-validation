@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ed815cea_98b7ebf2",
+        "filename": "csarvalidation/src/test/java/org/onap/validation/yaml/model/YamlDocumentFactoryTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5027
+      },
+      "writtenOn": "2020-07-31T12:41:18Z",
+      "side": 1,
+      "message": "maintain space for other classes as well. thanks",
+      "range": {
+        "startLine": 55,
+        "startChar": 80,
+        "endLine": 55,
+        "endChar": 89
+      },
+      "revId": "9dbbadae3b8b923a6b154f044f79126585369aef",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
