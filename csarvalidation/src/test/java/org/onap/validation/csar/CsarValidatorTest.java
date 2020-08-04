@@ -1,23 +1,27 @@
-/**
+/*
  * Copyright 2017 Huawei Technologies Co., Ltd.
- *
+ * Copyright 2020 Nokia
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-package org.onap.validation.csarvalidationtest;
+package org.onap.validation.csar;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,11 +34,12 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-import org.junit.Test;
-import org.onap.validation.csar.CommonConstants;
-import org.onap.validation.csar.CsarValidator;
-import org.onap.validation.csar.FileUtil;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
+
+@RunWith(MockitoJUnitRunner.class)
 public class CsarValidatorTest {
 
     String regex = "^\\/[a-zA-Z]\\:\\/";
@@ -155,9 +160,17 @@ public class CsarValidatorTest {
     }
 
     @Test
-    public void testCloseInputStream() {
+    public void testCloseInputStreamForNonExistingDirectory() {
         InputStream dir = null;
         FileUtil.closeInputStream(dir);
+        assertTrue(true);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void testCloseInputStream() throws IOException {
+        InputStream inputStream = mock(InputStream.class);
+        Mockito.doThrow(new IOException()).when(inputStream).close();
+        FileUtil.closeInputStream(inputStream);
         assertTrue(true);
     }
 
@@ -177,6 +190,13 @@ public class CsarValidatorTest {
 
     }
 
+    @Test(expected = ValidationException.class)
+    public void testCloseFileStream_reportErrorWhenIOExceptionOccurs() throws IOException {
+        FileInputStream fileInputStream = mock(FileInputStream.class);
+        Mockito.doThrow(new IOException()).when(fileInputStream).close();
+        FileUtil.closeFileStream(fileInputStream);
+    }
+
     @Test
     public void testCloseOutptutStream() {
         OutputStream dir4 = new OutputStream() {
@@ -188,6 +208,13 @@ public class CsarValidatorTest {
         };
         FileUtil.closeOutputStream(dir4);
         assertTrue(true);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void testCloseOutptutStream_reportErrorWhenIOExceptionOccurs() throws IOException {
+        OutputStream outputStream = mock(OutputStream.class);
+        Mockito.doThrow(new IOException()).when(outputStream).close();
+        FileUtil.closeOutputStream(outputStream);
     }
 
     private void testValidateCsarMeta(CsarValidator cv) {
@@ -220,6 +247,31 @@ public class CsarValidatorTest {
     private void testR02454(CsarValidator cv) {
         String result = CsarValidator.r02454();
         assertEquals(true, result == CommonConstants.SUCCESS_STR);
+    }
+
+    @Test
+    public void testValidateCsar_csarMetaFailed() {
+        CsarValidator.CsarValidatorSeam csarValidatorSeam = mock(CsarValidator.CsarValidatorSeam.class);
+        Mockito.when(csarValidatorSeam.validateCsarMeta()).thenReturn("FAIL");
+        Mockito.when(csarValidatorSeam.validateAndScanToscaMeta()).thenReturn("SUCCESS");
+        Mockito.when(csarValidatorSeam.validateMainService()).thenReturn("FAIL");
+
+
+        String res=CsarValidator.validateCsarContent(csarValidatorSeam);
+        assertEquals("FAIL OR FAIL",res);
+
+    }
+
+    @Test
+    public void testValidateCsar_toscaMetaFailed() {
+        CsarValidator.CsarValidatorSeam csarValidatorSeam = mock(CsarValidator.CsarValidatorSeam.class);
+        Mockito.when(csarValidatorSeam.validateCsarMeta()).thenReturn("SUCCESS");
+        Mockito.when(csarValidatorSeam.validateAndScanToscaMeta()).thenReturn("FAIL");
+        Mockito.when(csarValidatorSeam.validateMainService()).thenReturn("SUCCESS");
+
+
+        String res=CsarValidator.validateCsarContent(csarValidatorSeam);
+        assertEquals("FAIL",res);
     }
 
     @Test

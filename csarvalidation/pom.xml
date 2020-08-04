@@ -34,11 +34,29 @@
     </repository>
   </repositories>
 
+  <properties>
+    <log4j-slf4j-impl.version>2.13.0</log4j-slf4j-impl.version>
+    <snakeyaml.version>1.26</snakeyaml.version>
+    <jackson-core.version>2.9.4</jackson-core.version>
+    <junit.version>4.12</junit.version>
+    <commons-lang3.version>3.2.1</commons-lang3.version>
+    <commons-io.version>2.5</commons-io.version>
+    <bcpkix-jdk15on.version>1.61</bcpkix-jdk15on.version>
+    <cli-framework.version>5.0.3</cli-framework.version>
+    <cli-main.version>5.0.2</cli-main.version>
+    <assertj-core.version>3.11.1</assertj-core.version>
+    <lombok.version>1.18.2</lombok.version>
+    <commons-collections.version>3.2.2</commons-collections.version>
+    <maven-war-plugin.version>2.6</maven-war-plugin.version>
+    <maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
+    <mockito-core.version>3.5.0</mockito-core.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
-            <version>2.13.0</version>
+            <version>${log4j-slf4j-impl.version}</version>
             <exclusions>
               <exclusion>
                 <groupId>org.slf4j</groupId>
@@ -49,42 +67,37 @@
     <dependency>
       <groupId>org.yaml</groupId>
       <artifactId>snakeyaml</artifactId>
-      <version>1.26</version>
+      <version>${snakeyaml.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.9.4</version>
+      <version>${jackson-core.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
-    </dependency>
+
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.2.1</version>
+      <version>${commons-lang3.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.5</version>
+      <version>${commons-io.version}</version>
     </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-jdk15on</artifactId>
-      <version>1.61</version>
+      <version>${bcpkix-jdk15on.version}</version>
     </dependency>
     <dependency>
       <groupId>org.onap.cli</groupId>
       <artifactId>cli-framework</artifactId>
-      <version>5.0.3</version>
+      <version>${cli-framework.version}</version>
       <exclusions>
         <exclusion>
           <groupId>commons-codec</groupId>
@@ -97,32 +110,42 @@
       <artifactId>commons-codec</artifactId>
       <version>1.14</version>
     </dependency>
-
-    <dependency>
-      <groupId>org.onap.cli</groupId>
-      <artifactId>cli-main</artifactId>
-      <version>5.0.2</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>3.11.1</version>
-      <scope>test</scope>
-    </dependency>
-
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.2</version>
+      <version>${lombok.version}</version>
     </dependency>
     <dependency>
       <artifactId>commons-collections</artifactId>
       <groupId>commons-collections</groupId>
-      <version>3.2.2</version>
+      <version>${commons-collections.version}</version>
     </dependency>
 
+    <!-- TEST dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito-core.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.onap.cli</groupId>
+      <artifactId>cli-main</artifactId>
+      <version>${cli-main.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj-core.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <profiles>
@@ -135,7 +158,6 @@
     </profile>
   </profiles>
 
-
   <build>
     <finalName>${project.artifactId}-${project.version}</finalName>
 
@@ -143,7 +165,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.0.2</version>
+        <version>${maven-jar-plugin.version}</version>
         <configuration>
           <archive>
             <manifest>
@@ -153,20 +175,11 @@
           </archive>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${maven-dependency-plugin.version}</version>
         <executions>
           <execution>
             <id>copy-artifact</id>
@@ -205,7 +218,7 @@
 
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.6</version>
+        <version>${maven-war-plugin.version}</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
