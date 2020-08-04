@@ -97,16 +97,35 @@ public class CsarValidator {
         }
     }
 
+    static class CsarValidatorSeam {
+        public String validateCsarMeta() {
+            return CsarValidator.validateCsarMeta();
+        }
+
+        public String validateAndScanToscaMeta(){
+            return CsarValidator.validateAndScanToscaMeta();
+        }
+
+        public String validateMainService() {
+            return  CsarValidator.validateMainService();
+        }
+
+    }
+
     /**
      * @return true if all validations are successful
      */
     public static String validateCsar() {
+        return CsarValidator.validateCsarContent(new CsarValidatorSeam());
+    }
 
-        String vsm = validateCsarMeta();
+    static String validateCsarContent(CsarValidatorSeam csarValidatorSeam) {
 
-        String vtm = validateAndScanToscaMeta();
+        String vsm = csarValidatorSeam.validateCsarMeta();
 
-        String vms = validateMainService();
+        String vtm = csarValidatorSeam.validateAndScanToscaMeta();
+
+        String vms = csarValidatorSeam.validateMainService();
 
         //String r02454 = r02454();
 
