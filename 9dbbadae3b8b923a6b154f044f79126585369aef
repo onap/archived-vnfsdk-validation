@@ -22,6 +22,30 @@
       "revId": "9dbbadae3b8b923a6b154f044f79126585369aef",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66b7cb31_49121e2a",
+        "filename": "csarvalidation/src/test/java/org/onap/validation/yaml/model/YamlDocumentFactoryTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5021
+      },
+      "writtenOn": "2020-08-05T16:17:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed815cea_98b7ebf2",
+      "range": {
+        "startLine": 55,
+        "startChar": 80,
+        "endLine": 55,
+        "endChar": 89
+      },
+      "revId": "9dbbadae3b8b923a6b154f044f79126585369aef",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
