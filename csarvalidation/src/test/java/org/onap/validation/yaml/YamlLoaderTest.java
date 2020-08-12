@@ -65,7 +65,7 @@ public class YamlLoaderTest {
         // when then
         assertThatThrownBy(YamlLoadingUtils::tryToLoadMultiDocumentInvalidYamlFile
         ).isInstanceOf(ParserException.class)
-            .hasMessageContaining("expected the node content, but found DocumentEnd");
+            .hasMessageContaining("expected the node content, but found '<document end>'");
     }
 
     @Test
@@ -73,7 +73,7 @@ public class YamlLoaderTest {
         // when then
         assertThatThrownBy(YamlLoadingUtils::tryToLoadMultiDocumentInvalidYamlFileUsingStringPath
         ).isInstanceOf(ParserException.class)
-            .hasMessageContaining("expected the node content, but found DocumentEnd");
+            .hasMessageContaining("expected the node content, but found '<document end>'");
     }
 
 }

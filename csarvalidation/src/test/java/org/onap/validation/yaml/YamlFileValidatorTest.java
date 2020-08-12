@@ -86,13 +86,12 @@ public class YamlFileValidatorTest {
     public void shouldThrowErrorWhenGivenPathToInvalidPmDictionaryFile() {
         // given
         String path = getFullPathForGivenResources(YamlLoadingUtils.PATH_TO_MULTI_DOCUMENT_INVALID_YAML);
-
         // when  then
         assertThatThrownBy(() ->
             new YamlFileValidator().validateYamlFileWithSchema(path)
         ).isInstanceOf(ParserException.class)
             .hasMessageContaining(
-                "expected the node content, but found DocumentEnd"
+                "expected the node content, but found '<document end>'"
             );
     }
 
