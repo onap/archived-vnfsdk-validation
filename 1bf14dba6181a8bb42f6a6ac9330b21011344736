@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0c414a5b_0608e151",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/VTPValidateCSAR.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-08-17T10:49:46Z",
+      "side": 1,
+      "message": "remove empty javadoc\nreorder args in method - set booleans at the end",
+      "revId": "1bf14dba6181a8bb42f6a6ac9330b21011344736",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}

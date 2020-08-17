@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "61e90290_0926210a",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/csar/FileUtil.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-08-17T10:49:46Z",
+      "side": 0,
+      "message": "did you cover this method by unit tests?\nor\ndoes method have any test?",
+      "revId": "bd519dbce7ea6444972e78658faa68fe6a8d84db",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
