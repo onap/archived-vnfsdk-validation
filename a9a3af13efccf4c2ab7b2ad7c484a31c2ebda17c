@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "69b67b4f_748641bf",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/VTPValidateCSAR.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-08-17T10:41:14Z",
+      "side": 1,
+      "message": "pls add JUNIT to cover this case",
+      "revId": "a9a3af13efccf4c2ab7b2ad7c484a31c2ebda17c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
