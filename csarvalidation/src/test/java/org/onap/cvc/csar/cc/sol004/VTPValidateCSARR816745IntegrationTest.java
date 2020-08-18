@@ -39,6 +39,7 @@ public class VTPValidateCSARR816745IntegrationTest {
     private static final boolean IS_PNF = true;
     private static final String TEST_CSAR_DIRECTORY = "pnf/r816745/";
     private static final int NUMBER_OF_EXPECTED_ERRORS = 4;
+    private static final String LETTER_S_WITH_ASCII_CODE = "s(115)";
 
     private VTPValidateCSARR816745 testCase;
 
@@ -125,6 +126,39 @@ public class VTPValidateCSARR816745IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).contains("Fail to load PM_Dictionary With error: PM_Dictionary YAML file is empty");
+    }
+
+    @Test
+    public void shouldReturnListContainingOneErrorsWhenCsarContainsPmDictionaryWithInvalidKeyMapping() throws Exception {
+        // given
+        configureTestCase(testCase, TEST_CSAR_DIRECTORY + "csar-with-invalid-pm-dictionary-invalid-mapping.csar", "vtp-validate-csar-r816745.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors).get(0)).contains(
+            "Fail to load PM_Dictionary With error: mapping values are not allowed here"
+        );
+    }
+
+    @Test
+    public void shouldReturnListContainingOneErrorsWhenCsarContainsPmDictionaryWithIncorrectEscapeCharacter() throws Exception {
+        // given
+        configureTestCase(testCase, TEST_CSAR_DIRECTORY + "csar-with-invalid-pm-dictionary-unknown-escape-character.csar", "vtp-validate-csar-r816745.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors).get(0)).contains(
+            "Fail to load PM_Dictionary With error: while scanning a double-quoted scalar",
+            "found unknown escape character " + LETTER_S_WITH_ASCII_CODE
+        );
     }
 
     @Test
