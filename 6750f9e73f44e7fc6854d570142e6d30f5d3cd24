@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Verified+1: Bogumil Zebek <bogumil.zebek@nokia.com>
+Code-Review+1: Kanagaraj Manickam <kanagaraj.manickam@huawei.com>
+Code-Review+2: Bogumil Zebek <bogumil.zebek@nokia.com>
+Submitted-by: Bogumil Zebek <bogumil.zebek@nokia.com>
+Submitted-at: Tue, 18 Aug 2020 09:16:01 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/vnfsdk/validation/+/110749
+Project: vnfsdk/validation
+Branch: refs/heads/master
