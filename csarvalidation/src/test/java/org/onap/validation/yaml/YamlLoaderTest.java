@@ -22,6 +22,7 @@ import org.onap.validation.yaml.exception.YamlProcessingException;
 import org.onap.validation.yaml.model.YamlDocument;
 import org.onap.validation.yaml.model.YamlDocumentFactory;
 import org.yaml.snakeyaml.parser.ParserException;
+import org.yaml.snakeyaml.scanner.ScannerException;
 
 import java.util.List;
 
@@ -74,6 +75,24 @@ public class YamlLoaderTest {
         assertThatThrownBy(YamlLoadingUtils::tryToLoadMultiDocumentInvalidYamlFileUsingStringPath
         ).isInstanceOf(ParserException.class)
             .hasMessageContaining("expected the node content, but found '<document end>'");
+    }
+
+
+    @Test
+    public void shouldThrowExceptionWhenLoadingInvalidYamlFileWithIncorrectKeyMapping() {
+        // when then
+        assertThatThrownBy(YamlLoadingUtils::tryToLoadInvalidYamlFileWithIncorrectKeyMapping
+        ).isInstanceOf(ScannerException.class)
+            .hasMessageContaining("mapping values are not allowed here");
+    }
+
+
+    @Test
+    public void shouldThrowExceptionWhenLoadingInvalidYamlFileWithUnknownEscapeCharacter() {
+        // when then
+        assertThatThrownBy(YamlLoadingUtils::tryToLoadInvalidYamlFileWithUnknownEscapeCharacter
+        ).isInstanceOf(ScannerException.class)
+            .hasMessageContaining("found unknown escape character s(115)");
     }
 
 }

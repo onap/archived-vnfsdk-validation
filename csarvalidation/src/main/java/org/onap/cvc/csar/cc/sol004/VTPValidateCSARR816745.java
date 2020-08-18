@@ -24,6 +24,7 @@ import org.onap.validation.yaml.error.YamlDocumentValidationError;
 import org.onap.validation.yaml.exception.YamlProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.error.YAMLException;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -83,7 +84,7 @@ public class VTPValidateCSARR816745 extends VTPValidateCSARBase {
             List<YamlDocumentValidationError> validationErrors =
                 new YamlFileValidator().validateYamlFileWithSchema(rootPath+artifactPath);
             addAllErrorsReportedByVaidator(artifactPath, validationErrors);
-        } catch (YamlProcessingException e) {
+        } catch (YamlProcessingException | YAMLException e) {
             LOGGER.error("Failed to load PM_Dictionary file.", e);
             errors.add(new CSARPmDictionaryLoadingError(
                 artifactPath,
