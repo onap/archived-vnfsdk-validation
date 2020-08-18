@@ -61,3 +61,7 @@ All notable changes to this project will be documented in this file.
 
 
 ## [1.2.11]
+
+## Fixed
+- Fixed rule R816745 that wasn't sending all exceptions connected with YAML parsing as validation error
+    - https://jira.onap.org/browse/VNFSDK-644
