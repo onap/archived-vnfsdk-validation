@@ -41,6 +41,8 @@ public final class YamlLoadingUtils {
     private static final String PATH_TO_SIMPLE_INVALID_SCHEMA = "yaml_schema/Simple_Invalid_Schema_Construction.yaml";
     private static final String PATH_TO_SIMPLE_INVALID_SCHEMA_FOR_LAZY_LOADING = "yaml_schema/Simple_Invalid_Schema_LazyLoading.yaml";
     static final String PATH_TO_MULTI_DOCUMENT_INVALID_YAML = "yaml_schema/Multi_Document_Invalid.yaml";
+    private static final String PATH_TO_INVALID_YAML_WITH_INCORRECT_KEY_MAPPING = "yaml_schema/Simple_Invalid_Mapping_Value.yaml";
+    private static final String PATH_TO_INVALID_YAML_WITH_UNKNOWN_ESCAPE_CHARACTER = "yaml_schema/Simple_Unknown_Escape_Character.yaml";
 
     public static List<YamlDocument> loadValidMultiDocumentYamlFile() throws YamlDocumentParsingException {
         return new YamlLoader().loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_VALID_YAML));
@@ -76,6 +78,14 @@ public final class YamlLoadingUtils {
 
     public static List<YamlDocument> tryToLoadMultiDocumentInvalidYamlFileUsingStringPath() throws YamlProcessingException {
         return new YamlLoader().loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_MULTI_DOCUMENT_INVALID_YAML).getPath());
+    }
+
+    public static List<YamlDocument> tryToLoadInvalidYamlFileWithIncorrectKeyMapping() throws YamlDocumentParsingException {
+        return new YamlLoader().loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_INVALID_YAML_WITH_INCORRECT_KEY_MAPPING));
+    }
+
+    public static List<YamlDocument> tryToLoadInvalidYamlFileWithUnknownEscapeCharacter() throws YamlDocumentParsingException {
+        return new YamlLoader().loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_INVALID_YAML_WITH_UNKNOWN_ESCAPE_CHARACTER));
     }
 
     private static URL getUrlForGivenPath(String path) {
