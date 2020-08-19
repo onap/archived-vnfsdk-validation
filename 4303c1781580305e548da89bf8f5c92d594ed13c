@@ -16,6 +16,24 @@
       "revId": "4303c1781580305e548da89bf8f5c92d594ed13c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aca136ce_dec5e83f",
+        "filename": "csarvalidation/src/test/java/org/onap/validation/yaml/YamlLoaderTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-08-19T11:42:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdc8b9b0_eadcadc8",
+      "revId": "4303c1781580305e548da89bf8f5c92d594ed13c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
