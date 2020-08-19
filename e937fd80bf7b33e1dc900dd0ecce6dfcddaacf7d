@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Verified+1: Bogumil Zebek <bogumil.zebek@nokia.com>
+Code-Review+2: Bogumil Zebek <bogumil.zebek@nokia.com>
+Submitted-by: Bogumil Zebek <bogumil.zebek@nokia.com>
+Submitted-at: Wed, 19 Aug 2020 05:49:43 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/vnfsdk/validation/+/111399
+Project: vnfsdk/validation
+Branch: refs/heads/master
