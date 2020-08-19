@@ -34,15 +34,7 @@ import org.junit.Test;
 import org.onap.validation.csar.CommonConstants;
 import org.onap.validation.csar.CsarValidator;
 import org.onap.validation.csar.FileUtil;
-import org.onap.validation.csar.ValidationException;
-import org.junit.runner.RunWith;
-import mockit.integration.junit4.JMockit;
-import mockit.Expectations;
-import mockit.Mocked;
-import mockit.Mock;
-import mockit.MockUp;
 
-@RunWith(JMockit.class)
 public class CsarValidatorTest {
 
     String regex = "^\\/[a-zA-Z]\\:\\/";
@@ -169,18 +161,6 @@ public class CsarValidatorTest {
         assertTrue(true);
     }
 
-    @Test(expected = ValidationException.class)
-    public void testCloseInputStream2( @Mocked InputStream inputStream) throws IOException {
-        new Expectations(){
-            {
-                    inputStream.close();
-                    result = new IOException();
-            }
-        };
-        FileUtil.closeInputStream(inputStream);
-        assertTrue(true);
-    }
-
     @Test
     public void testCloseZipFile() throws ZipException, IOException {
         File file = new File(sample1);
@@ -197,17 +177,6 @@ public class CsarValidatorTest {
 
     }
 
-    @Test(expected = ValidationException.class)
-    public void testCloseFileStream2(@Mocked FileInputStream fileInputStream) throws IOException {
-        new Expectations(){
-            {
-                    fileInputStream.close();
-                    result = new IOException();
-            }
-        };
-        FileUtil.closeFileStream(fileInputStream);
-    }
-
     @Test
     public void testCloseOutptutStream() {
         OutputStream dir4 = new OutputStream() {
@@ -219,17 +188,6 @@ public class CsarValidatorTest {
         };
         FileUtil.closeOutputStream(dir4);
         assertTrue(true);
-    }
-
-    @Test(expected = ValidationException.class)
-    public void testCloseOutptutStream2(@Mocked OutputStream outputStream) throws IOException {
-        new Expectations(){
-                {
-                        outputStream.close();
-                        result = new IOException();
-                }
-            };
-        FileUtil.closeOutputStream(outputStream);
     }
 
     private void testValidateCsarMeta(CsarValidator cv) {
@@ -262,47 +220,6 @@ public class CsarValidatorTest {
     private void testR02454(CsarValidator cv) {
         String result = CsarValidator.r02454();
         assertEquals(true, result == CommonConstants.SUCCESS_STR);
-    }
-
-    @Test
-    public void testValidateCsar() throws IOException {
-        new MockUp<CsarValidator>(){
-            @Mock
-            public String validateCsarMeta(){
-                          return "FAIL";
-            }
-            @Mock
-            public String validateAndScanToscaMeta(){
-                return "SUCCESS";
-            }
-            @Mock
-            public String validateMainService(){
-                return "FAIL";
-            }
-        };
-        String res=CsarValidator.validateCsar();
-        assertEquals("FAIL OR FAIL",res);
-
-    }
-
-    @Test
-    public void testValidateCsar2() throws IOException {
-        new MockUp<CsarValidator>(){
-            @Mock
-            public String validateCsarMeta(){
-                return "SUCCESS";
-            }
-            @Mock
-            public String validateAndScanToscaMeta(){
-                return "FAIL";
-            }
-            @Mock
-            public String validateMainService(){
-                return "SUCCESS";
-            }
-        };
-        String res=CsarValidator.validateCsar();
-        assertEquals("FAIL",res);
     }
 
     @Test

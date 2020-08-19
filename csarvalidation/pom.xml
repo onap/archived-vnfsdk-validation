@@ -67,12 +67,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jmockit</groupId>
-      <artifactId>jmockit</artifactId>
-      <version>1.19</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.2.1</version>
@@ -192,7 +186,7 @@
               <overWriteReleases>false</overWriteReleases>
               <overWriteSnapshots>false</overWriteSnapshots>
               <overWriteIfNewer>true</overWriteIfNewer>
-              <excludeArtifactIds>junit,jmockit</excludeArtifactIds>
+              <excludeArtifactIds>junit</excludeArtifactIds>
             </configuration>
           </execution>
         </executions>
