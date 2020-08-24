@@ -40,7 +40,7 @@
     <jackson-core.version>2.9.4</jackson-core.version>
     <junit.version>4.12</junit.version>
     <commons-lang3.version>3.2.1</commons-lang3.version>
-    <commons-io.version>2.5</commons-io.version>
+    <commons-io.version>2.7</commons-io.version>
     <bcpkix-jdk15on.version>1.61</bcpkix-jdk15on.version>
     <cli-framework.version>5.0.3</cli-framework.version>
     <cli-main.version>5.0.2</cli-main.version>
