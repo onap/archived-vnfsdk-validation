@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6877fac0_e53960ff",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/csar/CsarUtil.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-08-26T09:33:13Z",
+      "side": 1,
+      "message": "1. we should not return interface implementation, if it is possible to return interface. Pls return Map rather than HashMap.\n\n2. Too high code complexity. Pls split on smaller methods",
+      "revId": "003e76bfb9737da19d7e9e93c72d317f740b02c3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
