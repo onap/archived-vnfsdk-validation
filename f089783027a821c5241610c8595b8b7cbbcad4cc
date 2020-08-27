@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e6cce34d_245d5112",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/VTPValidateCSARR816745.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-08-27T11:56:25Z",
+      "side": 1,
+      "message": "this field is used only by on private method. Pls remove it and pass manifestFileName by method argument.",
+      "revId": "f089783027a821c5241610c8595b8b7cbbcad4cc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
