@@ -52,6 +52,20 @@ public class VTPValidateCSARR816745IntegrationTest {
     }
 
     @Test
+    public void shouldAddPmDictionaryLoadingErrorWhenPmDictionaryHaveNoSourceInManifest() throws Exception {
+        // given
+        configureTestCase(testCase, TEST_CSAR_DIRECTORY + "csar-with-missing-source-value-for-pm-dictionary-in-manifest.csar", "vtp-validate-csar-r816745.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(convertToMessagesList(errors)).contains("Fail to load PM_Dictionary With error: onap_pm_dictionary in manifest does not contains key 'Source'");
+    }
+
+    @Test
     public void shouldNotReportAnyErrorWhenCsarIsNotContainingPmDictionary() throws Exception {
         // given
         configureTestCase(testCase, TEST_CSAR_DIRECTORY + "csar-with-no-pm-dictionary.csar", "vtp-validate-csar-r816745.yaml", IS_PNF);
