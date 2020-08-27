@@ -29,6 +29,7 @@ import org.yaml.snakeyaml.error.YAMLException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @OnapCommandSchema(schema = "vtp-validate-csar-r816745.yaml")
 public class VTPValidateCSARR816745 extends VTPValidateCSARBase {
@@ -65,18 +66,35 @@ public class VTPValidateCSARR816745 extends VTPValidateCSARBase {
     }
 
     private static final String PM_DICTIONARY = "onap_pm_dictionary";
+    private static final String SOURCE_ELEMENT_TAG = "Source";
+
+    private String manifestFileName;
 
     @Override
     protected void validateCSAR(CSARArchive csar) {
+        manifestFileName = csar.getManifestMfFile().getName();
         Map<String, Map<String, List<String>>> nonManoFields = csar.getManifest().getNonMano();
         String rootPath = csar.getWorkspace().getPathToCsarFolder().map(Path::toString).orElse("/");
         if (nonManoFields.containsKey(PM_DICTIONARY)) {
-            validateYamlFile(rootPath+"/",getLocationOfPmDictionaryFile(nonManoFields));
+            getLocationOfPmDictionaryFile(nonManoFields).ifPresent(pmDictionary ->
+                validateYamlFile(rootPath+"/",pmDictionary)
+            );
         }
     }
 
-    private String getLocationOfPmDictionaryFile(Map<String, Map<String, List<String>>> nonManoFields) {
-        return nonManoFields.get(PM_DICTIONARY).get("source").get(0);
+    private Optional<String> getLocationOfPmDictionaryFile(Map<String, Map<String, List<String>>> nonManoFields) {
+        if(nonManoFields.get(PM_DICTIONARY).containsKey(SOURCE_ELEMENT_TAG)) {
+            return getPathToPmDictionary(nonManoFields, SOURCE_ELEMENT_TAG);
+        } else if(nonManoFields.get(PM_DICTIONARY).containsKey(SOURCE_ELEMENT_TAG.toLowerCase())) {
+            return getPathToPmDictionary(nonManoFields, SOURCE_ELEMENT_TAG.toLowerCase());
+        } else {
+            addPmDictionaryLoadingError(manifestFileName, PM_DICTIONARY +" in manifest does not contains key 'Source'");
+            return Optional.empty();
+        }
+    }
+
+    private Optional<String> getPathToPmDictionary(Map<String, Map<String, List<String>>> nonManoFields, String sourceElementTag) {
+        return Optional.ofNullable(nonManoFields.get(PM_DICTIONARY).get(sourceElementTag).get(0));
     }
 
     private void validateYamlFile(String rootPath, String artifactPath) {
@@ -86,12 +104,23 @@ public class VTPValidateCSARR816745 extends VTPValidateCSARBase {
             addAllErrorsReportedByVaidator(artifactPath, validationErrors);
         } catch (YamlProcessingException | YAMLException e) {
             LOGGER.error("Failed to load PM_Dictionary file.", e);
-            errors.add(new CSARPmDictionaryLoadingError(
-                artifactPath,
-                e.getMessage()
-            ));
+            addPmDictionaryLoadingError(artifactPath, e);
         }
 
+    }
+
+    private void addPmDictionaryLoadingError(String artifactPath, Exception e) {
+        errors.add(new CSARPmDictionaryLoadingError(
+            artifactPath,
+            e.getMessage()
+        ));
+    }
+
+    private void addPmDictionaryLoadingError(String artifactPath, String message) {
+        errors.add(new CSARPmDictionaryLoadingError(
+            artifactPath,
+            message
+        ));
     }
 
     private void addAllErrorsReportedByVaidator(String artifactPath, List<YamlDocumentValidationError> validationErrors) {
