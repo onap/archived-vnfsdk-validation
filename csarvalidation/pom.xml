@@ -35,7 +35,7 @@
   </repositories>
 
   <properties>
-    <log4j-slf4j-impl.version>2.13.0</log4j-slf4j-impl.version>
+    <log4j-slf4j-impl.version>2.13.3</log4j-slf4j-impl.version>
     <snakeyaml.version>1.26</snakeyaml.version>
     <jackson-core.version>2.9.4</jackson-core.version>
     <junit.version>4.12</junit.version>
