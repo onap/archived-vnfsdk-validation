@@ -73,3 +73,5 @@ All notable changes to this project will be documented in this file.
   instead of Source (starting with a capital letter). 
   Now  both versions (source and Source) are accepted by this rule.
     - https://jira.onap.org/browse/VNFSDK-645
+
+## [1.2.13]
