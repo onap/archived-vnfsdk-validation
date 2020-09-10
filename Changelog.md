@@ -67,3 +67,9 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-644
 
 ## [1.2.12]
+
+## Fixed
+- Fixed rule R816745 that was searching for the path to PM_Dictionary in manifest file under name source,
+  instead of Source (starting with a capital letter). 
+  Now  both versions (source and Source) are accepted by this rule.
+    - https://jira.onap.org/browse/VNFSDK-645
