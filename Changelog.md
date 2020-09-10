@@ -83,3 +83,5 @@ All notable changes to this project will be documented in this file.
 ## Upgrade
 - Upgraded from java 8 to java 11
     - https://jira.onap.org/browse/VNFSDK-631
+
+## [1.2.13]
