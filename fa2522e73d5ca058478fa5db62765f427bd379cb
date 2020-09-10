@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "70d43696_2825e9b7",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/csar/CsarValidator.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-09-10T09:13:15Z",
+      "side": 0,
+      "message": "whole logic in constructor should be rewritten. In constructor we should not execute any logic. Constructor must be used only for initialization.\nBut for now we can leave at it is or you can fix it.",
+      "revId": "fa2522e73d5ca058478fa5db62765f427bd379cb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
