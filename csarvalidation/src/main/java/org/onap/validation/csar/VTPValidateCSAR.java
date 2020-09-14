@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  */
 @OnapCommandSchema(schema = "vtp-validate-csar-casablanca.yaml")
 public class VTPValidateCSAR extends OnapCommand {
-    private static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSAR.class);
+    private static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSAR.class); //NOSONAR
 
     @Override
     protected void run() throws OnapCommandException {
