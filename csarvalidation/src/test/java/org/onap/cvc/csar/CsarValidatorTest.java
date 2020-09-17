@@ -35,28 +35,9 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.absoluteFilePath;
 
 public class CsarValidatorTest {
 
-    private static final String NO_CERTIFICATE_RULE = "r130206";
+    private static final String CERTIFICATION_RULE = "r130206";
     private static final String OPERATION_STATUS_FAILED = "FAILED";
-
-    @Test
-    public void shouldReportErrorAsWarningWhenErrorIsIgnored() throws URISyntaxException {
-        // given
-        OnapCliWrapper cli = new OnapCliWrapper(new String[]{
-            "--product", "onap-dublin",
-            "csar-validate",
-            "--format", "json",
-            "--pnf",
-            "--csar", absoluteFilePath("pnf/r130206/csar-option1-warning-2.csar")});
-
-        // when
-        cli.handle();
-
-        // then
-        final OnapCommandResult onapCommandResult = cli.getCommandResult();
-        assertTrue(onapCommandResult.getOutput().toString().contains(
-            "\"warnings\":[{\"vnfreqNo\":\"R130206\",\"code\":\"0x1006\",\"message\":\"Warning. Consider adding package "
-                + "integrity and authenticity assurance according to ETSI NFV-SOL 004 Security Option 1\",\"file\":\"\",\"lineNumber\":-1}]}"));
-    }
+    private static final String OPERATION_STATUS_PASS = "PASS";
 
     @Test
     public void shouldReportThanVnfValidationFailed() throws URISyntaxException {
@@ -79,27 +60,32 @@ public class CsarValidatorTest {
 
 
     @Test
-    public void shouldReportThatPnfValidationFailedWhenCsarDoNotHaveCertificate_allOtherRulesShouldPass() throws URISyntaxException {
+    public void shouldReportOnlyWarningWhenCsarDoNotHaveCertificateAndHashesInManifest() throws URISyntaxException {
         // given
         OnapCliWrapper cli = new OnapCliWrapper(new String[]{
             "--product", "onap-dublin",
             "csar-validate",
             "--format", "json",
             "--pnf",
-            "--csar", absoluteFilePath("pnf/r972082/validFile.csar")});
+            "--csar", absoluteFilePath("pnf/validFile.csar")});
         // when
         cli.handle();
 
         // then
         final OnapCommandResult onapCommandResult = cli.getCommandResult();
-        verifyThatOperation(onapCommandResult, OPERATION_STATUS_FAILED);
-        verifyThatXRulesFails(onapCommandResult, 1);
-        verifyThatRuleFails(onapCommandResult, NO_CERTIFICATE_RULE);
+        verifyThatOperation(onapCommandResult, OPERATION_STATUS_PASS);
+        assertTrue(onapCommandResult.getOutput().toString().contains(
+            "\"warnings\":[{" +
+                "\"vnfreqNo\":\"R130206\"," +
+                "\"code\":\"0x1006\"," +
+                "\"message\":\"Warning. Consider adding package integrity and authenticity assurance according to ETSI NFV-SOL 004 Security Option 1\"," +
+                "\"file\":\"\"," +
+                "\"lineNumber\":-1}]"));
         verifyThatOperationFinishedWithoutAnyError(cli);
     }
 
     @Test
-    public void shouldReportThatPnfValidationFailedWhenZipDoNotHaveCertificate_allOtherRulesShouldPass() throws URISyntaxException {
+    public void shouldNotReportThatPnfValidationFailedWhenZipDoNotHaveCertificatesAndHashesInManifest() throws URISyntaxException {
         // given
         OnapCliWrapper cli = new OnapCliWrapper(new String[]{
             "--product", "onap-dublin",
@@ -113,9 +99,27 @@ public class CsarValidatorTest {
 
         // then
         final OnapCommandResult onapCommandResult = cli.getCommandResult();
+        verifyThatOperation(onapCommandResult, OPERATION_STATUS_PASS);
+        verifyThatOperationFinishedWithoutAnyError(cli);
+    }
+
+    @Test
+    public void shouldReportThatPnfValidationFailedWhenCsarContainsCertificateInCmsAndInToscaAndInRootAndHashIsIncorrect_allOtherRulesShouldPass() throws URISyntaxException {
+        // given
+        OnapCliWrapper cli = new OnapCliWrapper(new String[]{
+            "--product", "onap-dublin",
+            "csar-validate",
+            "--format", "json",
+            "--pnf",
+            "--csar", absoluteFilePath("pnf/r130206/cert-in-cms-and-root-and-tosca-incorrect-hash.csar")});
+        // when
+        cli.handle();
+
+        // then
+        final OnapCommandResult onapCommandResult = cli.getCommandResult();
         verifyThatOperation(onapCommandResult, OPERATION_STATUS_FAILED);
         verifyThatXRulesFails(onapCommandResult, 1);
-        verifyThatRuleFails(onapCommandResult, NO_CERTIFICATE_RULE);
+        verifyThatRuleFails(onapCommandResult, CERTIFICATION_RULE);
         verifyThatOperationFinishedWithoutAnyError(cli);
     }
 
