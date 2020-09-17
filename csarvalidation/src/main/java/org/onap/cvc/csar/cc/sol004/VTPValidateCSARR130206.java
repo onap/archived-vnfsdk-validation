@@ -26,6 +26,10 @@ import org.onap.cvc.csar.cc.VTPValidateCSARBase;
 import org.onap.cvc.csar.parser.ManifestFileModel;
 import org.onap.cvc.csar.parser.ManifestFileSplitter;
 import org.onap.cvc.csar.parser.SourcesParser;
+import org.onap.cvc.csar.security.CertificateLoadingException;
+import org.onap.cvc.csar.security.CmsSignatureData;
+import org.onap.cvc.csar.security.CmsSignatureDataFactory;
+import org.onap.cvc.csar.security.CmsSignatureLoadingException;
 import org.onap.cvc.csar.security.CmsSignatureValidator;
 import org.onap.cvc.csar.security.CmsSignatureValidatorException;
 import org.onap.cvc.csar.security.ShaHashCodeGenerator;
@@ -57,17 +61,24 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
 
     public static class CSARErrorUnableToFindCertificate extends CSARArchive.CSARError {
 
-        CSARErrorUnableToFindCertificate(String paramName) {
+        CSARErrorUnableToFindCertificate() {
             super("0x4001");
-            this.message = String.format("Unable to find cert file defined by %s!", paramName);
+            this.message = "Unable to find cert file!";
         }
     }
 
-    public static class CSARErrorUnableToFindCmsSection extends CSARArchive.CSARError {
+    public static class CSARErrorUnableToFindCms extends CSARArchive.CSARError {
 
-        CSARErrorUnableToFindCmsSection() {
+        CSARErrorUnableToFindCms() {
             super("0x4002");
-            this.message = "Unable to find CMS section in manifest!";
+            this.message = "Unable to find cms signature!";
+        }
+    }
+
+    public static class CSARErrorUnableToLoadCms extends CSARArchive.CSARError {
+        CSARErrorUnableToLoadCms() {
+            super("0x4002");
+            this.message = "Unable to load cms signature!";
         }
     }
 
@@ -107,7 +118,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
 
         CSARErrorInvalidSignature() {
             super("0x4007");
-            this.message = "File has invalid CMS signature!";
+            this.message = "File has invalid signature!";
         }
     }
 
@@ -119,9 +130,41 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         }
     }
 
-    public static class CSARWarningNoSecurity extends CSARArchive.CSARErrorWarning{
-        CSARWarningNoSecurity(){
-            super(EMPTY_STRING, EMPTY_STRING,-1, EMPTY_STRING);
+    public static class CSARErrorUnableToFindEntryCertificate extends CSARArchive.CSARError {
+
+        CSARErrorUnableToFindEntryCertificate() {
+            super("0x4009");
+            this.message = "Unable to find cert file defined by ETSI-Entry-Certificate!";
+        }
+    }
+
+    public static class CSARErrorEntryCertificateIsDefinedDespiteTheCms extends CSARArchive.CSARError {
+
+        CSARErrorEntryCertificateIsDefinedDespiteTheCms() {
+            super("0x4011");
+            this.message = "ETSI-Entry-Certificate entry in Tosca.meta is defined despite the certificate is included in the signature container";
+        }
+    }
+
+    public static class CSARErrorEntryCertificateIsPresentDespiteTheCms extends CSARArchive.CSARError {
+
+        CSARErrorEntryCertificateIsPresentDespiteTheCms() {
+            super("0x4012");
+            this.message = "ETSI-Entry-Certificate certificate present despite the certificate is included in the signature container";
+        }
+    }
+
+    public static class CSARErrorRootCertificateIsPresentDespiteTheCms extends CSARArchive.CSARError {
+
+        CSARErrorRootCertificateIsPresentDespiteTheCms() {
+            super("0x4013");
+            this.message = "Certificate present in root catalog despite the certificate is included in the signature container";
+        }
+    }
+
+    public static class CSARWarningNoSecurity extends CSARArchive.CSARErrorWarning {
+        CSARWarningNoSecurity() {
+            super(EMPTY_STRING, EMPTY_STRING, -1, EMPTY_STRING);
             this.message = "Warning. Consider adding package integrity and authenticity assurance according to ETSI NFV-SOL 004 Security Option 1";
         }
     }
@@ -145,62 +188,153 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     private void validate(CSARArchive csar, Path csarRootDirectory) throws IOException, NoSuchAlgorithmException {
-        final CSARArchive.Manifest manifest = csar.getManifest();
-        validateEntryCertificate(csar, csarRootDirectory);
-        if(verifyThatCsarIsSecure(manifest)){
-
-            validateManifestCms(manifest);
-            validateSources(csarRootDirectory, manifest);
-
-            final Map<String, Map<String, List<String>>> nonMano = manifest.getNonMano();
-            final List<SourcesParser.Source> sources = manifest.getSources();
-
-            validateNonManoCohesionWithSources(nonMano, sources);
-
-            final File manifestMfFile = csar.getManifestMfFile();
-            final String absolutePathToEntryCertificate = getAbsolutePathToEntryCertificate(csar, csarRootDirectory);
-            if (manifestMfFile != null) {
-                validateFileSignature(manifestMfFile, absolutePathToEntryCertificate);
-            }
-        }else{
+        if (containsCms(csar.getManifest())) {
+            validateCmsSignature(csar, csarRootDirectory);
+        } else if (
+            containsCertificateInTosca(csar.getToscaMeta()) ||
+                containsCertificateInRootCatalog(csar) ||
+                containsHashOrAlgorithm(csar.getManifest())) {
+            this.errors.add(new CSARErrorUnableToFindCms());
+        } else {
             this.errors.add(new CSARWarningNoSecurity());
         }
-
     }
 
-    private boolean verifyThatCsarIsSecure(CSARArchive.Manifest manifest) {
-        final List<SourcesParser.Source> sources = manifest.getSources();
-        final String cms = manifest.getCms();
-        final boolean containsHashOrAlgorithm = (sources.stream().anyMatch(
+    private void validateCmsSignature(CSARArchive csar, Path csarRootDirectory) throws NoSuchAlgorithmException, IOException {
+        try {
+            CmsSignatureData signatureData = this.manifestFileSignatureValidator.createSignatureData(csar.getManifestMfFile());
+            if (signatureData.containsCertificate()) {
+                validateCertificationUsingCmsCertificate(signatureData, csar, csarRootDirectory);
+            } else if (containsCertificateInTosca(csar.getToscaMeta())) {
+                validateCertificationUsingTosca(signatureData, csar, csarRootDirectory);
+            } else if (containsCertificateInRootCatalog(csar)) {
+                validateCertificationUsingCertificateFromRootDirectory(signatureData, csar, csarRootDirectory);
+            } else {
+                this.errors.add(new CSARErrorUnableToFindCertificate());
+            }
+        } catch (CmsSignatureLoadingException e) {
+            LOG.error("Unable to load CMS!", e);
+            this.errors.add(new CSARErrorUnableToLoadCms());
+        }
+    }
+
+    private boolean containsCms(CSARArchive.Manifest manifest) {
+        String cms = manifest.getCms();
+        return cms != null && !cms.equals(EMPTY_STRING);
+    }
+
+    private boolean containsCertificateInTosca(CSARArchive.TOSCAMeta toscaMeta) {
+        String certificate = toscaMeta.getEntryCertificate();
+        return certificate != null && !certificate.equals(EMPTY_STRING);
+    }
+
+    private boolean containsCertificateInRootCatalog(CSARArchive csar) {
+        File potentialCertificateFileInRootDirectory = getCertificateFromRootDirectory(csar);
+        return potentialCertificateFileInRootDirectory.exists();
+    }
+
+    private boolean containsHashOrAlgorithm(CSARArchive.Manifest manifest) {
+        return manifest.getSources().stream().anyMatch(
             source ->
                 !source.getAlgorithm().equals(EMPTY_STRING) ||
-                !source.getHash().equals(EMPTY_STRING)
-            )
+                    !source.getHash().equals(EMPTY_STRING)
         );
-        final boolean containsCms = cms != null && !cms.equals(EMPTY_STRING);
-        return containsCms || containsHashOrAlgorithm;
     }
 
-    private String getAbsolutePathToEntryCertificate(CSARArchive csar, Path csarRootDirectory) {
-        final String entryCertificateFileName = csar.getToscaMeta().getEntryCertificate();
-        return String.format("%s/%s", csarRootDirectory.toAbsolutePath(), entryCertificateFileName);
+    private void validateCertificationUsingCmsCertificate(CmsSignatureData signatureData, CSARArchive csar, Path csarRootDirectory)
+        throws NoSuchAlgorithmException, IOException {
+        validateAllSources(csar, csarRootDirectory);
+        validateFileSignature(signatureData);
+        if (containsCertificateInTosca(csar.getToscaMeta())) {
+            errors.add(new CSARErrorEntryCertificateIsDefinedDespiteTheCms());
+            if (csar.getFileFromCsar(csar.getToscaMeta().getEntryCertificate()).exists()) {
+                errors.add(new CSARErrorEntryCertificateIsPresentDespiteTheCms());
+            }
+        }
+        if (containsCertificateInRootCatalog(csar)) {
+            errors.add(new CSARErrorRootCertificateIsPresentDespiteTheCms());
+        }
     }
 
+    private void validateCertificationUsingTosca(CmsSignatureData signatureData, CSARArchive csar, Path csarRootDirectory)
+        throws NoSuchAlgorithmException, IOException {
+        validateAllSources(csar, csarRootDirectory);
+        if (loadCertificateFromTosca(signatureData, csar)) {
+            validateFileSignature(signatureData);
+        }
+        if (containsCertificateInRootCatalog(csar) && rootCertificateIsNotReferredAsToscaEtsiEntryCertificate(csar)) {
+            errors.add(new CSARErrorRootCertificateIsPresentDespiteTheCms());
+        }
+    }
+
+    private boolean loadCertificateFromTosca(CmsSignatureData signatureData, CSARArchive csar) {
+        try {
+            final Path absolutePathToEntryCertificate = csar.getFileFromCsar(csar.getToscaMeta().getEntryCertificate()).toPath();
+            signatureData.loadCertificate(absolutePathToEntryCertificate);
+            return true;
+        } catch (CertificateLoadingException e) {
+            this.errors.add(new CSARErrorUnableToFindEntryCertificate());
+            return false;
+        }
+    }
+
+    private boolean rootCertificateIsNotReferredAsToscaEtsiEntryCertificate(CSARArchive csar) {
+        String pathToRootCertificate = getCertificateFromRootDirectory(csar).getPath();
+        String pathToEntryEtsiCertificate = csar.getFileFromCsar(csar.getToscaMeta().getEntryCertificate()).getPath();
+        return !pathToRootCertificate.equals(pathToEntryEtsiCertificate);
+    }
+
+    private void validateCertificationUsingCertificateFromRootDirectory(CmsSignatureData signatureData, CSARArchive csar, Path csarRootDirectory)
+        throws NoSuchAlgorithmException, IOException {
+        validateAllSources(csar, csarRootDirectory);
+        if (loadCertificateFromRootDirectory(signatureData, csar)) {
+            validateFileSignature(signatureData);
+        }
+    }
+
+    private boolean loadCertificateFromRootDirectory(CmsSignatureData signatureData, CSARArchive csar) {
+        try {
+            File certificateFileFromRootDirectory = getCertificateFromRootDirectory(csar);
+            signatureData.loadCertificate(certificateFileFromRootDirectory.toPath());
+            return true;
+        } catch (CertificateLoadingException e) {
+            LOG.error("Uable to read ETSI entry certificate file!", e);
+            return false;
+        }
+    }
+
+    private File getCertificateFromRootDirectory(CSARArchive csar) {
+        String nameOfCertificate =
+            csar.getManifestMfFile().getName().split("\\.")[0] +
+                ".cert";
+        return csar.getFileFromCsar(nameOfCertificate);
+    }
+
+    private void validateAllSources(CSARArchive csar, Path csarRootDirectory)
+        throws NoSuchAlgorithmException, IOException {
+        final CSARArchive.Manifest manifest = csar.getManifest();
+        validateSources(csarRootDirectory, manifest);
+
+        final Map<String, Map<String, List<String>>> nonMano = manifest.getNonMano();
+        final List<SourcesParser.Source> sources = manifest.getSources();
+
+        validateNonManoCohesionWithSources(nonMano, sources);
+    }
 
     private void validateNonManoCohesionWithSources(final Map<String, Map<String, List<String>>> nonMano,
                                                     final List<SourcesParser.Source> sources) {
 
         final Collection<Map<String, List<String>>> values = nonMano.values();
         final List<String> nonManoSourcePaths = values.stream()
-                .map(Map::values)
-                .flatMap(Collection::stream)
-                .flatMap(List::stream)
-                .filter(it -> !it.isEmpty())
-                .collect(Collectors.toList());
+            .map(Map::values)
+            .flatMap(Collection::stream)
+            .flatMap(List::stream)
+            .filter(it -> !it.isEmpty())
+            .collect(Collectors.toList());
 
         final List<String> sourcePaths = sources.stream()
-                .map(SourcesParser.Source::getValue)
-                .collect(Collectors.toList());
+            .map(SourcesParser.Source::getValue)
+            .collect(Collectors.toList());
 
         if (!sourcePaths.containsAll(nonManoSourcePaths)) {
             this.errors.add(new CSARErrorContentMismatch());
@@ -208,39 +342,15 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
 
     }
 
-    private void validateFileSignature(File manifestMfFile, String absolutePathToEntryCertificate) {
-        final boolean isValid = this.manifestFileSignatureValidator.isValid(manifestMfFile, absolutePathToEntryCertificate);
+    private void validateFileSignature(CmsSignatureData signatureData) {
+        final boolean isValid = this.manifestFileSignatureValidator.isValid(signatureData);
         if (!isValid) {
             this.errors.add(new CSARErrorInvalidSignature());
         }
     }
 
-    private void validateEntryCertificate(CSARArchive csar, Path csarRootDirectory) {
-        final CSARArchive.TOSCAMeta toscaMeta = csar.getToscaMeta();
-        final String entryCertificateParamName = csar.getEntryCertificateParamName();
-        final Optional<File> entryCertificate = resolveCertificateFilePath(toscaMeta, csarRootDirectory);
-        if (!entryCertificate.isPresent() || !entryCertificate.get().exists()) {
-            this.errors.add(new CSARErrorUnableToFindCertificate(entryCertificateParamName));
-        }
-    }
-
-    private void validateManifestCms(CSARArchive.Manifest manifest) {
-        if (manifest.getCms() == null || manifest.getCms().isEmpty()) {
-            this.errors.add(new CSARErrorUnableToFindCmsSection());
-        }
-    }
-
-    private Optional<File> resolveCertificateFilePath(CSARArchive.TOSCAMeta toscaMeta, Path csarRootDirectory) {
-        final String certificatePath = toscaMeta.getEntryCertificate();
-        if (certificatePath == null) {
-            return Optional.empty();
-        } else {
-            return Optional.of(csarRootDirectory.resolve(certificatePath).toFile());
-        }
-    }
-
     private void validateSources(Path csarRootDirectory, CSARArchive.Manifest manifest)
-            throws NoSuchAlgorithmException, IOException {
+        throws NoSuchAlgorithmException, IOException {
         final List<SourcesParser.Source> sources = manifest.getSources();
         for (SourcesParser.Source source : sources) {
             if (!source.getAlgorithm().isEmpty() || !source.getHash().isEmpty()) {
@@ -250,7 +360,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     private void validateSource(Path csarRootDirectory, SourcesParser.Source source)
-            throws NoSuchAlgorithmException, IOException {
+        throws NoSuchAlgorithmException, IOException {
         final Path sourcePath = csarRootDirectory.resolve(source.getValue());
         if (!sourcePath.toFile().exists()) {
             this.errors.add(new CSARErrorUnableToFindSource(source.getValue()));
@@ -264,7 +374,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     private void validateSourceHashCode(Path csarRootDirectory, SourcesParser.Source source)
-            throws NoSuchAlgorithmException, IOException {
+        throws NoSuchAlgorithmException, IOException {
         String hashCode = generateHashCode(csarRootDirectory, source);
         if (!hashCode.equals(source.getHash())) {
             this.errors.add(new CSARErrorWrongHashCode(source.getValue()));
@@ -272,7 +382,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     private String generateHashCode(Path csarRootDirectory, SourcesParser.Source source)
-            throws NoSuchAlgorithmException, IOException {
+        throws NoSuchAlgorithmException, IOException {
         final byte[] sourceData = Files.readAllBytes(csarRootDirectory.resolve(source.getValue()));
         final String algorithm = source.getAlgorithm();
 
@@ -291,24 +401,25 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
 
-    class ManifestFileSignatureValidator {
+    static class ManifestFileSignatureValidator {
 
-        private final Logger log = LoggerFactory.getLogger(ManifestFileSignatureValidator.class);
         private final ManifestFileSplitter manifestFileSplitter = new ManifestFileSplitter();
         private final CmsSignatureValidator cmsSignatureValidator = new CmsSignatureValidator();
+        private final CmsSignatureDataFactory cmsSignatureDataFactory = new CmsSignatureDataFactory();
 
-        boolean isValid(File manifestFile, String absolutePathToEntryCertificate) {
+        CmsSignatureData createSignatureData(File manifestFile) throws CmsSignatureLoadingException {
+            ManifestFileModel mf = manifestFileSplitter.split(manifestFile);
+            return cmsSignatureDataFactory.createForFirstSigner(
+                toBytes(mf.getCMS(), mf.getNewLine()),
+                toBytes(mf.getData(), mf.getNewLine())
+            );
+        }
+
+        boolean isValid(CmsSignatureData signatureData) {
             try {
-                byte[] entryCertificate = Files.readAllBytes(new File(absolutePathToEntryCertificate).toPath());
-                ManifestFileModel mf = manifestFileSplitter.split(manifestFile);
-                return cmsSignatureValidator.verifySignedData(toBytes(mf.getCMS(), mf.getNewLine()),
-                        Optional.of(entryCertificate),
-                        toBytes(mf.getData(), mf.getNewLine()));
+                return cmsSignatureValidator.verifySignedData(signatureData);
             } catch (CmsSignatureValidatorException e) {
                 LOG.error("Unable to verify signed data!", e);
-                return false;
-            } catch (IOException e) {
-                LOG.error("Unable to read ETSI entry certificate file!", e);
                 return false;
             }
         }
@@ -318,4 +429,5 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
             return updatedData.getBytes(Charset.defaultCharset());
         }
     }
+
 }

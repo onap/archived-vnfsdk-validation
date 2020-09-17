@@ -85,3 +85,7 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-631
 
 ## [1.2.13]
+
+## Fixed
+- Fixed rule R130206 CMS and certificate searching and validation mechanism 
+    - https://jira.onap.org/browse/VNFSDK-595  
