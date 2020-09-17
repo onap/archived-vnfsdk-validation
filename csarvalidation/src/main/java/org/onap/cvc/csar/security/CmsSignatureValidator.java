@@ -78,6 +78,26 @@ public class CmsSignatureValidator {
         }
     }
 
+    public boolean doesCmsContainsCertificate(
+        final byte[] cmsSignature,
+        final byte[] fileContent) {
+
+        try (ByteArrayInputStream cmsSignatureStream = new ByteArrayInputStream(cmsSignature)) {
+            CMSSignedData signedData = getCMSSignedData(fileContent, cmsSignatureStream);
+            Collection<SignerInformation> signers = signedData.getSignerInfos().getSigners();
+            SignerInformation firstSigner = signers.iterator().next();
+
+            Store<X509CertificateHolder> certificates = signedData.getCertificates();
+            Collection<X509CertificateHolder> firstSignerCertificates = certificates.getMatches(firstSigner.getSID());
+            return !firstSignerCertificates.isEmpty();
+
+        } catch (IOException | CmsSignatureValidatorException | CMSException e){
+            //message-digest attribute value does not match calculated value
+            LOG.error("Fail to lad CMS data.", e);
+            return false;
+        }
+    }
+
     private X509CertificateHolder getX509CertificateHolder(Collection<X509CertificateHolder> firstSignerCertificates) throws CmsSignatureValidatorException {
         if(!firstSignerCertificates.iterator().hasNext()){
             throw new CmsSignatureValidatorException("No certificate found in cms signature that should contain one!");
