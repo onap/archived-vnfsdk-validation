@@ -93,6 +93,8 @@ public class VTPValidateCSAR extends OnapCommand {
             private String vnfreqName;
             private String description;
             private List<CSARError> errors = new ArrayList<>();
+            private List<CSARError> warnings = new ArrayList<>();
+
             public boolean isPassed() {
                 return passed;
             }
@@ -118,6 +120,13 @@ public class VTPValidateCSAR extends OnapCommand {
                 this.description = description;
             }
 
+            public List<CSARError> getWarnings() {
+                return warnings;
+            }
+
+            public void setWarnings(List<CSARError> warnings) {
+                this.warnings = warnings;
+            }
         }
 
         private List<Result> results = new ArrayList<>();
@@ -249,6 +258,8 @@ public class VTPValidateCSAR extends OnapCommand {
                 if (!ignoreCodes.contains(error.getCode()) && !ignoreCodes.contains(vnfreq + "-" + error.getCode())) {
                     result.getErrors().add(error);
                     overallPass = false;
+                } else {
+                    result.getWarnings().add(error);
                 }
             }
 
