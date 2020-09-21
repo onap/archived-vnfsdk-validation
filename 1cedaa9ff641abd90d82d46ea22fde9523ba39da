@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cfa088d2_66ed24aa",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/VTPValidateCSAR.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-09-21T07:06:37Z",
+      "side": 1,
+      "message": "return unmodifiable copy of collection. Pls fix other getters in Result class.",
+      "revId": "1cedaa9ff641abd90d82d46ea22fde9523ba39da",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce853534_c83858a6",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/VTPValidateCSAR.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-09-21T07:06:37Z",
+      "side": 1,
+      "message": "it will be better to use method addErrorAsWarning(error), rather to invoke getWarnings and add",
+      "revId": "1cedaa9ff641abd90d82d46ea22fde9523ba39da",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
