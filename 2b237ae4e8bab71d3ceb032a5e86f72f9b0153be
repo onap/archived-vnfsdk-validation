@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e10b57e4_41f9de93",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/security/CmsSignatureData.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-09-24T06:23:43Z",
+      "side": 1,
+      "message": "certificate cannot be final, due to fact that it may be changed by loadCertificate method.",
+      "parentUuid": "038a9a83_200bd24a",
+      "revId": "2b237ae4e8bab71d3ceb032a5e86f72f9b0153be",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ec3cb6fa_963992c0",
         "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/security/CmsSignatureData.java",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "2b237ae4e8bab71d3ceb032a5e86f72f9b0153be",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98309bcc_0052a523",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/security/CmsSignatureData.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-09-24T06:23:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec3cb6fa_963992c0",
+      "revId": "2b237ae4e8bab71d3ceb032a5e86f72f9b0153be",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
