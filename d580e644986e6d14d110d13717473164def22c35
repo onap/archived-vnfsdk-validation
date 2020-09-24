@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "4e8821e6_9b15990e",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/security/CmsSignatureData.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-09-24T09:06:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d1b5e87_f3d18322",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 50
+      },
+      "revId": "d580e644986e6d14d110d13717473164def22c35",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a053466_343cd152",
         "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/security/CmsSignatureData.java",
         "patchSetId": 6
