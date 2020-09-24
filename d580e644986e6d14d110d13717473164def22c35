@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "2d1b5e87_f3d18322",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/security/CmsSignatureData.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-09-24T08:40:46Z",
+      "side": 1,
+      "message": "It is needed for case in which constructor with no certificate is called, this class then needs to store information that certificate is not present, to be able to return it in containsCertificate method, overall I know it is not best practice to use Optional as class field or to return Optional.isPresent boolean from method, although only other option I see here is to initiate certificate with null and create other fields with boolean isCertificatePresent, however the get certificate may return null or needs null checking and conversion from nullable field into Optional",
+      "parentUuid": "824d3bba_4b62f287",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 50
+      },
+      "revId": "d580e644986e6d14d110d13717473164def22c35",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1a053466_343cd152",
         "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/security/CmsSignatureData.java",
         "patchSetId": 6
@@ -45,6 +69,30 @@
       "revId": "d580e644986e6d14d110d13717473164def22c35",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "13c9f60b_d31b7b1c",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/security/CmsSignatureData.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-09-24T08:40:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a053466_343cd152",
+      "range": {
+        "startLine": 38,
+        "startChar": 8,
+        "endLine": 38,
+        "endChar": 52
+      },
+      "revId": "d580e644986e6d14d110d13717473164def22c35",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
