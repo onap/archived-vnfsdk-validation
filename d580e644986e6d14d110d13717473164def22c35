@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "824d3bba_4b62f287",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/security/CmsSignatureData.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 6931
+      },
+      "writtenOn": "2020-09-24T08:20:40Z",
+      "side": 1,
+      "message": "does not have to be wrapped by Optional, use optional only for getter in this class, using Optional as class field is not the best practise",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 50
+      },
+      "revId": "d580e644986e6d14d110d13717473164def22c35",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a053466_343cd152",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/security/CmsSignatureData.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 6931
+      },
+      "writtenOn": "2020-09-24T08:20:40Z",
+      "side": 1,
+      "message": "for me it is a little bit confusing, it cannot be null when you assign certificate in constructor, but  when certificate is loading null is accepted, if that logic is required for information purpose you can add a comment about it",
+      "range": {
+        "startLine": 38,
+        "startChar": 8,
+        "endLine": 38,
+        "endChar": 52
+      },
+      "revId": "d580e644986e6d14d110d13717473164def22c35",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
