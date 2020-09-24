@@ -1,0 +1,41 @@
+metadata:
+    pnfd_name: RadioNode
+    pnfd_provider: Ericsson
+    pnfd_archive_version: 1.0
+    pnfd_release_date_time: 2019-01-14T11:25:00+00:00
+
+#The manifest file shall include a list of all files contained in or referenced from the VNF package with their location
+Source: MRF.yaml
+Algorithm: SHA-256
+Hash: 09e5a788acb180162c51679ae4c998039fa6644505db2415e35107d1ee213943
+
+Source: scripts/install.sh
+Algorithm: SHA-256
+Hash: d0e7828293355a07c2dccaaa765c80b507e60e6167067c950dc2e6b0da0dbd8b
+
+Source: https://www.vendor_org.com/MRF/v4.1/scripts/scale/scale.sh
+Algorithm: SHA-256
+Hash: 36f945953929812aca2701b114b068c71bd8c95ceb3609711428c26325649165
+
+MIGDBgsqhkiG9w0BCRABCaB0MHICAQAwDQYLKoZIhvcNAQkQAwgwXgYJKoZIhvcN
+AQcBoFEET3icc87PK0nNK9ENqSxItVIoSa0o0S/ISczMs1ZIzkgsKk4tsQ0N1nUM
+dvb05OXi5XLPLEtViMwvLVLwSE0sKlFIVHAqSk3MBkkBAJv0Fx0=
+-----END CMS-----
+
+non_mano_artifact_sets:
+
+    onap_ves_events:
+        source: Artifacts/Events/VES_registration.yml
+
+    onap_pm_dictionary:
+        source: Artifacts/Measurements/PM_Dictionary.yaml
+
+    onap_yang_module:
+        source: Artifacts/Yang_module/Yang_module.yaml
+
+    onap_others:
+            source: Artifacts/scripts/install.sh
+            source: Artifacts/Informational/user_guide.txt
+            source: Artifacts/Other/installation_guide.txt
+            source: Artifacts/Other/review_log.txt
+

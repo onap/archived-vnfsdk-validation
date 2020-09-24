@@ -88,4 +88,10 @@ All notable changes to this project will be documented in this file.
 
 ## Fixed
 - Fixed rule R130206 CMS and certificate searching and validation mechanism 
-    - https://jira.onap.org/browse/VNFSDK-595  
+    - https://jira.onap.org/browse/VNFSDK-595 
+    
+## Added
+- Add new field called "warnings" to oclip json response. All ignored errors are now reported as warnings.
+    - https://jira.onap.org/browse/VNFSDK-596
+
+## [1.2.14]
