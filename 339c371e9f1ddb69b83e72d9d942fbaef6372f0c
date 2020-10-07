@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "549b3aae_8b7706e3",
+        "filename": "csarvalidation/src/test/java/org/onap/functional/CsarValidationUtility.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-10-07T12:37:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5893d062_8aa0b143",
+      "revId": "339c371e9f1ddb69b83e72d9d942fbaef6372f0c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "101e5f51_8a0b6f96",
         "filename": "csarvalidation/src/test/java/org/onap/functional/CsarValidationUtility.java",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "339c371e9f1ddb69b83e72d9d942fbaef6372f0c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7664e8c_9bcd5719",
+        "filename": "csarvalidation/src/test/java/org/onap/functional/CsarValidationUtility.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-10-07T12:37:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "101e5f51_8a0b6f96",
+      "revId": "339c371e9f1ddb69b83e72d9d942fbaef6372f0c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
