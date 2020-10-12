@@ -123,7 +123,7 @@ public class PnfValidationFunctionalTest {
             "--product", "onap-dublin",
             "csar-validate",
             "--format", "json",
-            "--pnf",
+            "--pnf", "true",
             "--csar", absoluteFilePath(csarPath)
         };
     }
