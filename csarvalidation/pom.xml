@@ -42,8 +42,8 @@
     <commons-lang3.version>3.2.1</commons-lang3.version>
     <commons-io.version>2.7</commons-io.version>
     <bcpkix-jdk15on.version>1.61</bcpkix-jdk15on.version>
-    <cli-framework.version>5.0.3</cli-framework.version>
-    <cli-main.version>5.0.2</cli-main.version>
+    <cli-framework.version>6.0.0</cli-framework.version>
+    <cli-main.version>6.0.0</cli-main.version>
     <assertj-core.version>3.11.1</assertj-core.version>
     <lombok.version>1.18.2</lombok.version>
     <commons-collections.version>3.2.2</commons-collections.version>

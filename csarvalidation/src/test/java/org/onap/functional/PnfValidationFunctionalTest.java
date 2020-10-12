@@ -16,7 +16,9 @@
 
 package org.onap.functional;
 
+import org.junit.Ignore;
 import org.junit.Test;
+import org.onap.cli.fw.output.OnapCommandResult;
 import org.onap.functional.cli.OnapCliValidationResponseWrapper;
 import org.onap.functional.cli.OnapCliWrapper;
 
@@ -34,6 +36,15 @@ import static org.onap.functional.CsarValidationUtility.verifyThatOperationFinis
 
 
 public class PnfValidationFunctionalTest {
+
+    @Test
+    public void CLI_test() throws URISyntaxException {
+        OnapCliWrapper cli = new OnapCliWrapper(createPnfValidationRequestInfo( "pnf/validFile.csar"));
+        cli.handle();
+        OnapCommandResult commandResult = cli.getCommandResult();
+        assertThat(commandResult).isNotNull();
+    }
+
 
     @Test
     public void shouldReportOnlyWarningWhenCsarDoNotHaveCertificateAndHashesInManifest() throws URISyntaxException {
@@ -123,7 +134,7 @@ public class PnfValidationFunctionalTest {
             "--product", "onap-dublin",
             "csar-validate",
             "--format", "json",
-            "--pnf",
+            "--pnf", "true",
             "--csar", absoluteFilePath(csarPath)
         };
     }

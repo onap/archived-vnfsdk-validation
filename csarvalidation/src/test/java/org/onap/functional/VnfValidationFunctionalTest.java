@@ -17,6 +17,7 @@
 
 package org.onap.functional;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.onap.functional.cli.OnapCliValidationResponseWrapper;
 import org.onap.functional.cli.OnapCliWrapper;
