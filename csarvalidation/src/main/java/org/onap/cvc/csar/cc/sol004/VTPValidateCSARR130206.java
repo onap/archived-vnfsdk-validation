@@ -166,7 +166,15 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
 
         CSARErrorRootCertificateIsPresentDespiteTheEtsiEntryCertificate() {
             super("0x4013");
-            this.message = "Certificate present in root catalog despite the certificate is included in ETSI-Entry-Certificate";
+            this.message = "Certificate present in root catalog despite the TOSCA.meta file";
+        }
+    }
+
+    public static class CSARErrorUnableToFindCertificateEntryInTosca extends CSARArchive.CSARError {
+
+        CSARErrorUnableToFindCertificateEntryInTosca() {
+            super("0x4014");
+            this.message = "Unable to find ETSI-Entry-Certificate in Tosca file";
         }
     }
 
@@ -199,7 +207,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         if (containsCms(csar.getManifest())) {
             validateCmsSignature(csar, csarRootDirectory);
         } else if (
-            containsCertificateInTosca(csar.getToscaMeta()) ||
+            ( containsToscaMeta(csar) && containsCertificateInTosca(csar.getToscaMeta()) ) ||
                 containsCertificateInRootCatalog(csar) ||
                 containsHashOrAlgorithm(csar.getManifest())) {
             this.errors.add(new CSARErrorUnableToFindCms());
@@ -213,7 +221,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
             CmsSignatureData signatureData = this.manifestFileSignatureValidator.createSignatureData(csar.getManifestMfFile());
             if (signatureData.getCertificate().isPresent()) {
                 validateCertificationUsingCmsCertificate(signatureData, csar, csarRootDirectory);
-            } else if (containsCertificateInTosca(csar.getToscaMeta())) {
+            } else if (containsToscaMeta(csar)) {
                 validateCertificationUsingTosca(signatureData, csar, csarRootDirectory);
             } else if (containsCertificateInRootCatalog(csar)) {
                 validateCertificationUsingCertificateFromRootDirectory(signatureData, csar, csarRootDirectory);
@@ -229,6 +237,10 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     private boolean containsCms(CSARArchive.Manifest manifest) {
         String cms = manifest.getCms();
         return cms != null && !cms.equals(EMPTY_STRING);
+    }
+
+    private boolean containsToscaMeta(CSARArchive archive) {
+        return archive.getToscaMetaFile() != null;
     }
 
     private boolean containsCertificateInTosca(CSARArchive.TOSCAMeta toscaMeta) {
@@ -276,12 +288,17 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     private boolean loadCertificateFromTosca(CmsSignatureData signatureData, CSARArchive csar) {
-        try {
-            final Path absolutePathToEntryCertificate = csar.getFileFromCsar(csar.getToscaMeta().getEntryCertificate()).toPath();
-            signatureData.loadCertificate(absolutePathToEntryCertificate);
-            return true;
-        } catch (CertificateLoadingException e) {
-            this.errors.add(new CSARErrorUnableToFindEntryCertificate());
+        if(csar.getToscaMeta().getEntryCertificate() != null) {
+            try {
+                final Path absolutePathToEntryCertificate = csar.getFileFromCsar(csar.getToscaMeta().getEntryCertificate()).toPath();
+                signatureData.loadCertificate(absolutePathToEntryCertificate);
+                return true;
+            } catch (CertificateLoadingException e) {
+                this.errors.add(new CSARErrorUnableToFindEntryCertificate());
+                return false;
+            }
+        } else {
+            this.errors.add(new CSARErrorUnableToFindCertificateEntryInTosca());
             return false;
         }
     }

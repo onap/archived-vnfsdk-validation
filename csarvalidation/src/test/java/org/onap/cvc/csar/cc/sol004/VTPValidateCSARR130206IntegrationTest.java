@@ -20,8 +20,10 @@ package org.onap.cvc.csar.cc.sol004;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.onap.cli.fw.error.OnapCommandException;
 import org.onap.cvc.csar.CSARArchive;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,24 +73,6 @@ public class VTPValidateCSARR130206IntegrationTest {
 
         // given
         configureTestCase(testCase, "pnf/r130206/csar-cert-in-tosca-valid.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
-
-        // when
-        testCase.execute();
-
-        // then
-        List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isZero();
-    }
-
-    @Test
-    @Ignore("It is impossible to write test which will always pass, because certificate used to sign the file has time validity." +
-        "To verify signed package please please follow instructions from test/resources/README.txt file and comment @Ignore tag. " +
-        "Use instructions for option 1. Test was created for manual verification."
-    )
-    public void manual_shouldValidateCsarWithCertificateInRootWithValidSignature() throws Exception {
-
-        // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-root-valid.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -149,11 +133,29 @@ public class VTPValidateCSARR130206IntegrationTest {
         );
     }
 
+//    @Test
+//    public void shouldReturnNoErrorWhenCertIsOnlyInRootDirectoryAndAlgorithmAndHashesAreCorrect()
+//        throws Exception {
+//            // given
+//            configureTestCase(testCase, "pnf/r130206/csar-cert-in-root.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+//
+//            // when
+//            testCase.execute();
+//
+//            // then
+//            List<CSARArchive.CSARError> errors = testCase.getErrors();
+//            assertThat(errors.size()).isEqualTo(1);
+//            assertThat(convertToMessagesList(errors)).contains(
+//                "File has invalid signature!"
+//            );
+//
+//    }
+
     @Test
-    public void shouldReturnNoErrorWhenCertIsOnlyInRootDirectoryAndAlgorithmAndHashesAreCorrect()
+    public void shouldReturnErrorWhenCsarContainsToscaFileHoweverToscaDoesNotContainsCertEntryAndAlgorithmAndHashesAreCorrect()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-root.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCase(testCase, "pnf/r130206/csar-with-tosca-no-cert-entry.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
 
         // when
         testCase.execute();
@@ -162,7 +164,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).contains(
-            "File has invalid signature!"
+            "Unable to find ETSI-Entry-Certificate in Tosca file"
         );
     }
 
@@ -213,10 +215,11 @@ public class VTPValidateCSARR130206IntegrationTest {
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(2);
+        assertThat(errors.size()).isEqualTo(3);
         assertThat(convertToMessagesList(errors)).contains(
             "Source 'Artifacts/Deployment/Events/RadioNode_Pnf_v1.yaml' has wrong hash!",
-            "File has invalid signature!"
+            "Unable to find ETSI-Entry-Certificate in Tosca file",
+            "Certificate present in root catalog despite the TOSCA.meta file"
         );
     }
 
@@ -369,7 +372,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(2);
         assertThat(convertToMessagesList(errors)).contains(
-            "Certificate present in root catalog despite the certificate is included in ETSI-Entry-Certificate",
+            "Certificate present in root catalog despite the TOSCA.meta file",
             "File has invalid signature!"
         );
     }
@@ -387,7 +390,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(3);
         assertThat(convertToMessagesList(errors)).contains(
-            "Certificate present in root catalog despite the certificate is included in ETSI-Entry-Certificate",
+            "Certificate present in root catalog despite the TOSCA.meta file",
             "Source 'Artifacts/Deployment/Yang_module/yang-module1.yang' has wrong hash!",
             "File has invalid signature!"
         );
