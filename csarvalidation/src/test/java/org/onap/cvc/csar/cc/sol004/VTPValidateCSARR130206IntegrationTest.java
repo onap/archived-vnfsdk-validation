@@ -428,4 +428,42 @@ public class VTPValidateCSARR130206IntegrationTest {
             "Unable to find cms signature!"
         );
     }
+
+    @Test
+    public void shouldReturnNoCertificationErrorWhenCertIsOnlyInRoot() throws Exception {
+
+        // given
+        configureTestCase(testCase, "pnf/r130206/csar-cert-in-root.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        // This test returns other errors that are connected with missing tosca entry,
+        // in order to simplify testing, assertion only checks if certificate in root was found and used to validate CMS
+        assertThat(convertToMessagesList(errors)).contains(
+            "File has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnCertificateNotFoundErrorWhenCertIsNotPresentInCmsInRootAndTocsaDirectoryIsMissing() throws Exception {
+
+        // given
+        configureTestCase(testCase, "pnf/r130206/csar-no-cert-no-tosca-dir.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        // This test returns other errors that are connected with missing tosca entry,
+        // in order to simplify testing, assertion only checks if "certificate not found" error was reported
+        assertThat(convertToMessagesList(errors)).contains(
+            "Unable to find cert file!"
+        );
+    }
 }

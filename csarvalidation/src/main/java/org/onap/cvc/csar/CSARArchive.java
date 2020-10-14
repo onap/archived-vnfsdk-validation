@@ -531,6 +531,13 @@ public class CSARArchive implements AutoCloseable {
         }
     }
 
+    public static class CSARErrorNoManifestsFound extends CSARError {
+        public CSARErrorNoManifestsFound() {
+            super("0x0016");
+            this.message = "No manifest file found in CSAR!";
+        }
+    }
+
     /**
      * Holds the CSAR meta data values in both Modes
      *
@@ -1091,7 +1098,10 @@ public class CSARArchive implements AutoCloseable {
                 //manifest
                 files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(MF));
 
-                if (files.length > 1) {
+                if (files.length == 0) {
+                    errors.add(new CSARErrorNoManifestsFound());
+                    this.toscaMeta.setEntryManifestMf(null);
+                } else if (files.length > 1) {
                     List<String> fileNames = new ArrayList<>();
                     for (File f: files) {
                         fileNames.add(f.getName());
@@ -1118,7 +1128,9 @@ public class CSARArchive implements AutoCloseable {
                 //certificate
                 files = this.tempDir.toFile().listFiles((dir, name) -> name.endsWith(CERT));
 
-                if (files.length > 1) {
+                if (files.length == 0) {
+                    this.toscaMeta.setEntryCertificate(null);
+                } else if (files.length > 1) {
                     List<String> fileNames = new ArrayList<>();
                     for (File f: files) {
                         fileNames.add(f.getName());
