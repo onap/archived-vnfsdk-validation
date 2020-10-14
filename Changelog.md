@@ -95,3 +95,7 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-596
 
 ## [1.2.14]
+
+## Fixed
+- Fixed rule R130206 handling of CSARs with no TOSCA meta and no Certificate in root directory
+    - https://jira.onap.org/browse/VNFSDK-481
