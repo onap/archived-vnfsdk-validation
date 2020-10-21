@@ -77,13 +77,27 @@ How to configure vnfreqs.properties
 
 How to run CSAR validation
 --------------------------
-Follow the setups given below to run as csar-validate command
+Follow the setups given below to run as csar-validate command.
+
+<u><b>Warning !!!</b>
+Be default, during project building, documentation generation is being performed 
+(see point "Documentation generation" for more details).</u>
+In order to disable this process, add parameter `-DskipDocsGeneration` to mvn command, example:
+`mvn clean package -DskipDocsGeneration`
+  
 
 1. Install OCLIP (`wget -O - https://raw.githubusercontent.com/onap/cli/master/deployment/zip/installer/install-latest.sh | sh`)
 
 2. Run `mvn clean install` on this project, and copy the target/validation-csar-x.y.z.jar in to $OPEN_CLI_HOME/lib
 
 3. Run `oclip --product onap-vtp csar-validate --csar <CSAR path>`
+
+Documentation generation
+--------------------------
+During project build, automated generation of tables, containing supported rules, is being performed.
+Created tables are being saved in target directory, `target/generated-docs/{current_release}`.
+This generation is being performed by `exec-maven-plugin`, defined in pom.xml.     
+In order to generate tables python3 and pip3 are required.
 
 Contact
 -------
