@@ -12,3 +12,4 @@ coverage-report/
 *.log
 .idea
 .attach_pid*
+**/__pycache__/*
