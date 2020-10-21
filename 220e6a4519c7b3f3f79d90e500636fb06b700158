@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "86ce8e03_034dbf76",
+        "filename": "csarvalidation/src/main/python/generate_active_validation_rules_table.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-10-21T08:42:34Z",
+      "side": 1,
+      "message": "1. could you pls move python folder at the same level as src\n2. Create python folder\n3. Inside folder create python project with requirements.txt and setup.py\n4. Add test",
+      "revId": "220e6a4519c7b3f3f79d90e500636fb06b700158",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1b63aa2_7060d5e9",
+        "filename": "csarvalidation/src/main/python/generate_active_validation_rules_table.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-10-21T08:42:34Z",
+      "side": 1,
+      "message": "RULE, not PULE",
+      "revId": "220e6a4519c7b3f3f79d90e500636fb06b700158",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4ecab6d_e60f2c45",
+        "filename": "csarvalidation/src/main/python/generate_active_validation_rules_table.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-10-21T08:42:34Z",
+      "side": 1,
+      "message": "1 is a Magic word, pls fix it",
+      "revId": "220e6a4519c7b3f3f79d90e500636fb06b700158",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79026900_66153269",
+        "filename": "csarvalidation/src/main/python/generate_active_validation_rules_table.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-10-21T08:42:34Z",
+      "side": 1,
+      "message": "put these lines in __main__",
+      "revId": "220e6a4519c7b3f3f79d90e500636fb06b700158",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
