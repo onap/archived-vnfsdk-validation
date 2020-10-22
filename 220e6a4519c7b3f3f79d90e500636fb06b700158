@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0e92ba46_d00d68a8",
+        "filename": "csarvalidation/src/main/python/generate_active_validation_rules_table.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-10-22T05:28:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86ce8e03_034dbf76",
+      "revId": "220e6a4519c7b3f3f79d90e500636fb06b700158",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f1b63aa2_7060d5e9",
         "filename": "csarvalidation/src/main/python/generate_active_validation_rules_table.py",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "220e6a4519c7b3f3f79d90e500636fb06b700158",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5d7320c_a479961d",
+        "filename": "csarvalidation/src/main/python/generate_active_validation_rules_table.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-10-22T05:28:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1b63aa2_7060d5e9",
+      "revId": "220e6a4519c7b3f3f79d90e500636fb06b700158",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "759fc865_abd72ebf",
+        "filename": "csarvalidation/src/main/python/generate_active_validation_rules_table.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-10-22T05:28:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4ecab6d_e60f2c45",
+      "revId": "220e6a4519c7b3f3f79d90e500636fb06b700158",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "79026900_66153269",
         "filename": "csarvalidation/src/main/python/generate_active_validation_rules_table.py",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "220e6a4519c7b3f3f79d90e500636fb06b700158",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7cff140_9dc27c04",
+        "filename": "csarvalidation/src/main/python/generate_active_validation_rules_table.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-10-22T05:28:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79026900_66153269",
+      "revId": "220e6a4519c7b3f3f79d90e500636fb06b700158",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
