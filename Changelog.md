@@ -102,3 +102,5 @@ All notable changes to this project will be documented in this file.
 - Fixed rule R816745 that was not reporting error when CMS and TOSCA meta file were present, 
   however TOSCA did not contain ETSI-Entry-Certificate
     - https://jira.onap.org/browse/VNFSDK-660
+
+## [1.2.15]
