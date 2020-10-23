@@ -99,3 +99,6 @@ All notable changes to this project will be documented in this file.
 ## Fixed
 - Fixed rule R130206 handling of CSARs with no TOSCA meta and no Certificate in root directory
     - https://jira.onap.org/browse/VNFSDK-481
+- Fixed rule R816745 that was not reporting error when CMS and TOSCA meta file were present, 
+  however TOSCA did not contain ETSI-Entry-Certificate
+    - https://jira.onap.org/browse/VNFSDK-660
