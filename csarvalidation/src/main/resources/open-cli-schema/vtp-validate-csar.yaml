@@ -38,6 +38,13 @@ parameters:
       type: bool
       is_optional: true
       default_value: false
+    - name: rules
+      description: Rule that should be validate, if left empty all rules will be validated
+      long_option: rules
+      short_option: r
+      type: binary
+      is_optional: true
+      default_value: ""
 
 results:
     direction: portrait

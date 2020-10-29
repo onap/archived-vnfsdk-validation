@@ -34,6 +34,7 @@ public final class CsarValidationUtility {
     private CsarValidationUtility(){}
 
     public static final String CERTIFICATION_RULE = "r130206";
+    public static final String PM_DICTIONARY_YAML_RULE = "r816745";
     public static final String OPERATION_STATUS_FAILED = "FAILED";
     public static final String OPERATION_STATUS_PASS = "PASS";
 
