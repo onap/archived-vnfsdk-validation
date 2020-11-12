@@ -27,7 +27,7 @@ import static org.onap.validation.yaml.model.YamlDocumentFactory.YamlDocumentPar
 
 public final class YamlLoadingUtils {
 
-    private YamlLoadingUtils() {}
+    private YamlLoadingUtils() { }
 
     public static final int VALID_YAML_DOCUMENT_INDEX = 4;
     public static final int YAML_DOCUMENT_WITH_WRONG_VALUE_IN_ARRAY_INDEX = 3;

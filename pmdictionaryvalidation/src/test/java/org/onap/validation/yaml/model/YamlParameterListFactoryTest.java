@@ -18,16 +18,16 @@
 package org.onap.validation.yaml.model;
 
 import org.assertj.core.util.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class YamlParameterListFactoryTest {
+class YamlParameterListFactoryTest {
 
     @Test
-    public void shouldCreateEmptyParametersList() {
+    void shouldCreateEmptyParametersList() {
         // when
         YamlParametersList parametersList = new YamlParameterListFactory().createEmptyYamlParameterList();
 
@@ -37,35 +37,37 @@ public class YamlParameterListFactoryTest {
     }
 
     @Test
-    public void shouldCreateParametersListContainingStringsFromListContainingSimpleTypes() {
+    void shouldCreateParametersListContainingStringsFromListContainingSimpleTypes() {
         // given
-        List<Object> testList = Lists.list("test1",3,23.45,'a',"test2");
+        List<Object>  elements = List.of("test1", 3, 23.45, 'a', "test2");
+
+        // when
+        YamlParametersList parametersList = new YamlParameterListFactory().createYamlParameterList( elements);
+
+        // then
+        assertThat(parametersList).isNotNull();
+        assertThat(parametersList.getParameters())
+                .hasSize(5)
+                .contains("test1", "test2", "3", "23.45", "a");
+    }
+
+    @Test
+    void shouldCreateParametersListContainingStringsFromListContainingVariousTypes() {
+        // given
+        List<Object> testList = List.of("test1", 3, Lists.list(2, 3, 4), "test2");
 
         // when
         YamlParametersList parametersList = new YamlParameterListFactory().createYamlParameterList(testList);
 
         // then
         assertThat(parametersList).isNotNull();
-        assertThat(parametersList.getParameters()).hasSize(5);
-        assertThat(parametersList.getParameters()).contains("test1","test2","3","23.45","a");
+        assertThat(parametersList.getParameters())
+                .hasSize(4)
+                .contains("test1", "test2", "3", "[2, 3, 4]");
     }
 
     @Test
-    public void shouldCreateParametersListContainingStringsFromListContainingVariousTypes() {
-        // given
-        List<Object> testList = Lists.list("test1",3,Lists.list(2,3,4),"test2");
-
-        // when
-        YamlParametersList parametersList = new YamlParameterListFactory().createYamlParameterList(testList);
-
-        // then
-        assertThat(parametersList).isNotNull();
-        assertThat(parametersList.getParameters()).hasSize(4);
-        assertThat(parametersList.getParameters()).contains("test1","test2","3","[2, 3, 4]");
-    }
-
-    @Test
-    public void shouldCreateListWithOneStringWhenGivenObjectIsNotList() {
+    void shouldCreateListWithOneStringWhenGivenObjectIsNotList() {
         // given
         Object testObject = "test";
 
@@ -74,8 +76,8 @@ public class YamlParameterListFactoryTest {
 
         // then
         assertThat(parametersList).isNotNull();
-        assertThat(parametersList.getParameters()).hasSize(1);
-        assertThat(parametersList.getParameters()).contains("test");
+        assertThat(parametersList.getParameters())
+                .hasSize(1)
+                .contains("test");
     }
-
 }

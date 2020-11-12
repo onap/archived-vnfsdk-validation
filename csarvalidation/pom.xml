@@ -50,6 +50,7 @@
     <maven-war-plugin.version>2.6</maven-war-plugin.version>
     <maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
     <mockito-core.version>3.5.0</mockito-core.version>
+    <validation-pmdictionary.version>1.2.15-SNAPSHOT</validation-pmdictionary.version>
   </properties>
 
   <dependencies>
@@ -104,6 +105,11 @@
           <artifactId>commons-codec</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.onap.vnfsdk.validation</groupId>
+      <artifactId>validation-pmdictionary</artifactId>
+      <version>${validation-pmdictionary.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
