@@ -104,3 +104,7 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-660
 
 ## [1.2.15]
+
+## Move
+- Extract pm-dictionary validation to separate module
+    - https://jira.onap.org/browse/VNFSDK-713
