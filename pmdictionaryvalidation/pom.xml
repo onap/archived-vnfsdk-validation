@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.onap.vnfsdk.validation</groupId>
+        <artifactId>validation</artifactId>
+        <version>1.2.15-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>validation-pmdictionary</artifactId>
+    <packaging>jar</packaging>
+    <name>pmdictionaryvalidation/validation</name>
+
+    <repositories>
+        <repository>
+            <id>google-collections</id>
+            <name>Google collections repository</name>
+            <url>https://mvnrepository.com/artifact/com.google.collections/google-collections</url>
+        </repository>
+        <repository>
+            <id>onap</id>
+            <name>ONAP repository</name>
+            <url>https://nexus.onap.org/content/repositories/public/</url>
+        </repository>
+    </repositories>
+    <properties>
+        <log4j-slf4j-impl.version>2.13.3</log4j-slf4j-impl.version>
+        <snakeyaml.version>1.26</snakeyaml.version>
+        <junit.version>5.7.0</junit.version>
+        <assertj-core.version>3.18.1</assertj-core.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j-slf4j-impl.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-ext</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+        <!-- TEST dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
