@@ -17,7 +17,7 @@
 
 package org.onap.validation.yaml;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.onap.validation.yaml.exception.YamlProcessingException;
 import org.onap.validation.yaml.model.YamlDocument;
 import org.onap.validation.yaml.model.YamlDocumentFactory;
@@ -30,13 +30,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
-public class YamlLoaderTest {
+class YamlLoaderTest {
 
     private static final int EXPECTED_NUMBER_OF_DOCUMENTS = 5;
     private static final String LETTER_S_WITH_ASCII_CODE = "s(115)";
 
     @Test
-    public void shouldLoadAllDocumentsFromYamlFile() throws YamlDocumentFactory.YamlDocumentParsingException {
+    void shouldLoadAllDocumentsFromYamlFile() throws YamlDocumentFactory.YamlDocumentParsingException {
         // when
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFile();
 
@@ -45,7 +45,7 @@ public class YamlLoaderTest {
     }
 
     @Test
-    public void shouldLoadAllDocumentsFromJsonStyleYamlFile() throws YamlDocumentFactory.YamlDocumentParsingException {
+    void shouldLoadAllDocumentsFromJsonStyleYamlFile() throws YamlDocumentFactory.YamlDocumentParsingException {
         // when
         List<YamlDocument> documents = YamlLoadingUtils.loadValidJsonStyleMultiDocumentYamlFile();
 
@@ -54,7 +54,7 @@ public class YamlLoaderTest {
     }
 
     @Test
-    public void shouldLoadAllDocumentsFromYamlFileUsingPathInString() throws YamlProcessingException {
+    void shouldLoadAllDocumentsFromYamlFileUsingPathInString() throws YamlProcessingException {
         // when
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFileUsingStringPath();
 
@@ -63,37 +63,34 @@ public class YamlLoaderTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenLoadingDocumentsFromInvalidYamlFile() {
+    void shouldThrowExceptionWhenLoadingDocumentsFromInvalidYamlFile() {
         // when then
-        assertThatThrownBy(YamlLoadingUtils::tryToLoadMultiDocumentInvalidYamlFile
-        ).isInstanceOf(ParserException.class)
-            .hasMessageContaining("expected the node content, but found '<document end>'");
+        assertThatThrownBy(YamlLoadingUtils::tryToLoadMultiDocumentInvalidYamlFile)
+                .isInstanceOf(ParserException.class)
+                .hasMessageContaining("expected the node content, but found '<document end>'");
     }
 
     @Test
-    public void shouldThrowExceptionWhenLoadingDocumentsFromInvalidYamlFileUsingPathInString() {
+    void shouldThrowExceptionWhenLoadingDocumentsFromInvalidYamlFileUsingPathInString() {
         // when then
-        assertThatThrownBy(YamlLoadingUtils::tryToLoadMultiDocumentInvalidYamlFileUsingStringPath
-        ).isInstanceOf(ParserException.class)
-            .hasMessageContaining("expected the node content, but found '<document end>'");
+        assertThatThrownBy(YamlLoadingUtils::tryToLoadMultiDocumentInvalidYamlFileUsingStringPath)
+                .isInstanceOf(ParserException.class)
+                .hasMessageContaining("expected the node content, but found '<document end>'");
     }
-
 
     @Test
-    public void shouldThrowExceptionWhenLoadingInvalidYamlFileWithIncorrectKeyMapping() {
+    void shouldThrowExceptionWhenLoadingInvalidYamlFileWithIncorrectKeyMapping() {
         // when then
-        assertThatThrownBy(YamlLoadingUtils::tryToLoadInvalidYamlFileWithIncorrectKeyMapping
-        ).isInstanceOf(ScannerException.class)
-            .hasMessageContaining("mapping values are not allowed here");
+        assertThatThrownBy(YamlLoadingUtils::tryToLoadInvalidYamlFileWithIncorrectKeyMapping)
+                .isInstanceOf(ScannerException.class)
+                .hasMessageContaining("mapping values are not allowed here");
     }
-
 
     @Test
-    public void shouldThrowExceptionWhenLoadingInvalidYamlFileWithUnknownEscapeCharacter() {
+    void shouldThrowExceptionWhenLoadingInvalidYamlFileWithUnknownEscapeCharacter() {
         // when then
-        assertThatThrownBy(YamlLoadingUtils::tryToLoadInvalidYamlFileWithUnknownEscapeCharacter
-        ).isInstanceOf(ScannerException.class)
-            .hasMessageContaining("found unknown escape character " + LETTER_S_WITH_ASCII_CODE);
+        assertThatThrownBy(YamlLoadingUtils::tryToLoadInvalidYamlFileWithUnknownEscapeCharacter)
+                .isInstanceOf(ScannerException.class)
+                .hasMessageContaining("found unknown escape character " + LETTER_S_WITH_ASCII_CODE);
     }
-
 }

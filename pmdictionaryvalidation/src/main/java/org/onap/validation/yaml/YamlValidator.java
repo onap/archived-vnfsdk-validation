@@ -17,8 +17,8 @@
 
 package org.onap.validation.yaml;
 
-import org.onap.validation.yaml.exception.YamlProcessingException;
 import org.onap.validation.yaml.error.SchemaValidationError;
+import org.onap.validation.yaml.exception.YamlProcessingException;
 import org.onap.validation.yaml.model.YamlDocument;
 import org.onap.validation.yaml.process.YamlValidationProcess;
 import org.onap.validation.yaml.schema.YamlSchema;

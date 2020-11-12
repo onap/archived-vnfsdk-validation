@@ -17,12 +17,9 @@
 
 package org.onap.validation.yaml.model;
 
-import org.assertj.core.util.Lists;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,20 +27,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.onap.validation.yaml.model.YamlDocumentFactory.YamlDocumentParsingException;
 
-public class YamlDocumentFactoryTest {
+class YamlDocumentFactoryTest {
 
     @Test
-    public void shouldTurnMapOfUnknownKeyTypeToMapWithStringKeysAndBeAbleToReturnStringifyValues()
-        throws YamlDocumentParsingException {
+    void shouldTurnMapOfUnknownKeyTypeToMapWithStringKeysAndBeAbleToReturnStringifyValues()
+            throws YamlDocumentParsingException {
         // given
-        Map<Object, Object> inputMap = new HashMap<>();
-        List<String> testList = Lists.list("element1", "element11");
+        List<String> testList = List.of("element1", "element11");
         Map<Object, Object> testEmptyMap = Collections.emptyMap();
-
-        inputMap.put("test", testList);
-        inputMap.put(345, "element2");
-        inputMap.put("test2", "element3");
-        inputMap.put(2.67, testEmptyMap);
+        Map<Object, Object> inputMap = Map.of(
+                "test", testList,
+                345, "element2",
+                "test2", "element3",
+                2.67, testEmptyMap);
 
         // when
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(inputMap);
@@ -63,17 +59,15 @@ public class YamlDocumentFactoryTest {
     }
 
     @Test
-    public void shouldTurnMapOfUnknownKeyTypeToMapWithStringKeysAndBeAbleToExtractSubStructure()
-        throws YamlDocumentParsingException {
+    void shouldTurnMapOfUnknownKeyTypeToMapWithStringKeysAndBeAbleToExtractSubStructure()
+            throws YamlDocumentParsingException {
         // given
-        Map<Object, Object> inputMap = new HashMap<>();
-        Map<Object, Object> subStructureMap = new HashMap<>();
-
-        inputMap.put("test", "element1");
-        inputMap.put("structure", subStructureMap);
-
-        subStructureMap.put("subTest1", "subElement1");
-        subStructureMap.put("subTest2", "subElement2");
+        Map<Object, Object> subStructureMap = Map.of(
+                "subTest1", "subElement1",
+                "subTest2", "subElement2");
+        Map<Object, Object> inputMap = Map.of(
+                "test", "element1",
+                "structure", subStructureMap);
 
         // when
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(inputMap);
@@ -89,17 +83,13 @@ public class YamlDocumentFactoryTest {
     }
 
     @Test
-    public void shouldTurnMapOfUnknownKeyTypeToMapWithStringKeysAndBeAbleToExtractParametersList()
-        throws YamlDocumentParsingException {
+    void shouldTurnMapOfUnknownKeyTypeToMapWithStringKeysAndBeAbleToExtractParametersList()
+            throws YamlDocumentParsingException {
         // given
-        Map<Object, Object> inputMap = new HashMap<>();
-        List<String> parametersList = new LinkedList<>();
-
-        inputMap.put("test", "element1");
-        inputMap.put("parameters", parametersList);
-
-        parametersList.add("parameter1");
-        parametersList.add("parameter2");
+        List<String> parametersList = List.of("parameter1", "parameter2");
+        Map<Object, Object> inputMap = Map.of(
+                "test", "element1",
+                "parameters", parametersList);
 
         // when
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(inputMap);
@@ -110,45 +100,35 @@ public class YamlDocumentFactoryTest {
         assertThat(document.getValue("test")).isEqualTo("element1");
 
         assertThat(document.getListOfValues("parameters")).isNotNull();
-        assertThat(document.getListOfValues("parameters").getParameters()).contains("parameter1","parameter2");
+        assertThat(document.getListOfValues("parameters").getParameters()).contains("parameter1", "parameter2");
     }
 
     @Test
-    public void shouldThrowExceptionIfGetSubStructureIsCalledOnList()
-        throws YamlDocumentParsingException {
+    void shouldThrowExceptionIfGetSubStructureIsCalledOnList()
+            throws YamlDocumentParsingException {
         // given
-        Map<Object, Object> inputMap = new HashMap<>();
-        List<String> testList = Lists.list("element1", "element2");
-
-        inputMap.put("test", testList);
+        List<String> testList = List.of("element1", "element2");
+        Map<Object, Object> inputMap = Collections.singletonMap("test", testList);
 
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(inputMap);
 
         // when then
-        assertThatThrownBy(() ->
-            document.getSubStructure("test")
-        ).isInstanceOf(YamlDocumentParsingException.class)
-            .hasMessageContaining(
-                String.format("Fail to parse given objects: %s as yaml document", testList)
-            );
+        assertThatThrownBy(() -> document.getSubStructure("test"))
+                .isInstanceOf(YamlDocumentParsingException.class)
+                .hasMessageContaining(String.format("Fail to parse given objects: %s as yaml document", testList));
     }
 
     @Test
-    public void shouldThrowExceptionIfGetSubStructureIsCalledOnString()
-        throws YamlDocumentParsingException {
+    void shouldThrowExceptionIfGetSubStructureIsCalledOnString()
+            throws YamlDocumentParsingException {
         // given
-        Map<Object, Object> inputMap = new HashMap<>();
-
-        inputMap.put("test", "testElement");
+        Map<Object, Object> inputMap = Collections.singletonMap("test", "testElement");
 
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(inputMap);
 
         // when then
-        assertThatThrownBy(() ->
-            document.getSubStructure("test")
-        ).isInstanceOf(YamlDocumentParsingException.class)
-            .hasMessageContaining(
-                String.format("Fail to parse given objects: %s as yaml document.", "testElement")
-            );
+        assertThatThrownBy(() -> document.getSubStructure("test"))
+                .isInstanceOf(YamlDocumentParsingException.class)
+                .hasMessageContaining(String.format("Fail to parse given objects: %s as yaml document.", "testElement"));
     }
 }
