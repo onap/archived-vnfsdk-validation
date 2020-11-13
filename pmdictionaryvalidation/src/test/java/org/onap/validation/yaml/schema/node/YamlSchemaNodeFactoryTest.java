@@ -17,7 +17,6 @@
 
 package org.onap.validation.yaml.schema.node;
 
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.onap.validation.yaml.YamlLoadingUtils;
 import org.onap.validation.yaml.exception.YamlProcessingException;
@@ -58,7 +57,7 @@ public class YamlSchemaNodeFactoryTest {
         // given
         String nodeName = "leaf_test";
         String comment = "test leaf node";
-        List<String> acceptedValues = Lists.list("val1", "val2");
+        List<String> acceptedValues = List.of("val1", "val2");
         Map<Object, Object> nodeInYamlFormat = new HashMap<>();
         nodeInYamlFormat.put(YamlSchemaNodeFactory.PRESENCE_KEY, YamlSchemaNodeFactory.PRESENCE_REQUIRED_KEY);
         nodeInYamlFormat.put(YamlSchemaNodeFactory.COMMENT_KEY, comment);

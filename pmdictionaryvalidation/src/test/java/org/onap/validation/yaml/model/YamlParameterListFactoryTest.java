@@ -17,9 +17,9 @@
 
 package org.onap.validation.yaml.model;
 
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,46 +38,39 @@ class YamlParameterListFactoryTest {
 
     @Test
     void shouldCreateParametersListContainingStringsFromListContainingSimpleTypes() {
-        // given
-        List<Object>  elements = List.of("test1", 3, 23.45, 'a', "test2");
+        List<Object> testList = List.of("test1", 3, 23.45, 'a', "test2");
 
-        // when
-        YamlParametersList parametersList = new YamlParameterListFactory().createYamlParameterList( elements);
+        YamlParametersList parametersList = new YamlParameterListFactory().createYamlParameterList(testList);
 
-        // then
-        assertThat(parametersList).isNotNull();
-        assertThat(parametersList.getParameters())
-                .hasSize(5)
-                .contains("test1", "test2", "3", "23.45", "a");
+        assertYamlParametersList(parametersList, testList);
     }
 
     @Test
     void shouldCreateParametersListContainingStringsFromListContainingVariousTypes() {
-        // given
-        List<Object> testList = List.of("test1", 3, Lists.list(2, 3, 4), "test2");
+        List<Object> testList = List.of("test1", 3, List.of(2, 3, 4), "test2");
 
-        // when
         YamlParametersList parametersList = new YamlParameterListFactory().createYamlParameterList(testList);
 
-        // then
-        assertThat(parametersList).isNotNull();
-        assertThat(parametersList.getParameters())
-                .hasSize(4)
-                .contains("test1", "test2", "3", "[2, 3, 4]");
+        assertYamlParametersList(parametersList, testList);
     }
 
     @Test
     void shouldCreateListWithOneStringWhenGivenObjectIsNotList() {
-        // given
         Object testObject = "test";
 
-        // when
         YamlParametersList parametersList = new YamlParameterListFactory().createYamlParameterList(testObject);
 
-        // then
+        assertYamlParametersList(parametersList, Collections.singletonList(testObject));
+    }
+
+    private void assertYamlParametersList(YamlParametersList parametersList, List<Object> testList) {
         assertThat(parametersList).isNotNull();
         assertThat(parametersList.getParameters())
-                .hasSize(1)
-                .contains("test");
+                .containsExactly(mapToStrings(testList));
     }
+
+    private String[] mapToStrings(List<Object> elements) {
+        return elements.stream().map(Object::toString).toArray(String[]::new);
+    }
+
 }

@@ -36,19 +36,14 @@ class YamlSchemaFactoryTest {
     @Test
     void shouldCreateYamlSchemaFromYamlDocumentWithMultipleRoots()
             throws YamlProcessingException {
-
-        // given
         YamlDocument documents = YamlLoadingUtils.loadSimpleValidYamlSchemaWithMultiRootFile();
 
-        // when
         YamlSchema schema = new YamlSchemaFactory().createTreeStructuredYamlSchema(documents);
 
-        // then
         assertThat(schema).isNotNull();
-        assertThat(schema.getRootNodes()).hasSize(3);
-        assertThat(schema.getRootNodes().get(0).getName()).isEqualTo("root1");
-        assertThat(schema.getRootNodes().get(1).getName()).isEqualTo("root2");
-        assertThat(schema.getRootNodes().get(2).getName()).isEqualTo("root3");
+        assertThat(schema.getRootNodes())
+                .extracting(YamlSchemaNode::getName)
+                .containsExactly("root1", "root2", "root3");
     }
 
 

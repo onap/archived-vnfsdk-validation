@@ -17,7 +17,6 @@
 
 package org.onap.validation.yaml;
 
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.onap.validation.yaml.error.YamlDocumentValidationError;
 import org.onap.validation.yaml.exception.YamlProcessingException;
@@ -32,26 +31,20 @@ class YamlFileValidatorTest {
 
     @Test
     void shouldReturnCorrectErrorsWhenGivenPathToValidPmDictionaryFile() throws YamlProcessingException {
-        // given
         String path = getFullPathForGivenResources(YamlLoadingUtils.PATH_TO_VALID_YAML);
 
-        // when
         List<YamlDocumentValidationError> validationErrors = new YamlFileValidator().validateYamlFileWithSchema(path);
 
-        // then
         assertValidationReturnedExpectedErrors(validationErrors);
 
     }
 
     @Test
-    void shouldReturnCorrecErrorsWhenGivenPathToValidJsonStylePmDictionaryFile() throws YamlProcessingException {
-        // given
+    void shouldReturnCorrectErrorsWhenGivenPathToValidJsonStylePmDictionaryFile() throws YamlProcessingException {
         String path = getFullPathForGivenResources(YamlLoadingUtils.PATH_TO_VALID_JSON_STYLE_YAML);
 
-        // when
         List<YamlDocumentValidationError> validationErrors = new YamlFileValidator().validateYamlFileWithSchema(path);
 
-        // then
         assertValidationReturnedExpectedErrors(validationErrors);
     }
 
@@ -62,7 +55,7 @@ class YamlFileValidatorTest {
                 .hasSize(4)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsAll(
-                        Lists.list(
+                        List.of(
                                 new YamlDocumentValidationError(1,
                                         "/pmMetaData/pmFields/measResultType",
                                         "Value(s) is/are not in array of accepted values.\n" +
