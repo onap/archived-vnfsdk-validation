@@ -17,7 +17,6 @@
 
 package org.onap.validation.yaml;
 
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.onap.validation.yaml.error.SchemaValidationError;
 import org.onap.validation.yaml.exception.YamlProcessingException;
@@ -39,36 +38,34 @@ class YamlValidatorTest {
     @Test
     void shouldCreateValidatorUsingSchemaLoadedFromYamlFileAndValidatedJsonStyleDocumentsFromThatFile()
             throws YamlProcessingException {
-
-        // given
+        //given
         List<YamlDocument> documents = YamlLoadingUtils.loadValidJsonStyleMultiDocumentYamlFile();
         YamlValidator validator = new YamlValidator(new YamlSchemaFactory().createTreeStructuredYamlSchema(documents.get(0)));
         Map<Integer, List<SchemaValidationError>> validationErrors = new HashMap<>();
 
-        // when
+        //when
         for (int documentIndex = 1; documentIndex < documents.size(); documentIndex++) {
             validationErrors.put(documentIndex, validator.validate(documents.get(documentIndex)));
         }
 
-        // then
+        //then
         assertValidatorReturnedCorrectErrors(validationErrors);
     }
 
     @Test
     void shouldCreateValidatorUsingSchemaLoadedFromYamlFileAndValidatedDocumentsFromThatFile()
             throws YamlProcessingException {
-
-        // given
+        //given
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFile();
         YamlValidator validator = new YamlValidator(new YamlSchemaFactory().createTreeStructuredYamlSchema(documents.get(0)));
         Map<Integer, List<SchemaValidationError>> validationErrors = new HashMap<>();
 
-        // when
+        //when
         for (int documentIndex = 1; documentIndex < documents.size(); documentIndex++) {
             validationErrors.put(documentIndex, validator.validate(documents.get(documentIndex)));
         }
 
-        // then
+        //then
         assertValidatorReturnedCorrectErrors(validationErrors);
     }
 
@@ -100,7 +97,7 @@ class YamlValidatorTest {
         assertThat(validationErrors.get(YAML_DOCUMENT_WITH_MISSING_FIELD_AND_WRONG_VALUE_INDEX))
                 .hasSize(2)
                 .usingFieldByFieldElementComparator()
-                .containsAll(Lists.list(
+                .containsAll(List.of(
                         expectedValidationValueError,
                         expectedValidationKeyError
                 ));
@@ -112,7 +109,7 @@ class YamlValidatorTest {
                 .hasSize(1)
                 .usingFieldByFieldElementComparator()
                 .contains(expectedValidationValuesInArrayError);
-        assertThat(validationErrors.get(VALID_YAML_DOCUMENT_INDEX)).hasSize(0);
+        assertThat(validationErrors.get(VALID_YAML_DOCUMENT_INDEX)).isEmpty();
     }
 
 }
