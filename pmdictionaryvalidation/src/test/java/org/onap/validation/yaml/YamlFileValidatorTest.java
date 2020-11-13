@@ -17,7 +17,6 @@
 
 package org.onap.validation.yaml;
 
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.onap.validation.yaml.error.YamlDocumentValidationError;
 import org.onap.validation.yaml.exception.YamlProcessingException;
@@ -26,32 +25,25 @@ import org.yaml.snakeyaml.parser.ParserException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 class YamlFileValidatorTest {
 
     @Test
     void shouldReturnCorrectErrorsWhenGivenPathToValidPmDictionaryFile() throws YamlProcessingException {
-        // given
         String path = getFullPathForGivenResources(YamlLoadingUtils.PATH_TO_VALID_YAML);
 
-        // when
         List<YamlDocumentValidationError> validationErrors = new YamlFileValidator().validateYamlFileWithSchema(path);
 
-        // then
         assertValidationReturnedExpectedErrors(validationErrors);
-
     }
 
     @Test
-    void shouldReturnCorrecErrorsWhenGivenPathToValidJsonStylePmDictionaryFile() throws YamlProcessingException {
-        // given
+    void shouldReturnCorrectErrorsWhenGivenPathToValidJsonStylePmDictionaryFile() throws YamlProcessingException {
         String path = getFullPathForGivenResources(YamlLoadingUtils.PATH_TO_VALID_JSON_STYLE_YAML);
 
-        // when
         List<YamlDocumentValidationError> validationErrors = new YamlFileValidator().validateYamlFileWithSchema(path);
 
-        // then
         assertValidationReturnedExpectedErrors(validationErrors);
     }
 
@@ -62,7 +54,7 @@ class YamlFileValidatorTest {
                 .hasSize(4)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsAll(
-                        Lists.list(
+                        List.of(
                                 new YamlDocumentValidationError(1,
                                         "/pmMetaData/pmFields/measResultType",
                                         "Value(s) is/are not in array of accepted values.\n" +
@@ -85,21 +77,22 @@ class YamlFileValidatorTest {
 
     @Test
     void shouldThrowErrorWhenGivenPathToInvalidPmDictionaryFile() {
-        // given
         String path = getFullPathForGivenResources(YamlLoadingUtils.PATH_TO_MULTI_DOCUMENT_INVALID_YAML);
-        // when  then
-        assertThatThrownBy(() -> new YamlFileValidator().validateYamlFileWithSchema(path))
+
+        Throwable ex = catchThrowable(() -> new YamlFileValidator().validateYamlFileWithSchema(path));
+
+        assertThat(ex)
                 .isInstanceOf(ParserException.class)
                 .hasMessageContaining("expected the node content, but found '<document end>'");
     }
 
     @Test
     void shouldThrowErrorWhenGivenInvalidPath() {
-        // given
         String path = "invalid/path/to/pm_dictionary";
 
-        // when  then
-        assertThatThrownBy(() -> new YamlFileValidator().validateYamlFileWithSchema(path))
+        Throwable ex = catchThrowable(() -> new YamlFileValidator().validateYamlFileWithSchema(path));
+
+        assertThat(ex)
                 .isInstanceOf(YamlProcessingException.class)
                 .hasMessageContaining("PM_Dictionary YAML file is empty");
     }

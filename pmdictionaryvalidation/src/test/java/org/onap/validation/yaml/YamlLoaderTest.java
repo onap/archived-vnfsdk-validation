@@ -37,34 +37,27 @@ class YamlLoaderTest {
 
     @Test
     void shouldLoadAllDocumentsFromYamlFile() throws YamlDocumentFactory.YamlDocumentParsingException {
-        // when
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFile();
 
-        // then
         assertThat(documents).hasSize(EXPECTED_NUMBER_OF_DOCUMENTS);
     }
 
     @Test
     void shouldLoadAllDocumentsFromJsonStyleYamlFile() throws YamlDocumentFactory.YamlDocumentParsingException {
-        // when
         List<YamlDocument> documents = YamlLoadingUtils.loadValidJsonStyleMultiDocumentYamlFile();
 
-        // then
         assertThat(documents).hasSize(EXPECTED_NUMBER_OF_DOCUMENTS);
     }
 
     @Test
     void shouldLoadAllDocumentsFromYamlFileUsingPathInString() throws YamlProcessingException {
-        // when
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFileUsingStringPath();
 
-        // then
         assertThat(documents).hasSize(EXPECTED_NUMBER_OF_DOCUMENTS);
     }
 
     @Test
     void shouldThrowExceptionWhenLoadingDocumentsFromInvalidYamlFile() {
-        // when then
         assertThatThrownBy(YamlLoadingUtils::tryToLoadMultiDocumentInvalidYamlFile)
                 .isInstanceOf(ParserException.class)
                 .hasMessageContaining("expected the node content, but found '<document end>'");
@@ -72,7 +65,6 @@ class YamlLoaderTest {
 
     @Test
     void shouldThrowExceptionWhenLoadingDocumentsFromInvalidYamlFileUsingPathInString() {
-        // when then
         assertThatThrownBy(YamlLoadingUtils::tryToLoadMultiDocumentInvalidYamlFileUsingStringPath)
                 .isInstanceOf(ParserException.class)
                 .hasMessageContaining("expected the node content, but found '<document end>'");
@@ -80,7 +72,6 @@ class YamlLoaderTest {
 
     @Test
     void shouldThrowExceptionWhenLoadingInvalidYamlFileWithIncorrectKeyMapping() {
-        // when then
         assertThatThrownBy(YamlLoadingUtils::tryToLoadInvalidYamlFileWithIncorrectKeyMapping)
                 .isInstanceOf(ScannerException.class)
                 .hasMessageContaining("mapping values are not allowed here");
@@ -88,7 +79,6 @@ class YamlLoaderTest {
 
     @Test
     void shouldThrowExceptionWhenLoadingInvalidYamlFileWithUnknownEscapeCharacter() {
-        // when then
         assertThatThrownBy(YamlLoadingUtils::tryToLoadInvalidYamlFileWithUnknownEscapeCharacter)
                 .isInstanceOf(ScannerException.class)
                 .hasMessageContaining("found unknown escape character " + LETTER_S_WITH_ASCII_CODE);

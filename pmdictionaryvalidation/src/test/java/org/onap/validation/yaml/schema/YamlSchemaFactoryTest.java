@@ -17,6 +17,7 @@
 
 package org.onap.validation.yaml.schema;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.onap.validation.yaml.YamlLoadingUtils;
 import org.onap.validation.yaml.exception.YamlProcessingException;
@@ -36,33 +37,24 @@ class YamlSchemaFactoryTest {
     @Test
     void shouldCreateYamlSchemaFromYamlDocumentWithMultipleRoots()
             throws YamlProcessingException {
-
-        // given
         YamlDocument documents = YamlLoadingUtils.loadSimpleValidYamlSchemaWithMultiRootFile();
 
-        // when
         YamlSchema schema = new YamlSchemaFactory().createTreeStructuredYamlSchema(documents);
 
-        // then
         assertThat(schema).isNotNull();
-        assertThat(schema.getRootNodes()).hasSize(3);
-        assertThat(schema.getRootNodes().get(0).getName()).isEqualTo("root1");
-        assertThat(schema.getRootNodes().get(1).getName()).isEqualTo("root2");
-        assertThat(schema.getRootNodes().get(2).getName()).isEqualTo("root3");
+        assertThat(schema.getRootNodes())
+                .extracting(YamlSchemaNode::getName)
+                .containsExactly("root1", "root2", "root3");
     }
 
 
     @Test
     void shouldCreateYamlSchemaFromYamlDocument()
             throws YamlProcessingException {
-
-        // given
         YamlDocument documents = YamlLoadingUtils.loadSimpleValidYamlSchemaFile();
 
-        // when
         YamlSchema schema = new YamlSchemaFactory().createTreeStructuredYamlSchema(documents);
 
-        // then
         assertThat(schema).isNotNull();
         assertThat(schema.getRootNodes()).hasSize(1);
         YamlSchemaNode pmMetaData = schema.getRootNodes().get(0);
@@ -103,11 +95,8 @@ class YamlSchemaFactoryTest {
     @Test
     void shouldThrowYamlParsingExceptionWhenLoadedSchemaIsInvalid()
             throws YamlDocumentParsingException {
-
-        // given
         YamlDocument documents = YamlLoadingUtils.loadSimpleInvalidYamlSchemaFile();
 
-        // when/then
         assertThatThrownBy(() -> new YamlSchemaFactory().createTreeStructuredYamlSchema(documents))
                 .isInstanceOf(YamlDocumentParsingException.class)
                 .hasMessageContaining(String.format(

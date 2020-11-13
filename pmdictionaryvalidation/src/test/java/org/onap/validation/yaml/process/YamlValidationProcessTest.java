@@ -28,7 +28,7 @@ import org.onap.validation.yaml.schema.YamlSchemaFactory;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.onap.validation.yaml.YamlLoadingUtils.VALID_YAML_DOCUMENT_INDEX;
 import static org.onap.validation.yaml.YamlLoadingUtils.YAML_DOCUMENT_WITH_MISSING_FIELD_AND_WRONG_VALUE_INDEX;
 import static org.onap.validation.yaml.YamlLoadingUtils.YAML_DOCUMENT_WITH_MISSING_FIELD_INDEX;
@@ -38,60 +38,51 @@ class YamlValidationProcessTest {
     @Test
     void shouldReturnNoErrorWhenProcessingValidPmDictionaryYaml()
             throws YamlProcessingException {
-        // given
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFile();
         YamlSchema schema = new YamlSchemaFactory().createTreeStructuredYamlSchema(documents.get(0));
         YamlDocument document = documents.get(VALID_YAML_DOCUMENT_INDEX);
 
-        // when
         List<SchemaValidationError> errors = new YamlValidationProcess(schema, document).validate();
 
-        // then
         assertThat(errors).isEmpty();
     }
 
     @Test
     void shouldReturnOneErrorWhenProcessingPmDictionaryYamlWithMissingField()
             throws YamlProcessingException {
-        // given
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFile();
         YamlSchema schema = new YamlSchemaFactory().createTreeStructuredYamlSchema(documents.get(0));
         YamlDocument document = documents.get(YAML_DOCUMENT_WITH_MISSING_FIELD_INDEX);
 
-        // when
         List<SchemaValidationError> errors = new YamlValidationProcess(schema, document).validate();
 
-        // then
         assertThat(errors).hasSize(1);
     }
 
     @Test
     void shouldReturnTwoErrorsWhenProcessingPmDictionaryYamlWithMissingFieldAndIncorrectValue()
             throws YamlProcessingException {
-        // given
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFile();
         YamlSchema schema = new YamlSchemaFactory().createTreeStructuredYamlSchema(documents.get(0));
         YamlDocument document = documents.get(YAML_DOCUMENT_WITH_MISSING_FIELD_AND_WRONG_VALUE_INDEX);
 
-        // when
         List<SchemaValidationError> errors = new YamlValidationProcess(schema, document).validate();
 
-        // then
         assertThat(errors).hasSize(2);
     }
 
     @Test
     void shouldThrowExceptionWhenProcessingPmDictionaryIsNotValidYaml()
             throws YamlProcessingException {
-        // given
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFile();
         YamlDocument schemaInYaml = YamlLoadingUtils.loadSimpleInvalidYamlSchemaForLazyLoadingFile();
         YamlSchema schema = new YamlSchemaFactory().createTreeStructuredYamlSchema(schemaInYaml);
         YamlDocument document = documents.get(VALID_YAML_DOCUMENT_INDEX);
 
-        // when then
-        assertThatThrownBy(() -> new YamlValidationProcess(schema, document).validate())
+        Throwable ex = catchThrowable(() -> new YamlValidationProcess(schema, document).validate());
+
+        assertThat(ex)
                 .isInstanceOf(YamlProcessingException.class)
-                .hasMessageContaining(String.format("Lazy loading failed, due to yaml parsing exception."));
+                .hasMessageContaining("Lazy loading failed, due to yaml parsing exception.");
     }
 }
