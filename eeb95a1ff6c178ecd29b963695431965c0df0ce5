@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b0566948_5c176f81",
+        "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/yaml/model/YamlDocumentFactoryTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-11-24T14:11:30Z",
+      "side": 1,
+      "message": "Some given/when/then where removed from tests, although not all of them. Please, make it consistent and remove all or add missing ones.",
+      "range": {
+        "startLine": 80,
+        "startChar": 8,
+        "endLine": 80,
+        "endChar": 16
+      },
+      "revId": "eeb95a1ff6c178ecd29b963695431965c0df0ce5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
