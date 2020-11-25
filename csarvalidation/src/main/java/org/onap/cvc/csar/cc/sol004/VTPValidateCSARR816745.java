@@ -19,7 +19,7 @@ package org.onap.cvc.csar.cc.sol004;
 import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.onap.cvc.csar.CSARArchive;
 import org.onap.cvc.csar.cc.VTPValidateCSARBase;
-import org.onap.validation.yaml.YamlFileValidator;
+import org.onap.validation.yaml.YamlContentValidator;
 import org.onap.validation.yaml.error.YamlDocumentValidationError;
 import org.onap.validation.yaml.exception.YamlProcessingException;
 import org.slf4j.Logger;
@@ -97,7 +97,7 @@ public class VTPValidateCSARR816745 extends VTPValidateCSARBase {
     private void validateYamlFile(String rootPath, String artifactPath) {
         try {
             List<YamlDocumentValidationError> validationErrors =
-                new YamlFileValidator().validateYamlFileWithSchema(rootPath+artifactPath);
+                new YamlContentValidator().validate(rootPath+artifactPath);
             addAllErrorsReportedByVaidator(artifactPath, validationErrors);
         } catch (YamlProcessingException | YAMLException e) {
             LOGGER.error("Failed to load PM_Dictionary file.", e);

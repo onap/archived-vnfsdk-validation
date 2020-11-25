@@ -33,7 +33,7 @@ class YamlDocumentFactoryTest {
     @Test
     void shouldTurnMapOfUnknownKeyTypeToMapWithStringKeysAndBeAbleToReturnStringifyValues()
             throws YamlDocumentParsingException {
-        //given
+        // given
         List<String> testList = List.of("element1", "element11");
         Map<Object, Object> testEmptyMap = Collections.emptyMap();
         Map<Object, Object> inputMap = Map.of(
@@ -42,17 +42,17 @@ class YamlDocumentFactoryTest {
                 "test2", "element3",
                 2.67, testEmptyMap);
 
-        //when
+        // when
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(inputMap);
 
-        //then
+        // then
         assertYamlDocument(document, inputMap);
     }
 
     @Test
     void shouldTurnMapOfUnknownKeyTypeToMapWithStringKeysAndBeAbleToExtractSubStructure()
             throws YamlDocumentParsingException {
-        //given
+        // given
         Map<Object, Object> subStructureMap = Map.of(
                 "subTest1", "subElement1",
                 "subTest2", "subElement2");
@@ -60,55 +60,55 @@ class YamlDocumentFactoryTest {
                 "test", "element1",
                 "structure", subStructureMap);
 
-        //when
+        // when
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(inputMap);
 
-        //then
+        // then
         assertYamlDocument(document, inputMap);
     }
 
     @Test
     void shouldTurnMapOfUnknownKeyTypeToMapWithStringKeysAndBeAbleToExtractParametersList()
             throws YamlDocumentParsingException {
-        //given
+        // given
         List<String> parametersList = List.of("parameter1", "parameter2");
         Map<Object, Object> inputMap = Map.of(
                 "test", "element1",
                 "parameters", parametersList);
 
-        //when
+        // when
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(inputMap);
 
-        //then
+        // then
         assertYamlDocument(document, inputMap);
     }
 
     @Test
     void shouldThrowExceptionIfGetSubStructureIsCalledOnList()
             throws YamlDocumentParsingException {
-        //given
+        // given
         List<String> testList = List.of("element1", "element2");
         Map<Object, Object> inputMap = Collections.singletonMap("test", testList);
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(inputMap);
 
-        //when
+        // when
         Throwable ex = catchThrowable(() -> document.getSubStructure("test"));
 
-        //then
+        // then
         assertYamlDocumentParsingException(ex, testList);
     }
 
     @Test
     void shouldThrowExceptionIfGetSubStructureIsCalledOnString()
             throws YamlDocumentParsingException {
-        //given
+        // given
         Map<Object, Object> inputMap = Collections.singletonMap("test", "testElement");
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(inputMap);
 
-        //when
+        // when
         Throwable ex = catchThrowable(() -> document.getSubStructure("test"));
 
-        //then
+        // then
         assertYamlDocumentParsingException(ex, "testElement");
     }
 

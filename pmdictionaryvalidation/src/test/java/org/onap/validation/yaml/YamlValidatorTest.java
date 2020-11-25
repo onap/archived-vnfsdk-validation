@@ -38,34 +38,34 @@ class YamlValidatorTest {
     @Test
     void shouldCreateValidatorUsingSchemaLoadedFromYamlFileAndValidatedJsonStyleDocumentsFromThatFile()
             throws YamlProcessingException {
-        //given
+        // given
         List<YamlDocument> documents = YamlLoadingUtils.loadValidJsonStyleMultiDocumentYamlFile();
         YamlValidator validator = new YamlValidator(new YamlSchemaFactory().createTreeStructuredYamlSchema(documents.get(0)));
         Map<Integer, List<SchemaValidationError>> validationErrors = new HashMap<>();
 
-        //when
+        // when
         for (int documentIndex = 1; documentIndex < documents.size(); documentIndex++) {
             validationErrors.put(documentIndex, validator.validate(documents.get(documentIndex)));
         }
 
-        //then
+        // then
         assertValidatorReturnedCorrectErrors(validationErrors);
     }
 
     @Test
     void shouldCreateValidatorUsingSchemaLoadedFromYamlFileAndValidatedDocumentsFromThatFile()
             throws YamlProcessingException {
-        //given
+        // given
         List<YamlDocument> documents = YamlLoadingUtils.loadValidMultiDocumentYamlFile();
         YamlValidator validator = new YamlValidator(new YamlSchemaFactory().createTreeStructuredYamlSchema(documents.get(0)));
         Map<Integer, List<SchemaValidationError>> validationErrors = new HashMap<>();
 
-        //when
+        // when
         for (int documentIndex = 1; documentIndex < documents.size(); documentIndex++) {
             validationErrors.put(documentIndex, validator.validate(documents.get(documentIndex)));
         }
 
-        //then
+        // then
         assertValidatorReturnedCorrectErrors(validationErrors);
     }
 

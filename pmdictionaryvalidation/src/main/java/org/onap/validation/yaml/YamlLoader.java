@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -33,29 +34,49 @@ import java.util.List;
 
 class YamlLoader {
 
-    private static final Logger LOGGER =  LoggerFactory.getLogger(YamlLoader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(YamlLoader.class);
+    private final YamlDocumentFactory documentFactory;
+
+    YamlLoader(YamlDocumentFactory documentFactory) {
+        this.documentFactory = documentFactory;
+    }
+
+    List<YamlDocument> loadMultiDocumentYaml(byte[] yamlWithSchema)
+            throws YamlDocumentFactory.YamlDocumentParsingException {
+        List<YamlDocument> documents = new ArrayList<>();
+        try (InputStream yamlStream = new ByteArrayInputStream(yamlWithSchema)) {
+            documents.addAll(loadMultiDocumentYaml(yamlStream));
+        } catch (IOException e) {
+            LOGGER.error("Failed to load multi document YAML", e);
+        }
+        return documents;
+    }
 
     List<YamlDocument> loadMultiDocumentYamlFile(URL path)
-        throws YamlDocumentFactory.YamlDocumentParsingException {
-        List<YamlDocument> documentsFromFile = new ArrayList<>();
+            throws YamlDocumentFactory.YamlDocumentParsingException {
+        List<YamlDocument> documents = new ArrayList<>();
         try (InputStream yamlStream = path.openStream()) {
-            for (Object yamlDocument : new Yaml().loadAll(yamlStream)) {
-                documentsFromFile.add(
-                    new YamlDocumentFactory().createYamlDocument(yamlDocument)
-                );
-            }
+            documents.addAll(loadMultiDocumentYaml(yamlStream));
         } catch (IOException e) {
-            LOGGER.error("Failed to load multi document YAML file",e);
+            LOGGER.error("Failed to load multi document YAML file", e);
         }
-        return documentsFromFile;
+        return documents;
     }
 
     List<YamlDocument> loadMultiDocumentYamlFile(String path)
-        throws YamlProcessingException {
+            throws YamlProcessingException {
         try {
             return loadMultiDocumentYamlFile(new URL("file://" + path));
         } catch (MalformedURLException e) {
             throw new YamlProcessingException("Fail to read file under given path.", e);
         }
+    }
+
+    private List<YamlDocument> loadMultiDocumentYaml(InputStream yamlStream) throws YamlDocumentFactory.YamlDocumentParsingException {
+        List<YamlDocument> documents = new ArrayList<>();
+        for (Object yamlDocument : new Yaml().loadAll(yamlStream)) {
+            documents.add(documentFactory.createYamlDocument(yamlDocument));
+        }
+        return documents;
     }
 }

@@ -38,16 +38,16 @@ public class YamlSchemaNodeFactoryTest {
     @Test
     void shouldThrowExceptionDuringLazyLoadingWhenLoadedSchemaHaveInvalidSubStructure()
             throws YamlProcessingException {
-        //given
+        // given
         String nodeName = "pmMetaData";
         YamlDocument document = YamlLoadingUtils.loadSimpleInvalidYamlSchemaForLazyLoadingFile();
         YamlSchemaNode node = new YamlSchemaNodeFactory()
                 .createNode(nodeName, ROOT_PATH, document.getSubStructure(nodeName));
 
-        //when
+        // when
         Throwable ex = catchThrowable(node::getNextNodes);
 
-        //then
+        // then
         assertThat(ex)
                 .isInstanceOf(YamlSchemaNode.YamlSchemaProcessingException.class)
                 .hasMessageContaining("Lazy loading failed, due to yaml parsing exception.");
@@ -56,49 +56,50 @@ public class YamlSchemaNodeFactoryTest {
     @Test
     void shouldCreateLeafNodeIfGivenYamlDocumentHaveNoSubStructure()
             throws YamlProcessingException {
-        //given
+        // given
         String nodeName = "leaf_test";
         String comment = "test leaf node";
         List<String> acceptedValues = List.of("val1", "val2");
-        Map<Object, Object> nodeInYamlFormat = new HashMap<>();
-        nodeInYamlFormat.put(YamlSchemaNodeFactory.PRESENCE_KEY, YamlSchemaNodeFactory.PRESENCE_REQUIRED_KEY);
-        nodeInYamlFormat.put(YamlSchemaNodeFactory.COMMENT_KEY, comment);
-        nodeInYamlFormat.put(YamlSchemaNodeFactory.VALUE_KET, acceptedValues);
+        Map<Object, Object> nodeInYamlFormat = Map.of(
+                YamlSchemaNodeFactory.PRESENCE_KEY, YamlSchemaNodeFactory.PRESENCE_REQUIRED_KEY,
+                YamlSchemaNodeFactory.COMMENT_KEY, comment,
+                YamlSchemaNodeFactory.VALUE_KET, acceptedValues);
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(nodeInYamlFormat);
 
-        //when
+        // when
         YamlSchemaNode yamlSchemaNode = new YamlSchemaNodeFactory().createNode(nodeName, ROOT_PATH, document);
 
-        //then
+        // then
         assertThatLeafNodeIsValid(
                 yamlSchemaNode, nodeName, ROOT_PATH, true, comment,
-                acceptedValues.toArray(new String[acceptedValues.size()])
+                acceptedValues.toArray(new String[0])
         );
     }
 
     @Test
     void shouldCreateBranchNodeIfGivenYamlDocumentHaveSubStructure()
             throws YamlProcessingException {
-        //given
+        // given
         String nodeName = "branch_test";
         String comment = "test branch node";
 
-        Map<Object, Object> subStructure = new HashMap<>();
         String subNode1Name = "branch_test_node1";
         String subNode2Name = "branch_test_node2";
-        subStructure.put(subNode1Name, new HashMap<>());
-        subStructure.put(subNode2Name, new HashMap<>());
 
-        Map<Object, Object> nodeInYamlFormat = new HashMap<>();
-        nodeInYamlFormat.put(YamlSchemaNodeFactory.PRESENCE_KEY, YamlSchemaNodeFactory.PRESENCE_REQUIRED_KEY);
-        nodeInYamlFormat.put(YamlSchemaNodeFactory.COMMENT_KEY, comment);
-        nodeInYamlFormat.put(YamlSchemaNodeFactory.STRUCTURE_KEY, subStructure);
+        Map<Object, Object> subStructure = Map.of(
+                subNode1Name, new HashMap<>(),
+                subNode2Name, new HashMap<>());
+
+        Map<Object, Object> nodeInYamlFormat = Map.of(
+                YamlSchemaNodeFactory.PRESENCE_KEY, YamlSchemaNodeFactory.PRESENCE_REQUIRED_KEY,
+                YamlSchemaNodeFactory.COMMENT_KEY, comment,
+                YamlSchemaNodeFactory.STRUCTURE_KEY, subStructure);
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(nodeInYamlFormat);
 
-        //when
+        // when
         YamlSchemaNode yamlSchemaNode = new YamlSchemaNodeFactory().createNode(nodeName, ROOT_PATH, document);
 
-        //then
+        // then
         assertThatBranchNodeIsValid(yamlSchemaNode, nodeName, ROOT_PATH, true, comment, 2);
         List<YamlSchemaNode> subNodes = yamlSchemaNode.getNextNodes();
         assertThat(subNodes).hasSize(2);
