@@ -38,16 +38,16 @@ public class YamlSchemaNodeFactoryTest {
     @Test
     void shouldThrowExceptionDuringLazyLoadingWhenLoadedSchemaHaveInvalidSubStructure()
             throws YamlProcessingException {
-        //given
+        // given
         String nodeName = "pmMetaData";
         YamlDocument document = YamlLoadingUtils.loadSimpleInvalidYamlSchemaForLazyLoadingFile();
         YamlSchemaNode node = new YamlSchemaNodeFactory()
                 .createNode(nodeName, ROOT_PATH, document.getSubStructure(nodeName));
 
-        //when
+        // when
         Throwable ex = catchThrowable(node::getNextNodes);
 
-        //then
+        // then
         assertThat(ex)
                 .isInstanceOf(YamlSchemaNode.YamlSchemaProcessingException.class)
                 .hasMessageContaining("Lazy loading failed, due to yaml parsing exception.");
@@ -56,7 +56,7 @@ public class YamlSchemaNodeFactoryTest {
     @Test
     void shouldCreateLeafNodeIfGivenYamlDocumentHaveNoSubStructure()
             throws YamlProcessingException {
-        //given
+        // given
         String nodeName = "leaf_test";
         String comment = "test leaf node";
         List<String> acceptedValues = List.of("val1", "val2");
@@ -66,10 +66,10 @@ public class YamlSchemaNodeFactoryTest {
         nodeInYamlFormat.put(YamlSchemaNodeFactory.VALUE_KET, acceptedValues);
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(nodeInYamlFormat);
 
-        //when
+        // when
         YamlSchemaNode yamlSchemaNode = new YamlSchemaNodeFactory().createNode(nodeName, ROOT_PATH, document);
 
-        //then
+        // then
         assertThatLeafNodeIsValid(
                 yamlSchemaNode, nodeName, ROOT_PATH, true, comment,
                 acceptedValues.toArray(new String[acceptedValues.size()])
@@ -79,7 +79,7 @@ public class YamlSchemaNodeFactoryTest {
     @Test
     void shouldCreateBranchNodeIfGivenYamlDocumentHaveSubStructure()
             throws YamlProcessingException {
-        //given
+        // given
         String nodeName = "branch_test";
         String comment = "test branch node";
 
@@ -95,10 +95,10 @@ public class YamlSchemaNodeFactoryTest {
         nodeInYamlFormat.put(YamlSchemaNodeFactory.STRUCTURE_KEY, subStructure);
         YamlDocument document = new YamlDocumentFactory().createYamlDocument(nodeInYamlFormat);
 
-        //when
+        // when
         YamlSchemaNode yamlSchemaNode = new YamlSchemaNodeFactory().createNode(nodeName, ROOT_PATH, document);
 
-        //then
+        // then
         assertThatBranchNodeIsValid(yamlSchemaNode, nodeName, ROOT_PATH, true, comment, 2);
         List<YamlSchemaNode> subNodes = yamlSchemaNode.getNextNodes();
         assertThat(subNodes).hasSize(2);
