@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "50320103_6a0ba3f5",
+        "filename": "pmdictionaryvalidation/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3435
+      },
+      "writtenOn": "2020-11-25T13:01:12Z",
+      "side": 1,
+      "message": "pathToFile is a path to file which contains schema and documents, it is how pm-dictionary looks like",
+      "parentUuid": "cb3cf72d_d1d1112a",
+      "revId": "52daed11f06cc2c2e213bad7cbbf92a5d799e879",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fd337581_c99fbaae",
         "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlFileValidator.java",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "52daed11f06cc2c2e213bad7cbbf92a5d799e879",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84fbbe38_463d4343",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlFileValidator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3435
+      },
+      "writtenOn": "2020-11-25T13:01:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd337581_c99fbaae",
+      "revId": "52daed11f06cc2c2e213bad7cbbf92a5d799e879",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "4f63e460_dc0bde73",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlLoader.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3435
+      },
+      "writtenOn": "2020-11-25T13:01:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b0e00a5_7de2b521",
+      "revId": "52daed11f06cc2c2e213bad7cbbf92a5d799e879",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a7845def_acf4ba55",
         "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/yaml/YamlFileValidatorTest.java",
         "patchSetId": 2
@@ -67,6 +121,24 @@
       "revId": "52daed11f06cc2c2e213bad7cbbf92a5d799e879",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce5b9d82_666e6cbe",
+        "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/yaml/YamlFileValidatorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3435
+      },
+      "writtenOn": "2020-11-25T13:01:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7845def_acf4ba55",
+      "revId": "52daed11f06cc2c2e213bad7cbbf92a5d799e879",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
