@@ -37,13 +37,13 @@ class YamlSchemaFactoryTest {
     @Test
     void shouldCreateYamlSchemaFromYamlDocumentWithMultipleRoots()
             throws YamlProcessingException {
-        //given
+        // given
         YamlDocument documents = YamlLoadingUtils.loadSimpleValidYamlSchemaWithMultiRootFile();
 
-        //when
+        // when
         YamlSchema schema = new YamlSchemaFactory().createTreeStructuredYamlSchema(documents);
 
-        //then
+        // then
         assertThat(schema).isNotNull();
         assertThat(schema.getRootNodes())
                 .extracting(YamlSchemaNode::getName)
@@ -54,13 +54,13 @@ class YamlSchemaFactoryTest {
     @Test
     void shouldCreateYamlSchemaFromYamlDocument()
             throws YamlProcessingException {
-        //given
+        // given
         YamlDocument documents = YamlLoadingUtils.loadSimpleValidYamlSchemaFile();
 
-        //when
+        // when
         YamlSchema schema = new YamlSchemaFactory().createTreeStructuredYamlSchema(documents);
 
-        //then
+        // then
         assertThat(schema).isNotNull();
         assertThat(schema.getRootNodes()).hasSize(1);
         YamlSchemaNode pmMetaData = schema.getRootNodes().get(0);
@@ -101,10 +101,10 @@ class YamlSchemaFactoryTest {
     @Test
     void shouldThrowYamlParsingExceptionWhenLoadedSchemaIsInvalid()
             throws YamlDocumentParsingException {
-        //given
+        // given
         YamlDocument documents = YamlLoadingUtils.loadSimpleInvalidYamlSchemaFile();
 
-        //when /then
+        // when /then
         assertThatThrownBy(() -> new YamlSchemaFactory().createTreeStructuredYamlSchema(documents))
                 .isInstanceOf(YamlDocumentParsingException.class)
                 .hasMessageContaining(String.format(

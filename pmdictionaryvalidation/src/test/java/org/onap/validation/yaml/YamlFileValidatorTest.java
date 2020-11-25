@@ -14,45 +14,119 @@
  * limitations under the License.
  *
  */
-
 package org.onap.validation.yaml;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.onap.validation.yaml.error.YamlDocumentValidationError;
 import org.onap.validation.yaml.exception.YamlProcessingException;
 import org.yaml.snakeyaml.parser.ParserException;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.onap.validation.yaml.YamlLoadingUtils.PATH_TO_MULTI_DOCUMENT_INVALID_YAML;
+import static org.onap.validation.yaml.YamlLoadingUtils.PATH_TO_VALID_JSON_STYLE_YAML;
+import static org.onap.validation.yaml.YamlLoadingUtils.PATH_TO_VALID_YAML;
+import static org.onap.validation.yaml.YamlLoadingUtils.readFile;
 
 class YamlFileValidatorTest {
+    @Nested
+    class FromStringPathValidator {
+        @Test
+        void shouldReturnCorrectErrorsWhenGivenPathToValidPmDictionaryFile() throws YamlProcessingException {
+            // given
+            String path = getFullPathForGivenResources(PATH_TO_VALID_YAML);
 
-    @Test
-    void shouldReturnCorrectErrorsWhenGivenPathToValidPmDictionaryFile() throws YamlProcessingException {
-        //given
-        String path = getFullPathForGivenResources(YamlLoadingUtils.PATH_TO_VALID_YAML);
+            // when
+            List<YamlDocumentValidationError> validationErrors = new YamlFileValidator().validateYamlFileWithSchema(path);
 
-        //when
-        List<YamlDocumentValidationError> validationErrors = new YamlFileValidator().validateYamlFileWithSchema(path);
+            // then
+            assertValidationReturnedExpectedErrors(validationErrors);
+        }
 
-        //then
-        assertValidationReturnedExpectedErrors(validationErrors);
+        @Test
+        void shouldReturnCorrectErrorsWhenGivenPathToValidJsonStylePmDictionaryFile() throws YamlProcessingException {
+            // given
+            String path = getFullPathForGivenResources(PATH_TO_VALID_JSON_STYLE_YAML);
+
+            // when
+            List<YamlDocumentValidationError> validationErrors = new YamlFileValidator().validateYamlFileWithSchema(path);
+
+            // then
+            assertValidationReturnedExpectedErrors(validationErrors);
+        }
+
+        @Test
+        void shouldThrowErrorWhenGivenPathToInvalidPmDictionaryFile() {
+            // given
+            String path = getFullPathForGivenResources(PATH_TO_MULTI_DOCUMENT_INVALID_YAML);
+
+            // when /then
+            assertThatThrownBy(() -> new YamlFileValidator().validateYamlFileWithSchema(path))
+                    .isInstanceOf(ParserException.class)
+                    .hasMessageContaining("expected the node content, but found '<document end>'");
+        }
+
+        @Test
+        void shouldThrowErrorWhenGivenInvalidPath() {
+            // given
+            String path = "invalid/path/to/pm_dictionary";
+
+            // when /then
+            assertThatThrownBy(() -> new YamlFileValidator().validateYamlFileWithSchema(path))
+                    .isInstanceOf(YamlProcessingException.class)
+                    .hasMessageContaining("PM_Dictionary YAML file is empty");
+        }
     }
 
-    @Test
-    void shouldReturnCorrectErrorsWhenGivenPathToValidJsonStylePmDictionaryFile() throws YamlProcessingException {
-        //given
-        String path = getFullPathForGivenResources(YamlLoadingUtils.PATH_TO_VALID_JSON_STYLE_YAML);
+    @Nested
+    class FromByteArrayValidator {
+        @Test
+        void shouldReturnCorrectErrorsWhenGivenPmDictionaryFileWithErrors() throws YamlProcessingException, IOException {
+            // given
+            byte[] yaml = readFile(PATH_TO_VALID_YAML);
 
-        //when
-        List<YamlDocumentValidationError> validationErrors = new YamlFileValidator().validateYamlFileWithSchema(path);
+            // when
+            List<YamlDocumentValidationError> validationErrors = new YamlFileValidator().validateYamlFileWithSchema(yaml);
 
-        //then
-        assertValidationReturnedExpectedErrors(validationErrors);
+            // then
+            assertValidationReturnedExpectedErrors(validationErrors);
+        }
+
+        @Test
+        void shouldReturnCorrectErrorsWhenGivenValidJsonStylePmDictionary() throws YamlProcessingException, IOException {
+            // given
+            byte[] yaml = readFile(PATH_TO_VALID_JSON_STYLE_YAML);
+
+            // when
+            List<YamlDocumentValidationError> validationErrors = new YamlFileValidator().validateYamlFileWithSchema(yaml);
+
+            // then
+            assertValidationReturnedExpectedErrors(validationErrors);
+        }
+
+        @Test
+        void shouldThrowErrorWhenGivenInvalidPmDictionary() throws IOException {
+            // given
+            byte[] yaml = readFile(PATH_TO_MULTI_DOCUMENT_INVALID_YAML);
+
+            // when /then
+            assertThatThrownBy(() -> new YamlFileValidator().validateYamlFileWithSchema(yaml))
+                    .isInstanceOf(ParserException.class)
+                    .hasMessageContaining("expected the node content, but found '<document end>'");
+        }
+
+        @Test
+        void shouldThrowErrorWhenGivenEmptyPmDictionary() {
+            // when /then
+            assertThatThrownBy(() -> new YamlFileValidator().validateYamlFileWithSchema(new byte[0]))
+                    .isInstanceOf(YamlProcessingException.class)
+                    .hasMessageContaining("PM_Dictionary YAML file is empty");
+        }
     }
-
 
     private void assertValidationReturnedExpectedErrors(List<YamlDocumentValidationError> validationErrors) {
         assertThat(validationErrors)
@@ -79,34 +153,6 @@ class YamlFileValidatorTest {
                                                 "  accepted value(s):  [X, Y, Z]")
                         )
                 );
-    }
-
-    @Test
-    void shouldThrowErrorWhenGivenPathToInvalidPmDictionaryFile() {
-        //given
-        String path = getFullPathForGivenResources(YamlLoadingUtils.PATH_TO_MULTI_DOCUMENT_INVALID_YAML);
-
-        //when
-        Throwable ex = catchThrowable(() -> new YamlFileValidator().validateYamlFileWithSchema(path));
-
-        //then
-        assertThat(ex)
-                .isInstanceOf(ParserException.class)
-                .hasMessageContaining("expected the node content, but found '<document end>'");
-    }
-
-    @Test
-    void shouldThrowErrorWhenGivenInvalidPath() {
-        //given
-        String path = "invalid/path/to/pm_dictionary";
-
-        //when
-        Throwable ex = catchThrowable(() -> new YamlFileValidator().validateYamlFileWithSchema(path));
-
-        //then
-        assertThat(ex)
-                .isInstanceOf(YamlProcessingException.class)
-                .hasMessageContaining("PM_Dictionary YAML file is empty");
     }
 
     private String getFullPathForGivenResources(String pathToValidYaml) {

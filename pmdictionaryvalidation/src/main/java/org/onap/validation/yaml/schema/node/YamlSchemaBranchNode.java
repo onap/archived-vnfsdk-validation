@@ -29,13 +29,12 @@ import java.util.Optional;
 public class YamlSchemaBranchNode extends YamlSchemaNode {
 
     private final YamlDocument nextNodesInLazyForm;
-    private Optional<List<YamlSchemaNode>> nextNodes;
+    private List<YamlSchemaNode> nextNodes = Collections.emptyList();
 
     YamlSchemaBranchNode(String name, String path, boolean required, String comment,
                          YamlDocument nextNodesInLazyForm) {
         super(name, path, required, comment);
         this.nextNodesInLazyForm = nextNodesInLazyForm;
-        this.nextNodes = Optional.empty();
     }
 
     @Override
@@ -51,7 +50,7 @@ public class YamlSchemaBranchNode extends YamlSchemaNode {
     @Override
     public synchronized List<YamlSchemaNode> getNextNodes() throws YamlSchemaProcessingException {
         try {
-            return nextNodes.orElseGet(this::loadNextNodes);
+            return nextNodes.isEmpty() ? this.loadNextNodes() : nextNodes;
         } catch (YamlSchemaLazyLoadingException lazyLoadingException) {
             throw new YamlSchemaProcessingException(lazyLoadingException);
         }
@@ -65,7 +64,7 @@ public class YamlSchemaBranchNode extends YamlSchemaNode {
                     .createYamlDocument(nextNodesInLazyForm.getYaml().get(key));
                 loadedNextNodes.add(new YamlSchemaNodeFactory().createNode(key, getPath() + getName() + "/", substructure));
             }
-            nextNodes = Optional.of(loadedNextNodes);
+            nextNodes = loadedNextNodes;
             return loadedNextNodes;
         } catch (YamlProcessingException e) {
             throw new YamlSchemaLazyLoadingException("Lazy loading failed, due to yaml parsing exception.",e);
