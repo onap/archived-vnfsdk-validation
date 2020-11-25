@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb3cf72d_d1d1112a",
+        "filename": "pmdictionaryvalidation/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-11-25T12:30:42Z",
+      "side": 1,
+      "message": "pathToFile is a path to file which should be validated or to schema?",
+      "revId": "52daed11f06cc2c2e213bad7cbbf92a5d799e879",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd337581_c99fbaae",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlFileValidator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-11-25T12:30:42Z",
+      "side": 1,
+      "message": "pls remove code duplication. Extract common part and reuse it in both methods\nAlso there is some inconsistency. In first method there is used pathToFile and in this method yamlWithSchema.",
+      "revId": "52daed11f06cc2c2e213bad7cbbf92a5d799e879",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b0e00a5_7de2b521",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlLoader.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-11-25T12:30:42Z",
+      "side": 1,
+      "message": "this a code duplication of below method.\n1. pls extract common part and reuse it.\n2. Move new YamlDocumentFactory() to class field and reuse it in both methods.",
+      "revId": "52daed11f06cc2c2e213bad7cbbf92a5d799e879",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7845def_acf4ba55",
+        "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/yaml/YamlFileValidatorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-11-25T12:30:42Z",
+      "side": 1,
+      "message": "it should be a space between // and given ... other markers also should be fixed",
+      "revId": "52daed11f06cc2c2e213bad7cbbf92a5d799e879",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
