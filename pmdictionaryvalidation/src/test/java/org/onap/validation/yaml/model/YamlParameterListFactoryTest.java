@@ -28,47 +28,47 @@ class YamlParameterListFactoryTest {
 
     @Test
     void shouldCreateEmptyParametersList() {
-        //when
+        // when
         YamlParametersList parametersList = new YamlParameterListFactory().createEmptyYamlParameterList();
 
-        //then
+        // then
         assertThat(parametersList).isNotNull();
         assertThat(parametersList.getParameters()).isEmpty();
     }
 
     @Test
     void shouldCreateParametersListContainingStringsFromListContainingSimpleTypes() {
-        //given
+        // given
         List<Object> testList = List.of("test1", 3, 23.45, 'a', "test2");
 
-        //when
+        // when
         YamlParametersList parametersList = new YamlParameterListFactory().createYamlParameterList(testList);
 
-        //then
+        // then
         assertYamlParametersList(parametersList, testList);
     }
 
     @Test
     void shouldCreateParametersListContainingStringsFromListContainingVariousTypes() {
-        //given
+        // given
         List<Object> testList = List.of("test1", 3, List.of(2, 3, 4), "test2");
 
-        //when
+        // when
         YamlParametersList parametersList = new YamlParameterListFactory().createYamlParameterList(testList);
 
-        //then
+        // then
         assertYamlParametersList(parametersList, testList);
     }
 
     @Test
     void shouldCreateListWithOneStringWhenGivenObjectIsNotList() {
-        //given
+        // given
         Object testObject = "test";
 
-        //when
+        // when
         YamlParametersList parametersList = new YamlParameterListFactory().createYamlParameterList(testObject);
 
-        //then
+        // then
         assertYamlParametersList(parametersList, Collections.singletonList(testObject));
     }
 

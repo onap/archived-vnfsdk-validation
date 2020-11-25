@@ -108,3 +108,5 @@ All notable changes to this project will be documented in this file.
 ## Move
 - Extract pm-dictionary validation to separate module
     - https://jira.onap.org/browse/VNFSDK-713
+-  Added possibility to validation pm-dictionary from byte array
+    - https://jira.onap.org/browse/VNFSDK-713   
