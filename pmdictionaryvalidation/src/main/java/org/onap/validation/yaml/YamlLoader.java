@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -33,25 +34,38 @@ import java.util.List;
 
 class YamlLoader {
 
-    private static final Logger LOGGER =  LoggerFactory.getLogger(YamlLoader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(YamlLoader.class);
+
+    List<YamlDocument> loadMultiDocumentYaml(byte[] yamlWithSchema)
+            throws YamlDocumentFactory.YamlDocumentParsingException {
+        List<YamlDocument> documents = new ArrayList<>();
+        try (InputStream yamlStream = new ByteArrayInputStream(yamlWithSchema)) {
+            for (Object yamlDocument : new Yaml().loadAll(yamlStream)) {
+                documents.add(new YamlDocumentFactory().createYamlDocument(yamlDocument));
+            }
+        } catch (IOException e) {
+            LOGGER.error("Failed to load multi document YAML", e);
+        }
+        return documents;
+    }
 
     List<YamlDocument> loadMultiDocumentYamlFile(URL path)
-        throws YamlDocumentFactory.YamlDocumentParsingException {
+            throws YamlDocumentFactory.YamlDocumentParsingException {
         List<YamlDocument> documentsFromFile = new ArrayList<>();
         try (InputStream yamlStream = path.openStream()) {
             for (Object yamlDocument : new Yaml().loadAll(yamlStream)) {
                 documentsFromFile.add(
-                    new YamlDocumentFactory().createYamlDocument(yamlDocument)
+                        new YamlDocumentFactory().createYamlDocument(yamlDocument)
                 );
             }
         } catch (IOException e) {
-            LOGGER.error("Failed to load multi document YAML file",e);
+            LOGGER.error("Failed to load multi document YAML file", e);
         }
         return documentsFromFile;
     }
 
     List<YamlDocument> loadMultiDocumentYamlFile(String path)
-        throws YamlProcessingException {
+            throws YamlProcessingException {
         try {
             return loadMultiDocumentYamlFile(new URL("file://" + path));
         } catch (MalformedURLException e) {
