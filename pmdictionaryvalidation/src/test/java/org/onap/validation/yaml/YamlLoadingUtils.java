@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Nokia
+ *Copyright 2020 Nokia
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,36 @@
  * limitations under the License.
  *
  */
-
 package org.onap.validation.yaml;
 
 import org.onap.validation.yaml.exception.YamlProcessingException;
 import org.onap.validation.yaml.model.YamlDocument;
 
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import static org.onap.validation.yaml.model.YamlDocumentFactory.YamlDocumentParsingException;
 
 public final class YamlLoadingUtils {
-
-    private YamlLoadingUtils() { }
+    private YamlLoadingUtils() {
+    }
 
     public static final int VALID_YAML_DOCUMENT_INDEX = 4;
     public static final int YAML_DOCUMENT_WITH_WRONG_VALUE_IN_ARRAY_INDEX = 3;
     public static final int YAML_DOCUMENT_WITH_MISSING_FIELD_INDEX = 2;
     public static final int YAML_DOCUMENT_WITH_MISSING_FIELD_AND_WRONG_VALUE_INDEX = 1;
-
-    static final String PATH_TO_VALID_YAML = "yaml_schema/PM_Dictionary.yaml";
-    static final String PATH_TO_VALID_JSON_STYLE_YAML = "yaml_schema/PM_Dictionary_JSON_Style.yaml";
-    private static final String PATH_TO_SIMPLE_VALID_SCHEMA = "yaml_schema/Simple_Valid_Schema.yaml";
-    private static final String PATH_TO_SIMPLE_VALID_SCHEMA_MULTI_ROOT = "yaml_schema/Simple_Valid_Schema_Multi_Root.yaml";
-    private static final String PATH_TO_SIMPLE_INVALID_SCHEMA = "yaml_schema/Simple_Invalid_Schema_Construction.yaml";
-    private static final String PATH_TO_SIMPLE_INVALID_SCHEMA_FOR_LAZY_LOADING = "yaml_schema/Simple_Invalid_Schema_LazyLoading.yaml";
-    static final String PATH_TO_MULTI_DOCUMENT_INVALID_YAML = "yaml_schema/Multi_Document_Invalid.yaml";
-    private static final String PATH_TO_INVALID_YAML_WITH_INCORRECT_KEY_MAPPING = "yaml_schema/Simple_Invalid_Mapping_Value.yaml";
-    private static final String PATH_TO_INVALID_YAML_WITH_UNKNOWN_ESCAPE_CHARACTER = "yaml_schema/Simple_Unknown_Escape_Character.yaml";
+    public static final String PATH_TO_VALID_YAML = "yaml_schema/PM_Dictionary.yaml";
+    public static final String PATH_TO_VALID_JSON_STYLE_YAML = "yaml_schema/PM_Dictionary_JSON_Style.yaml";
+    public static final String PATH_TO_SIMPLE_VALID_SCHEMA = "yaml_schema/Simple_Valid_Schema.yaml";
+    public static final String PATH_TO_SIMPLE_VALID_SCHEMA_MULTI_ROOT = "yaml_schema/Simple_Valid_Schema_Multi_Root.yaml";
+    public static final String PATH_TO_SIMPLE_INVALID_SCHEMA = "yaml_schema/Simple_Invalid_Schema_Construction.yaml";
+    public static final String PATH_TO_SIMPLE_INVALID_SCHEMA_FOR_LAZY_LOADING = "yaml_schema/Simple_Invalid_Schema_LazyLoading.yaml";
+    public static final String PATH_TO_MULTI_DOCUMENT_INVALID_YAML = "yaml_schema/Multi_Document_Invalid.yaml";
+    public static final String PATH_TO_INVALID_YAML_WITH_INCORRECT_KEY_MAPPING = "yaml_schema/Simple_Invalid_Mapping_Value.yaml";
+    public static final String PATH_TO_INVALID_YAML_WITH_UNKNOWN_ESCAPE_CHARACTER = "yaml_schema/Simple_Unknown_Escape_Character.yaml";
 
     public static List<YamlDocument> loadValidMultiDocumentYamlFile() throws YamlDocumentParsingException {
         return new YamlLoader().loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_VALID_YAML));
@@ -86,6 +87,11 @@ public final class YamlLoadingUtils {
 
     public static List<YamlDocument> tryToLoadInvalidYamlFileWithUnknownEscapeCharacter() throws YamlDocumentParsingException {
         return new YamlLoader().loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_INVALID_YAML_WITH_UNKNOWN_ESCAPE_CHARACTER));
+    }
+
+    public static byte[] readFile(String path) throws IOException {
+        String file = getUrlForGivenPath(path).getFile();
+        return Files.readAllBytes(Path.of(file));
     }
 
     private static URL getUrlForGivenPath(String path) {

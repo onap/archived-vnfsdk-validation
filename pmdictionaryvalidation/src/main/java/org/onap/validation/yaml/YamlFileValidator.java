@@ -33,18 +33,29 @@ public class YamlFileValidator {
     private static final int FIRST_DOCUMENT_INDEX = 1;
 
     public List<YamlDocumentValidationError> validateYamlFileWithSchema(String pathToFile)
-        throws YamlProcessingException {
+            throws YamlProcessingException {
 
         List<YamlDocument> documents = new YamlLoader().loadMultiDocumentYamlFile(pathToFile);
-        if(!documents.isEmpty()) {
-            return validateDocuments(documents);
-        } else {
+        if (documents.isEmpty()) {
             throw new YamlProcessingException("PM_Dictionary YAML file is empty");
+        } else {
+            return validateDocuments(documents);
+        }
+    }
+
+    public List<YamlDocumentValidationError> validateYamlFileWithSchema(byte[] yamlWithSchema)
+            throws YamlProcessingException {
+
+        List<YamlDocument> documents = new YamlLoader().loadMultiDocumentYaml(yamlWithSchema);
+        if (documents.isEmpty()) {
+            throw new YamlProcessingException("PM_Dictionary YAML is empty");
+        } else {
+            return validateDocuments(documents);
         }
     }
 
     private List<YamlDocumentValidationError> validateDocuments(List<YamlDocument> documents)
-        throws YamlProcessingException {
+            throws YamlProcessingException {
 
         List<YamlDocumentValidationError> yamlFileValidationErrors = new ArrayList<>();
         YamlSchema schema = extractSchema(documents);
@@ -52,7 +63,7 @@ public class YamlFileValidator {
 
         for (int index = FIRST_DOCUMENT_INDEX; index < documents.size(); index++) {
             List<SchemaValidationError> validationErrors = validator.validate(documents.get(index));
-            yamlFileValidationErrors.addAll(transformErrors(index,validationErrors));
+            yamlFileValidationErrors.addAll(transformErrors(index, validationErrors));
         }
 
         return yamlFileValidationErrors;
@@ -60,9 +71,9 @@ public class YamlFileValidator {
 
     private List<YamlDocumentValidationError> transformErrors(int index, List<SchemaValidationError> validationErrors) {
         return validationErrors
-            .stream()
-            .map(error->new YamlDocumentValidationError(index, error.getPath(), error.getMessage()))
-            .collect(Collectors.toList());
+                .stream()
+                .map(error -> new YamlDocumentValidationError(index, error.getPath(), error.getMessage()))
+                .collect(Collectors.toList());
     }
 
     private YamlSchema extractSchema(List<YamlDocument> documents) throws YamlProcessingException {
