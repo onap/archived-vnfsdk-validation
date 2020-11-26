@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "34a23c1e_6266160d",
+        "filename": "pmdictionaryvalidation/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-11-26T06:24:39Z",
+      "side": 1,
+      "message": "method name is wrong. Where do you set a schema?",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95bd8915_5139f466",
+        "filename": "pmdictionaryvalidation/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-11-26T06:24:39Z",
+      "side": 1,
+      "message": "the same problem as above",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3e9e476_5c12bfa4",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-11-26T06:24:39Z",
+      "side": 1,
+      "message": "still this is a duplication of below method. Pls fix it.",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
