@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "289cb3aa_abf572ef",
+        "filename": "csarvalidation/python/generate_active_validation_rules_table.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-11-26T06:30:04Z",
+      "side": 1,
+      "message": "pls add file header about license",
+      "revId": "453b684db2581e5c81e61bb0f47ec81fc15bc1e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb52ca85_35d86011",
+        "filename": "csarvalidation/python/validation/rules/ActiveRulesTableGenerator.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-11-26T06:30:04Z",
+      "side": 1,
+      "message": "add file header",
+      "revId": "453b684db2581e5c81e61bb0f47ec81fc15bc1e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56d50fd6_ec6e1ffd",
+        "filename": "csarvalidation/python/validation/rules/ActiveRulesTableGenerator.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-11-26T06:30:04Z",
+      "side": 1,
+      "message": "too big responsibility of class.\nThis class should be responsible for table generation, not for file read, write or folder creation.\nPls move read and write logic to separate class and reuse it.",
+      "revId": "453b684db2581e5c81e61bb0f47ec81fc15bc1e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "abdda64f_a2005a9b",
+        "filename": "csarvalidation/python/validation/rules/ActiveRulesTableGenerator.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-11-26T06:30:04Z",
+      "side": 1,
+      "message": "extract magic numbers to descriptive statics",
+      "revId": "453b684db2581e5c81e61bb0f47ec81fc15bc1e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
