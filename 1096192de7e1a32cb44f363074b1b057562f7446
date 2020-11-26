@@ -95,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "6ffb251f_28fb62a5",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlFileValidator.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3435
+      },
+      "writtenOn": "2020-11-26T13:31:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "433484cc_4a0581ab",
+      "range": {
+        "startLine": 50,
+        "startChar": 11,
+        "endLine": 50,
+        "endChar": 32
+      },
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "91d2589e_7e79567b",
         "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlLoader.java",
         "patchSetId": 4
@@ -179,6 +203,24 @@
       "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8daf723a_d717024d",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3435
+      },
+      "writtenOn": "2020-11-26T13:31:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6ac67764_cd73c35f",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -371,6 +413,24 @@
       "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2af48088_868df77b",
+        "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactoryTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3435
+      },
+      "writtenOn": "2020-11-26T13:31:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "059018b2_845f27e1",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {

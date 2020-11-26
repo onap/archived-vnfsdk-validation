@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "c8aebf02_ade405a1",
+        "filename": "pmdictionaryvalidation/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 3435
+      },
+      "writtenOn": "2020-11-26T13:31:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50320103_6a0ba3f5",
+      "revId": "52daed11f06cc2c2e213bad7cbbf92a5d799e879",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fd337581_c99fbaae",
         "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlFileValidator.java",
         "patchSetId": 2
