@@ -59,6 +59,23 @@
     },
     {
       "key": {
+        "uuid": "91d2589e_7e79567b",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 3771
+      },
+      "writtenOn": "2020-11-26T10:55:45Z",
+      "side": 1,
+      "message": "public can be removed, because class is package-private",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f3e9e476_5c12bfa4",
         "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlLoader.java",
         "patchSetId": 4
@@ -70,6 +87,142 @@
       "writtenOn": "2020-11-26T06:24:39Z",
       "side": 1,
       "message": "still this is a duplication of below method. Pls fix it.",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ac67764_cd73c35f",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/YamlLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3771
+      },
+      "writtenOn": "2020-11-26T10:55:45Z",
+      "side": 1,
+      "message": "I think that we could merge this method and loadMultiDocumentYamlFile(String path) and enforce clients to use String. Because as i see this method is used only in one place(YamlLoader::loadMultiDocumentYamlFile) and client creates URI just to match this method, so after merge it could just pass path as string",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5517353_99512f7d",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/yaml/schema/node/YamlSchemaBranchNode.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 3771
+      },
+      "writtenOn": "2020-11-26T10:55:45Z",
+      "side": 1,
+      "message": "Please remove unused import",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22deb851_09e7686b",
+        "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/yaml/YamlFileValidatorTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 3771
+      },
+      "writtenOn": "2020-11-26T10:55:45Z",
+      "side": 1,
+      "message": "Please change all occurrences of \"// when /then\" to \"// when then\"",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3dfa7bec_8ec15049",
+        "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/yaml/schema/YamlSchemaFactoryTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 3771
+      },
+      "writtenOn": "2020-11-26T10:55:45Z",
+      "side": 1,
+      "message": "please remove \u0027/\u0027 before \u0027then\u0027",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "94659452_eb17a848",
+        "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactoryTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 3771
+      },
+      "writtenOn": "2020-11-26T10:55:45Z",
+      "side": 1,
+      "message": "Please use Map.of() to create and init map",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccac01c8_f786228b",
+        "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactoryTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3771
+      },
+      "writtenOn": "2020-11-26T10:55:45Z",
+      "side": 1,
+      "message": "can be changed acceptedValues.toArray(new String[0])",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "059018b2_845f27e1",
+        "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactoryTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 3771
+      },
+      "writtenOn": "2020-11-26T10:55:45Z",
+      "side": 1,
+      "message": "Please try to make \u0027given\u0027 section more readable, by method extracting",
+      "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc9f54f5_2eacc97f",
+        "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/yaml/schema/node/YamlSchemaNodeFactoryTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 3771
+      },
+      "writtenOn": "2020-11-26T10:55:45Z",
+      "side": 1,
+      "message": "Please use Map.of() to create and init map",
       "revId": "1096192de7e1a32cb44f363074b1b057562f7446",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
