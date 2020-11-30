@@ -14,7 +14,7 @@
   <parent>
     <groupId>org.onap.vnfsdk.validation</groupId>
     <artifactId>validation</artifactId>
-    <version>1.2.15-SNAPSHOT</version>
+    <version>1.2.15</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>validation-csar</artifactId>
