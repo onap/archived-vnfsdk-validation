@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a4955eb9_cb6e86fc",
+        "filename": "csarvalidation/python/generate_active_validation_rules_table.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-01T07:41:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "289cb3aa_abf572ef",
+      "revId": "453b684db2581e5c81e61bb0f47ec81fc15bc1e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cb52ca85_35d86011",
         "filename": "csarvalidation/python/validation/rules/ActiveRulesTableGenerator.py",
         "patchSetId": 6
@@ -33,6 +51,24 @@
       "revId": "453b684db2581e5c81e61bb0f47ec81fc15bc1e9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74e47b7d_101bbf29",
+        "filename": "csarvalidation/python/validation/rules/ActiveRulesTableGenerator.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-01T07:41:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb52ca85_35d86011",
+      "revId": "453b684db2581e5c81e61bb0f47ec81fc15bc1e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "310a44c1_e2cd8fe1",
+        "filename": "csarvalidation/python/validation/rules/ActiveRulesTableGenerator.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-01T07:41:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56d50fd6_ec6e1ffd",
+      "revId": "453b684db2581e5c81e61bb0f47ec81fc15bc1e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "abdda64f_a2005a9b",
         "filename": "csarvalidation/python/validation/rules/ActiveRulesTableGenerator.py",
         "patchSetId": 6
@@ -67,6 +121,24 @@
       "revId": "453b684db2581e5c81e61bb0f47ec81fc15bc1e9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "827edeb9_080497bd",
+        "filename": "csarvalidation/python/validation/rules/ActiveRulesTableGenerator.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-01T07:41:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abdda64f_a2005a9b",
+      "revId": "453b684db2581e5c81e61bb0f47ec81fc15bc1e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
