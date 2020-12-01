@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5a4c0a16_e0b42ee8",
+        "filename": "csarvalidation/python/main/validation/rules/ActiveRulesTableGenerator.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-01T11:02:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54182a37_57f1e2c6",
+      "revId": "0f671bd4d1424fc25063ee465a674f1594ec967e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "18e20fcc_31f2c2a1",
         "filename": "csarvalidation/python/main/validation/rules/ActiveRulesTableGenerator.py",
         "patchSetId": 7
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "dfc54d73_00b75d45",
+        "filename": "csarvalidation/python/main/validation/rules/ActiveRulesTableGenerator.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-01T11:02:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18e20fcc_31f2c2a1",
+      "revId": "0f671bd4d1424fc25063ee465a674f1594ec967e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ed6a56c1_b6c1a81e",
         "filename": "csarvalidation/python/main/validation/rules/providers/RulesDescriptionsProvider.py",
         "patchSetId": 7
@@ -50,6 +86,24 @@
       "revId": "0f671bd4d1424fc25063ee465a674f1594ec967e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c117975_d46afa01",
+        "filename": "csarvalidation/python/main/validation/rules/providers/RulesDescriptionsProvider.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-01T11:02:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed6a56c1_b6c1a81e",
+      "revId": "0f671bd4d1424fc25063ee465a674f1594ec967e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
