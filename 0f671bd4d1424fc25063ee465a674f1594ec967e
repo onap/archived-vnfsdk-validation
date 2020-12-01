@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "54182a37_57f1e2c6",
+        "filename": "csarvalidation/python/main/validation/rules/ActiveRulesTableGenerator.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-01T10:40:59Z",
+      "side": 1,
+      "message": "_get",
+      "revId": "0f671bd4d1424fc25063ee465a674f1594ec967e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18e20fcc_31f2c2a1",
+        "filename": "csarvalidation/python/main/validation/rules/ActiveRulesTableGenerator.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-01T10:40:59Z",
+      "side": 1,
+      "message": "_get",
+      "revId": "0f671bd4d1424fc25063ee465a674f1594ec967e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed6a56c1_b6c1a81e",
+        "filename": "csarvalidation/python/main/validation/rules/providers/RulesDescriptionsProvider.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-01T10:40:59Z",
+      "side": 1,
+      "message": "_get",
+      "revId": "0f671bd4d1424fc25063ee465a674f1594ec967e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}

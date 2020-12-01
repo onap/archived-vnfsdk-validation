@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4629caa_b506e8ba",
+        "filename": "csarvalidation/python/setup.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-01T10:40:59Z",
+      "side": 0,
+      "message": "setup.py must have proper structure. Pls fill it.",
+      "revId": "35d4e259c80c9edeb362de0af9bd77bd3f4412b0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
