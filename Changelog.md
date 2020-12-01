@@ -110,3 +110,5 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-713
 -  Added possibility to validation pm-dictionary from byte array
     - https://jira.onap.org/browse/VNFSDK-713   
+    
+## [1.2.16]    
