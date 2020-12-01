@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e02f7c6_bc341ac9",
+        "filename": "csarvalidation/python/setup.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-01T12:57:51Z",
+      "side": 1,
+      "message": "pls do as in an example:\n\nimport os\nfrom setuptools import setup\n\nwith open(\u0027requirements.txt\u0027) as f:\n    required \u003d f.read().splitlines()\n\nsetup(...\ninstall_requires\u003drequired,\n...)\n\nhttps://stackoverflow.com/questions/14399534/reference-requirements-txt-for-the-install-requires-kwarg-in-setuptools-setup-py",
+      "revId": "f9bf33983284056276bccf38bfef39d4ec5baead",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
