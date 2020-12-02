@@ -50,6 +50,8 @@
     <maven-war-plugin.version>2.6</maven-war-plugin.version>
     <maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
     <mockito-core.version>3.5.0</mockito-core.version>
+    <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
+    <skipDocsGeneration>true</skipDocsGeneration>
   </properties>
 
   <dependencies>
@@ -165,8 +167,72 @@
 
   <build>
     <finalName>${project.artifactId}-${project.version}</finalName>
-
     <plugins>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${exec-maven-plugin.version}</version>
+        <executions>
+            <execution>
+            <configuration>
+              <skip>${skipDocsGeneration}</skip>
+              <executable>pip3</executable>
+              <workingDirectory>./python</workingDirectory>
+              <arguments>
+                <argument>install</argument>
+                <argument>-r</argument>
+                <argument>./requirements.txt</argument>
+              </arguments>
+            </configuration>
+            <id>python-requirements</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+          <execution>
+            <configuration>
+              <skip>${skipDocsGeneration}</skip>
+              <executable>python3</executable>
+              <workingDirectory>./python/</workingDirectory>
+              <environmentVariables>
+                <PYTHONPATH>./main</PYTHONPATH>
+              </environmentVariables>
+              <arguments>
+                <argument>-m</argument>
+                <argument>unittest</argument>
+                <argument>discover</argument>
+                <argument>./test</argument>
+              </arguments>
+            </configuration>
+            <id>python-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+          <execution>
+            <configuration>
+              <skip>${skipDocsGeneration}</skip>
+              <executable>python3</executable>
+              <workingDirectory>./python/main</workingDirectory>
+              <arguments>
+                <argument>generate_active_validation_rules_table.py</argument>
+              </arguments>
+              <environmentVariables>
+                <OUTPUT_DIRECTORY>${project.build.directory}/generated-docs/${onap.release}/</OUTPUT_DIRECTORY>
+              </environmentVariables>
+            </configuration>
+            <id>python_build</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
