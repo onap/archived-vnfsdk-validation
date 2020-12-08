@@ -24,6 +24,8 @@ final class ManifestConsts {
     static final String SOURCE_TAG_SECTION = "source";
     static final String ALGORITHM = "algorithm";
     static final String HASH = "hash";
+    static final String SIGNATURE = "signature";
+    static final String CERTIFICATE = "certificate";
     static final String NON_MANO_ARTIFACT_SETS_TAG_SECTION = "non_mano_artifact_sets";
     static final String PRODUCT_NAME = "pnfd_name";
     static final String PROVIDER_ID = "pnfd_provider";
