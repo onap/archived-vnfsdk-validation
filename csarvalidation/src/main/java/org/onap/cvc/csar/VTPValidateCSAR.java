@@ -42,7 +42,10 @@ public class VTPValidateCSAR extends OnapCommand {
 
     private static Gson gson = new Gson();
     private static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSAR.class);
-    public static final String PNF_ATTRIBUTE_NAME = "pnf";
+    private static final String RULES_ATTRIBUTE_SEPARATOR = ",";
+    private static final String PNF_ATTRIBUTE_NAME = "pnf";
+    private static final String CSAR_ATTRIBUTE_NAME = "csar";
+    private static final String RULES_ATTRIBUTE_NAME = "rules";
 
     public static class CSARValidation {
 
@@ -216,8 +219,9 @@ public class VTPValidateCSAR extends OnapCommand {
     @Override
     protected void run() throws OnapCommandException {
         //Read the input arguments
-        String path = (String) getParametersMap().get("csar").getValue();
+        String path = (String) getParametersMap().get(CSAR_ATTRIBUTE_NAME).getValue();
         boolean isPnf = (boolean) getParametersMap().get(PNF_ATTRIBUTE_NAME).getValue();
+        String rulesToValidate = (String) getParametersMap().get(RULES_ATTRIBUTE_NAME).getValue();
 
         boolean overallPass = true;
         try (CSARArchive csar = isPnf ? new PnfCSARArchive() : new CSARArchive()) {
@@ -244,13 +248,25 @@ public class VTPValidateCSAR extends OnapCommand {
 
             validation.getResults().add(resultSOL004);
 
-            //Run thru the vnfreqs requirement checks
             String keyReqs = isPnf ? "pnfreqs.enabled" : "vnfreqs.enabled";
-            for (String vnfreq : this.getPropertiesList(keyReqs)) {
-                CSARValidation.Result result = new CSARValidation.Result();
-                result.setVnfreqName(vnfreq);
-
-                overallPass = validateVnfOrPnf(path, validation, ignoreCodes, vnfreq, result, isPnf, overallPass);
+            List<String> activeRules = this.getPropertiesList(keyReqs);
+            if(rulesToValidate.isEmpty()) {
+                // Run thru the vnfreqs requirement checks
+                for (String vnfreq : activeRules) {
+                    CSARValidation.Result result = new CSARValidation.Result();
+                    result.setVnfreqName(vnfreq);
+                    overallPass = validateVnfOrPnf(path, validation, ignoreCodes, vnfreq, result, isPnf, overallPass);
+                }
+            } else {
+                // Validate selected rules
+                String[] listOfRulesToValidate = rulesToValidate.split(RULES_ATTRIBUTE_SEPARATOR);
+                for (String rule : listOfRulesToValidate) {
+                    if(activeRules.contains(rule)) {
+                        CSARValidation.Result result = new CSARValidation.Result();
+                        result.setVnfreqName(rule);
+                        overallPass = validateVnfOrPnf(path, validation, ignoreCodes, rule, result, isPnf, overallPass);
+                    }
+                }
             }
 
             validation.setDate(new Date().toString());
