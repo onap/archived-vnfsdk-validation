@@ -54,6 +54,10 @@ public class SourcesParser {
                 handleAlgorithmLine(errors, source, lineNumber, manifestLine);
             } else if (!isSpecialTagReached && manifestLine.startsWith(HASH)) {
                 handleHashLine(errors, source, lineNumber, manifestLine);
+            } else if (!isSpecialTagReached && manifestLine.startsWith(SIGNATURE)) {
+                handleSignatureLine(errors, source, lineNumber, manifestLine);
+            } else if (!isSpecialTagReached && manifestLine.startsWith(CERTIFICATE)) {
+                handleCertificateLine(errors, source, lineNumber, manifestLine);
             }
         }
 
@@ -62,8 +66,8 @@ public class SourcesParser {
 
     private boolean isContainSpecialTag(String line, ManifestLine manifestLine) {
         return manifestLine.startsWith(METADATA_SECTION_TAG_SECTION)
-                || manifestLine.startsWith(NON_MANO_ARTIFACT_SETS_TAG_SECTION)
-                || line.contains(CMS);
+            || manifestLine.startsWith(NON_MANO_ARTIFACT_SETS_TAG_SECTION)
+            || line.contains(CMS);
     }
 
     private Source handleSourceLine(List<Source> sources, List<CSARArchive.CSARError> errors, int lineNumber, ManifestLine manifestLine) {
@@ -90,6 +94,18 @@ public class SourcesParser {
             source.setHash(hash);
     }
 
+    private void handleSignatureLine(List<CSARArchive.CSARError> errors, Source source, int lineNumber, ManifestLine manifestLine) {
+        String signature = parseSourceSectionLine(manifestLine, lineNumber, errors);
+        if (source != null)
+            source.setSignature(signature);
+    }
+
+    private void handleCertificateLine(List<CSARArchive.CSARError> errors, Source source, int lineNumber, ManifestLine manifestLine) {
+        String certificate = parseSourceSectionLine(manifestLine, lineNumber, errors);
+        if (source != null)
+            source.setCertificate(certificate);
+    }
+
     private String parseSourceSectionLine(ManifestLine line, int lineNumber, List<CSARArchive.CSARError> errors) {
         String retVal = "";
         Pair<String, String> data = line.parse();
@@ -110,12 +126,19 @@ public class SourcesParser {
         private final String value;
         private String algorithm;
         private String hash;
+        private String signature;
+        private String certificate;
 
-        public Source(String value, String algorithm, String hash) {
-
+        public Source(String value, String algorithm, String hash, String signature, String certificate) {
             this.value = value;
             this.algorithm = algorithm;
             this.hash = hash;
+            this.signature = signature;
+            this.certificate = certificate;
+        }
+
+        public Source(String source, String algorithm, String hash) {
+            this(source, algorithm, hash, "", "");
         }
 
         public Source(String source) {
@@ -142,34 +165,52 @@ public class SourcesParser {
             this.hash = hash;
         }
 
+        public String getSignature() {
+            return signature;
+        }
+
+        public void setSignature(String signature) {
+            this.signature = signature;
+        }
+
+        public String getCertificate() {
+            return certificate;
+        }
+
+        public void setCertificate(String certificate) {
+            this.certificate = certificate;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) {
                 return true;
             }
-
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }
-
-            Source source1 = (Source) o;
-            return Objects.equals(value, source1.value) &&
-                    Objects.equals(algorithm, source1.algorithm) &&
-                    Objects.equals(hash, source1.hash);
+            Source source = (Source) o;
+            return Objects.equals(value, source.value) &&
+                Objects.equals(algorithm, source.algorithm) &&
+                Objects.equals(hash, source.hash) &&
+                Objects.equals(signature, source.signature) &&
+                Objects.equals(certificate, source.certificate);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(value, algorithm, hash);
+            return Objects.hash(value, algorithm, hash, signature, certificate);
         }
 
         @Override
         public String toString() {
             return "Source{" +
-                    "value='" + value + '\'' +
-                    ", algorithm='" + algorithm + '\'' +
-                    ", hash='" + hash + '\'' +
-                    '}';
+                "value='" + value + '\'' +
+                ", algorithm='" + algorithm + '\'' +
+                ", hash='" + hash + '\'' +
+                ", signature='" + signature + '\'' +
+                ", certificate='" + certificate + '\'' +
+                '}';
         }
     }
 }
