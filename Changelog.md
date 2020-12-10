@@ -112,3 +112,7 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-713   
     
 ## [1.2.16]    
+    
+## Added
+- Possibility to add certificate and signature per artifact in manifest file. 
+    - https://jira.onap.org/browse/VNFSDK-714

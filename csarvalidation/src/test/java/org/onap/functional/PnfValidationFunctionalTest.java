@@ -26,6 +26,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.absoluteFilePath;
 import static org.onap.functional.CsarValidationUtility.CERTIFICATION_RULE;
+import static org.onap.functional.CsarValidationUtility.MANIFEST_FILE_RULE;
 import static org.onap.functional.CsarValidationUtility.OPERATION_STATUS_FAILED;
 import static org.onap.functional.CsarValidationUtility.OPERATION_STATUS_PASS;
 import static org.onap.functional.CsarValidationUtility.PM_DICTIONARY_YAML_RULE;
@@ -53,13 +54,12 @@ public class PnfValidationFunctionalTest {
 
         assertThat(result.criteria).isEqualTo(OPERATION_STATUS_PASS);
         result.results.forEach((ruleValidationResult)->{
-            assertThat(ruleValidationResult.errors).hasSize(0);
+            assertThat(ruleValidationResult.errors).isEmpty();
             if (ruleValidationResult.vnfreqName.equals(CERTIFICATION_RULE)) {
                 assertThat(ruleValidationResult.warnings)
-                    .hasSize(1)
-                    .containsOnly(expectedWarning);
+                    .containsExactlyInAnyOrder(expectedWarning);
             } else {
-                assertThat(ruleValidationResult.warnings).hasSize(0);
+                assertThat(ruleValidationResult.warnings).isEmpty();
             }
         });
         verifyThatOperationFinishedWithoutAnyError(cli);
@@ -106,13 +106,12 @@ public class PnfValidationFunctionalTest {
 
         assertThat(result.criteria).isEqualTo(OPERATION_STATUS_FAILED);
         result.results.forEach((ruleValidationResult)->{
-            assertThat(ruleValidationResult.warnings).hasSize(0);
+            assertThat(ruleValidationResult.warnings).isEmpty();
             if (ruleValidationResult.vnfreqName.equals(CERTIFICATION_RULE)) {
                 assertThat(ruleValidationResult.errors)
-                    .hasSize(5)
-                    .containsAll(expectedErrors);
+                    .containsExactlyInAnyOrderElementsOf(expectedErrors);
             } else {
-                assertThat(ruleValidationResult.errors).hasSize(0);
+                assertThat(ruleValidationResult.errors).isEmpty();
             }
         });
         verifyThatOperationFinishedWithoutAnyError(cli);
@@ -152,8 +151,7 @@ public class PnfValidationFunctionalTest {
             assertThat(ruleValidationResult.warnings).isEmpty();
             if (ruleValidationResult.vnfreqName.equals(CERTIFICATION_RULE)) {
                 assertThat(ruleValidationResult.errors)
-                    .hasSize(5)
-                    .containsAll(expectedErrors);
+                    .containsExactlyInAnyOrderElementsOf(expectedErrors);
             } else {
                 assertThat(ruleValidationResult.errors).isEmpty();
             }
@@ -219,14 +217,57 @@ public class PnfValidationFunctionalTest {
             assertThat(ruleValidationResult.warnings).isEmpty();
             if (ruleValidationResult.vnfreqName.equals(CERTIFICATION_RULE)) {
                 assertThat(ruleValidationResult.errors)
-                    .hasSize(5)
-                    .containsAll(expectedErrors);
+                    .containsExactlyInAnyOrderElementsOf(expectedErrors);
             } else {
                 assertThat(ruleValidationResult.errors).isEmpty();
             }
         });
         verifyThatOperationFinishedWithoutAnyError(cli);
     }
+
+    @Test
+    public void shouldReportThatIndividualArtifactHaveIncorrectCertificateAdnCertificateAndSignatureAreNotPresentAsSources() throws URISyntaxException {
+        // given
+        List<OnapCliValidationResponseWrapper.ValidationResultWrapper.ValidationErrorWrapper> expectedCertificationErrors =
+            List.of(
+                createExpectedError(CERTIFICATION_RULE, "0x4020",
+                    "Source 'Files/ChangeLog.txt' has incorrect signature!"),
+                createExpectedError(CERTIFICATION_RULE, "0x4007",
+                    "File has invalid signature!")
+            );
+        List<OnapCliValidationResponseWrapper.ValidationResultWrapper.ValidationErrorWrapper> expectedManifestErrors =
+            List.of(
+                createExpectedError(MANIFEST_FILE_RULE, "0x1001",
+                    "file(s): [Files/pnf-sw-information/pnf-sw-information.cert, Files/pnf-sw-information/pnf-sw-information.sig.cms] available in CSAR, but cannot be found in Manifest as Source",
+                    "TOSCA-Metadata"
+                )
+            );
+        OnapCliWrapper cli = new OnapCliWrapper(createPnfValidationRequestInfo(
+            "pnf/r130206/csar-cert-in-cms-valid-with-incorrect-signature-of-individual-artifact.csar"
+        ));
+
+        // when
+        cli.handle();
+
+        // then
+        final OnapCliValidationResponseWrapper result = getCliCommandValidationResult(cli);
+
+        assertThat(result.criteria).isEqualTo(OPERATION_STATUS_FAILED);
+        result.results.forEach((ruleValidationResult)->{
+            assertThat(ruleValidationResult.warnings).isEmpty();
+            if (ruleValidationResult.vnfreqName.equals(CERTIFICATION_RULE)) {
+                assertThat(ruleValidationResult.errors)
+                    .containsAll(expectedCertificationErrors);
+            } else if (ruleValidationResult.vnfreqName.equals(MANIFEST_FILE_RULE)) {
+                assertThat(ruleValidationResult.errors)
+                    .containsAll(expectedManifestErrors);
+            } else {
+                assertThat(ruleValidationResult.errors).isEmpty();
+            }
+        });
+        verifyThatOperationFinishedWithoutAnyError(cli);
+    }
+
     private String[] createPnfValidationRequestInfo(String csarPath) throws URISyntaxException {
         return new String[]{
             "--product", "onap-dublin",

@@ -35,6 +35,7 @@ public final class CsarValidationUtility {
 
     public static final String CERTIFICATION_RULE = "r130206";
     public static final String PM_DICTIONARY_YAML_RULE = "r816745";
+    public static final String MANIFEST_FILE_RULE = "r01123";
     public static final String OPERATION_STATUS_FAILED = "FAILED";
     public static final String OPERATION_STATUS_PASS = "PASS";
 
@@ -50,6 +51,16 @@ public final class CsarValidationUtility {
             rule.toUpperCase(), errorCode,
             errorMessage,
             UNKNOWN_FILE, UNKNOWN_LINE_NUMBER
+        );
+    }
+
+    public static OnapCliValidationResponseWrapper.ValidationResultWrapper.ValidationErrorWrapper createExpectedError(
+        String rule, String errorCode, String errorMessage, String file
+    ) {
+        return new OnapCliValidationResponseWrapper.ValidationResultWrapper.ValidationErrorWrapper(
+            rule.toUpperCase(), errorCode,
+            errorMessage,
+            file, UNKNOWN_LINE_NUMBER
         );
     }
 
