@@ -91,13 +91,15 @@ public class MetadataParser {
     private boolean isSourceSection(Pair<String, String> data) {
         return data.getKey().equalsIgnoreCase(SOURCE_TAG_SECTION)
                 || data.getKey().equalsIgnoreCase(ALGORITHM)
-                || data.getKey().equalsIgnoreCase(HASH);
+                || data.getKey().equalsIgnoreCase(HASH)
+                || data.getKey().equalsIgnoreCase(SIGNATURE)
+                || data.getKey().equalsIgnoreCase(CERTIFICATE);
     }
 
     private boolean isSectionSupported(String key) {
         return Lists.newArrayList(
                 METADATA_SECTION_TAG_SECTION,
-                SOURCE_TAG_SECTION, ALGORITHM, HASH,
+                SOURCE_TAG_SECTION, ALGORITHM, HASH, SIGNATURE, CERTIFICATE,
                 NON_MANO_ARTIFACT_SETS_TAG_SECTION).contains(key.toLowerCase());
     }
 

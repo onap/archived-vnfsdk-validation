@@ -34,6 +34,7 @@ import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessages
 public class VTPValidateCSARR130206IntegrationTest {
 
     private static final boolean IS_PNF = true;
+    public static final String VTP_VALIDATE_SCHEMA = "vtp-validate-csar-r130206.yaml";
     private VTPValidateCSARR130206 testCase;
 
     @Before
@@ -54,7 +55,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void manual_shouldValidateProperCsarWithCms() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-cms-valid.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid.csar");
 
         // when
         testCase.execute();
@@ -72,7 +73,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void manual_shouldValidateCsarWithCertificateInToscaEtsiWithValidSignature() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-tosca-valid.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-tosca-valid.csar");
 
         // when
         testCase.execute();
@@ -86,7 +87,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReportWarningForMissingCertInCmsToscaMetaAndRootCatalogAndMissingHashCodesInManifest()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-not-secure-warning.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-not-secure-warning.csar");
 
         // when
         testCase.execute();
@@ -94,7 +95,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Warning. Consider adding package integrity and authenticity assurance according to ETSI NFV-SOL 004 Security Option 1"
         );
     }
@@ -103,7 +104,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnNoErrorWhenCertIsOnlyInCmsAndAlgorithmAndHashesAreCorrect()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-cms.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms.csar");
 
         // when
         testCase.execute();
@@ -111,7 +112,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "File has invalid signature!"
         );
     }
@@ -120,7 +121,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnNoErrorWhenCertIsOnlyInToscaAndAlgorithmAndHashesAreCorrect()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-tosca.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-tosca.csar");
 
         // when
         testCase.execute();
@@ -128,7 +129,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "File has invalid signature!"
         );
     }
@@ -137,7 +138,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCsarContainsToscaFileHoweverToscaDoesNotContainsCertEntryAndAlgorithmAndHashesAreCorrect()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-with-tosca-no-cert-entry.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-with-tosca-no-cert-entry.csar");
 
         // when
         testCase.execute();
@@ -145,7 +146,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Unable to find ETSI-Entry-Certificate in Tosca file"
         );
     }
@@ -154,7 +155,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCertIsOnlyInCmsHoweverHashesAreIncorrect()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-cms-incorrect-hash.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-incorrect-hash.csar");
 
         // when
         testCase.execute();
@@ -162,7 +163,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(2);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Source 'Artifacts/Other/my_script.csh' has wrong hash!",
             "File has invalid signature!"
         );
@@ -172,7 +173,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCertIsOnlyInToscaHoweverHashesAreIncorrect()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-tosca-incorrect-hash.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-tosca-incorrect-hash.csar");
 
         // when
         testCase.execute();
@@ -180,7 +181,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(2);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Source 'Artifacts/Deployment/Measurements/PM_Dictionary.yml' has wrong hash!",
             "File has invalid signature!"
         );
@@ -190,7 +191,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCertIsOnlyInRootDirectoryHoweverHashesAreIncorrect()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-root-incorrect-hash.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-root-incorrect-hash.csar");
 
         // when
         testCase.execute();
@@ -198,7 +199,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(3);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Source 'Artifacts/Deployment/Events/RadioNode_Pnf_v1.yaml' has wrong hash!",
             "Unable to find ETSI-Entry-Certificate in Tosca file",
             "Certificate present in root catalog despite the TOSCA.meta file"
@@ -209,15 +210,14 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenToscaEtsiEntryCertificatePointToNotExistingFile()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-with-tosca-cert-pointing-non-existing-cert.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-with-tosca-cert-pointing-non-existing-cert.csar");
 
         // when
         testCase.execute();
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(2);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Unable to find cert file defined by ETSI-Entry-Certificate!",
             "Invalid value. Entry [Entry-Certificate]. Artifacts/sample-pnf.cert does not exist"
         );
@@ -227,7 +227,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCertificateIsLocatedInCmsAndInTosca()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-cms-and-tosca.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-and-tosca.csar");
 
         // when
         testCase.execute();
@@ -235,10 +235,10 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(3);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "File has invalid signature!",
             "ETSI-Entry-Certificate entry in Tosca.meta is defined despite the certificate is included in the signature container",
-            "ETSI-Entry-Certificate certificate present despite the certificate is included in the signature container",
-            "File has invalid signature!"
+            "ETSI-Entry-Certificate certificate present despite the certificate is included in the signature container"
         );
     }
 
@@ -246,7 +246,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCertificateIsLocatedInCmsAndInToscaAndHashIsIncorrect()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-cms-and-tosca-incorrect-hash.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-and-tosca-incorrect-hash.csar");
 
         // when
         testCase.execute();
@@ -254,11 +254,11 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(4);
-        assertThat(convertToMessagesList(errors)).contains(
-            "ETSI-Entry-Certificate entry in Tosca.meta is defined despite the certificate is included in the signature container",
-            "ETSI-Entry-Certificate certificate present despite the certificate is included in the signature container",
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Source 'Artifacts/Informational/user_guide.txt' has wrong hash!",
-            "File has invalid signature!"
+            "File has invalid signature!",
+            "ETSI-Entry-Certificate entry in Tosca.meta is defined despite the certificate is included in the signature container",
+            "ETSI-Entry-Certificate certificate present despite the certificate is included in the signature container"
         );
     }
 
@@ -266,7 +266,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCertificateIsLocatedInCmsAndInToscaAndInRootDirectory()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-cms-and-root-and-tosca.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-and-root-and-tosca.csar");
 
         // when
         testCase.execute();
@@ -274,7 +274,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(4);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "ETSI-Entry-Certificate entry in Tosca.meta is defined despite the certificate is included in the signature container",
             "ETSI-Entry-Certificate certificate present despite the certificate is included in the signature container",
             "Certificate present in root catalog despite the certificate is included in the signature container",
@@ -287,7 +287,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCertificateIsLocatedInCmsAndInToscaAndInRootDirectoryAndHashIsIncorrect()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-cms-and-root-and-tosca-incorrect-hash.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-and-root-and-tosca-incorrect-hash.csar");
 
         // when
         testCase.execute();
@@ -295,7 +295,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(5);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "ETSI-Entry-Certificate entry in Tosca.meta is defined despite the certificate is included in the signature container",
             "ETSI-Entry-Certificate certificate present despite the certificate is included in the signature container",
             "Certificate present in root catalog despite the certificate is included in the signature container",
@@ -308,7 +308,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCertificateIsLocatedInCmsAndInRootDirectory()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-cms-and-root.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-and-root.csar");
 
         // when
         testCase.execute();
@@ -316,7 +316,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(2);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Certificate present in root catalog despite the certificate is included in the signature container",
             "File has invalid signature!"
         );
@@ -326,7 +326,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCertificateIsLocatedInCmsAndInRootDirectoryAndHashIsIncorrect()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-cms-and-root-incorrect-hash.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-and-root-incorrect-hash.csar");
 
         // when
         testCase.execute();
@@ -334,7 +334,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(3);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Certificate present in root catalog despite the certificate is included in the signature container",
             "Source 'Artifacts/Informational/user_guide.txt' has wrong hash!",
             "File has invalid signature!"
@@ -345,7 +345,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCertificateIsLocatedInToscaAndInRootDirectory()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-root-and-tosca.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-root-and-tosca.csar");
 
         // when
         testCase.execute();
@@ -353,7 +353,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(2);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Certificate present in root catalog despite the TOSCA.meta file",
             "File has invalid signature!"
         );
@@ -363,7 +363,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCertificateIsLocatedInToscaAndInRootDirectoryAdnHashIsIncorrect()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-root-and-tosca-incorrect-hash.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-root-and-tosca-incorrect-hash.csar");
 
         // when
         testCase.execute();
@@ -371,7 +371,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(3);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Certificate present in root catalog despite the TOSCA.meta file",
             "Source 'Artifacts/Deployment/Yang_module/yang-module1.yang' has wrong hash!",
             "File has invalid signature!"
@@ -382,7 +382,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnNoErrorWhenCertificateIsLocatedInToscaAndInRootDirectoryHoweverEtsiEntryIsPointingCertificateInRoot()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-root-pointed-by-tosca.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-root-pointed-by-tosca.csar");
 
         // when
         testCase.execute();
@@ -390,7 +390,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "File has invalid signature!"
         );
     }
@@ -399,7 +399,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCertificateIsLocatedInToscaHoweverManifestDoesNotContainsCms()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-tosca-no-cms.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-tosca-no-cms.csar");
 
         // when
         testCase.execute();
@@ -407,7 +407,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Unable to find cms signature!"
         );
     }
@@ -416,7 +416,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnErrorWhenCsarDoesNotContainsCmsAndCertsHoweverManifestContainsHash()
         throws Exception{
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-no-cms-no-cert-with-hash.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-no-cms-no-cert-with-hash.csar");
 
         // when
         testCase.execute();
@@ -424,7 +424,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
-        assertThat(convertToMessagesList(errors)).contains(
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Unable to find cms signature!"
         );
     }
@@ -433,7 +433,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnNoCertificationErrorWhenCertIsOnlyInRoot() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-cert-in-root.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-root.csar");
 
         // when
         testCase.execute();
@@ -452,7 +452,7 @@ public class VTPValidateCSARR130206IntegrationTest {
     public void shouldReturnCertificateNotFoundErrorWhenCertIsNotPresentInCmsInRootAndTocsaDirectoryIsMissing() throws Exception {
 
         // given
-        configureTestCase(testCase, "pnf/r130206/csar-no-cert-no-tosca-dir.csar", "vtp-validate-csar-r130206.yaml", IS_PNF);
+        configureTestCaseForRule130206("pnf/r130206/csar-no-cert-no-tosca-dir.csar");
 
         // when
         testCase.execute();
@@ -465,5 +465,99 @@ public class VTPValidateCSARR130206IntegrationTest {
         assertThat(convertToMessagesList(errors)).contains(
             "Unable to find cert file!"
         );
+    }
+
+    @Test
+    public void shouldReturnNoErrorWhenCertIsPresentInCmsAndIndividualArtifactHaveCorrectSignature() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid-with-signature-of-individual-artifact.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "File has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnErrorsWhenCertIsPresentInCmsAndIndividualArtifactHaveOnlySignatureOrCertificate() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid-with-only-signature-or-cert-of-individual-artifact.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Source 'Files/Scripts/my_script.sh' has certificate tag, but unable to find signature tag!",
+            "Source 'Files/pnf-sw-information/pnf-sw-information.yaml' has signature tag, but unable to find certificate tag!",
+            "File has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnErrorsWhenCertIsPresentInCmsAndIndividualArtifactHaveSignatureAndCertificateShowingIncorrectFiles() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid-with-wrong-path-to-signature-of-individual-artifact.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Source 'Files/Yang_module/mynetconf.yang' has signature tag, pointing to non existing file!",
+            "Source 'Files/Yang_module/mynetconf.yang' has certificate tag, pointing to non existing file!",
+            "File has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnErrorWhenCertIsPresentInCmsAndIndividualArtifactHaveIncorrectSignature() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid-with-incorrect-signature-of-individual-artifact.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Source 'Files/ChangeLog.txt' has incorrect signature!",
+            "File has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnErrorWhenOnlyIndividualArtifactHaveSignature() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-no-cms-with-signature-of-individual-artifact.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Unable to find cms signature!"
+        );
+    }
+
+    private void configureTestCaseForRule130206(String filePath) throws OnapCommandException, URISyntaxException {
+        configureTestCase(testCase, filePath, VTP_VALIDATE_SCHEMA, IS_PNF);
     }
 }
