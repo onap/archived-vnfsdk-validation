@@ -57,7 +57,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     private static final String EMPTY_STRING = "";
 
     private final ShaHashCodeGenerator shaHashCodeGenerator = new ShaHashCodeGenerator();
-    private final ManifestFileSignatureValidator manifestFileSignatureValidator = new ManifestFileSignatureValidator();
+    private final FileSignatureValidator fileSignatureValidator = new FileSignatureValidator();
 
     public static class CSARErrorUnableToFindCertificate extends CSARArchive.CSARError {
 
@@ -178,6 +178,54 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         }
     }
 
+    public static class CSARErrorUnableToFindArtifactCertificate extends CSARArchive.CSARError {
+
+        CSARErrorUnableToFindArtifactCertificate(String path) {
+            super("0x4015");
+            this.message = String.format("Source '%s' has signature tag, but unable to find certificate tag!", path);
+        }
+    }
+
+    public static class CSARErrorUnableToFindArtifactCertificateFile extends CSARArchive.CSARError {
+
+        CSARErrorUnableToFindArtifactCertificateFile(String path) {
+            super("0x4016");
+            this.message = String.format("Source '%s' has certificate tag, pointing to non existing file!", path);
+        }
+    }
+
+    public static class CSARErrorUnableToFindArtifactSignature extends CSARArchive.CSARError {
+
+        CSARErrorUnableToFindArtifactSignature(String path) {
+            super("0x4017");
+            this.message = String.format("Source '%s' has certificate tag, but unable to find signature tag!", path);
+        }
+    }
+
+    public static class CSARErrorUnableToFindArtifactSignatureFile extends CSARArchive.CSARError {
+
+        CSARErrorUnableToFindArtifactSignatureFile(String path) {
+            super("0x4018");
+            this.message = String.format("Source '%s' has signature tag, pointing to non existing file!", path);
+        }
+    }
+
+    public static class CSARErrorFailToLoadArtifactSignature extends CSARArchive.CSARError {
+
+        CSARErrorFailToLoadArtifactSignature(String path, String cms) {
+            super("0x4019");
+            this.message = String.format("Fail to load signature '%s', for source '%s'!", path, cms);
+        }
+    }
+
+    public static class CSARErrorIncorrectArtifactSignature extends CSARArchive.CSARError {
+
+        CSARErrorIncorrectArtifactSignature(String path) {
+            super("0x4020");
+            this.message = String.format("Source '%s' has incorrect signature!", path);
+        }
+    }
+
     public static class CSARWarningNoSecurity extends CSARArchive.CSARErrorWarning {
         CSARWarningNoSecurity() {
             super(EMPTY_STRING, EMPTY_STRING, -1, EMPTY_STRING);
@@ -207,9 +255,9 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         if (containsCms(csar.getManifest())) {
             validateCmsSignature(csar, csarRootDirectory);
         } else if (
-            ( containsToscaMeta(csar) && containsCertificateInTosca(csar.getToscaMeta()) ) ||
+            (containsToscaMeta(csar) && containsCertificateInTosca(csar.getToscaMeta())) ||
                 containsCertificateInRootCatalog(csar) ||
-                containsHashOrAlgorithm(csar.getManifest())) {
+                containsPerArtifactSecurity(csar.getManifest())) {
             this.errors.add(new CSARErrorUnableToFindCms());
         } else {
             this.errors.add(new CSARWarningNoSecurity());
@@ -218,7 +266,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
 
     private void validateCmsSignature(CSARArchive csar, Path csarRootDirectory) throws NoSuchAlgorithmException, IOException {
         try {
-            CmsSignatureData signatureData = this.manifestFileSignatureValidator.createSignatureData(csar.getManifestMfFile());
+            CmsSignatureData signatureData = this.fileSignatureValidator.createSignatureDataForManifestFile(csar.getManifestMfFile());
             if (signatureData.getCertificate().isPresent()) {
                 validateCertificationUsingCmsCertificate(signatureData, csar, csarRootDirectory);
             } else if (containsToscaMeta(csar)) {
@@ -253,11 +301,13 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         return potentialCertificateFileInRootDirectory.exists();
     }
 
-    private boolean containsHashOrAlgorithm(CSARArchive.Manifest manifest) {
+    private boolean containsPerArtifactSecurity(CSARArchive.Manifest manifest) {
         return manifest.getSources().stream().anyMatch(
             source ->
                 !source.getAlgorithm().equals(EMPTY_STRING) ||
-                    !source.getHash().equals(EMPTY_STRING)
+                    !source.getHash().equals(EMPTY_STRING) ||
+                    !source.getCertificate().equals(EMPTY_STRING) ||
+                    !source.getSignature().equals(EMPTY_STRING)
         );
     }
 
@@ -288,7 +338,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     private boolean loadCertificateFromTosca(CmsSignatureData signatureData, CSARArchive csar) {
-        if(csar.getToscaMeta().getEntryCertificate() != null) {
+        if (csar.getToscaMeta().getEntryCertificate() != null) {
             try {
                 final Path absolutePathToEntryCertificate = csar.getFileFromCsar(csar.getToscaMeta().getEntryCertificate()).toPath();
                 signatureData.loadCertificate(absolutePathToEntryCertificate);
@@ -368,7 +418,7 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
     }
 
     private void validateFileSignature(CmsSignatureData signatureData) {
-        final boolean isValid = this.manifestFileSignatureValidator.isValid(signatureData);
+        final boolean isValid = this.fileSignatureValidator.isValid(signatureData);
         if (!isValid) {
             this.errors.add(new CSARErrorInvalidSignature());
         }
@@ -378,23 +428,27 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         throws NoSuchAlgorithmException, IOException {
         final List<SourcesParser.Source> sources = manifest.getSources();
         for (SourcesParser.Source source : sources) {
-            if (!source.getAlgorithm().isEmpty() || !source.getHash().isEmpty()) {
-                validateSource(csarRootDirectory, source);
-            }
+            validateSource(csarRootDirectory, source);
         }
     }
 
     private void validateSource(Path csarRootDirectory, SourcesParser.Source source)
         throws NoSuchAlgorithmException, IOException {
         final Path sourcePath = csarRootDirectory.resolve(source.getValue());
-        if (!sourcePath.toFile().exists()) {
-            this.errors.add(new CSARErrorUnableToFindSource(source.getValue()));
+        if (sourcePath.toFile().exists()) {
+            validateHashIfPresent(csarRootDirectory, source);
+            validateArtifactSignatureIfPresent(csarRootDirectory, source);
         } else {
-            if (!source.getAlgorithm().isEmpty()) {
-                validateSourceHashCode(csarRootDirectory, source);
-            } else if (source.getAlgorithm().isEmpty() && !source.getHash().isEmpty()) {
-                this.errors.add(new CSARErrorUnableToFindAlgorithm(source.getValue()));
-            }
+            this.errors.add(new CSARErrorUnableToFindSource(source.getValue()));
+        }
+    }
+
+    private void validateHashIfPresent(Path csarRootDirectory, SourcesParser.Source source)
+        throws NoSuchAlgorithmException, IOException {
+        if (!source.getAlgorithm().isEmpty()) {
+            validateSourceHashCode(csarRootDirectory, source);
+        } else if (source.getAlgorithm().isEmpty() && !source.getHash().isEmpty()) {
+            this.errors.add(new CSARErrorUnableToFindAlgorithm(source.getValue()));
         }
     }
 
@@ -420,24 +474,69 @@ public class VTPValidateCSARR130206 extends VTPValidateCSARBase {
         throw new UnsupportedOperationException(String.format("Algorithm '%s' is not supported!", algorithm));
     }
 
+    private void validateArtifactSignatureIfPresent(Path csarRootDirectory, SourcesParser.Source source)
+        throws IOException {
+        if (!source.getSignature().isEmpty() && !source.getCertificate().isEmpty()) {
+            validateArtifactSignature(csarRootDirectory, source);
+        } else if (!source.getSignature().isEmpty()) {
+            this.errors.add(new CSARErrorUnableToFindArtifactCertificate(source.getValue()));
+        } else if (!source.getCertificate().isEmpty()) {
+            this.errors.add(new CSARErrorUnableToFindArtifactSignature(source.getValue()));
+        }
+    }
+
+    private void validateArtifactSignature(Path csarRootDirectory, SourcesParser.Source source)
+        throws IOException {
+        final Path filePath = csarRootDirectory.resolve(source.getValue());
+        final Path signaturePath = csarRootDirectory.resolve(source.getSignature());
+        final Path certificatePath = csarRootDirectory.resolve(source.getCertificate());
+        if (signaturePath.toFile().exists() && certificatePath.toFile().exists()) {
+            try {
+                CmsSignatureData signatureData =
+                    fileSignatureValidator.createSignatureData(filePath, signaturePath, certificatePath);
+                if( !fileSignatureValidator.isValid(signatureData) ) {
+                    this.errors.add(new CSARErrorIncorrectArtifactSignature(source.getValue()));
+                }
+            } catch (CmsSignatureLoadingException e) {
+                this.errors.add(new CSARErrorFailToLoadArtifactSignature(source.getValue(),source.getSignature()));
+            }
+        } else {
+            if (!signaturePath.toFile().exists()) {
+                this.errors.add(new CSARErrorUnableToFindArtifactSignatureFile(source.getValue()));
+            }
+            if (!certificatePath.toFile().exists()) {
+                this.errors.add(new CSARErrorUnableToFindArtifactCertificateFile(source.getValue()));
+            }
+        }
+    }
+
     @Override
     protected String getVnfReqsNo() {
         return "R130206";
     }
 
 
-    static class ManifestFileSignatureValidator {
+    static class FileSignatureValidator {
 
         private final ManifestFileSplitter manifestFileSplitter = new ManifestFileSplitter();
         private final CmsSignatureValidator cmsSignatureValidator = new CmsSignatureValidator();
         private final CmsSignatureDataFactory cmsSignatureDataFactory = new CmsSignatureDataFactory();
 
-        CmsSignatureData createSignatureData(File manifestFile) throws CmsSignatureLoadingException {
+        CmsSignatureData createSignatureDataForManifestFile(File manifestFile) throws CmsSignatureLoadingException {
             ManifestFileModel mf = manifestFileSplitter.split(manifestFile);
             return cmsSignatureDataFactory.createForFirstSigner(
                 toBytes(mf.getCMS(), mf.getNewLine()),
                 toBytes(mf.getData(), mf.getNewLine())
             );
+        }
+
+        CmsSignatureData createSignatureData(Path filePath, Path cmsFilePath, Path certFilePath) throws CmsSignatureLoadingException, IOException {
+            CmsSignatureData signatureData = cmsSignatureDataFactory.createForFirstSigner(
+                Files.readAllBytes(cmsFilePath),
+                Files.readAllBytes(filePath)
+            );
+            signatureData.loadCertificate(certFilePath);
+            return signatureData;
         }
 
         boolean isValid(CmsSignatureData signatureData) {
