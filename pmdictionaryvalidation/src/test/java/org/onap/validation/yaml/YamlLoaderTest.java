@@ -106,7 +106,7 @@ class YamlLoaderTest {
         @Test
         void shouldLoadAllDocumentsFromYamlFile() throws YamlDocumentFactory.YamlDocumentParsingException, IOException {
             // when
-            List<YamlDocument> documents = YAML_LOADER.loadMultiDocumentYaml(YamlLoadingUtils.readFile(YamlLoadingUtils.PATH_TO_VALID_YAML));
+            List<YamlDocument> documents = YAML_LOADER.loadMultiDocumentYaml(YamlLoadingUtils.readFile(YamlLoadingUtils.PATH_TO_YAML_WITH_WRONG_VALUES));
 
             // then
             assertThat(documents).hasSize(EXPECTED_NUMBER_OF_DOCUMENTS);
