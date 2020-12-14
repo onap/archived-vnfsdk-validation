@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cfbdf57a_c5e25e55",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/cli/command/validate/ToJsonConverter.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-12-14T08:33:53Z",
+      "side": 1,
+      "message": "space after \u003d",
+      "range": {
+        "startLine": 25,
+        "startChar": 18,
+        "endLine": 25,
+        "endChar": 19
+      },
+      "revId": "7166be9cb69ee34e0b7ef6af84719ee587b97ad3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c3870bf_17880e91",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/cli/core/Command.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-12-14T08:33:53Z",
+      "side": 1,
+      "message": "method name should describe what it does, maybe getName()?",
+      "revId": "7166be9cb69ee34e0b7ef6af84719ee587b97ad3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1105253f_8f8b3b50",
+        "filename": "pmdictionaryvalidation/src/main/java/org/onap/validation/cli/core/Command.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-12-14T08:33:53Z",
+      "side": 1,
+      "message": "getOutputFilepath()",
+      "revId": "7166be9cb69ee34e0b7ef6af84719ee587b97ad3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a578e524_6cfc00de",
+        "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/cli/command/validate/OutputFilePathGeneratorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-12-14T08:33:53Z",
+      "side": 1,
+      "message": "Remove \u0027bogumil\u0027 from paths.",
+      "revId": "7166be9cb69ee34e0b7ef6af84719ee587b97ad3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d10b16e2_a3015d7e",
+        "filename": "pmdictionaryvalidation/src/test/java/org/onap/validation/cli/command/validate/ValidateYamlCommandTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5234
+      },
+      "writtenOn": "2020-12-14T08:33:53Z",
+      "side": 1,
+      "message": "The message has pls in it. Change it to \u0027please\u0027 or remove \u0027pls\u0027.\n\nThis is a comment to validateYamlCommand.execute(args) definition actually, not only test.",
+      "revId": "7166be9cb69ee34e0b7ef6af84719ee587b97ad3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
