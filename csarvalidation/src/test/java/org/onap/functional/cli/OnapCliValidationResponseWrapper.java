@@ -17,8 +17,10 @@
 package org.onap.functional.cli;
 
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class OnapCliValidationResponseWrapper {
 
@@ -72,13 +74,33 @@ public class OnapCliValidationResponseWrapper {
             public boolean equals(Object o) {
                 if (this == o) return true;
                 if (o == null || getClass() != o.getClass()) return false;
-                return o.hashCode() == this.hashCode();
+                List<String> m1 = prepareMessages((ValidationErrorWrapper) o);
+                List<String> m2 = prepareMessages(this);
+                return o.hashCode() == this.hashCode() && m1.containsAll(m2);
+            }
+
+            private List<String> prepareMessages(ValidationErrorWrapper other) {
+                return Arrays.stream(other.message.split(" "))
+                    .map(it -> it.replaceAll("[\\[\\](){},]", ""))
+                    .collect(Collectors.toList());
             }
 
             @Override
             public int hashCode() {
-                return Objects.hash(vnfreqNo, code, message, file, lineNumber);
+                return Objects.hash(vnfreqNo, code, file, lineNumber);
             }
+
+            @Override
+            public String toString() {
+                return "ValidationErrorWrapper{" +
+                    "vnfreqNo='" + vnfreqNo + '\'' +
+                    ", code='" + code + '\'' +
+                    ", message='" + message + '\'' +
+                    ", file='" + file + '\'' +
+                    ", lineNumber='" + lineNumber + '\'' +
+                    '}';
+            }
+
         }
     }
 }
