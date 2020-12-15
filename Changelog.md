@@ -120,3 +120,7 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-715
 
 ## [1.2.17]
+
+## Added
+- Possibility to use a common certificate for individual signature per artifact in manifest file. 
+    - https://jira.onap.org/browse/VNFSDK-714
