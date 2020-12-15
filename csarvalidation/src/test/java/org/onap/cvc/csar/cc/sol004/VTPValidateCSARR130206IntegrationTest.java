@@ -113,7 +113,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -130,7 +130,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -165,7 +165,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         assertThat(errors.size()).isEqualTo(2);
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Source 'Artifacts/Other/my_script.csh' has wrong hash!",
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -183,7 +183,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         assertThat(errors.size()).isEqualTo(2);
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Source 'Artifacts/Deployment/Measurements/PM_Dictionary.yml' has wrong hash!",
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -198,9 +198,7 @@ public class VTPValidateCSARR130206IntegrationTest {
 
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
-        assertThat(errors.size()).isEqualTo(3);
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
-            "Source 'Artifacts/Deployment/Events/RadioNode_Pnf_v1.yaml' has wrong hash!",
             "Unable to find ETSI-Entry-Certificate in Tosca file",
             "Certificate present in root catalog despite the TOSCA.meta file"
         );
@@ -236,7 +234,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(3);
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
-            "File has invalid signature!",
+            "Manifest file has invalid signature!",
             "ETSI-Entry-Certificate entry in Tosca.meta is defined despite the certificate is included in the signature container",
             "ETSI-Entry-Certificate certificate present despite the certificate is included in the signature container"
         );
@@ -256,7 +254,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         assertThat(errors.size()).isEqualTo(4);
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Source 'Artifacts/Informational/user_guide.txt' has wrong hash!",
-            "File has invalid signature!",
+            "Manifest file has invalid signature!",
             "ETSI-Entry-Certificate entry in Tosca.meta is defined despite the certificate is included in the signature container",
             "ETSI-Entry-Certificate certificate present despite the certificate is included in the signature container"
         );
@@ -278,7 +276,7 @@ public class VTPValidateCSARR130206IntegrationTest {
             "ETSI-Entry-Certificate entry in Tosca.meta is defined despite the certificate is included in the signature container",
             "ETSI-Entry-Certificate certificate present despite the certificate is included in the signature container",
             "Certificate present in root catalog despite the certificate is included in the signature container",
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -300,7 +298,7 @@ public class VTPValidateCSARR130206IntegrationTest {
             "ETSI-Entry-Certificate certificate present despite the certificate is included in the signature container",
             "Certificate present in root catalog despite the certificate is included in the signature container",
             "Source 'Artifacts/Informational/user_guide.txt' has wrong hash!",
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -318,7 +316,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         assertThat(errors.size()).isEqualTo(2);
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Certificate present in root catalog despite the certificate is included in the signature container",
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -337,7 +335,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Certificate present in root catalog despite the certificate is included in the signature container",
             "Source 'Artifacts/Informational/user_guide.txt' has wrong hash!",
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -355,7 +353,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         assertThat(errors.size()).isEqualTo(2);
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Certificate present in root catalog despite the TOSCA.meta file",
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -374,7 +372,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Certificate present in root catalog despite the TOSCA.meta file",
             "Source 'Artifacts/Deployment/Yang_module/yang-module1.yang' has wrong hash!",
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -391,7 +389,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -444,7 +442,7 @@ public class VTPValidateCSARR130206IntegrationTest {
         // This test returns other errors that are connected with missing tosca entry,
         // in order to simplify testing, assertion only checks if certificate in root was found and used to validate CMS
         assertThat(convertToMessagesList(errors)).contains(
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -480,7 +478,25 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
 
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnErrorWhenCertIsPresentInCmsAndIndividualArtifactHaveIncorrectSignature() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid-with-incorrect-signature-of-individual-artifact.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Manifest file has invalid signature!",
+            "Source 'Files/Scripts/my_script.sh' has incorrect signature!"
         );
     }
 
@@ -498,8 +514,9 @@ public class VTPValidateCSARR130206IntegrationTest {
 
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
             "Source 'Files/Scripts/my_script.sh' has certificate tag, but unable to find signature tag!",
+            "Source 'Files/Scripts/my_script.sh' has 'certificate' tag, pointing to non existing file!. Pointed file 'Files/Scripts/my_script.cert'",
             "Source 'Files/pnf-sw-information/pnf-sw-information.yaml' has signature tag, but unable to find certificate tag!",
-            "File has invalid signature!"
+            "Manifest file has invalid signature!"
         );
     }
 
@@ -516,17 +533,17 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
 
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
-            "Source 'Files/Yang_module/mynetconf.yang' has signature tag, pointing to non existing file!",
-            "Source 'Files/Yang_module/mynetconf.yang' has certificate tag, pointing to non existing file!",
-            "File has invalid signature!"
+            "Source 'Files/Yang_module/mynetconf.yang' has 'signature' tag, pointing to non existing file!. Pointed file 'Files/Yang_module/mynetconf.sig.cms'",
+            "Source 'Files/Yang_module/mynetconf.yang' has 'certificate' tag, pointing to non existing file!. Pointed file 'Files/Yang_module/mynetconf.cert'",
+            "Manifest file has invalid signature!"
         );
     }
 
     @Test
-    public void shouldReturnErrorWhenCertIsPresentInCmsAndIndividualArtifactHaveIncorrectSignature() throws Exception {
+    public void shouldReturnErrorWhenCertIsPresentInCmsAndIndividualArtifactHaveSignatureInWrongDirectory() throws Exception {
 
         // given
-        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid-with-incorrect-signature-of-individual-artifact.csar");
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid-with-signature-for-individual-artifact-in-wrong-directory.csar");
 
         // when
         testCase.execute();
@@ -535,8 +552,64 @@ public class VTPValidateCSARR130206IntegrationTest {
         List<CSARArchive.CSARError> errors = testCase.getErrors();
 
         assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
-            "Source 'Files/ChangeLog.txt' has incorrect signature!",
-            "File has invalid signature!"
+            "Source 'Files/ChangeLog.txt' has 'signature' file located in wrong directory, directory: 'Files/pnf-sw-information/pnf-sw-information.sig.cms'.Signature should be in same directory as source file!",
+            "Source 'Files/ChangeLog.txt' has 'certificate' file located in wrong directory, directory: 'Files/pnf-sw-information/pnf-sw-information.cert'.Signature should be in same directory as source file!",
+            "Manifest file has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnErrorWhenCertIsPresentInCmsAndIndividualArtifactHaveSignatureWithIncorrectName() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid-with-signature-with-wrong-name-for-individual-artifact.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Source 'Files/ChangeLog.txt' has 'signature' file with wrong name, signature name: 'pnf-sw-information.sig.cms'.Signature should have same name as source file!",
+            "Source 'Files/ChangeLog.txt' has 'certificate' file with wrong name, signature name: 'pnf-sw-information.cert'.Signature should have same name as source file!",
+            "Manifest file has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldUseCommonCertWhenCertIsPresentInToscaAndIndividualArtifactHaveOnlySignature() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-tosca-individual-signature.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Manifest file has invalid signature!",
+            "Source 'Artifacts/Other/my_script.csh' has incorrect signature!"
+        );
+    }
+
+    @Test
+    public void shouldReportErrorWhenCertIsPresentInToscaAndIndividualArtifactHaveSignatureAndIncorrectCert() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-tosca-individual-signature-nonexistent-cert.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Manifest file has invalid signature!",
+            "Source 'Artifacts/Other/my_script.csh' has 'certificate' tag, pointing to non existing file!. Pointed file 'Artifacts/Other/my_script.cert'"
         );
     }
 

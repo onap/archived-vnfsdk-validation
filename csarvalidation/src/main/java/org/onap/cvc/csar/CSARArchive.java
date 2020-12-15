@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Verify the CSAR package by following the SOL004 specifications and ONAP VNFREQS for TOSCA.
@@ -782,11 +783,13 @@ public class CSARArchive implements AutoCloseable {
         }
 
         public Map<String, Map<String, List<String>>> getNonMano() {
-            return nonMano;
+            return Map.copyOf(nonMano);
         }
 
         public void setNonMano(Map<String, Map<String, List<String>>> nonMano) {
-            this.nonMano = nonMano;
+            this.nonMano = nonMano.entrySet().stream()
+                .filter(mapEntry -> mapEntry.getKey() != null && mapEntry.getValue() != null)
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
             this.isNonManoAvailable = true;
         }
 

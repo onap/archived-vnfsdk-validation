@@ -22,6 +22,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.zip.ZipFile;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -186,4 +188,27 @@ public final class FileUtil {
         }
         return isFileDeleted;
     }
+
+    public static boolean filesAreInSameDirectory(Path firstFile, Path secondFile) {
+        return firstFile.getParent().equals(secondFile.getParent());
+    }
+
+    public static boolean filesHaveSameNamesIgnoringExtensions(Path firstFile, Path secondFile) {
+        return getFileNameWithoutExtension(firstFile).equals(getFileNameWithoutExtension(secondFile));
+    }
+
+    public static String getFileNameWithoutExtension(Path file){
+        String fileName = file.getFileName().toString();
+        return getFileNameWithoutExtension(fileName);
+    }
+
+    public static String getFileNameWithoutExtension(String fileName){
+        int firstDotPosition =  fileName.indexOf(".");
+        return fileName.substring(0, firstDotPosition);
+    }
+
+    public static boolean fileHaveOneOfExtensions(Path file, String[] extensions) {
+        return Arrays.stream(extensions).anyMatch(extension -> file.toString().endsWith(extension));
+    }
+
 }
