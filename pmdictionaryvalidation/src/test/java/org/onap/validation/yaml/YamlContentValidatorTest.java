@@ -29,16 +29,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.onap.validation.yaml.YamlLoadingUtils.PATH_TO_MULTI_DOCUMENT_INVALID_YAML;
 import static org.onap.validation.yaml.YamlLoadingUtils.PATH_TO_VALID_JSON_STYLE_YAML;
-import static org.onap.validation.yaml.YamlLoadingUtils.PATH_TO_VALID_YAML;
+import static org.onap.validation.yaml.YamlLoadingUtils.PATH_TO_YAML_WITH_WRONG_VALUES;
 import static org.onap.validation.yaml.YamlLoadingUtils.readFile;
 
 class YamlContentValidatorTest {
+
+    final YamlContentValidator yamlContentValidator = new YamlContentValidator();
+
     @Nested
     class FromStringPathValidator {
         @Test
         void shouldReturnCorrectErrorsWhenGivenPathToValidPmDictionaryFile() throws YamlProcessingException {
             // given
-            String path = getFullPathForGivenResources(PATH_TO_VALID_YAML);
+            String path = getFullPathForGivenResources(PATH_TO_YAML_WITH_WRONG_VALUES);
 
             // when
             List<YamlDocumentValidationError> validationErrors = new YamlContentValidator().validate(path);
@@ -65,7 +68,7 @@ class YamlContentValidatorTest {
             String path = getFullPathForGivenResources(PATH_TO_MULTI_DOCUMENT_INVALID_YAML);
 
             //when then
-            assertThatThrownBy(() -> new YamlContentValidator().validate(path))
+            assertThatThrownBy(() -> yamlContentValidator.validate(path))
                     .isInstanceOf(ParserException.class)
                     .hasMessageContaining("expected the node content, but found '<document end>'");
         }
@@ -76,7 +79,7 @@ class YamlContentValidatorTest {
             String path = "invalid/path/to/pm_dictionary";
 
             //when then
-            assertThatThrownBy(() -> new YamlContentValidator().validate(path))
+            assertThatThrownBy(() -> yamlContentValidator.validate(path))
                     .isInstanceOf(YamlProcessingException.class)
                     .hasMessageContaining("PM_Dictionary YAML file is empty");
         }
@@ -87,7 +90,7 @@ class YamlContentValidatorTest {
         @Test
         void shouldReturnCorrectErrorsWhenGivenPmDictionaryFileWithErrors() throws YamlProcessingException, IOException {
             // given
-            byte[] yaml = readFile(PATH_TO_VALID_YAML);
+            byte[] yaml = readFile(PATH_TO_YAML_WITH_WRONG_VALUES);
 
             // when
             List<YamlDocumentValidationError> validationErrors = new YamlContentValidator().validate(yaml);

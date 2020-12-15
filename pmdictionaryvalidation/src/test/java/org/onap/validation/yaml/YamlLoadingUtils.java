@@ -39,7 +39,7 @@ public final class YamlLoadingUtils {
     public static final int YAML_DOCUMENT_WITH_WRONG_VALUE_IN_ARRAY_INDEX = 3;
     public static final int YAML_DOCUMENT_WITH_MISSING_FIELD_INDEX = 2;
     public static final int YAML_DOCUMENT_WITH_MISSING_FIELD_AND_WRONG_VALUE_INDEX = 1;
-    public static final String PATH_TO_VALID_YAML = "yaml_schema/PM_Dictionary.yaml";
+    public static final String PATH_TO_YAML_WITH_WRONG_VALUES = "yaml_schema/PM_Dictionary.yaml";
     public static final String PATH_TO_VALID_JSON_STYLE_YAML = "yaml_schema/PM_Dictionary_JSON_Style.yaml";
     public static final String PATH_TO_SIMPLE_VALID_SCHEMA = "yaml_schema/Simple_Valid_Schema.yaml";
     public static final String PATH_TO_SIMPLE_VALID_SCHEMA_MULTI_ROOT = "yaml_schema/Simple_Valid_Schema_Multi_Root.yaml";
@@ -50,7 +50,7 @@ public final class YamlLoadingUtils {
     public static final String PATH_TO_INVALID_YAML_WITH_UNKNOWN_ESCAPE_CHARACTER = "yaml_schema/Simple_Unknown_Escape_Character.yaml";
 
     public static List<YamlDocument> loadValidMultiDocumentYamlFile() throws YamlDocumentParsingException {
-        return YAML_LOADER.loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_VALID_YAML));
+        return YAML_LOADER.loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_YAML_WITH_WRONG_VALUES));
     }
 
     public static List<YamlDocument> loadValidJsonStyleMultiDocumentYamlFile() throws YamlDocumentParsingException {
@@ -58,7 +58,7 @@ public final class YamlLoadingUtils {
     }
 
     public static List<YamlDocument> loadValidMultiDocumentYamlFileUsingStringPath() throws YamlProcessingException {
-        return YAML_LOADER.loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_VALID_YAML).getPath());
+        return YAML_LOADER.loadMultiDocumentYamlFile(getUrlForGivenPath(PATH_TO_YAML_WITH_WRONG_VALUES).getPath());
     }
 
     public static YamlDocument loadSimpleValidYamlSchemaFile() throws YamlDocumentParsingException {
@@ -98,7 +98,7 @@ public final class YamlLoadingUtils {
         return Files.readAllBytes(Path.of(file));
     }
 
-    private static URL getUrlForGivenPath(String path) {
+    public static URL getUrlForGivenPath(String path) {
         return YamlLoadingUtils.class.getClassLoader().getResource(path);
     }
 }
