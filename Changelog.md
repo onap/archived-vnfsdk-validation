@@ -116,3 +116,5 @@ All notable changes to this project will be documented in this file.
 ## Added
 - Possibility to add certificate and signature per artifact in manifest file. 
     - https://jira.onap.org/browse/VNFSDK-714
+- Possibility to validate PM_Dictionary using CLI operation
+    - https://jira.onap.org/browse/VNFSDK-715

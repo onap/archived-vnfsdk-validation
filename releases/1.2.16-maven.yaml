@@ -1,0 +1,5 @@
+---
+distribution_type: maven
+version: '1.2.16'
+project: 'vnfsdk-validation'
+log_dir: 'vnfsdk-validation-maven-stage-master/546'
