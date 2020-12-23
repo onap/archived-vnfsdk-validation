@@ -1,0 +1,225 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cde022a6_1d11d269",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "make it final and init inline",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c2c474d_b986b566",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "pls move this init to class field",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "140ff17b_270e575a",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "from my point of view it will be better to prepare methods which will do not have an impact at object state. Validation method should returns list of errors. And parent should process the result.",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "015bf903_bc61d813",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "pls be consistent: use this.error",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db4ce421_136e337f",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "magic number, pls fix it",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e48f590e_85c6bce8",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "this.errors",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "599b4f21_eaacd9f3",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "this.errors",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b86ef960_10bfe267",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourceSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "make it final and init",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c04c5e7_1b4f67cd",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourceSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "move to field init",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "692c7e34_b5ddc6a9",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourceSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "extract to method which will return signature",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1baed8a2_c142e09e",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourcesSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "make it final and init",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bcf76e2_f6c7a3ad",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourcesSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "pls move to field init",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9606ec46_98c18f40",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourcesSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-23T06:41:13Z",
+      "side": 1,
+      "message": "from my point of view it will be better to prepare methods which will do not have an impact at object state. Validation methods should return list of errors. And parent should process the result.",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
