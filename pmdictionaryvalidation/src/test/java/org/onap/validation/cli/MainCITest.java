@@ -28,7 +28,7 @@ import org.onap.validation.cli.command.validate.ResponseStorage;
 import org.onap.validation.cli.core.Cli;
 import org.onap.validation.cli.core.CommandException;
 import org.onap.validation.cli.core.Console;
-import org.onap.validation.cli.util.ToResponseModelConverter;
+import org.onap.validation.cli.command.validate.ToResponseModelConverter;
 import org.onap.validation.yaml.YamlLoadingUtils;
 
 import java.io.IOException;
