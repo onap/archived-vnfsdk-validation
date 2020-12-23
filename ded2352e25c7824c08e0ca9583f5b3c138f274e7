@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6954bbd9_d76fe846",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cde022a6_1d11d269",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3c2c474d_b986b566",
         "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "707b6227_694c106f",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c2c474d_b986b566",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "42e44984_46f1b446",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "140ff17b_270e575a",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "015bf903_bc61d813",
         "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
         "patchSetId": 3
@@ -67,6 +121,24 @@
       "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "527c5b50_df2825b3",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "015bf903_bc61d813",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "345d4fe7_ce09e285",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db4ce421_136e337f",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e48f590e_85c6bce8",
         "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
         "patchSetId": 3
@@ -101,6 +191,24 @@
       "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44630a01_40dccf47",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e48f590e_85c6bce8",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "0788c523_08ed9e6b",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "599b4f21_eaacd9f3",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b86ef960_10bfe267",
         "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourceSecurityValidator.java",
         "patchSetId": 3
@@ -135,6 +261,24 @@
       "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "771ed20e_260a7b24",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourceSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b86ef960_10bfe267",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "43dc31f7_db657eda",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourceSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c04c5e7_1b4f67cd",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "692c7e34_b5ddc6a9",
         "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourceSecurityValidator.java",
         "patchSetId": 3
@@ -169,6 +331,24 @@
       "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e2d6380_c48e3839",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourceSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "692c7e34_b5ddc6a9",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -189,6 +369,24 @@
     },
     {
       "key": {
+        "uuid": "d2b1891e_d48140b1",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourcesSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1baed8a2_c142e09e",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5bcf76e2_f6c7a3ad",
         "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourcesSecurityValidator.java",
         "patchSetId": 3
@@ -206,6 +404,24 @@
     },
     {
       "key": {
+        "uuid": "cc2b0756_c64b1b1f",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourcesSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5bcf76e2_f6c7a3ad",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9606ec46_98c18f40",
         "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourcesSecurityValidator.java",
         "patchSetId": 3
@@ -220,6 +436,24 @@
       "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "937727b2_ecb80a20",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourcesSecurityValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2020-12-23T13:46:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9606ec46_98c18f40",
+      "revId": "ded2352e25c7824c08e0ca9583f5b3c138f274e7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
