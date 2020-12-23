@@ -37,4 +37,12 @@ public class CommandResponse<T> {
     public enum CommandStatus {
         PASS, FAILED
     }
+
+    @Override
+    public String toString() {
+        return "CommandResponse{" +
+                "result=" + result +
+                ", commandStatus=" + commandStatus +
+                '}';
+    }
 }

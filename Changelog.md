@@ -120,3 +120,5 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-715
 
 ## [1.2.17]
+- Add oclip command to trigger pm_dictionary validation
+  - https://jira.onap.org/browse/VNFSDK-721
