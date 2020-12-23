@@ -14,11 +14,10 @@
  * limitations under the License.
  *
  */
-package org.onap.validation.cli.util;
+package org.onap.validation.cli.command.validate;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.onap.validation.cli.command.validate.ResponseModel;
 
 public final class ToResponseModelConverter {
 
