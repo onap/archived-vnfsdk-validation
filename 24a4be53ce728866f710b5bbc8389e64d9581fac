@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "62a0e185_09442d7e",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/CsarSourcesSecurityValidator.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-28T07:22:40Z",
+      "side": 1,
+      "message": "make a copy of lists",
+      "revId": "24a4be53ce728866f710b5bbc8389e64d9581fac",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92e7350a_23ac1f48",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/artifact/ValidatedSecurityFile.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-28T07:22:40Z",
+      "side": 1,
+      "message": "you should make a copy of list",
+      "revId": "24a4be53ce728866f710b5bbc8389e64d9581fac",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "49613a73_92e6c4b7",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol004/r130206/artifact/ValidatedSecurityFile.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-12-28T07:22:40Z",
+      "side": 1,
+      "message": "pls return unmodifiable list",
+      "revId": "24a4be53ce728866f710b5bbc8389e64d9581fac",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
