@@ -124,5 +124,7 @@ All notable changes to this project will be documented in this file.
 ## Added
 - Possibility to use a common certificate for individual signature per artifact in manifest file. 
     - https://jira.onap.org/browse/VNFSDK-714
+
+## [1.2.18]
 - Add oclip command to trigger pm_dictionary validation
     - https://jira.onap.org/browse/VNFSDK-721
