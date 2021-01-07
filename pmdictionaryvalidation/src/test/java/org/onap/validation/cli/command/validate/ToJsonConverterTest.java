@@ -22,7 +22,8 @@ import org.onap.validation.yaml.error.YamlDocumentValidationError;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.onap.validation.cli.util.ToResponseModelConverter.toModel;
+import static org.onap.validation.cli.command.validate.ToResponseModelConverter.toModel;
+
 
 class ToJsonConverterTest {
 

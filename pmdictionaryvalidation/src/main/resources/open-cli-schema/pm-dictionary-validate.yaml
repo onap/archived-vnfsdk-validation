@@ -1,0 +1,63 @@
+# Copyright 2020 Nokia
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+open_cli_schema_version: 1.0
+
+name: pm-dictionary-validate
+
+description: Validate PM Dictionary Yaml file
+
+info:
+  product: onap-honolulu
+  version: 1.0
+  service: vnf-compliance
+  author: ONAP VTP Team onap-discuss@lists.onap.org
+
+parameters:
+    - name: yaml
+      description: Yaml file path
+      long_option: yaml
+      short_option: b
+      type: binary
+      is_optional: false
+
+results:
+    direction: portrait
+    attributes:
+     - name: file
+       description: PM Dictionary Yaml file
+       scope: short
+       type: string
+     - name: date
+       description: Validation date
+       scope: short
+       type: string
+     - name: platform
+       description: Platform used to test the reqs
+       scope: short
+       type: string
+       default_value: PM Dictionary Test Platform (VTP) 1.0
+     - name: contact
+       description: Owner for this test case
+       scope: short
+       type: string
+       default_value: ONAP VTP Team onap-discuss@lists.onap.org
+     - name: criteria
+       description: Overall test reqs passed? PASS or FAILED
+       scope: short
+       type: string
+     - name: errors
+       description: All test cases errors
+       scope: short
+       type: json
