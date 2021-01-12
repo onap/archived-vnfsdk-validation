@@ -24,23 +24,21 @@ import org.bouncycastle.cms.CMSProcessableByteArray;
 import org.bouncycastle.cms.CMSSignedData;
 import org.bouncycastle.cms.CMSTypedData;
 import org.bouncycastle.cms.SignerInformation;
-import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.util.Store;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Optional;
 
 public class CmsSignatureDataFactory {
 
-    public CmsSignatureData createForFirstSigner(final byte[] cmsSignature, final byte[] fileContent)
-    throws CmsSignatureLoadingException{
+    private final SignatureFactory signatureFactory = new SignatureFactory();
 
-        try (ByteArrayInputStream cmsSignatureStream = new ByteArrayInputStream(cmsSignature)) {
-            CMSSignedData signedData = getCMSSignedData(fileContent, cmsSignatureStream);
+    public CmsSignatureData createForFirstSigner(final byte[] cmsSignature, final byte[] fileContent)
+        throws CmsSignatureLoadingException {
+
+        try {
+            CMSSignedData signedData = getCMSSignedData(fileContent, cmsSignature);
             Collection<SignerInformation> signers = signedData.getSignerInfos().getSigners();
             Store<X509CertificateHolder> certificates = signedData.getCertificates();
             SignerInformation firstSigner = getFirstSigner(signers);
@@ -73,19 +71,10 @@ public class CmsSignatureDataFactory {
         return cert;
     }
 
-
-    private CMSSignedData getCMSSignedData(byte[] innerPackageFileCSAR, ByteArrayInputStream signatureStream) throws IOException, CmsSignatureLoadingException, CMSException {
-        ContentInfo signature = produceSignature(signatureStream);
+    private CMSSignedData getCMSSignedData(byte[] innerPackageFileCSAR, byte[] signatureStream) throws IOException, CmsSignatureLoadingException, CMSException {
+        ContentInfo signature = signatureFactory.createSignature(signatureStream);
         CMSTypedData signedContent = new CMSProcessableByteArray(innerPackageFileCSAR);
         return new CMSSignedData(signedContent, signature);
-    }
-
-    private ContentInfo produceSignature(ByteArrayInputStream signatureStream) throws IOException, CmsSignatureLoadingException {
-        Object parsedObject = new PEMParser(new InputStreamReader(signatureStream, Charset.defaultCharset())).readObject();
-        if (!(parsedObject instanceof ContentInfo)) {
-            throw new CmsSignatureLoadingException("Signature is not recognized!");
-        }
-        return ContentInfo.getInstance(parsedObject);
     }
 
 }

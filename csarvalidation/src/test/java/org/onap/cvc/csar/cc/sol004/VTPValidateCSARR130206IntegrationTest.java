@@ -630,7 +630,95 @@ public class VTPValidateCSARR130206IntegrationTest {
         );
     }
 
+    @Test
+    public void shouldReturnNoErrorWhenIndividualArtifactHaveP7Signature() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid-with-signature-of-individual-artifact-p7.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Manifest file has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnNoErrorWhenIndividualArtifactHaveP7SignatureInDERFormat() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid-with-signature-of-individual-artifact-p7-DER.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Manifest file has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnNoErrorWhenIndividualArtifactHaveP7SignatureAndUsesCommonCert() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-tosca-individual-p7-signature-common-cert-valid.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Manifest file has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnErrorWhenIndividualArtifactHaveInvalidP7Signature() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-invalid-with-signature-of-individual-artifact-p7.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Source 'Files/Yang_module/mynetconf.yang' has incorrect signature!",
+            "Manifest file has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnErrorWhenIndividualArtifactHaveInvalidP7SignatureAndUsesCommonCert() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-tosca-individual-p7-signature-common-cert-invalid.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Source 'Files/Yang_module/mynetconf.yang' has incorrect signature!",
+            "Manifest file has invalid signature!"
+        );
+    }
+
     private void configureTestCaseForRule130206(String filePath) throws OnapCommandException, URISyntaxException {
         configureTestCase(testCase, filePath, VTP_VALIDATE_SCHEMA, IS_PNF);
     }
+
 }

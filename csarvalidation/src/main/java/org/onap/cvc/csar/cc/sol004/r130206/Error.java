@@ -170,9 +170,9 @@ public class Error {
 
     public static class CSARErrorFailToLoadArtifactSignature extends CSARArchive.CSARError {
 
-        public CSARErrorFailToLoadArtifactSignature(String path, String cms) {
+        public CSARErrorFailToLoadArtifactSignature(String source, String signature) {
             super("0x4019");
-            this.message = String.format("Fail to load signature '%s', for source '%s'!", path, cms);
+            this.message = String.format("Fail to load signature '%s', for source '%s'!", signature, source);
         }
     }
 

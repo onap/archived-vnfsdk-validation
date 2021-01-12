@@ -33,7 +33,7 @@ import java.util.List;
 public class CsarSourceSecurityValidator {
 
     public static final String SIGNATURE_FILE_TYPE = "signature";
-    private static final String[] ARTIFACT_SIGNATURE_EXTENSIONS = {".sig.cms"};
+    private static final String[] ARTIFACT_SIGNATURE_EXTENSIONS = {".sig.cms",".sig.p7b",".sig.p7c"};
     public static final String CERTIFICATE_FILE_TYPE = "certificate";
     private static final String[] ARTIFACT_CERTIFICATE_EXTENSIONS = {".cert"};
 
