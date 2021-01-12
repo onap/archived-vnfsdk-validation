@@ -29,6 +29,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.configureTestCase;
 import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.convertToMessagesList;
+import static org.onap.functional.CsarValidationUtility.CERTIFICATION_RULE;
+import static org.onap.functional.CsarValidationUtility.createExpectedError;
 
 
 public class VTPValidateCSARR130206IntegrationTest {
@@ -630,7 +632,119 @@ public class VTPValidateCSARR130206IntegrationTest {
         );
     }
 
+    @Test
+    public void shouldReturnNoErrorWhenIndividualArtifactHaveP7Signature() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid-with-signature-of-individual-artifact-p7.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Manifest file has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnNoErrorWhenIndividualArtifactHaveP7SignatureInDERFormat() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-valid-with-signature-of-individual-artifact-p7-DER.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Manifest file has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnNoErrorWhenIndividualArtifactHaveP7SignatureAndUsesCommonCert() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-tosca-individual-p7-signature-common-cert-valid.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Manifest file has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnErrorWhenIndividualArtifactHaveInvalidP7Signature() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-cms-invalid-with-signature-of-individual-artifact-p7.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Source 'Files/Yang_module/mynetconf.yang' has incorrect signature!",
+            "Manifest file has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnErrorWhenIndividualArtifactHaveInvalidP7SignatureAndUsesCommonCert() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-tosca-individual-p7-signature-common-cert-invalid.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Source 'Files/Yang_module/mynetconf.yang' has incorrect signature!",
+            "Manifest file has invalid signature!"
+        );
+    }
+
+    @Test
+    public void shouldReturnMultipleErrorsWhenMultipleIndividualArtifactsHaveInvalidSecurityData() throws Exception {
+
+        // given
+        configureTestCaseForRule130206("pnf/r130206/csar-cert-in-tosca-multiple-individual-signature.csar");
+
+        // when
+        testCase.execute();
+
+        // then
+        List<CSARArchive.CSARError> errors = testCase.getErrors();
+        assertThat(convertToMessagesList(errors)).containsExactlyInAnyOrder(
+            "Source 'Artifacts/Deployment/Events/RadioNode_Pnf_v1.yaml' has wrong hash!",
+            "Source 'Artifacts/Deployment/Events/RadioNode_Pnf_v2.yaml' has incorrect signature!",
+            "Source 'Artifacts/Deployment/Measurements/PM_Dictionary.yml' has 'signature' tag, pointing to non existing file!. Pointed file 'Artifacts/Deployment/Measurements/PM_Dictionary.sig.cms'",
+            "Source 'Artifacts/Deployment/Yang_module/yang-module1.yang' has 'signature' file with wrong name, signature name: 'yang-module.sig.cms'.Signature should have same name as source file!",
+            "Source 'Artifacts/Deployment/Yang_module/yang-module1.yang' has 'certificate' file with wrong name, signature name: 'yang-module.cert'.Signature should have same name as source file!",
+            "Source 'Artifacts/Other/my_script.csh' has incorrect signature!",
+            "Source 'Artifacts/Informational/user_guide.txt' has 'signature' file located in wrong directory, directory: 'Artifacts/user_guide.sig.cms'.Signature should be in same directory as source file!",
+            "Source 'Artifacts/Informational/user_guide.txt' has 'certificate' file located in wrong directory, directory: 'Artifacts/user_guide.cert'.Signature should be in same directory as source file!",
+            "Manifest file has invalid signature!"
+        );
+    }
+
     private void configureTestCaseForRule130206(String filePath) throws OnapCommandException, URISyntaxException {
         configureTestCase(testCase, filePath, VTP_VALIDATE_SCHEMA, IS_PNF);
     }
+
 }

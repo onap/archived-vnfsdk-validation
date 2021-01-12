@@ -258,10 +258,10 @@ public class PnfValidationFunctionalTest {
             assertThat(ruleValidationResult.warnings).isEmpty();
             if (ruleValidationResult.vnfreqName.equals(CERTIFICATION_RULE)) {
                 assertThat(ruleValidationResult.errors)
-                    .containsAll(expectedCertificationErrors);
+                    .containsExactlyInAnyOrderElementsOf(expectedCertificationErrors);
             } else if (ruleValidationResult.vnfreqName.equals(MANIFEST_FILE_RULE)) {
                 assertThat(ruleValidationResult.errors)
-                    .containsAll(expectedManifestErrors);
+                    .containsExactlyInAnyOrderElementsOf(expectedManifestErrors);
             } else {
                 assertThat(ruleValidationResult.errors).isEmpty();
             }
@@ -274,6 +274,10 @@ public class PnfValidationFunctionalTest {
         // given
         List<OnapCliValidationResponseWrapper.ValidationResultWrapper.ValidationErrorWrapper> expectedCertificationErrors =
             List.of(
+                createExpectedError(CERTIFICATION_RULE, "0x4004",
+                "Source 'Artifacts/Deployment/Events/RadioNode_Pnf_v1.yaml' has wrong hash!"),
+                createExpectedError(CERTIFICATION_RULE, "0x4020",
+                    "Source 'Artifacts/Deployment/Events/RadioNode_Pnf_v2.yaml' has incorrect signature!"),
                 createExpectedError(CERTIFICATION_RULE, "0x4018",
                     "Source 'Artifacts/Deployment/Measurements/PM_Dictionary.yml' has 'signature' tag, pointing to non existing file!. Pointed file 'Artifacts/Deployment/Measurements/PM_Dictionary.sig.cms'"),
                 createExpectedError(CERTIFICATION_RULE, "0x4023",
@@ -338,19 +342,19 @@ public class PnfValidationFunctionalTest {
             switch (ruleValidationResult.vnfreqName) {
                 case CERTIFICATION_RULE:
                     assertThat(ruleValidationResult.errors)
-                        .containsAll(expectedCertificationErrors);
+                        .containsExactlyInAnyOrderElementsOf(expectedCertificationErrors);
                     break;
                 case MANIFEST_FILE_RULE:
                     assertThat(ruleValidationResult.errors)
-                        .containsAll(expectedManifestErrors);
+                        .containsExactlyInAnyOrderElementsOf(expectedManifestErrors);
                     break;
                 case PM_DICTIONARY_YAML_RULE:
                     assertThat(ruleValidationResult.errors)
-                        .containsAll(expectedPnfDictionaryErrors);
+                        .containsExactlyInAnyOrderElementsOf(expectedPnfDictionaryErrors);
                     break;
                 case NON_MANO_FILES_RULE:
                     assertThat(ruleValidationResult.errors)
-                        .containsAll(expectedNonManoFilesErrors);
+                        .containsExactlyInAnyOrderElementsOf(expectedNonManoFilesErrors);
                     break;
                 default:
                     assertThat(ruleValidationResult.errors).isEmpty();
