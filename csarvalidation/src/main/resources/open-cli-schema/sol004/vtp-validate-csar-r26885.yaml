@@ -23,10 +23,12 @@ description: |
   Note: Currently, ONAP doesn’t have the capability of Image management, we upload the image into VIM/VNFM manually.
 
 info:
-  product: onap-dublin
+  product: onap-vtp
   version: 1.0
   service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  metadata:
+    release: dublin
 
 parameters:
     - name: csar

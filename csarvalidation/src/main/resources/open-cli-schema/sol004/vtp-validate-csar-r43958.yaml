@@ -19,10 +19,12 @@ name: csar-validate-r43958
 description: The VNF Package MUST include documentation describing the tests that were conducted by the VNF provider and the test results.
 
 info:
-  product: onap-dublin
+  product: onap-vtp
   version: 1.0
   service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  metadata:
+    release: dublin
 
 parameters:
     - name: csar

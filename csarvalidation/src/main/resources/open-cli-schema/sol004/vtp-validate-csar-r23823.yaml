@@ -19,10 +19,12 @@ name: csar-validate-r23823
 description: The VNF Package MUST include appropriate credentials so that ONAP can interact with the Chef Server
 
 info:
-  product: onap-dublin
+  product: onap-vtp
   version: 1.0
   service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  metadata:
+    release: dublin
 
 parameters:
     - name: csar

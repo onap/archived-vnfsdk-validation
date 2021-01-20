@@ -22,10 +22,12 @@ description: |
   and interfaces requirements and MUST comply with info elements specified in ETSI GS NFV-IFA 011.
 
 info:
-  product: onap-dublin
+  product: onap-vtp
   version: 1.0
   service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  metadata:
+    release: dublin
 
 parameters:
     - name: csar

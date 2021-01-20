@@ -21,10 +21,12 @@ description: |
   required to execute VNF actions requested by ONAP for loading on appropriate Chef Server.
 
 info:
-  product: onap-dublin
+  product: onap-vtp
   version: 1.0
   service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  metadata:
+    release: dublin
 
 parameters:
     - name: csar

@@ -19,10 +19,12 @@ name: csar-validate-r40293
 description: The VNF MUST make available (or load on VNF Ansible Server) playbooks that conform to the ONAP requirement.
 
 info:
-  product: onap-dublin
+  product: onap-vtp
   version: 1.0
   service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  metadata:
+    release: dublin
 
 parameters:
     - name: csar

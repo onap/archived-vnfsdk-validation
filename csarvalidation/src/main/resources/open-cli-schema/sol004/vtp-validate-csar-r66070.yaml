@@ -23,10 +23,12 @@ description: |
   VNF provider, and version
 
 info:
-  product: onap-dublin
+  product: onap-vtp
   version: 1.0
   service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  metadata:
+    release: casablanca
 
 parameters:
     - name: csar

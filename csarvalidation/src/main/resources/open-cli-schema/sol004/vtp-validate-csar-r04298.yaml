@@ -19,10 +19,12 @@ name: csar-validate-r04298
 description: VNF provider MUST provider their testing scripts to support testing
 
 info:
-  product: onap-dublin
+  product: onap-vtp
   version: 1.0
   service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  metadata:
+    release: casablanca
 
 parameters:
     - name: csar

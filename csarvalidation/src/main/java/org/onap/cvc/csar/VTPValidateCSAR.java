@@ -18,19 +18,21 @@ package org.onap.cvc.csar;
 
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.onap.cli.fw.cmd.OnapCommand;
 import org.onap.cli.fw.error.OnapCommandException;
 import org.onap.cli.fw.error.OnapCommandExecutionFailed;
-import org.onap.cli.fw.error.OnapCommandInvalidParameterValue;
-import org.onap.cli.fw.input.OnapCommandParameter;
 import org.onap.cli.fw.output.OnapCommandResultType;
-import org.onap.cli.fw.registrar.OnapCommandRegistrar;
 import org.onap.cli.fw.schema.OnapCommandSchema;
 import org.onap.cvc.csar.CSARArchive.CSARError;
+import org.onap.cvc.csar.oclip.CommandFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,9 +42,9 @@ import org.slf4j.LoggerFactory;
 @OnapCommandSchema(schema = "vtp-validate-csar.yaml")
 public class VTPValidateCSAR extends OnapCommand {
 
-    private static Gson gson = new Gson();
+    private static final Gson GSON = new Gson();
     private static final Logger LOG = LoggerFactory.getLogger(VTPValidateCSAR.class);
-    private static final String RULES_ATTRIBUTE_SEPARATOR = ",";
+    private static final String RELEASE_ATTRIBUTE_NAME = "release";
     private static final String PNF_ATTRIBUTE_NAME = "pnf";
     private static final String CSAR_ATTRIBUTE_NAME = "csar";
     private static final String RULES_ATTRIBUTE_NAME = "rules";
@@ -107,8 +109,8 @@ public class VTPValidateCSAR extends OnapCommand {
             private boolean passed;
             private String vnfreqName;
             private String description;
-            private List<CSARError> errors = new ArrayList<>();
-            private List<CSARError> warnings = new ArrayList<>();
+            private final List<CSARError> errors = new ArrayList<>();
+            private final List<CSARError> warnings = new ArrayList<>();
 
             public boolean isPassed() {
                 return passed;
@@ -148,6 +150,14 @@ public class VTPValidateCSAR extends OnapCommand {
 
             public void addErrorAsWarning(CSARError error) {
                 this.warnings.add(error);
+            }
+
+            public void addErrors(List<CSARError> errors) {
+                this.errors.addAll(errors);
+            }
+
+            public void addErrorsAsWarnings(List<CSARError> warnings) {
+                this.warnings.addAll(warnings);
             }
         }
 
@@ -206,11 +216,11 @@ public class VTPValidateCSAR extends OnapCommand {
         }
     }
 
-    private static Properties properties = new Properties();
+    private static final Properties PROPERTIES = new Properties();
 
     static {
         try {
-            properties.load(VTPValidateCSAR.class.getResourceAsStream("/vnfreqs.properties"));
+            PROPERTIES.load(VTPValidateCSAR.class.getResourceAsStream("/vnfreqs.properties"));
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
@@ -219,13 +229,14 @@ public class VTPValidateCSAR extends OnapCommand {
     @Override
     protected void run() throws OnapCommandException {
         //Read the input arguments
-        String path = (String) getParametersMap().get(CSAR_ATTRIBUTE_NAME).getValue();
+        String release = (String) getParametersMap().get(RELEASE_ATTRIBUTE_NAME).getValue();
+        String pathToCsarFile = (String) getParametersMap().get(CSAR_ATTRIBUTE_NAME).getValue();
         boolean isPnf = (boolean) getParametersMap().get(PNF_ATTRIBUTE_NAME).getValue();
         String rulesToValidate = (String) getParametersMap().get(RULES_ATTRIBUTE_NAME).getValue();
 
         boolean overallPass = true;
         try (CSARArchive csar = isPnf ? new PnfCSARArchive() : new CSARArchive()) {
-            csar.init(path);
+            csar.init(pathToCsarFile);
             csar.parse();
 
             CSARValidation validation = createCsarValidationFor(csar);
@@ -248,26 +259,11 @@ public class VTPValidateCSAR extends OnapCommand {
 
             validation.getResults().add(resultSOL004);
 
-            String keyReqs = isPnf ? "pnfreqs.enabled" : "vnfreqs.enabled";
-            List<String> activeRules = this.getPropertiesList(keyReqs);
-            if(rulesToValidate.isEmpty()) {
-                // Run thru the vnfreqs requirement checks
-                for (String vnfreq : activeRules) {
-                    CSARValidation.Result result = new CSARValidation.Result();
-                    result.setVnfreqName(vnfreq);
-                    overallPass = validateVnfOrPnf(path, validation, ignoreCodes, vnfreq, result, isPnf, overallPass);
-                }
-            } else {
-                // Validate selected rules
-                String[] listOfRulesToValidate = rulesToValidate.split(RULES_ATTRIBUTE_SEPARATOR);
-                for (String rule : listOfRulesToValidate) {
-                    if(activeRules.contains(rule)) {
-                        CSARValidation.Result result = new CSARValidation.Result();
-                        result.setVnfreqName(rule);
-                        overallPass = validateVnfOrPnf(path, validation, ignoreCodes, rule, result, isPnf, overallPass);
-                    }
-                }
-            }
+            final Pair<Boolean, List<CSARValidation.Result>> validationResult =
+                    validate(pathToCsarFile, release, isPnf, ignoreCodes, new RulesToValidate(rulesToValidate));
+
+            overallPass &= validationResult.getLeft();
+            validation.getResults().addAll(validationResult.getRight());
 
             validation.setDate(new Date().toString());
             validation.setCriteria(overallPass ? "PASS" : "FAILED");
@@ -279,39 +275,15 @@ public class VTPValidateCSAR extends OnapCommand {
         }
     }
 
-    private boolean validateVnfOrPnf(String path, CSARValidation validation,
-        List<String> ignoreCodes, String vnfreq, CSARValidation.Result result, boolean isPnf, boolean overallPass) {
-        try {
-            String command = "csar-validate-" + vnfreq;
-            OnapCommand cmd = OnapCommandRegistrar.getRegistrar().get(command, this.getInfo().getProduct());
-            cmd.getParametersMap().get("csar").setValue(path);
-            setPnfValueIfAvailable(isPnf, cmd);
+    private Pair<Boolean,List<CSARValidation.Result>> validate(String path, String release, boolean isPnf, List<String> ignoreCodes, RulesToValidate rulesToValidate) {
+        final String keyReqs = isPnf ? "pnfreqs.enabled" : "vnfreqs.enabled";
+        final List<String> activeRules = this.getPropertiesList(keyReqs);
+        final String releasesOrder = PROPERTIES.getProperty("releases.order");
+        final ReleasesResolver releasesResolver = ReleasesResolver.create(releasesOrder);
+        final String product = this.getInfo().getProduct();
 
-            result.setDescription(cmd.getDescription());
-            cmd.execute();
-
-            for (CSARError error : (List<CSARError>) cmd.getResult().getOutput()) {
-                if (!isErrorIgnored(ignoreCodes, vnfreq, error)) {
-                    result.addError(error);
-                    overallPass = false;
-                } else {
-                    result.addErrorAsWarning(error);
-                }
-            }
-
-            result.setPassed(result.getErrors().isEmpty());
-            validation.getResults().add(result);
-        } catch (Exception e) {
-            result.setPassed(false);
-            overallPass = false;
-            result.addError(new CSARArchive.CSARErrorUnknown(e.getMessage()));
-            validation.getResults().add(result);
-        }
-        return overallPass;
-    }
-
-    private boolean isErrorIgnored(List<String> ignoreCodes, String vnfreq, CSARError error) {
-        return ignoreCodes.contains(error.getCode()) || ignoreCodes.contains(vnfreq + "-" + error.getCode());
+        return new CsarValidator(new CommandFactory(), ignoreCodes, activeRules, releasesResolver, rulesToValidate)
+                .validate(new CsarValidator.ValidationContext(path, product, release, isPnf));
     }
 
     static CSARValidation createCsarValidationFor(CSARArchive csar) {
@@ -325,33 +297,20 @@ public class VTPValidateCSAR extends OnapCommand {
         return validation;
     }
 
-    private void setOperationResult(CSARValidation validation) throws Exception { //NOSONAR
+    private void setOperationResult(CSARValidation validation) {
         this.getResult().getRecordsMap().get("vnf").getValues().add(
-            gson.toJson(validation.getVnf()));
+            GSON.toJson(validation.getVnf()));
         this.getResult().getRecordsMap().get("date").getValues().add(validation.getDate());
         this.getResult().getRecordsMap().get("criteria").getValues().add(validation.getCriteria());
         this.getResult().getRecordsMap().get("results").getValues().add(
-            gson.toJson(validation.getResults()));
+            GSON.toJson(validation.getResults()));
 
-        this.getResult().setOutput(gson.toJson(validation));
+        this.getResult().setOutput(GSON.toJson(validation));
         this.getResult().setType(OnapCommandResultType.TEXT);
     }
 
-    private void setPnfValueIfAvailable(boolean isPnf, OnapCommand cmd) throws OnapCommandInvalidParameterValue {
-        final OnapCommandParameter pnf = cmd.getParametersMap().get(PNF_ATTRIBUTE_NAME);
-        if (pnf != null) {
-            pnf.setValue(isPnf);
-        }
-    }
-
     private List<String> getPropertiesList(String key) {
-        String[] enabledReqs = properties.getProperty(key, "").split(",");
-        List<String> list = new ArrayList<>();
-        for (String req : enabledReqs) {
-            if (!req.isEmpty()) {
-                list.add(req);
-            }
-        }
-        return list;
+        String[] enabledReqs = PROPERTIES.getProperty(key, "").split(",");
+        return Arrays.stream(enabledReqs).filter(it->!it.isEmpty()).collect(Collectors.toList());
     }
 }

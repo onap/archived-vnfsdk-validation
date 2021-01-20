@@ -19,10 +19,12 @@ name: csar-validate-r77786
 description: The VNF Package MUST include all relevant cookbooks to be loaded on the ONAP Chef Server.
 
 info:
-  product: onap-dublin
+  product: onap-vtp
   version: 1.0
   service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  metadata:
+    release: casablanca
 
 parameters:
     - name: csar

@@ -20,13 +20,14 @@ description: |
   The VNF package MUST be arranged as a CSAR archive as specified in TOSCA Simple Profile in YAML 1.2.
 
 info:
-  product: onap-dublin
+  product: onap-vtp
   version: 1.0
   service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
   metadata:
     keyword: MUST
     introduced: casablanca
+    release: dublin
 
 parameters:
     - name: csar

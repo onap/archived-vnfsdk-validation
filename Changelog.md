@@ -138,3 +138,7 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-714
 
 ## [1.2.20]
+
+## Added
+- Adapt VNFSDK "product-name" behavior
+  - https://jira.onap.org/browse/VNFSDK-731

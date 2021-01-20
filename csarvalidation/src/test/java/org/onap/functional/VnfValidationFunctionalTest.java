@@ -1,6 +1,6 @@
-/**
+/*
  * Copyright 2017 Huawei Technologies Co., Ltd.
- * Copyright 2020 Nokia
+ * Copyright 2021 Nokia
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import java.net.URISyntaxException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.onap.cvc.csar.cc.sol004.IntegrationTestUtils.absoluteFilePath;
 import static org.onap.functional.CsarValidationUtility.OPERATION_STATUS_FAILED;
+import static org.onap.functional.CsarValidationUtility.OPERATION_STATUS_PASS;
 import static org.onap.functional.CsarValidationUtility.getCliCommandValidationResult;
 import static org.onap.functional.CsarValidationUtility.ruleHaveOneOfCodes;
 import static org.onap.functional.CsarValidationUtility.verifyThatOperationFinishedWithoutAnyError;
@@ -36,7 +37,7 @@ public class VnfValidationFunctionalTest {
     @Test
     public void shouldReportThanVnfValidationFailed() throws URISyntaxException {
         // given
-        OnapCliWrapper cli = new OnapCliWrapper(createVnfValidationRequestInfo("VoLTE.csar"));
+        OnapCliWrapper cli = new OnapCliWrapper(createVnfValidationRequestInfo("VoLTE.csar","latest"));
 
         // when
         cli.handle();
@@ -44,17 +45,17 @@ public class VnfValidationFunctionalTest {
         // then
         final OnapCliValidationResponseWrapper result = getCliCommandValidationResult(cli);
         assertThat(result.criteria).isEqualTo(OPERATION_STATUS_FAILED);
-        result.results.forEach((ruleValidationResult)->{
-            if ( ruleHaveOneOfCodes(ruleValidationResult.vnfreqName,
-                "r01123", "r09467")
+        result.results.forEach((ruleValidationResult) -> {
+            if (ruleHaveOneOfCodes(ruleValidationResult.vnfreqName,
+                    "r01123", "r09467")
             ) {
                 assertThat(ruleValidationResult.errors)
-                    .hasSize(2);
-            } else if ( ruleHaveOneOfCodes(ruleValidationResult.vnfreqName,
-                "r21322","r26885","r43958" ,"r66070","r130206")
+                        .hasSize(2);
+            } else if (ruleHaveOneOfCodes(ruleValidationResult.vnfreqName,
+                    "r21322", "r26885", "r43958", "r66070", "r130206")
             ) {
                 assertThat(ruleValidationResult.errors)
-                    .hasSize(1);
+                        .hasSize(1);
             } else {
                 assertThat(ruleValidationResult.errors).hasSize(0);
             }
@@ -63,13 +64,28 @@ public class VnfValidationFunctionalTest {
         verifyThatOperationFinishedWithoutAnyError(cli);
     }
 
-    private String[] createVnfValidationRequestInfo(String csarPath) throws URISyntaxException {
-        return new String[]{
-            "--product", "onap-dublin",
-            "csar-validate",
-            "--format", "json",
-            "--csar", absoluteFilePath(csarPath)
-        };
+    @Test
+    public void shouldPassForAmsterdamWithAncestorRuleSet() throws URISyntaxException {
+        // given
+        OnapCliWrapper cli = new OnapCliWrapper(createVnfValidationRequestInfo("VoLTE.csar","amsterdam"));
+
+        // when
+        cli.handle();
+
+        // then
+        final OnapCliValidationResponseWrapper result = getCliCommandValidationResult(cli);
+        assertThat(result.criteria).isEqualTo(OPERATION_STATUS_PASS);
+
+        verifyThatOperationFinishedWithoutAnyError(cli);
     }
 
+    private String[] createVnfValidationRequestInfo(String csarPath, String release) throws URISyntaxException {
+        return new String[]{
+                "--product", "onap-vtp",
+                "csar-validate",
+                "--release", release,
+                "--format", "json",
+                "--csar", absoluteFilePath(csarPath)
+        };
+    }
 }

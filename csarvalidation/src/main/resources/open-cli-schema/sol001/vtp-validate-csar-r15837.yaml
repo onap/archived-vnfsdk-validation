@@ -20,10 +20,12 @@ description: |
   Major TOSCA Types specified in ETSI NFV-SOL001 standard draft.
 
 info:
-  product: onap-dublin
+  product: onap-vtp
   version: 1.0
   service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  metadata:
+    release: dublin
 
 parameters:
     - name: csar

@@ -22,10 +22,12 @@ description: |
    latency, jitter, QoS (if applicable) for each interface.
 
 info:
-  product: onap-dublin
+  product: onap-vtp
   version: 1.0
   service: vnf-compliance
   author: ONAP VTP Team onap-discuss@lists.onap.org
+  metadata:
+    release: casablanca
 
 parameters:
     - name: csar
