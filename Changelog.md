@@ -126,7 +126,13 @@ All notable changes to this project will be documented in this file.
     - https://jira.onap.org/browse/VNFSDK-714
 
 ## [1.2.18]
-- Add oclip command to trigger pm_dictionary validation
+
+## Added
+- oclip command to trigger pm_dictionary validation
     - https://jira.onap.org/browse/VNFSDK-721
 
 ## [1.2.19]
+
+## Added
+- Possibility to use a signature in PKCS7 format for individual artifact in manifest file. 
+    - https://jira.onap.org/browse/VNFSDK-714
