@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1966bcd2_22156c94",
+        "filename": "csarvalidation/python/test/test_ActiveRulesTableGenerator.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2021-01-21T10:32:03Z",
+      "side": 1,
+      "message": "this part is duplicated in second test file, it should be moved to common file",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 24
+      },
+      "revId": "1267ef6c06ee1fd9140212d29841a3a210fa4a19",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
