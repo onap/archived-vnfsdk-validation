@@ -1,7 +1,7 @@
 # ============LICENSE_START====================================
 # vnfsdk-validation
 # =========================================================
-# Copyright (C) 2020 Nokia. All rights reserved.
+# Copyright (C) 2021 Nokia. All rights reserved.
 # =========================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ class ActiveRulesTableGenerator:
             active_rules_table.add_entity(
                 ActiveRuleEntity(
                     rule,
+                    self._get_release_from_yaml(yaml_description),
                     self._get_description_from_yaml(yaml_description),
                     self._get_product_from_yaml(yaml_description)
                 )
@@ -68,3 +69,7 @@ class ActiveRulesTableGenerator:
     @staticmethod
     def _get_product_from_yaml(yaml_file: dict) -> str:
         return yaml_file['info']['product']
+
+    @staticmethod
+    def _get_release_from_yaml(yaml_file: dict) -> str:
+        return yaml_file['info']['metadata']['release']

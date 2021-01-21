@@ -15,11 +15,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============LICENSE_END=====================================
+import pathlib
+from jproperties import Properties
 
-class ActiveRuleEntity:
 
-    def __init__(self, rule, release, description, product):
-        self.rule = rule
-        self.release = release
-        self.description = description
-        self.product = product
+def get_releases(path_to_properties: str) -> str:
+    configs = Properties()
+    with open(path_to_properties, 'rb') as properties:
+        configs.load(properties)
+
+    return configs.get('releases.order').data
+
+
+def get_path_to_csarvalidate_folder(current_location: str) -> str:
+    return str(pathlib.Path(current_location).parent.parent.parent.absolute())
