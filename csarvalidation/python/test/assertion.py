@@ -15,11 +15,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============LICENSE_END=====================================
+import unittest
 
-class ActiveRuleEntity:
 
-    def __init__(self, rule, release, description, product):
-        self.rule = rule
-        self.release = release
-        self.description = description
-        self.product = product
+def verify_that_cvc_line_is_valid(testcase: unittest.TestCase, line: str, releases: str, delimiter: str):
+    values = line.split(delimiter)
+    testcase.assertTrue(len(values) == 4)
+    testcase.assertTrue(values[0].startswith("onap-"))
+    testcase.assertTrue(
+        values[1] in releases,
+        msg="Rule '{}' has wrong release name '{}'. Release name must match to one of '{}'".format(
+            values[2], values[1], releases
+        )
+    )
+    testcase.assertTrue(values[2].startswith("r"))
