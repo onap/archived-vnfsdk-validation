@@ -1,7 +1,7 @@
 # ============LICENSE_START====================================
 # vnfsdk-validation
 # =========================================================
-# Copyright (C) 2020 Nokia. All rights reserved.
+# Copyright (C) 2021 Nokia. All rights reserved.
 # =========================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,8 @@
 
 class ActiveRuleEntity:
 
-    def __init__(self, rule, description, product):
+    def __init__(self, rule, release, description, product):
         self.rule = rule
+        self.release = release
         self.description = description
         self.product = product

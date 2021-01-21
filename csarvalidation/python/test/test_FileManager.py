@@ -1,7 +1,7 @@
 # ============LICENSE_START====================================
 # vnfsdk-validation
 # =========================================================
-# Copyright (C) 2020 Nokia. All rights reserved.
+# Copyright (C) 2021 Nokia. All rights reserved.
 # =========================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,13 +19,15 @@
 import os
 import shutil
 import unittest
+import application_configuration
+import assertion
 
 from validation.FileManager import FileManager
 from validation.rules.ActiveRulesTableGenerator import ActiveRulesTableGenerator
 from validation.rules.providers.ActiveRulesProvider import ActiveRulesProvider
 from validation.rules.providers.RulesDescriptionsProvider import RulesDescriptionsProvider
 
-RESOURCES_DIRECTORY = '../src/main/resources/'
+RESOURCES_DIRECTORY = application_configuration.get_path_to_csarvalidate_folder(__file__)+'/src/main/resources/'
 RULE_DESCRIPTION_SOL001_PATH = RESOURCES_DIRECTORY + 'open-cli-schema/sol001/'
 RULE_DESCRIPTION_SOL004_PATH = RESOURCES_DIRECTORY + 'open-cli-schema/sol004/'
 VNFREWS_PROPERTIES_PATH = RESOURCES_DIRECTORY + 'vnfreqs.properties'
@@ -83,12 +85,10 @@ class FileManagerTest(unittest.TestCase):
             self.validate_csv_table_with_rules(pnf_rules)
 
     def validate_csv_table_with_rules(self, vnf_rules):
+        releases = application_configuration.get_releases(VNFREWS_PROPERTIES_PATH)
         lines = vnf_rules.read().splitlines()
         for line in lines:
-            values = line.split(CSV_DELIMITER)
-            self.assertTrue(len(values) == 3)
-            self.assertTrue(values[0].startswith("onap-"))
-            self.assertTrue(values[1].startswith("r"))
+            assertion.verify_that_cvc_line_is_valid(self, line, releases, CSV_DELIMITER)
 
 
 if __name__ == '__main__':
