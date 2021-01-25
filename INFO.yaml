@@ -86,6 +86,11 @@ committers:
       company: 'Orange'
       id: 'mjzql'
       timezone: 'Europe/Paris'
+    - name: 'Bartosz Gardziejewski'
+      email: 'bartosz.gardziejewski@nokia.com'
+      company: 'Nokia'
+      id: 'BartoszG'
+      timezone: 'Europe/Poland'
 tsc:
     approval: 'https://lists.onap.org/pipermail/onap-tsc'
     changes:
