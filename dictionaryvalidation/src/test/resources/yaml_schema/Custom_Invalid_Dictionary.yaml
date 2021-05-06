@@ -1,0 +1,56 @@
+---
+rootElement: { presence: required, structure: {
+  field1: {
+    presence: required,
+    comment: "field 1 description",
+    structure: {
+      field11:{
+        presence: required,
+        comment: "field 11 description"
+      },
+      field12: {
+        presence: required,
+        comment: "field 12 description"
+      },
+      field13: {
+        presence: optional,
+        value: [ X, Y, Z ],
+        comment: "field 13 description"
+      }
+    }
+  },
+  field2: {
+    presence: required,
+    comment: "field 2 description"
+  },
+  field3: {
+    presence: required,
+    value: [ 3, 30, 33 ],
+    comment: "field 2 description"
+  }
+}}
+...
+---
+rootElement:
+  field1:
+    field11: test11
+    field12: test12
+    field13: A
+  field2: test2
+  field3: 3
+...
+---
+rootElement:
+  field1:
+    field11: test11
+    field12: test12
+  field2: test2
+  field3: 300
+...
+---
+rootElement:
+  field1:
+    field11: test11
+    field12: test12
+  field3: 3
+...

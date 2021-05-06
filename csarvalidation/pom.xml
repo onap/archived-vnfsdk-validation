@@ -105,7 +105,7 @@
     </dependency>
     <dependency>
       <groupId>org.onap.vnfsdk.validation</groupId>
-      <artifactId>validation-pmdictionary</artifactId>
+      <artifactId>validation-dictionary</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

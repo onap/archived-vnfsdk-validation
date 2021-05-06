@@ -39,7 +39,7 @@
     <modules>
         <module>csarvalidation</module>
         <module>deployment</module>
-        <module>pmdictionaryvalidation</module>
+        <module>dictionaryvalidation</module>
     </modules>
 
     <build>

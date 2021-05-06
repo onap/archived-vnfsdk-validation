@@ -318,7 +318,7 @@ public class PnfValidationFunctionalTest {
         List<OnapCliValidationResponseWrapper.ValidationResultWrapper.ValidationErrorWrapper> expectedPnfDictionaryErrors =
                 List.of(
                         createExpectedError(PM_DICTIONARY_YAML_RULE, "0x2000",
-                                "Fail to load PM_Dictionary With error: PM_Dictionary YAML file is empty",
+                                "Fail to load PM_Dictionary With error: Dictionary YAML file is empty",
                                 "Artifacts/Deployment/Measurements/PM_Dictionary.yml"
                         )
                 );

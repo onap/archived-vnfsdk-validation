@@ -139,7 +139,7 @@ public class VTPValidateCSARR816745IntegrationTest {
         // then
         List<CSARArchive.CSARError> errors = testCase.getErrors();
         assertThat(errors.size()).isEqualTo(1);
-        assertThat(convertToMessagesList(errors)).contains("Fail to load PM_Dictionary With error: PM_Dictionary YAML file is empty");
+        assertThat(convertToMessagesList(errors)).contains("Fail to load PM_Dictionary With error: Dictionary YAML file is empty");
     }
 
     @Test
