@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "818b2f3d_6e37f415",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2022-03-21T04:15:20Z",
+      "side": 1,
+      "message": "mention about the sonar issue,, may you could add direct link to sonarcloud issue reported",
+      "revId": "a11f39c1e3247949b609d760fc6753a2bb8fab02",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00125211_783a8590",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/FileArchive.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2022-03-21T04:15:20Z",
+      "side": 1,
+      "message": "remove whitespace chars",
+      "revId": "a11f39c1e3247949b609d760fc6753a2bb8fab02",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cac63d86_0a76863d",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/FileArchive.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2022-03-21T04:15:20Z",
+      "side": 1,
+      "message": "can you revisit the fix, it does not make any effect on the code. \n\nand use run-sonar to verify your fix",
+      "revId": "a11f39c1e3247949b609d760fc6753a2bb8fab02",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
