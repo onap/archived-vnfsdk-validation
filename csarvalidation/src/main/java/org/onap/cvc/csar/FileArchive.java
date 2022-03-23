@@ -116,7 +116,6 @@ public class FileArchive {
 
             ZipEntry entry;
             while ((entry = zipInputStream.getNextEntry()) != null) {
-		 
                 String pathname = destination + File.separator + entry.getName();
                 if (!pathname.startsWith(TEMP_DIR)) {
                     throw new IOException("Entry is outside of the target directory");
