@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2a17862f_5b750857",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/FileArchive.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2022-03-24T04:16:50Z",
+      "side": 1,
+      "message": "1. use the pathname at line 123\n2. check why the TEMPDIR is specifically used here\n3. do an functional test and share the report, to make sure it does not introudce regression.",
+      "revId": "b537ee52ee8a4dd9954546b08b5fa4bc26ff7d89",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
