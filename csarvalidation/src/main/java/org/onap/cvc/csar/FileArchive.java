@@ -139,6 +139,10 @@ public class FileArchive {
 
     private void extract(ZipInputStream csar, File filePath) throws IOException {
         byte[] buffer = new byte[2048];
+        String filePathname = filePath.getPath();
+        if (!filePathname.startsWith(TEMP_DIR)) {
+            throw new IOException("Entry is outside of the target directory");
+        }
         try (FileOutputStream fos = new FileOutputStream(filePath);
              BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length)) {
 
