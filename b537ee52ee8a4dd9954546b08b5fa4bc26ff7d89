@@ -16,6 +16,24 @@
       "revId": "b537ee52ee8a4dd9954546b08b5fa4bc26ff7d89",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "241e7d1d_b91793a8",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/FileArchive.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 2825
+      },
+      "writtenOn": "2022-03-28T04:20:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a17862f_5b750857",
+      "revId": "b537ee52ee8a4dd9954546b08b5fa4bc26ff7d89",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
