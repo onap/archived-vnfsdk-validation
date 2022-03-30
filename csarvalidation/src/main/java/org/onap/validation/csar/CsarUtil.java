@@ -71,9 +71,15 @@ public final class CsarUtil {
             }
 
             input = zipFile.getInputStream(entry);
-            File file = new File(extPlace, entry.getName());
-
-            //Currently it does not support xml based VNF descriptors.
+            String entryName = entry.getName();
+            File file = null;
+            if (!entryName.isEmpty()) {
+               file = new File(extPlace, entryName);
+            }
+            if (file == null) {
+               throw new IOException("File not exists");
+            }
+            //Currently, it does not support xml based VNF descriptors.
             //So skip and proceed to YAML defined files validation only.
             if (file.getAbsolutePath().contains("xml"+System.getProperty("file.separator"))) {
                continue;
@@ -98,10 +104,9 @@ public final class CsarUtil {
                break;
             }
             bos.write(buffer, 0, length);
+            }
+            unzipFileNames.put(file.getName(), file.getAbsolutePath());
          }
-
-         unzipFileNames.put(file.getName(), file.getAbsolutePath());
-      }
    }
 
    /**
