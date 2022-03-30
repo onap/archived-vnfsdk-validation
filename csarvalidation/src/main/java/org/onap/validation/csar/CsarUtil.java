@@ -31,6 +31,7 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.Map;
+import static org.onap.cvc.csar.CSARArchive.TEMP_DIR;
 
 public final class CsarUtil {
 
@@ -88,6 +89,10 @@ public final class CsarUtil {
    }
 
    private static void updateUnzipFileNames(InputStream input, byte[] buffer, HashMap<String, String> unzipFileNames, File file) throws IOException {
+      String filePathname = file.getPath();
+      if (!filePathname.startsWith(TEMP_DIR)) {
+         throw new IOException("Entry is outside of target directory");
+      }
       if (!file.getParentFile().exists()) {
          FileUtil.createDirectory(file.getParentFile().getAbsolutePath());
       }
