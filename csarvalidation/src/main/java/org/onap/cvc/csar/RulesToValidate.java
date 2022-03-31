@@ -21,17 +21,17 @@ import java.util.List;
 
 public class RulesToValidate {
     private static final String RULES_ATTRIBUTE_SEPARATOR = ",";
-    private final String rulesToValidate;
+    private final String validateRules;
 
     public RulesToValidate(String rulesToValidate) {
-        this.rulesToValidate = rulesToValidate;
+        this.validateRules = rulesToValidate;
     }
 
     public List<String> get(){
         List<String> rules = new ArrayList<>();
 
-        if(!rulesToValidate.isEmpty()){
-            String[] listOfRulesToValidate = rulesToValidate.split(RULES_ATTRIBUTE_SEPARATOR);
+        if(!validateRules.isEmpty()){
+            String[] listOfRulesToValidate = validateRules.split(RULES_ATTRIBUTE_SEPARATOR);
             rules.addAll(Arrays.asList(listOfRulesToValidate));
         }
 
