@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "71b0a16d_c6f3598e",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/RulesToValidate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 6213
+      },
+      "writtenOn": "2022-04-01T14:10:43Z",
+      "side": 1,
+      "message": "better rename this parameter as well",
+      "revId": "873294aa0eaa82219721fd354a3e5a139abaf848",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
