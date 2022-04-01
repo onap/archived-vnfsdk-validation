@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c1d2b76a_e4048187",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/sol001/VTPValidateCSARR15837.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6213
+      },
+      "writtenOn": "2022-04-01T06:43:58Z",
+      "side": 1,
+      "message": "prakash, \"TODO\" in comment would result in new issue \"Complete the task associated to this TODO comment\", try to add comment without \"TODO\"",
+      "revId": "6eca88e63ef808ca61a5dc231a5838ca75bbda60",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
