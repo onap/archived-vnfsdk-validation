@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f35d305a_139f200c",
+        "filename": "csarvalidation/src/main/java/org/onap/validation/csar/CsarUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 6213
+      },
+      "writtenOn": "2022-04-01T05:52:56Z",
+      "side": 1,
+      "message": "prakash, issue is not about checking for null values.\n\nissue is: to not construct the path from file name entry of an archive. kindly handle it...",
+      "revId": "cb540149ef5549ec72592702bc45e2c586015b0d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
