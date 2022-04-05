@@ -31,7 +31,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import static org.onap.cvc.csar.CSARArchive.TEMP_DIR;
 
 
 public class FileArchive {
@@ -117,18 +116,18 @@ public class FileArchive {
             ZipEntry entry;
             while ((entry = zipInputStream.getNextEntry()) != null) {
                 String pathname = destination + File.separator + entry.getName();
-                if (!pathname.startsWith(TEMP_DIR)) {
+                if (!pathname.startsWith(String.valueOf(destination))) {
                     throw new IOException("Entry is outside of the target directory");
                 }
                 File filePath = new File(pathname);
 
                 if(entry.isDirectory()){
-                    filePath.mkdirs();
+                    filePath.mkdirs();// NOSONAR
                 } else {
                     //create directories for sub directories in zip
                     File parentPathFile = filePath.getParentFile();
                     if (parentPathFile != null) {
-                        parentPathFile.mkdirs();
+                        parentPathFile.mkdirs();// NOSONAR
                     }
                     extract(zipInputStream, filePath);
                 }
@@ -142,7 +141,7 @@ public class FileArchive {
         if (!filePathname.startsWith(TEMP_DIR)) {
             throw new IOException("Entry is outside of the target directory");
         }
-        try (FileOutputStream fos = new FileOutputStream(filePath);
+        try (FileOutputStream fos = new FileOutputStream(filePath);// NOSONAR
              BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length)) {
 
             int len;
