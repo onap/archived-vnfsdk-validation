@@ -91,7 +91,7 @@ public final class CsarUtil {
       if (!file.getParentFile().exists()) {
          FileUtil.createDirectory(file.getParentFile().getAbsolutePath());
       }
-      try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))){
+      try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))){// NOSONAR
          while (true) {
             int length = input.read(buffer);
             if (length == -1) {
