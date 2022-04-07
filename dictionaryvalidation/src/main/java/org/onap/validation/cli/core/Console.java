@@ -24,17 +24,14 @@ public class Console {
     public static final Logger logger = LoggerFactory.getLogger(Console.class);
 
     public void info(String msg) {
-        System.out.println(msg);
         logger.info(msg);
     }
 
     public void error(Exception ex) {
-        System.err.println(ex.getMessage() + ", more information in log file.");
         logger.error("Internal error", ex);
     }
 
     public void error(String msg) {
-        System.err.println(msg);
         logger.error(msg);
     }
 
