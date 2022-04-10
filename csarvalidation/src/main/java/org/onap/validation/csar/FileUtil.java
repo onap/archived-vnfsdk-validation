@@ -50,8 +50,12 @@ public final class FileUtil {
         int tryCount = 0;
         while (tryCount < TRY_COUNT) {
             tryCount++;
-            if (folder.exists() || folder.mkdirs()) {
+            if (folder.exists()) {
                 return true;
+            } else {
+                if (folder.mkdirs()) {
+                    return true;
+                }
             }
         }
 
