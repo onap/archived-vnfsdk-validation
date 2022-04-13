@@ -270,8 +270,7 @@ public class VTPValidateCSAR extends OnapCommand {
 
             setOperationResult(validation);
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-            throw new OnapCommandExecutionFailed(e.getMessage());
+            throw new OnapCommandExecutionFailed(e.getMessage(), e);
         }
     }
 
