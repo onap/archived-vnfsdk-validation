@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aeb745bb_6b49ec4c",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/VTPValidateCSARBase.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2022-04-13T09:02:57Z",
+      "side": 0,
+      "message": "create a str with error msg and add it as you have done now",
+      "revId": "a29049f81e06ea66aff3d07cc6649f89e0bafb85",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
