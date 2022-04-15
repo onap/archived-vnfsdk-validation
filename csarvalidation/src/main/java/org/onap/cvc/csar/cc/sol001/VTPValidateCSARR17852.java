@@ -25,7 +25,7 @@ public class VTPValidateCSARR17852 extends VTPValidateCSARBase {
 
     @Override
     protected void validateCSAR(CSARArchive csar) throws Exception {
-        // This Method is not used in this class
+        //Method overriding
     }
 
     @Override
