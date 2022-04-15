@@ -57,8 +57,8 @@ public abstract class VTPValidateCSARBase extends OnapCommand {
             this.validateCSAR(csar);
 
         } catch (Exception e) {
-            LOG.error("{}: Failed to validate CSAR {}", this.getVnfReqsNo(), e);
-            throw new OnapCommandExecutionFailed(e.getMessage());
+            String errorMsg = this.getVnfReqsNo() + ": Failed to validate CSAR " + e;
+            throw new OnapCommandExecutionFailed(errorMsg);
         }
 
         for (CSARError e: this.errors) {
