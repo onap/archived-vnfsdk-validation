@@ -57,7 +57,7 @@ public class VnfValidationFunctionalTest {
                 assertThat(ruleValidationResult.errors)
                         .hasSize(1);
             } else {
-                assertThat(ruleValidationResult.errors).hasSize(0);
+                assertThat(ruleValidationResult.errors).isEmpty();
             }
         });
 
