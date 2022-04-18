@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6993b5ae_548205c9",
+        "filename": "csarvalidation/src/main/java/org/onap/cvc/csar/cc/VTPValidateCSARBase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2022-04-18T04:02:58Z",
+      "side": 1,
+      "message": "can you format it correctly.",
+      "revId": "8dadd40f690a3118ed1970ebe4ab22cd7355fe8f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
