@@ -134,7 +134,7 @@ public class SignatureFactoryTest {
     @Test
     public void shouldCreateContentInfoWithProperContentForDecodedPKCS7() throws IOException, CmsSignatureLoadingException {
         // given
-        InputStream signatureAsStream = loadFileFromResources("./security/signature/testEncodedSignature.sig.p7c");
+        InputStream signatureAsStream = loadFileFromResources();
 
         // when
         ContentInfo contentInfo = signatureFactory.createSignature(signatureAsStream.readAllBytes());
@@ -144,10 +144,10 @@ public class SignatureFactoryTest {
         assertThat(testPkcs7Signature).contains(contentInfoSignature);
     }
 
-    private InputStream loadFileFromResources(String fileFromResources) throws IOException{
-        InputStream resourceAsStream = SignatureFactoryTest.class.getClassLoader().getResourceAsStream(fileFromResources);
+    private InputStream loadFileFromResources() throws IOException{
+        InputStream resourceAsStream = SignatureFactoryTest.class.getClassLoader().getResourceAsStream("./security/signature/testEncodedSignature.sig.p7c");
         if(resourceAsStream==null) {
-            throw  new IOException(String.format("fail to load file: %s from resourcer", fileFromResources));
+            throw  new IOException(String.format("fail to load file: %s from resourcer", "./security/signature/testEncodedSignature.sig.p7c"));
         }
         return resourceAsStream;
     }
