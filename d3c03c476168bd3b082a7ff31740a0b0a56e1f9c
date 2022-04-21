@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "69f531ea_b526d5df",
+        "filename": "csarvalidation/src/test/java/org/onap/cvc/csar/security/SignatureFactoryTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 741
+      },
+      "writtenOn": "2022-04-21T03:02:47Z",
+      "side": 1,
+      "message": "is this method used only one place?",
+      "revId": "d3c03c476168bd3b082a7ff31740a0b0a56e1f9c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
